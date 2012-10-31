@@ -20,9 +20,17 @@ namespace NCheckNetworks
 		{
 			string[] startupArgs = Environment.GetCommandLineArgs();
 
-			//Task.Factory.StartNew( () => );
-			SuperPinger Sp = new SuperPinger();
+			List<IPAddress> addressToTest = new List<IPAddress>();
+			addressToTest.Add( IPAddress.Parse( "10.8.111.255" ) );
+			addressToTest.Add( IPAddress.Parse( "8.8.8.8" ) );
+			addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
+			addressToTest.Add( IPAddress.Parse( "92.93.94.95" ) );
+
+			SuperPinger Sp = new SuperPinger( addressToTest );
 			Sp.asyncPinger();
+
+			Sp.taskPinger();
+
 			if ( Array.IndexOf( startupArgs, "-s" ) != -1 )
 			{
 			}
@@ -30,55 +38,6 @@ namespace NCheckNetworks
 			Application.SetCompatibleTextRenderingDefault( false );
 			Application.Run( new Form1() );
 			
-		}
-
-		public static void AsyncComplexLocalPing()
-		{
-			// Get an object that will block the main thread.
-			AutoResetEvent waiter = new AutoResetEvent( false );
-
-			// Ping's the local machine.
-			Ping pingSender = new Ping();
-
-			// When the PingCompleted event is raised, 
-			// the PingCompletedCallback method is called.
-			pingSender.PingCompleted += new PingCompletedEventHandler( AsyncPingCompleted );
-
-			IPAddress address = IPAddress.Parse("10.8.111.255");
-
-			// Create a buffer of 32 bytes of data to be transmitted. 
-			string data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-			byte[] buffer = Encoding.ASCII.GetBytes( data );
-
-			// Wait 10 seconds for a reply. 
-			int timeout = 1000;
-
-			// Set options for transmission: 
-			// The data can go through 64 gateways or routers 
-			// before it is destroyed, and the data packet 
-			// cannot be fragmented.
-			PingOptions options = new PingOptions( 64, true );
-
-			// Send the ping asynchronously. 
-			// Use the waiter as the user token. 
-			// When the callback completes, it can wake up this thread.
-			pingSender.SendAsync( address, timeout, buffer, options, waiter );
-
-			// Prevent this example application from ending. 
-			// A real application should do something useful 
-			// when possible.
-			waiter.WaitOne();
-			Console.WriteLine( "Ping example completed." );
-		}
-		private static void AsyncPingCompleted( Object sender, PingCompletedEventArgs e )
-		{
-			System.Net.NetworkInformation.PingReply reply = e.Reply;
-			((System.Threading.AutoResetEvent)e.UserState).Set();
-			if( reply.Status == System.Net.NetworkInformation.IPStatus.Success )
-			{
-				MessageBox.Show( "Address: " + reply.Address.ToString() );
-				MessageBox.Show( "Roundtrip time: " + reply.RoundtripTime.ToString() );
-			}
 		}
 	}
 }
