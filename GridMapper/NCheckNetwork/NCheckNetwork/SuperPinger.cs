@@ -32,7 +32,7 @@ namespace NCheckNetworks
 
 		#endregion //Fields
 
-		#region Constructors
+		#region Constructor
 
 		public SuperPinger()
 			: this ( new List<IPAddress>() )
@@ -42,16 +42,19 @@ namespace NCheckNetworks
 		public SuperPinger( IList<IPAddress> ipList )
 		{
 			_ipCollection = ipList;
+			_pingCount = 0;
 		}
 
-		#endregion //Constructors
+		#endregion //Constructor
 
 		public void taskPinger()
 		{
 			Task<List<IPAddress>> task = Task.Factory.StartNew<List<IPAddress>>( () =>
 			{
 				List<IPAddress> retreivedAdress = new List<IPAddress>();
-				foreach ( IPAddress ipAddress in _ipCollection )
+
+				asyncPinger();
+				/*foreach ( IPAddress ipAddress in _ipCollection )
 				{
 					Ping pi = new Ping();
 					pi.SendAsync( ipAddress, 200, this );
@@ -69,7 +72,7 @@ namespace NCheckNetworks
 						}
 
 					} );
-				}
+				}*/
 				return retreivedAdress;
 			} );
 		}
@@ -78,10 +81,15 @@ namespace NCheckNetworks
 		{
 			foreach( IPAddress ipAddress in _ipCollection )
 			{
-				Ping pi = new Ping();
-				pi.SendAsync( ipAddress, 200, this);
-				pi.PingCompleted += new PingCompletedEventHandler( asyncPingComplete );
+				ping( ipAddress );
 			}
+		}
+
+		public void ping( IPAddress ipAddress )
+		{
+			Ping pi = new Ping();
+			pi.SendAsync( ipAddress, 200, this );
+			pi.PingCompleted += new PingCompletedEventHandler( asyncPingComplete );
 		}
 
 		void asyncPingComplete( object sender, PingCompletedEventArgs e )
@@ -92,8 +100,7 @@ namespace NCheckNetworks
 			//((AutoResetEvent)e.UserState).Set();
 			if( pingReply.Status == IPStatus.Success )
 			{
-				MessageBox.Show( "Address: " + pingReply.Address.ToString() + " pingCount : " + _pingCount );
-				MessageBox.Show( "Roundtrip time: " + pingReply.RoundtripTime.ToString() );
+				MessageBox.Show( "Address: " + pingReply.Address.ToString() + " pingCount : " + _pingCount + "\n" + "Roundtrip time: " + pingReply.RoundtripTime.ToString() + "\nStatus :" + pingReply.Status.ToString());
 			}
 
 		}

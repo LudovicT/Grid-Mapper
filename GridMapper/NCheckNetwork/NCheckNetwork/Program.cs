@@ -24,7 +24,7 @@ namespace NCheckNetworks
 			addressToTest.Add( IPAddress.Parse( "10.8.111.255" ) );
 			addressToTest.Add( IPAddress.Parse( "8.8.8.8" ) );
 			addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
-			addressToTest.Add( IPAddress.Parse( "92.92.92.92" ) );
+			addressToTest.Add( IPAddress.Parse( "92.93.94.95" ) );
 
 			SuperPinger Sp = new SuperPinger( addressToTest );
 			Sp.asyncPinger();
