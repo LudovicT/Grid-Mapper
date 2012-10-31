@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -20,9 +20,17 @@ namespace NCheckNetworks
 		{
 			string[] startupArgs = Environment.GetCommandLineArgs();
 
-			//Task.Factory.StartNew( () => );
-			SuperPinger Sp = new SuperPinger();
+			List<IPAddress> addressToTest = new List<IPAddress>();
+			addressToTest.Add( IPAddress.Parse( "10.8.111.255" ) );
+			addressToTest.Add( IPAddress.Parse( "8.8.8.8" ) );
+			addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
+			addressToTest.Add( IPAddress.Parse( "92.92.92.92" ) );
+
+			SuperPinger Sp = new SuperPinger( addressToTest );
 			Sp.asyncPinger();
+
+			Sp.taskPinger();
+
 			if ( Array.IndexOf( startupArgs, "-s" ) != -1 )
 			{
 			}

@@ -48,13 +48,30 @@ namespace NCheckNetworks
 
 		public void taskPinger()
 		{
-			foreach( IPAddress ipAddress in _ipCollection )
+			Task<List<IPAddress>> task = Task.Factory.StartNew<List<IPAddress>>( () =>
 			{
-				Task<List<IPAddress>> task = Task.Factory.StartNew<List<IPAddress>>( () => 
+				List<IPAddress> retreivedAdress = new List<IPAddress>();
+				foreach ( IPAddress ipAddress in _ipCollection )
 				{
-					Task.Factory.FromAsync<List<IPAddress>>(
-				} );
-			}
+					Ping pi = new Ping();
+					pi.SendAsync( ipAddress, 200, this );
+					pi.PingCompleted += new PingCompletedEventHandler( ( object sender, PingCompletedEventArgs e ) =>
+					{
+						_pingCount++;
+						if ( e.Reply.Status == IPStatus.Success )
+						{
+							retreivedAdress.Add( e.Reply.Address );
+							MessageBox.Show( e.Reply.Address.ToString() + " " + e.Reply.RoundtripTime.ToString() );
+						}
+						else
+						{
+							MessageBox.Show( e.Reply.Status.ToString() );
+						}
+
+					} );
+				}
+				return retreivedAdress;
+			} );
 		}
 
 		public void asyncPinger()
@@ -78,6 +95,7 @@ namespace NCheckNetworks
 				MessageBox.Show( "Address: " + pingReply.Address.ToString() + " pingCount : " + _pingCount );
 				MessageBox.Show( "Roundtrip time: " + pingReply.RoundtripTime.ToString() );
 			}
+
 		}
 	}
 }
