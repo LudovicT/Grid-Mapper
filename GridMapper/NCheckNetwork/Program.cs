@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -6,6 +6,7 @@ using System.Threading;
 using System.Net.NetworkInformation;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace NCheckNetworks
 {
@@ -19,13 +20,15 @@ namespace NCheckNetworks
 		{
 			string[] startupArgs = Environment.GetCommandLineArgs();
 
-			AsyncComplexLocalPing();
+			//Task.Factory.StartNew( () => );
+			SuperPinger Sp = new SuperPinger();
+			Sp.asyncPinger();
 			if ( Array.IndexOf( startupArgs, "-s" ) != -1 )
 			{
-				Application.EnableVisualStyles();
-				Application.SetCompatibleTextRenderingDefault( false );
-				Application.Run( new Form1() );
 			}
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault( false );
+			Application.Run( new Form1() );
 			
 		}
 
@@ -65,7 +68,6 @@ namespace NCheckNetworks
 			// A real application should do something useful 
 			// when possible.
 			waiter.WaitOne();
-			waiter.WaitAll(  );
 			Console.WriteLine( "Ping example completed." );
 		}
 		private static void AsyncPingCompleted( Object sender, PingCompletedEventArgs e )
