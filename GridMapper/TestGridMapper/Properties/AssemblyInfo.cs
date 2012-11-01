@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Les informations générales relatives à un assembly dépendent de 
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
-[assembly: AssemblyTitle( "NCheckNetworks" )]
+[assembly: AssemblyTitle( "TestGridMapper" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "NCheckNetworks" )]
+[assembly: AssemblyProduct( "TestGridMapper" )]
 [assembly: AssemblyCopyright( "Copyright ©  2012" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible( false )]
 
 // Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
-[assembly: Guid( "89fffa63-c3f0-44d7-977f-0f492a41385c" )]
+[assembly: Guid( "6d1f38a8-b9f0-497a-9500-0601294f53ba" )]
 
 // Les informations de version pour un assembly se composent des quatre valeurs suivantes :
 //

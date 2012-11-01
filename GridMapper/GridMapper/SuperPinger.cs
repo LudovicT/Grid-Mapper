@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NCheckNetworks
+namespace GridMapper
 {
 	public class SuperPinger
 	{
@@ -54,25 +54,7 @@ namespace NCheckNetworks
 				List<IPAddress> retreivedAdress = new List<IPAddress>();
 
 				asyncPinger();
-				/*foreach ( IPAddress ipAddress in _ipCollection )
-				{
-					Ping pi = new Ping();
-					pi.SendAsync( ipAddress, 200, this );
-					pi.PingCompleted += new PingCompletedEventHandler( ( object sender, PingCompletedEventArgs e ) =>
-					{
-						_pingCount++;
-						if ( e.Reply.Status == IPStatus.Success )
-						{
-							retreivedAdress.Add( e.Reply.Address );
-							MessageBox.Show( e.Reply.Address.ToString() + " " + e.Reply.RoundtripTime.ToString() );
-						}
-						else
-						{
-							MessageBox.Show( e.Reply.Status.ToString() );
-						}
-
-					} );
-				}*/
+				
 				return retreivedAdress;
 			} );
 		}
@@ -97,10 +79,11 @@ namespace NCheckNetworks
 			_pingCount++;
 
 			PingReply pingReply = e.Reply;
-			//((AutoResetEvent)e.UserState).Set();
-			if( pingReply.Status == IPStatus.Success )
+			Console.WriteLine( _pingCount);
+
+			if( pingReply.Status ==  IPStatus.Success )
 			{
-				MessageBox.Show( "Address: " + pingReply.Address.ToString() + " pingCount : " + _pingCount + "\n" + "Roundtrip time: " + pingReply.RoundtripTime.ToString() + "\nStatus :" + pingReply.Status.ToString());
+				//MessageBox.Show( "Address: " + pingReply.Address.ToString() + " pingCount : " + _pingCount + "\n" + "Roundtrip time: " + pingReply.RoundtripTime.ToString() + "\nStatus :" + pingReply.Status.ToString());
 			}
 
 		}

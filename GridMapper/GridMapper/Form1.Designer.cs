@@ -1,4 +1,4 @@
-﻿namespace NCheckNetworks
+﻿namespace GridMapper
 {
 	partial class Form1
 	{

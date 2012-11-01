@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace NCheckNetworks
+namespace GridMapper
 {
 	public partial class Form1 : Form
 	{
