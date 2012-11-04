@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NCheckNetworks.NetworkModelObject
 {
-	class Network : INetwork
+	interface IRouter
 	{
 	}
 }
