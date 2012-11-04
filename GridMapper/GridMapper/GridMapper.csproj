@@ -100,8 +100,15 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="NetworkModelObject\INetworkInterface.cs" />
-    <Compile Include="NetworkModelObject\NetworkInterface.cs" />
+    <Compile Include="NetworkModelObject\NetworkHost\Entity.cs" />
+    <Compile Include="NetworkModelObject\NetworkHost\Host.cs" />
+    <Compile Include="NetworkModelObject\NetworkHost\HostDecorator.cs" />
+    <Compile Include="NetworkModelObject\NetworkHost\IHost.cs" />
+    <Compile Include="NetworkModelObject\NetworkInterface\INetworkInterface.cs" />
+    <Compile Include="NetworkModelObject\NetworkInterface\EthernetNetworkInterface.cs" />
+    <Compile Include="NetworkModelObject\NetworkInterface\WifiNetworkInterface.cs" />
+    <Compile Include="NetworkModelObject\Network\INetwork.cs" />
+    <Compile Include="NetworkModelObject\Network\Network.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SuperPinger.cs" />

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NCheckNetworks.NetworkModelObject.Network
 {
-	class Network
+	class Network : INetwork
 	{
 	}
 }

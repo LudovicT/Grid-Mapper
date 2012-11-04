@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NCheckNetworks.NetworkModelObject.NetworkHost
 {
-	class Entity
+	abstract class  Entity
 	{
 	}
 }
