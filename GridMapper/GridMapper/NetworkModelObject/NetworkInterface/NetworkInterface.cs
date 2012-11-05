@@ -10,13 +10,13 @@ namespace NCheckNetworks.NetworkModelObject
 	{
 		string _description;
 		string _id;
-		string _mame;
+		string _name;
 		long _speed;
 		IPAddress _ipv4;
 		IPAddress _bridge;
 		IPAddress _dhcp;
 		IPAddress _dns;
-		long averageLatence;
+		long _averageLatency;
 
 		//ToDo change for class Port
 		bool[] _receivePort;
@@ -29,7 +29,7 @@ namespace NCheckNetworks.NetworkModelObject
 		public NetworkInterface( IPAddress ipAddress, long latence )
 		{
 			_ipv4 = ipAddress;
-			averageLatence = latence;
+			_averageLatency = latence;
 		}
 	}
 }

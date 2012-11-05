@@ -29,7 +29,7 @@ namespace GridMapper.Test
 			List<IPAddress> addressToTest = new List<IPAddress>();
 			for( int i = 0 ; i < 400 ; i++ )
 			{
-				addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
+				addressToTest.Add( IPAddress.Parse( "192.168.1.27" ) );
 			}
 			SuperPinger Sp = new SuperPinger( addressToTest );
 			Sp.taskPinger();
