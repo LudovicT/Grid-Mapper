@@ -106,8 +106,8 @@
     <Compile Include="NetworkModelObject\NetworkHost\IHost.cs" />
     <Compile Include="NetworkModelObject\NetworkHost\IRouter.cs" />
     <Compile Include="NetworkModelObject\NetworkHost\IServer.cs" />
-    <Compile Include="NetworkModelObject\NetworkInterface\INetworkInterface.cs" />
     <Compile Include="NetworkModelObject\NetworkInterface\EthernetNetworkInterface.cs" />
+    <Compile Include="NetworkModelObject\NetworkInterface\INetworkInterface.cs" />
     <Compile Include="NetworkModelObject\NetworkInterface\WifiNetworkInterface.cs" />
     <Compile Include="NetworkModelObject\Network\INetwork.cs" />
     <Compile Include="NetworkModelObject\Network\Network.cs" />

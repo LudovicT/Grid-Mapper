@@ -15,9 +15,8 @@ namespace GridMapper
 		[DllImport( "iphlpapi.dll", ExactSpelling = true )]
 		public static extern int SendARP( int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen );
 
-		public static String getMacAddress(IPAddress dst)
+		public static PhysicalAddress getMacAddress(IPAddress dst)
 		{
-			//IPAddress dst = IPAddress.Parse( "192.168.2.1" );
 			int intAddress = BitConverter.ToInt32( dst.GetAddressBytes(), 0 );
 			byte[] macAddr = new byte[6];
 			uint macAddrLen = (uint)macAddr.Length;
@@ -27,8 +26,8 @@ namespace GridMapper
 			string[] str = new string[(int)macAddrLen];
 			for ( int i = 0; i < macAddrLen; i++ )
 				str[i] = macAddr[i].ToString( "x2" );
-
-			return string.Join( ":", str );
+			string fullMac = string.Join( "", str ).ToUpper();
+			return PhysicalAddress.Parse(fullMac);
 		}
 	}
 }
