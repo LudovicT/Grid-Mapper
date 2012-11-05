@@ -7,5 +7,6 @@ namespace NCheckNetworks.NetworkModelObject
 {
 	abstract class  Entity
 	{
+		IList<INetworkInterface> _networkInterfaces;
 	}
 }

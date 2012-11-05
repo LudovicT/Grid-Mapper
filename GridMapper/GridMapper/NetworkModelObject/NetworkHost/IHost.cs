@@ -7,6 +7,6 @@ namespace NCheckNetworks.NetworkModelObject
 {
 	interface IHost
 	{
-		IList<INetworkInterface> _networkInterfaces;
+		
 	}
 }
