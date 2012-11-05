@@ -61,7 +61,7 @@ namespace GridMapper
 
 		public void asyncPinger()
 		{
-			foreach( IPAddress ipAddress in _ipCollection )
+			foreach ( IPAddress ipAddress in _ipCollection )
 			{
 				ping( ipAddress );
 			}

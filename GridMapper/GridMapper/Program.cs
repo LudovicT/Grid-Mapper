@@ -27,16 +27,15 @@ namespace GridMapper
 			addressToTest.Add( IPAddress.Parse( "92.93.94.95" ) );
 
 			SuperPinger Sp = new SuperPinger( addressToTest );
-			Sp.asyncPinger();
-
 			Sp.taskPinger();
 
-			if ( Array.IndexOf( startupArgs, "-s" ) != -1 )
+			//As long as there is no -s start arg, the program lauch normally, else it launch itself in silent mode.
+			if ( Array.IndexOf( startupArgs, "-s" ) == -1 )
 			{
+				Application.EnableVisualStyles();
+				Application.SetCompatibleTextRenderingDefault( false );
+				Application.Run( new Form1() );
 			}
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault( false );
-			Application.Run( new Form1() );
 			
 		}
 	}
