@@ -12,5 +12,19 @@ namespace NCheckNetworks.NetworkModelObject
 		IPAddress _ipv4;
 		IPAddress _ipv6;
 		int _mtu;
+
+		public IList<Host> NetworkHost
+		{
+			get { return _networkHosts; }
+            set { _networkHosts = value; }
+		}
+
+		public Network()
+		{
+			_networkHosts = new List<Host>();
+			_ipv4 = null;
+			_ipv6 = null;
+			_mtu = 0;
+		}
 	}
 }

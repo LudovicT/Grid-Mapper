@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NCheckNetworks.NetworkModelObject
+namespace NCheckNetworks.NetworkModelObject.NetworkBuilder
 {
-	abstract class HostDecorator : NetworkEntity
+	class ManualBuilder : Builder
 	{
 	}
 }

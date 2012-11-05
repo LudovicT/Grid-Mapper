@@ -5,7 +5,15 @@ using System.Text;
 
 namespace NCheckNetworks.NetworkModelObject
 {
-	class Host : Entity, IHost
+	class Host : NetworkEntity, IHost
 	{
+		public Host()
+		{
+		}
+
+		public Host( INetworkInterface networkInteface )
+			: base( networkInteface ) 
+		{
+		}
 	}
 }

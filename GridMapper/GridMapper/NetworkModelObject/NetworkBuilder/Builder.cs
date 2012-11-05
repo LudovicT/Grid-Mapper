@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NCheckNetworks.NetworkModelObject
 {
-	interface IServer
+	abstract class Builder : IBuilder
 	{
 	}
 }

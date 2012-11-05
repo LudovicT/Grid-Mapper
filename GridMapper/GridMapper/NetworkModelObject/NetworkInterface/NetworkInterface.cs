@@ -6,7 +6,7 @@ using System.Net;
 
 namespace NCheckNetworks.NetworkModelObject
 {
-	class NetworkInterface
+	public class NetworkInterface : INetworkInterface
 	{
 		string _description;
 		string _id;
@@ -16,9 +16,20 @@ namespace NCheckNetworks.NetworkModelObject
 		IPAddress _bridge;
 		IPAddress _dhcp;
 		IPAddress _dns;
+		long averageLatence;
 
 		//ToDo change for class Port
 		bool[] _receivePort;
 		bool[] _sendPort;
+
+		public NetworkInterface()
+		{
+		}
+
+		public NetworkInterface( IPAddress ipAddress, long latence )
+		{
+			_ipv4 = ipAddress;
+			averageLatence = latence;
+		}
 	}
 }

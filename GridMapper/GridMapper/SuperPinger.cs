@@ -7,6 +7,7 @@ using System.Net;
 using System.Windows.Forms;
 using System.Threading;
 using System.Threading.Tasks;
+using NCheckNetworks.NetworkModelObject;
 
 namespace GridMapper
 {
@@ -76,16 +77,11 @@ namespace GridMapper
 
 		void asyncPingComplete( object sender, PingCompletedEventArgs e )
 		{
-			_pingCount++;
-
-			PingReply pingReply = e.Reply;
-			Console.WriteLine( _pingCount);
-
-			if( pingReply.Status ==  IPStatus.Success )
+			AutoBuilder autoBuilder = new AutoBuilder();
+			if( e.Reply.Status == IPStatus.Success )
 			{
-				//MessageBox.Show( "Address: " + pingReply.Address.ToString() + " pingCount : " + _pingCount + "\n" + "Roundtrip time: " + pingReply.RoundtripTime.ToString() + "\nStatus :" + pingReply.Status.ToString());
+				autoBuilder.SuperPingerHandling( e.Reply );
 			}
-
 		}
 	}
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NCheckNetworks.NetworkModelObject
 {
-	class WifiNetworkInterface
+	class WifiNetworkInterface : NetworkInterface
 	{
 	}
 }
