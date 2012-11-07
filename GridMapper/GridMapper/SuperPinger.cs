@@ -50,7 +50,7 @@ namespace GridMapper
 
 		public void taskPinger()
 		{
-			Task<List<IPAddress>> task = Task.Factory.StartNew<List<IPAddress>>( () =>
+			Task task = Task.Factory.StartNew( () =>
 			{
 				List<IPAddress> retreivedAdress = new List<IPAddress>();
 

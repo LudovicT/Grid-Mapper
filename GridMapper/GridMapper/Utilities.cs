@@ -7,6 +7,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using NCheckNetworks.NetworkModelObject;
 
 namespace GridMapper
 {
@@ -14,6 +15,18 @@ namespace GridMapper
 	{
 		[DllImport( "iphlpapi.dll", ExactSpelling = true )]
 		public static extern int SendARP( int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen );
+
+		public static void taskGetMacAddress( List<IPAddress> Ips)
+		{
+			AutoBuilder ab = new AutoBuilder();
+			foreach( IPAddress Ip in Ips)
+			{
+				Task task = Task.Factory.StartNew( () =>
+				{
+					ab.MacAddressHandling( Ip, getMacAddress( Ip ) );
+				} );
+			}
+		}
 
 		public static PhysicalAddress getMacAddress(IPAddress dst)
 		{
