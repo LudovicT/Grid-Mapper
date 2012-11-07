@@ -39,7 +39,6 @@ namespace GridMapper
 		public SuperPinger( IList<IPAddress> ipList )
 		{
 			_ipCollection = ipList;
-			_pingCount = 0;
 		}
 
 		#endregion //Constructor

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.Net.NetworkInformation;
 
 namespace NCheckNetworks.NetworkModelObject
 {
@@ -17,19 +18,25 @@ namespace NCheckNetworks.NetworkModelObject
 		IPAddress _dhcp;
 		IPAddress _dns;
 		long _averageLatency;
-
+		PhysicalAddress _mac;
 		//ToDo change for class Port
 		bool[] _receivePort;
 		bool[] _sendPort;
+
+		public PhysicalAddress Mac 
+		{
+			get { return _mac; }
+			set { _mac = value; }
+		}
 
 		public NetworkInterface()
 		{
 		}
 
-		public NetworkInterface( IPAddress ipAddress, long latence )
+		public NetworkInterface( IPAddress ipAddress, long latency )
 		{
 			_ipv4 = ipAddress;
-			_averageLatency = latence;
+			_averageLatency = latency;
 		}
 	}
 }
