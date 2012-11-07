@@ -15,11 +15,7 @@ namespace GridMapper
 	{
 		#region Properties
 
-		//useless ?
-		//Ping _ping;
-
 		IList<IPAddress> _ipCollection;
-		int _pingCount;
 
 		#endregion //Properties
 
