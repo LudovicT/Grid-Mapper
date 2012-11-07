@@ -27,7 +27,7 @@ namespace NCheckNetworks.NetworkModelObject
 
 		public void MacAddressHandling( IPAddress ipAddress, PhysicalAddress macAddress )
 		{
-			Console.WriteLine( ipAddress + macAddress );
+			Console.WriteLine( ipAddress.ToString() + macAddress.ToString() );
 		}
 	}
 }
