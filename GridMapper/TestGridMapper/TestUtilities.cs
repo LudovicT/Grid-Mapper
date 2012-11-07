@@ -12,6 +12,9 @@ namespace GridMapper.Test
 	[TestFixture]
 	public class TestUtilities
 	{
+
+		#region ARPRegion
+
 		[Test]
 		public void macTest()
 		{
@@ -82,5 +85,33 @@ namespace GridMapper.Test
 			}
 			Utilities.taskGetMacAddress( Ips );
 		}
+
+#endregion //ARPRegion
+
+		#region PingRegion
+
+		[Test]
+		public void PerformanceTestAsyncPinger()
+		{
+			List<IPAddress> addressToTest = new List<IPAddress>();
+			for( int i = 0 ; i < 400 ; i++ )
+			{
+				addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
+			}
+			Utilities.ListPinger( addressToTest );
+		}
+
+		[Test]
+		public void PerformanceTestTaskPinger()
+		{
+			List<IPAddress> addressToTest = new List<IPAddress>();
+			for( int i = 0 ; i < 400 ; i++ )
+			{
+				addressToTest.Add( IPAddress.Parse( "192.168.1.27" ) );
+			}
+			Utilities.TaskPinger( addressToTest );
+		}
+
+		#endregion //PingRegion
 	}
 }

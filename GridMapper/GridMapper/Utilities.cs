@@ -7,13 +7,15 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
-using NCheckNetworks.NetworkModelObject;
+using GridMapper.NetworkModelObject;
 using System.Windows.Forms;
 
 namespace GridMapper
 {
 	public class Utilities
 	{
+		#region ARP
+
 		[DllImport( "iphlpapi.dll", ExactSpelling = true )]
 		public static extern int SendARP( int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen );
 
@@ -44,5 +46,43 @@ namespace GridMapper
 			string fullMac = string.Join( "", str ).ToUpper();
 			return PhysicalAddress.Parse(fullMac);
 		}
+
+		#endregion //ARP
+
+		#region Ping
+
+		static public void TaskPinger( IList<IPAddress> ipCollection )
+		{
+			Task task = Task.Factory.StartNew( () =>
+			{
+				ListPinger( ipCollection );
+			} );
+		}
+
+		static public void ListPinger( IList<IPAddress> ipCollection )
+		{
+			foreach( IPAddress ipAddress in ipCollection )
+			{
+				Ping( ipAddress );
+			}
+		}
+
+		static public void Ping( IPAddress ipAddress )
+		{
+			Ping pi = new Ping();
+			pi.SendAsync( ipAddress, 200, pi );
+			pi.PingCompleted += new PingCompletedEventHandler( asyncPingComplete );
+		}
+
+		static void asyncPingComplete( object sender, PingCompletedEventArgs e )
+		{
+			AutoBuilder autoBuilder = new AutoBuilder();
+			if( e.Reply.Status == IPStatus.Success )
+			{
+				autoBuilder.SuperPingerHandling( e.Reply );
+			}
+		}
+
+		#endregion //Ping
 	}
 }

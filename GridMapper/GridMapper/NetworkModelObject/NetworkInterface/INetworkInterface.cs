@@ -5,7 +5,7 @@ using System.Text;
 using System.Net;
 using System.Net.NetworkInformation;
 
-namespace NCheckNetworks.NetworkModelObject
+namespace GridMapper.NetworkModelObject
 {
 	interface INetworkInterface
 	{

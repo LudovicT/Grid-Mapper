@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 
-namespace NCheckNetworks.NetworkModelObject
+namespace GridMapper.NetworkModelObject
 {
 	class Network : INetwork
 	{

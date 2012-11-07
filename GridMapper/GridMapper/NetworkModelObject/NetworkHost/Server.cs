@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NCheckNetworks.NetworkModelObject.NetworkHost
+namespace GridMapper.NetworkModelObject.NetworkHost
 {
 	class Server : HostDecorator
 	{
