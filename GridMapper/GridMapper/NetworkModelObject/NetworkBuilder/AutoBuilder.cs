@@ -24,5 +24,10 @@ namespace NCheckNetworks.NetworkModelObject
 			Host host = new Host( networkInterface );
 			_network.NetworkHost.Add( host );
 		}
+
+		public void MacAddressHandling( IPAddress ipAddress, PhysicalAddress macAddress )
+		{
+			Console.WriteLine( ipAddress.ToString() + macAddress.ToString() );
+		}
 	}
 }
