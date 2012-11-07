@@ -21,13 +21,15 @@ namespace GridMapper
 			string[] startupArgs = Environment.GetCommandLineArgs();
 
 			List<IPAddress> addressToTest = new List<IPAddress>();
-			addressToTest.Add( IPAddress.Parse( "10.8.111.255" ) );
-			addressToTest.Add( IPAddress.Parse( "8.8.8.8" ) );
-			addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
-			addressToTest.Add( IPAddress.Parse( "92.93.94.95" ) );
+			addressToTest.Add( IPAddress.Parse( "10.8.97.1" ) );
+			addressToTest.Add( IPAddress.Parse( "10.8.98.213" ) );
+			addressToTest.Add( IPAddress.Parse( "10.8.103.21" ) );
+			addressToTest.Add( IPAddress.Parse( "10.8.104.218" ) );
+			addressToTest.Add( IPAddress.Parse( "10.8.105.142" ) );
 
 			SuperPinger Sp = new SuperPinger( addressToTest );
 			Sp.taskPinger();
+
 
 			//As long as there is no -s start arg, the program lauch normally, else it launch itself in silent mode.
 			if ( Array.IndexOf( startupArgs, "-s" ) == -1 )

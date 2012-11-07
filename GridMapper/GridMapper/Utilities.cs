@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using NCheckNetworks.NetworkModelObject;
+using System.Windows.Forms;
 
 namespace GridMapper
 {
@@ -18,14 +19,15 @@ namespace GridMapper
 
 		public static void taskGetMacAddress( List<IPAddress> Ips)
 		{
-			AutoBuilder ab = new AutoBuilder();
-			foreach( IPAddress Ip in Ips)
-			{
-				Task task = Task.Factory.StartNew( () =>
-				{
-					ab.MacAddressHandling( Ip, getMacAddress( Ip ) );
-				} );
-			}
+			Task.Factory.StartNew( () => 
+				Parallel.ForEach<IPAddress>( Ips, Ip => new AutoBuilder().MacAddressHandling( Ip, getMacAddress( Ip ) ) ) );
+			//foreach( IPAddress Ip in Ips)
+			//{
+			//    Task.Factory.StartNew( () =>
+			//    {
+			//        new AutoBuilder().MacAddressHandling( Ip, getMacAddress( Ip ) );
+			//    } );
+			//}
 		}
 
 		public static PhysicalAddress getMacAddress(IPAddress dst)
