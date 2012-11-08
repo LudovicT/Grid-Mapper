@@ -14,8 +14,6 @@ namespace GridMapper.NetworkModelObject
 		{
 			if(_network == null)
 				_network = new Network();
-			if( _networkInterfaceDictionary == null )
-				_networkInterfaceDictionary = new Dictionary<IPAddress, INetworkInterface>();
 		}
 
 		public void SuperPingerHandling( PingReply pingReply )
@@ -23,16 +21,17 @@ namespace GridMapper.NetworkModelObject
 			//test if exist interface with this ip
 			NetworkInterface networkInterface = new NetworkInterface(pingReply.Address, pingReply.RoundtripTime);
 			Host host = new Host( networkInterface );
-			_network.NetworkHost.Add( host );
-			_networkInterfaceDictionary.Add( pingReply.Address, networkInterface );
+			_network.NetworkHost.GetOrAdd(pingReply.Address, host );
 		}
 
 		public void MacAddressHandling( IPAddress ipAddress, PhysicalAddress macAddress )
 		{
-			INetworkInterface networkInterface;
-			if( _networkInterfaceDictionary.TryGetValue( ipAddress, out networkInterface ) )
+			Host networkHost;
+			if( _network.NetworkHost.TryGetValue( ipAddress, out networkHost ) )
 			{
-				networkInterface.Mac = macAddress;
+				INetworkInterface networkInterface;
+				if( networkHost.NetworkInterfaces.TryGetValue( ipAddress, out networkInterface ) )
+					networkInterface.Mac = macAddress;
 			}
 			Console.WriteLine( ipAddress.ToString() + macAddress.ToString() );
 		}
