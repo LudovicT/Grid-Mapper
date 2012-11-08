@@ -21,15 +21,17 @@ namespace GridMapper
 
 		public static void taskGetMacAddress( List<IPAddress> Ips)
 		{
-			Task.Factory.StartNew( () => 
-				Parallel.ForEach<IPAddress>( Ips, Ip => new AutoBuilder().MacAddressHandling( Ip, getMacAddress( Ip ) ) ) );
-			//foreach( IPAddress Ip in Ips)
-			//{
-			//    Task.Factory.StartNew( () =>
-			//    {
-			//        new AutoBuilder().MacAddressHandling( Ip, getMacAddress( Ip ) );
-			//    } );
-			//}
+			//Task.Factory.StartNew( () => 	Parallel.ForEach<IPAddress>( Ips, Ip => new AutoBuilder().MacAddressHandling( Ip, getMacAddress( Ip ) ) ) );
+			
+			Task[] Tasks = new Task[Ips.Count];
+			for(int i = 0; i < Ips.Count; i++)
+			{
+				int value = i;
+				Tasks[value] = Task.Factory.StartNew( () =>
+				{
+					new AutoBuilder().MacAddressHandling( Ips[value], getMacAddress( Ips[value] ) );
+				} );
+			}
 		}
 
 		public static PhysicalAddress getMacAddress(IPAddress dst)
@@ -38,7 +40,9 @@ namespace GridMapper
 			byte[] macAddr = new byte[6];
 			uint macAddrLen = (uint)macAddr.Length;
 			if ( SendARP( intAddress, 0, macAddr, ref macAddrLen ) != 0 )
-				throw new InvalidOperationException( "SendARP failed." );
+			{
+				//throw new InvalidOperationException( "SendARP failed." );
+			}
 
 			string[] str = new string[(int)macAddrLen];
 			for ( int i = 0; i < macAddrLen; i++ )
