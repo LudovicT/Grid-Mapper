@@ -100,6 +100,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="NetworkModelObject\INetwork\INetwork.cs" />
     <Compile Include="NetworkModelObject\NetworkBuilder\AutoBuilder.cs" />
     <Compile Include="NetworkModelObject\NetworkBuilder\Builder.cs" />
     <Compile Include="NetworkModelObject\NetworkBuilder\IBuilder.cs" />
