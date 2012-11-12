@@ -44,7 +44,7 @@ namespace GridMapper.Test
 			PhysicalAddress TrueMac = PhysicalAddress.Parse( TrueNic.GetPhysicalAddress().ToString() );
 
 			//get the interface mac from arp
-			PhysicalAddress fetchedMac = Utilities.getMacAddress( TrueIp );
+			PhysicalAddress fetchedMac = Utilities.GetMacAddress( TrueIp );
 
 			Assert.That( fetchedMac.ToString()  == TrueMac.ToString() , "physical addresses does not match");
 		}
@@ -83,7 +83,7 @@ namespace GridMapper.Test
 				//Ips.Add( TrueIp );
 				Ips.Add( TrueIp );
 			}
-			Utilities.taskGetMacAddress( Ips );
+			Utilities.GlobalTaskGetMacAddress( Ips, 50 );
 		}
 
 #endregion //ARPRegion
