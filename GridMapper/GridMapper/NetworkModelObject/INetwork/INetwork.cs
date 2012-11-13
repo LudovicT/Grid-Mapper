@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Net.NetworkInformation;
 using System.Collections.ObjectModel;
+using System.Net;
 
-namespace GridMapper.NetworkModelObject.INetwork
+namespace GridMapper.NetworkModelObject
 {
 	interface INetworkItem
 	{
@@ -27,6 +28,15 @@ namespace GridMapper.NetworkModelObject.INetwork
 			int _TTL;
 		}
 		HashSet<CAMdata> CAMTable{ get; }
+		ReadOnlyCollection<INetworkItem> NetworkItems { get; }
+	}
+
+	interface CAMdata
+	{
+		int Port { get; }
+		int VLAN { get; }
+		PhysicalAddress Mac { get; }
+		int TTL { get; }
 	}
 
 	interface INetworkInterface : INetworkItem
@@ -34,14 +44,14 @@ namespace GridMapper.NetworkModelObject.INetwork
 		PhysicalAddress Mac { get; }
 	}
 
-	interface IAdministrableSwitch : ISwitch,INetworkInterface
+	interface IAdministrableSwitch : ISwitch,IHost
 	{
 
 	}
 
-	interface IRouter : INetworkInterface
+	interface IHost : INetworkInterface
 	{
-
+		IPAddress IpAddress { get; }
 	}
 	/*interface IEthernetDevice
 	{
