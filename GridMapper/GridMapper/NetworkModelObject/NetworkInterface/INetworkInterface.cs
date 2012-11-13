@@ -19,6 +19,7 @@ namespace GridMapper.NetworkModelObject
 		IPAddress Dns { get; set; }
 		long AverageLatency { get; set; }
 		PhysicalAddress Mac { get; set; }
+
 		//ToDo change for class Port
 		bool[] ReceivePort { get; set; }
 		bool[] SendPort { get; set; }

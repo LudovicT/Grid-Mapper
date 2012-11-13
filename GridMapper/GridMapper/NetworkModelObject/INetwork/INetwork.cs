@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Collections.ObjectModel;
+using System.Net;
 
-namespace GridMapper.NetworkModelObject.INetwork
+namespace GridMapper.NetworkModelObject
 {
 	interface INetworkItem
 	{
@@ -20,6 +22,15 @@ namespace GridMapper.NetworkModelObject.INetwork
 	interface ISwitch : INetworkItem
 	{
 		HashSet<CAMdata> CAMTable{ get; }
+		ReadOnlyCollection<INetworkItem> NetworkItems { get; }
+	}
+
+	interface CAMdata
+	{
+		int Port { get; }
+		int VLAN { get; }
+		PhysicalAddress Mac { get; }
+		int TTL { get; }
 	}
 	struct CAMdata
 	{
@@ -34,15 +45,36 @@ namespace GridMapper.NetworkModelObject.INetwork
 		PhysicalAddress Mac { get; }
 	}
 
-	interface IAdministrableSwitch : ISwitch,INetworkInterface
+	interface IAdministrableSwitch : ISwitch,IHost
 	{
 
 	}
 
-	interface IRouter : INetworkInterface
+	interface IHost : INetworkInterface
 	{
-
+		IPAddress IpAddress { get; }
 	}
+
+	interface IHostEntity
+	{
+		//IServer Server { get; }
+		//IFireWall FireWall { get; }
+		//IOS OS { get; }
+		//IPorts Ports { get; }
+		ReadOnlyCollection<IHost> Hosts { get; }
+		string NameOS { get; }
+	}
+
+	interface INetworkPrinter : IHost
+	{
+	}
+
+    interface IPacket
+    {
+        AddressFamily _destinationIp;
+        SocketType _datagram;
+        ProtocolType _protocol;
+    }
 	/*interface IEthernetDevice
 	{
 
@@ -61,15 +93,6 @@ namespace GridMapper.NetworkModelObject.INetwork
 	}
 	 * interface IServer
 	{
-
-	}
-	 * interface Server
-	{
-
-	}
-	 * interface Host
-	{
-
 	}
 	 */
 }
