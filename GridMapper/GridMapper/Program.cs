@@ -10,11 +10,27 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace GridMapper
 {
 	static class Program
 	{
+		[DllImport( "kernel32.dll", SetLastError = true )]
+		static extern bool AllocConsole();
+
+		[DllImport( "kernel32.dll", SetLastError = true )]
+		static extern bool FreeConsole();
+
+		[DllImport( "kernel32", SetLastError = true )]
+		static extern bool AttachConsole( int dwProcessId );
+
+		[DllImport( "user32.dll" )]
+		static extern IntPtr GetForegroundWindow();
+
+		[DllImport( "user32.dll", SetLastError = true )]
+		static extern uint GetWindowThreadProcessId( IntPtr hWnd, out int lpdwProcessId );
+
 		/// <summary>
 		/// Point d'entrée principal de l'application.
 		/// </summary>
@@ -22,9 +38,25 @@ namespace GridMapper
 		static void Main()
 		{
 			string[] startupArgs = Environment.GetCommandLineArgs();
-			if ( startupArgs.Length > 1 )
+			if ( startupArgs.Length > 1)
 			{
-				ConsoleMain( startupArgs ); 
+				IntPtr ptr = GetForegroundWindow();
+				int u;
+				GetWindowThreadProcessId( ptr, out u );
+				Process process = Process.GetProcessById( u );
+				if ( process.ProcessName == "cmd" )    //Is the uppermost window a cmd process?
+				{
+					AttachConsole( process.Id );
+					//we have a console to attach to ..
+				}
+				else
+				{
+					//no console AND we're in console mode ... create a new console.
+					AllocConsole();
+				}
+
+				ConsoleMain( startupArgs );
+				FreeConsole();
 			}
 			else
 			{
@@ -38,43 +70,47 @@ namespace GridMapper
 		static void ConsoleMain( string[] startupArgs )
 		{
 			Utilities.Arguments args = new Utilities.Arguments( startupArgs );
+			Console.Title = "GridMapper";
 
-			// pout -t 1
-			Console.WriteLine(args.Single("t") + " "+ args.Exists("t") );
-			// pour -h
-			Console.WriteLine( args.IsTrue("h"));
-
-
-			/*
 			Startup StartupOptions = new Startup();
-			for ( int i = 0; i < startupArgs.Length; i++ )
-			{
-				switch ( startupArgs[i] )
-				{
-					case "-t":
-						i++;
-						if ( i >= startupArgs.ToArray().Count() )
-						{
+			int maxTasks;
 
-							Console.WriteLine( "Argument manquant" );
-							Environment.Exit( 0 );
-						}
-						else
-						{
-							int maxTask;
-							int.TryParse( startupArgs[i], out maxTask );
-							if ( maxTask < 1 || maxTask > 2000 )
-							{
-								Console.WriteLine( "Entrez un nombre entre 1 et 2000 pour -t\n /!\\ Un nombre supérieur à 1000 peux entrainer une perte de performances" );
-								Environment.Exit( 0 );
-							}
-							StartupOptions.MaximumTasks = maxTask;
-						}
-						break;
-					default:
-						break;
+			//help message get priority over everything
+			if ( args.IsTrue( "h" ) || args.IsTrue( "?" ) )
+			{
+				printHelp();
+			}
+			else
+			{
+				if ( args.Exists( "t" ) && int.TryParse( args.Single( "t" ), out maxTasks ) )
+				{
+					if ( maxTasks >= 1 && maxTasks <= 2000 )
+					{
+						StartupOptions.MaximumTasks = maxTasks;
+					}
+					else
+					{
+						Console.WriteLine( "The number of task must be between 1 and 2000, reasonnable limit is around 500" );
+						Console.ReadKey( true );
+						Environment.Exit( 0 );
+					}
 				}
-			}*/
+				else
+				{
+					Console.WriteLine( "Invalid argument for -t" );
+				}
+			}
+			Console.ReadKey( true );
+		}
+
+		static void printHelp()
+		{
+			Console.WriteLine( "Usage : gridmapper [-t] [-h|-?]" );
+			Console.WriteLine( "" );
+			Console.WriteLine( "Options :" );
+			Console.WriteLine( "	-h	Print this help message" );
+			Console.WriteLine( "	-?	Print this help message" );
+			Console.WriteLine( "	-t	Specify the maximum simultanous task running (default is 50)" );
 		}
 
 		class Startup
