@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GridMapper.NetworkModelObject
 {
-	class Host : NetworkEntity, IHost
+	class Host : NetworkEntity
 	{
 		public Host()
 		{

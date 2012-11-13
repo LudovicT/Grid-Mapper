@@ -10,6 +10,6 @@ namespace GridMapper.NetworkModelObject
 {
 	abstract class Builder : IBuilder
 	{
-		static protected INetwork _network;
+		//static protected INetwork _network;
 	}
 }

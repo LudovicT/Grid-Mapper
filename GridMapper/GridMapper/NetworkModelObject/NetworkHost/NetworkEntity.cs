@@ -24,7 +24,7 @@ namespace GridMapper.NetworkModelObject
 		public NetworkEntity( INetworkInterface networkInterface )
 		{
 			_networkInterfaces = new ConcurrentDictionary<IPAddress,INetworkInterface>();
-			_networkInterfaces.GetOrAdd( networkInterface.Ipv4, networkInterface );
+			//_networkInterfaces.GetOrAdd( networkInterface.Ipv4, networkInterface );
 		}
 	}
 }

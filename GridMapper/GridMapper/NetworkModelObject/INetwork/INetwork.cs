@@ -64,9 +64,9 @@ namespace GridMapper.NetworkModelObject
 
     interface IPacket
     {
-        AddressFamily _destinationIp;
+        /*AddressFamily _destinationIp;
         SocketType _datagram;
-        ProtocolType _protocol;
+        ProtocolType _protocol;*/
     }
 	/*interface IEthernetDevice
 	{

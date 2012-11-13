@@ -5,8 +5,4 @@ using System.Text;
 
 namespace GridMapper.NetworkModelObject
 {
-	interface IHost
-	{
-		
-	}
 }

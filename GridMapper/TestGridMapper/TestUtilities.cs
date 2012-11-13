@@ -113,5 +113,13 @@ namespace GridMapper.Test
 		}
 
 		#endregion //PingRegion
+
+		[Test]
+		public void GetHostNameTest()
+		{
+			IPHostEntry ipHost = Dns.GetHostEntry("10.8.102.131");
+			Console.WriteLine(ipHost.HostName);
+		}
+
 	}
 }
