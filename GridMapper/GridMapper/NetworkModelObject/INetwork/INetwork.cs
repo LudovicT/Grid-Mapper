@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Collections.ObjectModel;
 using System.Net;
 
@@ -60,6 +61,13 @@ namespace GridMapper.NetworkModelObject
 	interface INetworkPrinter : IHost
 	{
 	}
+
+    interface IPacket
+    {
+        AddressFamily _destinationIp;
+        SocketType _datagram;
+        ProtocolType _protocol;
+    }
 	/*interface IEthernetDevice
 	{
 
