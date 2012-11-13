@@ -32,6 +32,13 @@ namespace GridMapper.NetworkModelObject
 		PhysicalAddress Mac { get; }
 		int TTL { get; }
 	}
+	struct CAMdata
+	{
+		int _port;
+		int _VLAN;
+		PhysicalAddress _mac;
+		int _TTL;
+	}
 
 	interface INetworkInterface : INetworkItem
 	{
