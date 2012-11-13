@@ -34,6 +34,8 @@ namespace GridMapper
 			{
 				int value = i;
 				Tasks.Add(TaskGetMacAddress( Ips[value] ));
+
+				//wait for the maximum number of parallel tasks to be completed, be it successful or not
 				if ( i % maxTask == 0)
 				{
 					Task.WaitAll( Tasks.ToArray() );
@@ -48,6 +50,7 @@ namespace GridMapper
 		/// <returns>The created task</returns>
 		public static Task TaskGetMacAddress(IPAddress Ip )
 		{
+			//start the task using aa lamba function and return the task for future uses
 			Task task = Task.Factory.StartNew( () =>
 			{
 				new AutoBuilder().MacAddressHandling( Ip, GetMacAddress( Ip ) );
@@ -55,6 +58,11 @@ namespace GridMapper
 			return task;
 		}
 
+		/// <summary>
+		/// Get the MAC addresse from any given Ip which is reachable
+		/// </summary>
+		/// <param name="dst">The ip which we would like to get the MAC address</param>
+		/// <returns>The MAC address</returns>
 		public static PhysicalAddress GetMacAddress(IPAddress dst)
 		{
 			int intAddress = BitConverter.ToInt32( dst.GetAddressBytes(), 0 );
@@ -62,7 +70,7 @@ namespace GridMapper
 			uint macAddrLen = (uint)macAddr.Length;
 			if ( SendARP( intAddress, 0, macAddr, ref macAddrLen ) != 0 )
 			{
-				//throw new InvalidOperationException( "SendARP failed." );
+				throw new InvalidOperationException( "SendARP failed." );
 			}
 
 			string[] str = new string[(int)macAddrLen];
@@ -78,6 +86,7 @@ namespace GridMapper
 
 		static public void TaskPinger( IList<IPAddress> ipCollection )
 		{
+			//start a new task and stock it, we only start one task because the ping method SendAsync is already asyncronous
 			Task task = Task.Factory.StartNew( () =>
 			{
 				ListPinger( ipCollection );
