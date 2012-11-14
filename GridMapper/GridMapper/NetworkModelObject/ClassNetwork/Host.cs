@@ -11,6 +11,7 @@ namespace GridMapper.NetworkModelObject.ClassNetwork
 	{
 		IPAddress _ipAddress;
 		PhysicalAddress _macAddress;
+		int _latency;
 
 		#region Interfaces Membres
 
@@ -24,12 +25,23 @@ namespace GridMapper.NetworkModelObject.ClassNetwork
 			get { return _macAddress; }
 		}
 
+		public int Latency
+		{
+			get { return _latency; }
+		}
+
 		#endregion //Interfaces Membres
 
 		public Host( IPAddress ipAddress, PhysicalAddress macAddress )
+			: this(ipAddress, macAddress, 0)
+		{
+		}
+
+		public Host( IPAddress ipAddress, PhysicalAddress macAddress, int latency )
 		{
 			_macAddress = macAddress;
 			_ipAddress = ipAddress;
+			_latency = latency;
 		}
 	}
 }

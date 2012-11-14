@@ -118,12 +118,12 @@
     <Compile Include="NetworkModelObject\NetworkBuilder\ManualBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="NetworkUtilities\ReverseDnsResolver.cs" />
+    <Compile Include="NetworkModelObject\NetworkBuilder\NetworkUtilities\ReverseDnsResolver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />
-    <Compile Include="NetworkUtilities\ARPSender.cs" />
-    <Compile Include="NetworkUtilities\PingSender.cs" />
+    <Compile Include="NetworkModelObject\NetworkBuilder\NetworkUtilities\ARPSender.cs" />
+    <Compile Include="NetworkModelObject\NetworkBuilder\NetworkUtilities\PingSender.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

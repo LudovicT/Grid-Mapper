@@ -45,6 +45,7 @@ namespace GridMapper.NetworkModelObject
 	interface IHost : INetworkInterface
 	{
 		IPAddress IpAddress { get; }
+		int Latency { get; }
 	}
 
 	interface IHostEntity
