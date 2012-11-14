@@ -16,28 +16,20 @@ namespace GridMapper.NetworkModelObject
 
 	interface IHub : INetworkItem
 	{
-		ReadOnlyCollection<INetworkItem> NetworkItems{get;}
+		ReadOnlyCollection<INetworkItem> NetworkItems{ get; }
 	}
 
 	interface ISwitch : INetworkItem
 	{
-		HashSet<CAMdata> CAMTable{ get; }
+		HashSet<ICAMdata> CAMTable{ get; }
 		ReadOnlyCollection<INetworkItem> NetworkItems { get; }
 	}
-
-	interface CAMdata
+	interface ICAMdata
 	{
 		int Port { get; }
 		int VLAN { get; }
-		PhysicalAddress Mac { get; }
+		PhysicalAddress MacAddress { get; }
 		int TTL { get; }
-	}
-	struct CAMdata
-	{
-		int _port;
-		int _VLAN;
-		PhysicalAddress _mac;
-		int _TTL;
 	}
 
 	interface INetworkInterface : INetworkItem
@@ -57,15 +49,32 @@ namespace GridMapper.NetworkModelObject
 
 	interface IHostEntity
 	{
-		//IServer Server { get; }
-		//IFireWall FireWall { get; }
-		//IOS OS { get; }
-		//IPorts Ports { get; }
+		IServer Server { get; }
+		IFirewall Firewall { get; }
+		IOS OS { get; }
+		IPorts Ports { get; }
 		ReadOnlyCollection<IHost> Hosts { get; }
 		string NameOS { get; }
+		//vérifier si sa position ici est justifié
+		string HostName { get; }
 	}
 
 	interface INetworkPrinter : IHost
+	{
+	}
+
+	interface IServer
+	{
+		//IDhcp Dhcp { get; }
+		//IDns Dns { get; }
+	}
+	interface IFirewall
+	{
+	}
+	interface IOS
+	{
+	}
+	interface IPorts
 	{
 	}
 
