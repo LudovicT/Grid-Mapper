@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.NetworkInformation;
-
+using System.Collections.Concurrent;
+;
 namespace GridMapper.NetworkModelObject
 {
 	class AutoBuilder : Builder
 	{
+		ConcurrentDictionary<IPAddress,IHostEntity> _hostEntities;
 		
 		public AutoBuilder()
 		{
-			//if(_network == null)
-				//_network = new Network();
+			_hostEntities = new ConcurrentDictionary<IPAddress,IHostEntity>();
 		}
 
 		public void SuperPingerHandling( PingReply pingReply )
