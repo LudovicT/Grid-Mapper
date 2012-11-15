@@ -121,6 +121,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NetworkModelObject\NetworkBuilder\NetworkUtilities\ReverseDnsResolver.cs" />
+    <Compile Include="NetworkModelObject\NetworkBuilder\NetworkUtilities\WMI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />
