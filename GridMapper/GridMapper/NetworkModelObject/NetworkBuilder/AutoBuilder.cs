@@ -5,7 +5,7 @@ using System.Text;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Collections.Concurrent;
-;
+
 namespace GridMapper.NetworkModelObject
 {
 	class AutoBuilder : Builder
