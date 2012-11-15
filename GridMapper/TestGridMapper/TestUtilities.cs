@@ -6,6 +6,8 @@ using NUnit.Framework;
 using System.Net;
 using GridMapper;
 using System.Net.NetworkInformation;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace GridMapper.Test
 {
@@ -44,7 +46,7 @@ namespace GridMapper.Test
 			PhysicalAddress TrueMac = PhysicalAddress.Parse( TrueNic.GetPhysicalAddress().ToString() );
 
 			//get the interface mac from arp
-			PhysicalAddress fetchedMac = Utilities.GetMacAddress( TrueIp );
+			PhysicalAddress fetchedMac = NetworkUtilities.GetMacAddress( TrueIp );
 
 			Assert.That( fetchedMac.ToString()  == TrueMac.ToString() , "physical addresses does not match");
 		}
@@ -83,7 +85,7 @@ namespace GridMapper.Test
 				//Ips.Add( TrueIp );
 				Ips.Add( TrueIp );
 			}
-			Utilities.GlobalTaskGetMacAddress( Ips, 50 );
+			NetworkUtilities.GlobalTaskGetMacAddress( Ips, 50 );
 		}
 
 #endregion //ARPRegion
@@ -98,7 +100,7 @@ namespace GridMapper.Test
 			{
 				addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
 			}
-			Utilities.ListPinger( addressToTest );
+			NetworkUtilities.ListPinger( addressToTest );
 		}
 
 		[Test]
@@ -109,7 +111,7 @@ namespace GridMapper.Test
 			{
 				addressToTest.Add( IPAddress.Parse( "192.168.1.27" ) );
 			}
-			Utilities.TaskPinger( addressToTest );
+			NetworkUtilities.TaskPinger( addressToTest );
 		}
 
 		#endregion //PingRegion
@@ -117,8 +119,18 @@ namespace GridMapper.Test
 		[Test]
 		public void GetHostNameTest()
 		{
-			IPHostEntry ipHost = Dns.GetHostEntry("10.8.102.131");
-			Console.WriteLine(ipHost.HostName);
+			List<Task> tasks = new List<Task>();
+			Task T1 = Task.Factory.StartNew( () =>
+				{
+					for( int i = 0 ; i < 400 ; i++ )
+					{
+						Console.WriteLine( i );
+						tasks.Add( NetworkUtilities.GetHostName( IPAddress.Parse( "10.8.99.66" ) ) );
+					}
+				} );
+			T1.Wait();
+			Task.WaitAll( tasks.ToArray() );
+			Console.WriteLine( "ok" );
 		}
 
 	}
