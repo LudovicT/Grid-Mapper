@@ -1,6 +1,6 @@
 =====
-Analysez votre parc informatique.
-Détectez vos failles de sécurité.
-Obtenez les statistiques de votre réseau.
-Comprenez, résolvez et améliorez votre outil de travail avec "Grid Mapper"
+Analysez votre parc informatique.</br>
+Détectez vos failles de sécurité.</br>
+Obtenez les statistiques de votre réseau.</br>
+Comprenez, optimisez et améliorez votre outil de travail avec "Grid Mapper"
 =====
