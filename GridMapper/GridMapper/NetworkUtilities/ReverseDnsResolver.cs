@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Threading.Tasks;
+using GridMapper.NetworkModelObject;
 
 namespace GridMapper
 {
@@ -23,8 +24,7 @@ namespace GridMapper
 		{
 			Task task = Task.Factory.StartNew( () =>
 			{
-				IPHostEntry ipHost = Dns.GetHostEntry( ipAddress );
-				Console.WriteLine( ipHost.HostName );
+				Network.HostNameHandler( Dns.GetHostEntry( ipAddress ) );
 			} );
 			return task;
 		}

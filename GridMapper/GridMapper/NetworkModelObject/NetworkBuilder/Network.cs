@@ -8,35 +8,66 @@ using System.Collections.Concurrent;
 
 namespace GridMapper.NetworkModelObject
 {
-	class Network
+	static class Network
 	{
-		static ConcurrentDictionary<IPAddress, IHostEntity> _hostEntities;
+		static ConcurrentDictionary<IPAddress, IHostEntity> HostsEntities = new ConcurrentDictionary<IPAddress, IHostEntity>();
+		static ConcurrentDictionary<IPAddress, PingReply> IPAddresses = new ConcurrentDictionary<IPAddress, PingReply>();
+		static ConcurrentDictionary<IPAddress, IHost> Hosts = new ConcurrentDictionary<IPAddress, IHost>();
 
-		public ConcurrentDictionary<IPAddress, IHostEntity> HostEntities
-		{
-			get { return _hostEntities; }
-		}
+		//public ConcurrentDictionary<IPAddress, IHostEntity> HostEntities
+		//{
+		//    get { return _hostEntities; }
+		//}
+
+		//public ConcurrentBag<IPAddress> IpAddresses
+		//{
+		//    get { return _ipAddresses; }
+		//}
 			
-		public Network()
+		//public Network()
+		//{
+		//    if( _hostEntities == null )
+		//        _hostEntities = new ConcurrentDictionary<IPAddress, IHostEntity>();
+		//    if( _ipAddresses == null )
+		//        _ipAddresses = new ConcurrentBag<IPAddress>();
+		//}
+
+		public static void SuperPingerHandling( PingReply pingReply )
 		{
-			_hostEntities = new ConcurrentDictionary<IPAddress, IHostEntity>();
+			IPAddresses.TryAdd( pingReply.Address, pingReply );
 		}
 
-		public void SuperPingerHandling( PingReply pingReply )
+		public static void MacAddressHandling( IPAddress ipAddress, PhysicalAddress macAddress )
 		{
-			//_hostEntities.GetOrAdd( pingReply.Address, new HostEntity(new Host(pingReply.Address, null ));
+			PingReply pingReply;
+			if( IPAddresses.TryGetValue( ipAddress, out pingReply ) )
+				Hosts.TryAdd( ipAddress, new Host( ipAddress, macAddress, (int)pingReply.RoundtripTime ) );
+			else
+				Hosts.TryAdd( ipAddress, new Host( ipAddress, macAddress ) );
 		}
 
-		public void MacAddressHandling( IPAddress ipAddress, PhysicalAddress macAddress )
+		public static void HostNameHandler( IPHostEntry hostEntry )
 		{
-			//Host networkHost;
-			//if( _network.NetworkHost.TryGetValue( ipAddress, out networkHost ) )
-			//{
-			//    INetworkInterface networkInterface;
-			//    if( networkHost.NetworkInterfaces.TryGetValue( ipAddress, out networkInterface ) )
-			//        networkInterface.Mac = macAddress;
-			//}
-			//Console.WriteLine( ipAddress.ToString() + macAddress.ToString() );
+			List<IHost> hostsForHostEntity = new List<IHost>();
+			foreach( IPAddress ip in hostEntry.AddressList )
+			{
+				IHost host;
+				if( Hosts.TryGetValue( ip,out host ) )
+				{
+					hostsForHostEntity.Add( host );
+				}
+			}
+			if( hostsForHostEntity.Count > 0 )
+			{
+				foreach( IPAddress ip in hostsForHostEntity )
+				{
+					HostsEntities.TryAdd( ip,new HostEntity( hostsForHostEntity,hostEntry.HostName ) );
+				}
+			}
+			else
+			{
+				//faire the fucking truc pas possible normalement car pas d'ip pour un host existant
+			}
 		}
 	}
 }

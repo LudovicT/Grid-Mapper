@@ -47,7 +47,7 @@ namespace GridMapper
 			//start the task using aa lamba function and return the task for future uses
 			Task task = Task.Factory.StartNew( () =>
 			{
-				new Network().MacAddressHandling( Ip, GetMacAddress( Ip ) );
+				Network.MacAddressHandling( Ip, GetMacAddress( Ip ) );
 			} );
 			return task;
 		}
