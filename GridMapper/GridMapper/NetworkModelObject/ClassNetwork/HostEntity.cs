@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 
-namespace GridMapper.NetworkModelObject.ClassNetwork
+namespace GridMapper.NetworkModelObject
 {
 	class HostEntity : IHostEntity
 	{

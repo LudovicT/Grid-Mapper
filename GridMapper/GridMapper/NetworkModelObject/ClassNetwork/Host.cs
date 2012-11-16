@@ -5,7 +5,7 @@ using System.Text;
 using System.Net;
 using System.Net.NetworkInformation;
 
-namespace GridMapper.NetworkModelObject.ClassNetwork
+namespace GridMapper.NetworkModelObject
 {
 	class Host : IHost
 	{

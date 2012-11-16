@@ -108,16 +108,7 @@
     <Compile Include="NetworkModelObject\ClassNetwork\Host.cs" />
     <Compile Include="NetworkModelObject\ClassNetwork\HostEntity.cs" />
     <Compile Include="NetworkModelObject\INetwork\INetwork.cs" />
-    <Compile Include="NetworkModelObject\NetworkBuilder\AutoBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NetworkModelObject\NetworkBuilder\Builder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NetworkModelObject\NetworkBuilder\IBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NetworkModelObject\NetworkBuilder\ManualBuilder.cs">
+    <Compile Include="NetworkModelObject\NetworkBuilder\Network.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NetworkUtilities\ARPSender.cs" />

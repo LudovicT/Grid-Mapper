@@ -4,24 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Collections.Concurrent;
 
 namespace GridMapper.NetworkModelObject
 {
-	class AutoBuilder : Builder
+	class Network
 	{
-		
-		public AutoBuilder()
+		static ConcurrentDictionary<IPAddress, IHostEntity> _hostEntities;
+
+		public ConcurrentDictionary<IPAddress, IHostEntity> HostEntities
 		{
-			//if(_network == null)
-			//    _network = new Network();
+			get { return _hostEntities; }
+		}
+			
+		public Network()
+		{
+			_hostEntities = new ConcurrentDictionary<IPAddress, IHostEntity>();
 		}
 
 		public void SuperPingerHandling( PingReply pingReply )
 		{
-			////test if exist interface with this ip
-			//NetworkInterface networkInterface = new NetworkInterface(pingReply.Address, pingReply.RoundtripTime);
-			//Host host = new Host( networkInterface );
-			//_network.NetworkHost.GetOrAdd(pingReply.Address, host );
+			//_hostEntities.GetOrAdd( pingReply.Address, new HostEntity(new Host(pingReply.Address, null ));
 		}
 
 		public void MacAddressHandling( IPAddress ipAddress, PhysicalAddress macAddress )

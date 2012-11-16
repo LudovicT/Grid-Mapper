@@ -9,9 +9,9 @@ using GridMapper.NetworkModelObject;
 
 namespace GridMapper
 {
-	static public partial class NetworkUtilities
+	public static partial class NetworkUtilities
 	{
-		static public Task TaskPinger( IList<IPAddress> ipCollection )
+		public static Task TaskPinger( IList<IPAddress> ipCollection )
 		{
 			//start a new task and stock it, we only start one task because the ping method SendAsync is already asyncronous
 			Task task = Task.Factory.StartNew( () =>
@@ -21,7 +21,7 @@ namespace GridMapper
 			return task;
 		}
 
-		static public void ListPinger( IList<IPAddress> ipCollection )
+		public static void ListPinger( IList<IPAddress> ipCollection )
 		{
 			foreach( IPAddress ipAddress in ipCollection )
 			{
@@ -29,7 +29,7 @@ namespace GridMapper
 			}
 		}
 
-		static public void Ping( IPAddress ipAddress )
+		public static void Ping( IPAddress ipAddress )
 		{
 			Ping pi = new Ping();
 			pi.SendAsync( ipAddress, 200, pi );
@@ -38,10 +38,9 @@ namespace GridMapper
 
 		static void asyncPingComplete( object sender, PingCompletedEventArgs e )
 		{
-			AutoBuilder autoBuilder = new AutoBuilder();
 			if( e.Reply.Status == IPStatus.Success )
 			{
-				autoBuilder.SuperPingerHandling( e.Reply );
+				//_autoBuilder.SuperPingerHandling( e.Reply );
 			}
 		}
 	}

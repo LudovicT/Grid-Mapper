@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GridMapper
 {
-	static public partial class NetworkUtilities
+	public static  partial class NetworkUtilities
 	{
 		static public Task GetHostName( IList<IPAddress> ipCollection )
 		{
