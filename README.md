@@ -1,6 +1,12 @@
-=====
+Grid Mapper
+==========
+
+[Project's Wiki](http://extranet.intechinfo.fr/itipedia/index.php/Projets:pi:s3_Septembre_2012:_Grid_Mapper)
+
 Analysez votre parc informatique.
-Détectez vos failles de sécurité.
-Obtenez les statistiques de votre réseau.
-Comprenez, résolvez et améliorez votre outil de travail avec "Grid Mapper"
-=====
+
+DÃ©tectez vos failles de sÃ©curitÃ©.
+
+Obtenez les statistiques de votre rÃ©seau
+
+Comprenez, optimisez et amÃ©liorez votre outil de travail avec "Grid Mapper"
