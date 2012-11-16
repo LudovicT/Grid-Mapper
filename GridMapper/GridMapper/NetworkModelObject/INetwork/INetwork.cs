@@ -90,7 +90,7 @@ namespace GridMapper.NetworkModelObject
     interface IDatagramPort : IData
     {
         IProtocol Protocol { get; }
-        int Port;
+        int Port { get; }
     }
 
     interface Ipacket : IDatagramPort
@@ -101,7 +101,7 @@ namespace GridMapper.NetworkModelObject
     interface IDatagram : Ipacket
     {
         IProtocol Protocol { get; }
-        PhysicalAddress MacSource;
+        PhysicalAddress MacSource { get; }
     }
     #endregion
 	/*interface IEthernetDevice
