@@ -10,64 +10,73 @@ namespace GridMapper.NetworkModelObject
 {
 	static class Network
 	{
+		//va etre utile que lorsqu'on va faire des fichiers ou affiche dans NShape
 		static ConcurrentDictionary<IPAddress, IHostEntity> HostsEntities = new ConcurrentDictionary<IPAddress, IHostEntity>();
-		static ConcurrentDictionary<IPAddress, PingReply> IPAddresses = new ConcurrentDictionary<IPAddress, PingReply>();
 		static ConcurrentDictionary<IPAddress, IHost> Hosts = new ConcurrentDictionary<IPAddress, IHost>();
 
-		//public ConcurrentDictionary<IPAddress, IHostEntity> HostEntities
-		//{
-		//    get { return _hostEntities; }
-		//}
+		//va servir directement pour l'affichage en mode console ou form (plus simple à manipuler
+		static ConcurrentDictionary<IPAddress, PingReply> IPAddresses = new ConcurrentDictionary<IPAddress, PingReply>();
+		static ConcurrentDictionary<IPAddress, PhysicalAddress> MacAddresses = new ConcurrentDictionary<IPAddress, PhysicalAddress>();
+		static ConcurrentDictionary<IPAddress, IPHostEntry> HostsEntries = new ConcurrentDictionary<IPAddress, IPHostEntry>();
 
-		//public ConcurrentBag<IPAddress> IpAddresses
-		//{
-		//    get { return _ipAddresses; }
-		//}
-			
-		//public Network()
-		//{
-		//    if( _hostEntities == null )
-		//        _hostEntities = new ConcurrentDictionary<IPAddress, IHostEntity>();
-		//    if( _ipAddresses == null )
-		//        _ipAddresses = new ConcurrentBag<IPAddress>();
-		//}
+		static bool HostsEntitiesIsModified = false;
+		static bool HostsIsModified = false;
+
+		static bool IPAddressesIsModified = false;
+		static bool MacAddressesIsModified = false;
+		static bool HostsEntriesIsModified = false;
+
+		public static event NewIpDetectedEventHandler NewIpDetected;
+
+		public delegate void NewIpDetectedEventHandler( object sender, NewIpDetectedEventArgs e );
 
 		public static void SuperPingerHandling( PingReply pingReply )
 		{
-			IPAddresses.TryAdd( pingReply.Address, pingReply );
+			if( IPAddresses.TryAdd( pingReply.Address, pingReply ) )
+				IPAddressesIsModified = true;
 		}
 
 		public static void MacAddressHandling( IPAddress ipAddress, PhysicalAddress macAddress )
 		{
-			PingReply pingReply;
-			if( IPAddresses.TryGetValue( ipAddress, out pingReply ) )
-				Hosts.TryAdd( ipAddress, new Host( ipAddress, macAddress, (int)pingReply.RoundtripTime ) );
-			else
-				Hosts.TryAdd( ipAddress, new Host( ipAddress, macAddress ) );
+			//si l'ip n'est pas déja présente = true
+			if( MacAddresses.TryAdd( ipAddress, macAddress ) )
+			{
+				//PingReply pingReply;
+				//if( IPAddresses.TryGetValue( ipAddress, out pingReply ) )
+				//{
+				//    Hosts.TryAdd( ipAddress, new Host( ipAddress, macAddress, (int)pingReply.RoundtripTime ) );
+				//}
+				//else
+				//{
+				//    Hosts.TryAdd( ipAddress, new Host( ipAddress, macAddress ) );
+				//}
+			}
 		}
 
 		public static void HostNameHandler( IPHostEntry hostEntry )
 		{
-			List<IHost> hostsForHostEntity = new List<IHost>();
 			foreach( IPAddress ip in hostEntry.AddressList )
 			{
-				IHost host;
-				if( Hosts.TryGetValue( ip,out host ) )
-				{
-					hostsForHostEntity.Add( host );
-				}
-			}
-			if( hostsForHostEntity.Count > 0 )
-			{
-				foreach( IPAddress ip in hostsForHostEntity )
-				{
-					HostsEntities.TryAdd( ip,new HostEntity( hostsForHostEntity,hostEntry.HostName ) );
-				}
-			}
-			else
-			{
-				//faire the fucking truc pas possible normalement car pas d'ip pour un host existant
+				if( !IPAddresses.ContainsKey( ip ) )
+					NewIpDetected( hostEntry, new NewIpDetectedEventArgs(ip) ); //probleme lié au sender
+				HostsEntries.TryAdd( ip, hostEntry );
 			}
 		}
+	}
+	
+	public class NewIpDetectedEventArgs : EventArgs
+	{
+		IPAddress _ipAddress = null;
+
+		public NewIpDetectedEventArgs( IPAddress ipAddress )
+		{
+			if( ipAddress == null ) throw new NullReferenceException();
+			_ipAddress = ipAddress; 
+		}
+
+		public string IpAddress
+		{
+			get { return _ipAddress; }
+		}	
 	}
 }
