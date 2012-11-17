@@ -8,7 +8,7 @@
     <ProjectGuid>{C65C2581-A13E-4B34-8DA6-A5FA85B6F359}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NCheckNetworks</RootNamespace>
+    <RootNamespace>GridMapper</RootNamespace>
     <AssemblyName>GridMapper</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -81,9 +81,14 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management.Instrumentation" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -100,26 +105,31 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="NetworkModelObject\NetworkBuilder\AutoBuilder.cs" />
-    <Compile Include="NetworkModelObject\NetworkBuilder\Builder.cs" />
-    <Compile Include="NetworkModelObject\NetworkBuilder\IBuilder.cs" />
-    <Compile Include="NetworkModelObject\NetworkBuilder\ManualBuilder.cs" />
-    <Compile Include="NetworkModelObject\NetworkHost\NetworkEntity.cs" />
-    <Compile Include="NetworkModelObject\NetworkHost\Host.cs" />
-    <Compile Include="NetworkModelObject\NetworkHost\HostBase.cs" />
-    <Compile Include="NetworkModelObject\NetworkHost\HostDecorator.cs" />
-    <Compile Include="NetworkModelObject\NetworkHost\IHost.cs" />
-    <Compile Include="NetworkModelObject\NetworkHost\Router.cs" />
-    <Compile Include="NetworkModelObject\NetworkHost\Server.cs" />
-    <Compile Include="NetworkModelObject\NetworkInterface\INetworkInterface.cs" />
-    <Compile Include="NetworkModelObject\NetworkInterface\EthernetNetworkInterface.cs" />
-    <Compile Include="NetworkModelObject\NetworkInterface\NetworkInterface.cs" />
-    <Compile Include="NetworkModelObject\NetworkInterface\WifiNetworkInterface.cs" />
-    <Compile Include="NetworkModelObject\Network\INetwork.cs" />
-    <Compile Include="NetworkModelObject\Network\Network.cs" />
+    <Compile Include="NetworkModelObject\ClassNetwork\Host.cs" />
+    <Compile Include="NetworkModelObject\ClassNetwork\HostEntity.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IAdministrableSwitch.cs" />
+    <Compile Include="NetworkModelObject\INetwork\ICAMdata.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IFirewall.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IHost.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IHostEntity.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IHub.cs" />
+    <Compile Include="NetworkModelObject\INetwork\INetwork.cs" />
+    <Compile Include="NetworkModelObject\INetwork\INetworkInteface.cs" />
+    <Compile Include="NetworkModelObject\INetwork\INetworkItem.cs" />
+    <Compile Include="NetworkModelObject\INetwork\INetworkPrinter.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IOS.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IPorts.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IServer.cs" />
+    <Compile Include="NetworkModelObject\INetwork\ISwitch.cs" />
+    <Compile Include="NetworkModelObject\NetworkBuilder\Network.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NetworkUtilities\ARPSender.cs" />
+    <Compile Include="NetworkUtilities\PingSender.cs" />
+    <Compile Include="NetworkUtilities\ReverseDnsResolver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SuperPinger.cs" />
+    <Compile Include="RawPacketSender.cs" />
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -129,7 +139,9 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="NetworkModelObject\INetwork\INetworkDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

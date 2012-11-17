@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="GridMapper.NetworkModelObject.INetwork.INetworkItem" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NetworkModelObject\INetwork\INetwork.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GridMapper.NetworkModelObject.INetwork.IHub" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NetworkModelObject\INetwork\INetwork.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GridMapper.NetworkModelObject.INetwork.ISwitch" Collapsed="true">
+    <Position X="9.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NetworkModelObject\INetwork\INetwork.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GridMapper.NetworkModelObject.INetwork.INetworkInterface" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NetworkModelObject\INetwork\INetwork.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GridMapper.NetworkModelObject.INetwork.IAdministrableSwitch" Collapsed="true">
+    <Position X="7.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NetworkModelObject\INetwork\INetwork.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GridMapper.NetworkModelObject.INetwork.IRouter" Collapsed="true">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NetworkModelObject\INetwork\INetwork.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GridMapper.NetworkModelObject.INetwork.IPacket" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAACABAAAAAAAAAA=</HashCode>
+      <FileName>NetworkModelObject\INetwork\INetwork.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="8.4" />
+</ClassDiagram>
