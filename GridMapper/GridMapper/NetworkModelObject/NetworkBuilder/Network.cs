@@ -74,7 +74,7 @@ namespace GridMapper.NetworkModelObject
 			_ipAddress = ipAddress; 
 		}
 
-		public string IpAddress
+		public IPAddress IpAddress
 		{
 			get { return _ipAddress; }
 		}	
