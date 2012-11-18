@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace GridMapper.NetworkModelObject
 {
@@ -16,5 +17,7 @@ namespace GridMapper.NetworkModelObject
 		string NameOS { get; }
 		//vérifier si sa position ici est justifié
 		string HostName { get; }
+
+		void Describe( TextWriter output );
 	}
 }

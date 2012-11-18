@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.IO;
 
 namespace GridMapper.NetworkModelObject
 {
@@ -10,5 +11,7 @@ namespace GridMapper.NetworkModelObject
 	{
 		IPAddress IpAddress { get; }
 		int Latency { get; }
+
+		void Describe( TextWriter output );
 	}
 }

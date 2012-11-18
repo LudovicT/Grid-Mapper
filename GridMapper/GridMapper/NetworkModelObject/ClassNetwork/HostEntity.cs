@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace GridMapper.NetworkModelObject
 {
@@ -74,6 +75,21 @@ namespace GridMapper.NetworkModelObject
 			_server = server;
 			_firewall = firewall;
 			_OS = OS;
+		}
+
+		public void Describe( TextWriter output )
+		{
+			for(int i=0;i<_hosts.Count;i++)
+			{
+				output.WriteLine( "Host n°{0} : ", i );
+				_hosts[i].Describe(output);
+			}
+			output.WriteLine( "Host name : {0}", _hostName );
+			output.WriteLine( "OS name : {0}", _nameOS );
+			//_ports.Describe( output );
+			//_firewall.Describe( output );
+			//_server.Describe( output );
+			//_OS.describe( output );
 		}
 	}
 }

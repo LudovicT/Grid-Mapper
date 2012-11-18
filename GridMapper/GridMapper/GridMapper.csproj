@@ -130,6 +130,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawPacketSender.cs" />
+    <Compile Include="SaveFile\SaveTextFile.cs" />
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

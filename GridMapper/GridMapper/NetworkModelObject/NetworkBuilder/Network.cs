@@ -11,7 +11,7 @@ namespace GridMapper.NetworkModelObject
 	static class Network
 	{
 		//va etre utile que lorsqu'on va faire des fichiers ou affiche dans NShape
-		static ConcurrentDictionary<IPAddress, IHostEntity> HostsEntities = new ConcurrentDictionary<IPAddress, IHostEntity>();
+		static public ConcurrentDictionary<IPAddress, IHostEntity> HostsEntities = new ConcurrentDictionary<IPAddress, IHostEntity>();
 		static ConcurrentDictionary<IPAddress, IHost> Hosts = new ConcurrentDictionary<IPAddress, IHost>();
 
 		//va servir directement pour l'affichage en mode console ou form (plus simple à manipuler
