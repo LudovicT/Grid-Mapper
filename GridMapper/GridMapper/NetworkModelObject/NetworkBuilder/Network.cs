@@ -41,6 +41,8 @@ namespace GridMapper.NetworkModelObject
 			//si l'ip n'est pas déja présente = true
 			if( MacAddresses.TryAdd( ipAddress, macAddress ) )
 			{
+				MacAddressesIsModified = true;
+
 				//PingReply pingReply;
 				//if( IPAddresses.TryGetValue( ipAddress, out pingReply ) )
 				//{
@@ -48,7 +50,7 @@ namespace GridMapper.NetworkModelObject
 				//}
 				//else
 				//{
-				//    Hosts.TryAdd( ipAddress, new Host( ipAddress, macAddress ) );
+				//    Hosts.TryAdd( ipAddres	s, new Host( ipAddress, macAddress ) );
 				//}
 			}
 		}
@@ -59,7 +61,8 @@ namespace GridMapper.NetworkModelObject
 			{
 				if( !IPAddresses.ContainsKey( ip ) )
 					NewIpDetected( hostEntry, new NewIpDetectedEventArgs(ip) ); //probleme lié au sender
-				HostsEntries.TryAdd( ip, hostEntry );
+				if( HostsEntries.TryAdd( ip, hostEntry ) )
+					HostsEntriesIsModified = true;
 			}
 		}
 	}

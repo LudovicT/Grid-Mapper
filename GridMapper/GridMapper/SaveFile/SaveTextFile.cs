@@ -10,18 +10,26 @@ namespace GridMapper.SaveFile
 	public class SaveTextFile
 	{
 		string _path;
+		StreamWriter _streamWriter;
 
 		public SaveTextFile(string path)
 		{
 			_path = path;
+			StreamWriter _streamWriter = new StreamWriter( _path );
+		} 
+
+		public SaveTextFile( StreamWriter streamWriter )
+		{
+			_path = string.Empty;
+			StreamWriter _streamWriter = streamWriter;
 		}
 
 		public void write()
 		{
-			StreamWriter streamWriter = new StreamWriter( _path );
+			_streamWriter.WriteLine( "Network :" );
 			foreach( HostEntity hostEntity in Network.HostsEntities.Values )
 			{
-				hostEntity.Describe( streamWriter );
+				hostEntity.Describe( _streamWriter );
 			}
 		}
 	}
