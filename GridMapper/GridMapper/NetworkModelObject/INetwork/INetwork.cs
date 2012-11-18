@@ -79,12 +79,31 @@ namespace GridMapper.NetworkModelObject
 	{
 	}
 
-    interface IPacket
+    #region Datagram interface
+    interface IProtocol { }
+
+    interface IData
     {
-        /*AddressFamily _destinationIp;
-        SocketType _datagram;
-        ProtocolType _protocol;*/
+        Byte[] Data { get; }
     }
+
+    interface IDatagramPort : IData
+    {
+        IProtocol Protocol { get; }
+        int Port { get; }
+    }
+
+    interface Ipacket : IDatagramPort
+    {
+        IProtocol Protocol { get; }
+    }
+
+    interface IDatagram : Ipacket
+    {
+        IProtocol Protocol { get; }
+        PhysicalAddress MacSource { get; }
+    }
+    #endregion
 	/*interface IEthernetDevice
 	{
 
