@@ -16,7 +16,7 @@ namespace GridMapper
 			CancellationToken token = tokenSource.Token;
 			Task task = Task.Factory.StartNew( () =>
 				{
-					NetworkUtilities.TaskPinger( StartupOptions.IpToTest );
+					NetworkUtilities.TaskPinger( StartupOptions.IpToTest, StartupOptions.PingTimeout );
 				} ).ContinueWith( () => 
 					{
 						if ( Network.IPAddresses.count > 0 )

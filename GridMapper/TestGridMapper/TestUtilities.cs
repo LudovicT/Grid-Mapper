@@ -99,7 +99,7 @@ namespace GridMapper.Test
 			{
 				addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
 			}
-			NetworkUtilities.ListPinger( addressToTest );
+			NetworkUtilities.ListPinger( addressToTest ,200);
 		}
 
 		[Test]
@@ -110,7 +110,7 @@ namespace GridMapper.Test
 			{
 				addressToTest.Add( IPAddress.Parse( "192.168.1.27" ) );
 			}
-			NetworkUtilities.TaskPinger( addressToTest );
+			NetworkUtilities.TaskPinger( addressToTest ,200);
 		}
 
 		#endregion //PingRegion

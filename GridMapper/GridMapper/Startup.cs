@@ -12,12 +12,14 @@ namespace GridMapper
 		bool _cmdConsole;
 		int _maximumTasks;
 		List<IPAddress> _ipToTest;
+		int _pingTimeout;
 
 		public Startup()
 		{
 			_cmdConsole = false;
 			_maximumTasks = 50;
-			//_ipToTest = ;
+			//_ipToTest = getLocalIPRange();
+			int _pingTimeout = 1000;
 		}
 
 		public bool CmdConsole
@@ -41,6 +43,18 @@ namespace GridMapper
 			set
 			{
 				_maximumTasks = value;
+			}
+		}
+
+		public int PingTimeout
+		{
+			get
+			{
+				return _pingTimeout;
+			}
+			set
+			{
+				_pingTimeout = value;
 			}
 		}
 

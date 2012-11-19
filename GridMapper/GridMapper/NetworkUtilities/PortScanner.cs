@@ -2,7 +2,6 @@
 using System.Net;
 using System.Linq;
 using System.Text;
-// using System.Threading.Tasks; à utiliser plus tard pour accélérer le scanner
 using GridMapper.NetworkModelObject;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
