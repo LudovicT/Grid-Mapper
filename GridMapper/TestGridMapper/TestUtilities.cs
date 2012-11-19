@@ -137,7 +137,15 @@ namespace GridMapper.Test
         [Test]
         public void PerformTestScanPort()
         {
-            NetworkUtilities.ScanPort( IPAddress.Parse( "10.8.110.212" ), 1, 4 );
+			List<Task> tasks = new List<Task>();
+			Task T1 = Task.Factory.StartNew( () =>
+			{
+				for(int i = 0 ; i < 1024 ; i++ )
+					tasks.Add( NetworkUtilities.ScanPort( IPAddress.Parse( "5.9.87.133" ), i) );
+			} );
+			T1.Wait();
+			Task.WaitAll( tasks.ToArray() );
+			Console.WriteLine( "ok" );
         }
 
         #endregion // PortScanRegion

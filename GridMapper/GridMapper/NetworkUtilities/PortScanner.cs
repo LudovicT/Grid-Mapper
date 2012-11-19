@@ -16,29 +16,46 @@ namespace GridMapper
 		{
 			Task task = Task.Factory.StartNew( () =>
 			{
-				ScanPort( IPAddr, StartingPort, LastPort );
+				for (int PortToScan = StartingPort; PortToScan <= LastPort; PortToScan++)
+				{
+					ScanPort( IPAddr, PortToScan );
+				}
 			} );
 			return task;
 		}
-        public static void ScanPort( IPAddress IPAddr, int StartingPort, int LastPort )
+
+        public static Task ScanPort( IPAddress IPAddr, int PortToScan )
         {
-            for (int PortToScan = StartingPort; PortToScan <= LastPort; PortToScan++)
-            {
-                ScanPort( IPAddr, PortToScan );
-            }
-        }
-        public static void ScanPort( IPAddress IPAddr, int PortToScan )
-        {
-            TcpClient TcpScanner = new TcpClient();
-            try
-            {
-                TcpScanner.Connect(IPAddr, PortToScan);
-                Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN");
-            }
-            catch
-            {
-                Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE");
-            }
+			Task task = Task.Factory.StartNew( () =>
+			{
+				Socket TcpScanner = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+				TcpScanner.Connect(IPAddr, PortToScan);
+				TcpScanner.ReceiveTimeout = 20;
+
+				if( !TcpScanner.Connected )
+				{
+					Console.WriteLine( IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE" );
+				}
+				if( TcpScanner.Poll( -1, SelectMode.SelectWrite ) )
+				{
+					Console.WriteLine( IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN" );
+				}
+				else
+				{
+					if( TcpScanner.Poll( -1, SelectMode.SelectRead ) )
+					{
+						Console.WriteLine( IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN READ" );
+					}
+					else
+					{
+						if( TcpScanner.Poll( -1, SelectMode.SelectError ) )
+						{
+							Console.WriteLine( IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE" );
+						}
+					}
+				}
+			} );
+			return task;
         }
     }
 }
