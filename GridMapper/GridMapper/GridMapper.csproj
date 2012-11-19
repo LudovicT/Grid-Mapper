@@ -108,17 +108,21 @@
     </Compile>
     <Compile Include="NetworkModelObject\ClassNetwork\Host.cs" />
     <Compile Include="NetworkModelObject\ClassNetwork\HostEntity.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IAdministrableSwitch.cs" />
+    <Compile Include="NetworkModelObject\INetwork\ICAMdata.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IFirewall.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IHost.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IHostEntity.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IHub.cs" />
     <Compile Include="NetworkModelObject\INetwork\INetwork.cs" />
-    <Compile Include="NetworkModelObject\NetworkBuilder\AutoBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NetworkModelObject\NetworkBuilder\Builder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NetworkModelObject\NetworkBuilder\IBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NetworkModelObject\NetworkBuilder\ManualBuilder.cs">
+    <Compile Include="NetworkModelObject\INetwork\INetworkInteface.cs" />
+    <Compile Include="NetworkModelObject\INetwork\INetworkItem.cs" />
+    <Compile Include="NetworkModelObject\INetwork\INetworkPrinter.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IOS.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IPorts.cs" />
+    <Compile Include="NetworkModelObject\INetwork\IServer.cs" />
+    <Compile Include="NetworkModelObject\INetwork\ISwitch.cs" />
+    <Compile Include="NetworkModelObject\NetworkBuilder\Network.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NetworkUtilities\ARPSender.cs" />

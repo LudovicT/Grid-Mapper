@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Net;
 using System.Net.NetworkInformation;
-using System.Collections.Concurrent;
 
 namespace GridMapper.NetworkModelObject
 {
-	abstract class Builder : IBuilder
+	interface ICAMdata
 	{
-		//static protected INetwork _network;
+		int Port { get; }
+		int VLAN { get; }
+		PhysicalAddress MacAddress { get; }
+		int TTL { get; }
 	}
 }

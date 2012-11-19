@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 
-namespace GridMapper.NetworkModelObject.ClassNetwork
+namespace GridMapper.NetworkModelObject
 {
 	class HostEntity : IHostEntity
 	{
@@ -55,12 +55,17 @@ namespace GridMapper.NetworkModelObject.ClassNetwork
 
 		#endregion
 
-		public HostEntity( List<IHost> hosts, string nameOs, string hostName, IPorts ports )
+		public HostEntity( IList<IHost> hosts, string hostName)
+			: this( hosts, string.Empty, hostName, null, null, null, null )
+		{
+		}
+
+		public HostEntity( IList<IHost> hosts, string nameOs, string hostName, IPorts ports )
 			: this( hosts, nameOs, hostName, ports, null, null, null )
 		{
 		}
 
-		public HostEntity(List<IHost> hosts, string nameOs, string hostName, IPorts ports, IServer server, IFirewall firewall, IOS OS)
+		public HostEntity(IList<IHost> hosts, string nameOs, string hostName, IPorts ports, IServer server, IFirewall firewall, IOS OS)
 		{
 			_hosts = new ReadOnlyCollection<IHost>(hosts);
 			_nameOS = nameOs;

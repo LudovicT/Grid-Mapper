@@ -84,7 +84,7 @@ namespace GridMapper.Test
 				//Ips.Add( TrueIp );
 				Ips.Add( TrueIp );
 			}
-			NetworkUtilities.TaskGetMacAddress( Ips );
+			//NetworkUtilities.TaskGetMacAddress( Ips );
 		}
 
         #endregion //ARPRegion

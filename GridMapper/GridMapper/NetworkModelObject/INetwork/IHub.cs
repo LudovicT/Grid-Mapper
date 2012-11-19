@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections.ObjectModel;
 
 namespace GridMapper.NetworkModelObject
 {
-	class ManualBuilder : Builder
+	interface IHub : INetworkItem
 	{
+		ReadOnlyCollection<INetworkItem> NetworkItems { get; }
 	}
 }

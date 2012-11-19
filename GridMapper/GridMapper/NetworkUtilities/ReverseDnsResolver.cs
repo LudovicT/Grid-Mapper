@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Threading.Tasks;
+using GridMapper.NetworkModelObject;
 
 namespace GridMapper
 {
-	static public partial class NetworkUtilities
+	public static  partial class NetworkUtilities
 	{
 		static public Task GetHostName( IList<IPAddress> ipCollection )
 		{
@@ -23,8 +24,7 @@ namespace GridMapper
 		{
 			Task task = Task.Factory.StartNew( () =>
 			{
-				IPHostEntry ipHost = Dns.GetHostEntry( ipAddress );
-				Console.WriteLine( ipHost.HostName );
+				Network.HostNameHandler( Dns.GetHostEntry( ipAddress ) );
 			} );
 			return task;
 		}

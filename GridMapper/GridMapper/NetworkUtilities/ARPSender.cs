@@ -10,7 +10,7 @@ using System.Net.NetworkInformation;
 
 namespace GridMapper
 {
-	static public partial class NetworkUtilities
+	public static  partial class NetworkUtilities
 	{
 		[DllImport( "iphlpapi.dll", ExactSpelling = true )]
 		public static extern int SendARP( int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen );
@@ -41,7 +41,7 @@ namespace GridMapper
 			//start the task using aa lamba function and return the task for future uses
 			Task task = Task.Factory.StartNew( () =>
 			{
-				new AutoBuilder().MacAddressHandling( Ip, GetMacAddress( Ip ) );
+				Network.MacAddressHandling( Ip, GetMacAddress( Ip ) );
 			} );
 			return task;
 		}
