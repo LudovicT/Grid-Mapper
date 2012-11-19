@@ -228,37 +228,5 @@ namespace GridMapper
 			}
 		}
 		#endregion //ArgumentsParser
-
-		#region WMI
-		
-		public static void WMI(IPAddress Ip)
-		{
-			ManagementScope scope = new ManagementScope(@"\\" + Ip + @"\root\cimv2");
-
-			scope.Connect();
-
-			WMIProcess( scope, "Caption","Win32_OperatingSystem" );
-			WMIProcess( scope, "*","Win32_Processor" );
-			WMIProcess( scope, "*","Win32_ComputerSystem" );
-			WMIProcess( scope, "*","Win32_SystemEnclosure" );
-
-		}
-
-		static void WMIProcess(ManagementScope scope, string QuerySearch, string QueryLocation)
-		{
-			Console.WriteLine( QueryLocation );
-			SelectQuery query = new SelectQuery( "SELECT " + QuerySearch + " FROM "+ QueryLocation );
-			ManagementObjectSearcher searcher = new ManagementObjectSearcher( scope, query );
-			ManagementObjectCollection queryCollection = searcher.Get();
-			foreach ( ManagementObject foundObject in queryCollection )
-			{
-				var pro = foundObject.Properties;
-				foreach ( PropertyData s in pro )
-				{
-					Console.WriteLine( s.Name + " = " + foundObject[s.Name] );
-				}
-			}
-		}
-		#endregion //WMI
 	}
 }

@@ -44,7 +44,6 @@ namespace GridMapper.Test
 			}
 			//get the interface mac
 			PhysicalAddress TrueMac = PhysicalAddress.Parse( TrueNic.GetPhysicalAddress().ToString() );
-
 			//get the interface mac from arp
 			PhysicalAddress fetchedMac = NetworkUtilities.GetMacAddress( TrueIp );
 
@@ -85,7 +84,7 @@ namespace GridMapper.Test
 				//Ips.Add( TrueIp );
 				Ips.Add( TrueIp );
 			}
-			NetworkUtilities.GlobalTaskGetMacAddress( Ips, 50 );
+			NetworkUtilities.TaskGetMacAddress( Ips );
 		}
 
         #endregion //ARPRegion
