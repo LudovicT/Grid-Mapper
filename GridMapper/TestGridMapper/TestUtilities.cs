@@ -87,7 +87,7 @@ namespace GridMapper.Test
 			NetworkUtilities.TaskGetMacAddress( Ips );
 		}
 
-#endregion //ARPRegion
+        #endregion //ARPRegion
 
 		#region PingRegion
 
@@ -130,7 +130,16 @@ namespace GridMapper.Test
 			T1.Wait();
 			Task.WaitAll( tasks.ToArray() );
 			Console.WriteLine( "ok" );
-		}
+        }
 
-	}
+        #region PortScanRegion
+
+        [Test]
+        public void PerformTestScanPort()
+        {
+            NetworkUtilities.ScanPort();
+        }
+
+        #endregion // PortScanRegion
+    }
 }
