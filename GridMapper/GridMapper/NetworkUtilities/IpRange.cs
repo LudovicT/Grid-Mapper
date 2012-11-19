@@ -14,11 +14,20 @@ namespace GridMapper
 		{
 			byte[] addressBytes = ip.GetAddressBytes();
 			int intIP = addressBytes[0] * 16777216 + addressBytes[1] * 65536 + addressBytes[2] * 256 + addressBytes[3];
-			var mask = ~( ( 1 << ( 32 - maskBits ) ) - 1 );
-			var StartIP = intIP & mask;
-			var EndIP = ( intIP & mask ) | ~mask;
+			int mask = ~( ( 1 << ( 32 - maskBits ) ) - 1 );
+			int StartIP = intIP & mask;
+			int EndIP = ( intIP & mask ) | ~mask;
 			List<IPAddress> IPs = new List<IPAddress>();
-			for ( int i = StartIP; i <= EndIP; i++ )
+
+			//dodge an infinite loop
+			if ( StartIP < 0 )
+			{
+				var temp = EndIP;
+				EndIP = StartIP;
+				StartIP = temp;
+			}
+
+			for ( uint i = (uint)StartIP; i <= (uint)EndIP; i++ )
 			{
 				IPs.Add( IPAddress.Parse( i.ToString() ) );
 			}
@@ -45,7 +54,7 @@ namespace GridMapper
 			int i = 0;
 			while ( i < 3 )
 			{
-				if ( ( IPByte[i] == 0 || IPByte[i] == 255 ) )
+				if (IPByte[i] == 255 )
 				{
 					i++;
 					continue;
