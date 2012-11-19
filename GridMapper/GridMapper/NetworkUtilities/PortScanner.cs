@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using GridMapper.NetworkModelObject;
 using System.Net.NetworkInformation;
+using System.Collections.Generic;
 using System.Net.Sockets;
 
 namespace GridMapper
@@ -12,22 +13,31 @@ namespace GridMapper
     {
         public static void ScanPort( IPAddress IPAddr, int StartingPort, int LastPort )
         {
-          //  IPAddress IPAddr = Dns.GetHostEntry( "www.contoso.com" ).AddressList[0];
-
-            for ( int PortToCheck = StartingPort; PortToCheck <= LastPort; PortToCheck++ )
+            for (int PortToScan = StartingPort; PortToScan <= LastPort; PortToScan++)
             {
                 TcpClient TcpScanner = new TcpClient();
                 try
                 {
-                    TcpScanner.Connect( IPAddr, PortToCheck );
-                    Console.WriteLine( IPAddr.ToString() + ":" + PortToCheck.ToString() + " OPEN");
-                    Console.ReadKey();
+                    TcpScanner.Connect(IPAddr, PortToScan);
+                    Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN");
                 }
                 catch
                 {
-                    Console.WriteLine(IPAddr.ToString() + ":" + PortToCheck.ToString() + " CLOSE");
-                    Console.ReadKey();
+                    Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE");
                 }
+            }
+        }
+        public static void ScanPort( IPAddress IPAddr, int PortToScan )
+        {
+            TcpClient TcpScanner = new TcpClient();
+            try
+            {
+                TcpScanner.Connect(IPAddr, PortToScan);
+                Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN");
+            }
+            catch
+            {
+                Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE");
             }
         }
     }
