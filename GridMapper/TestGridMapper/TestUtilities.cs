@@ -137,7 +137,7 @@ namespace GridMapper.Test
         [Test]
         public void PerformTestScanPort()
         {
-            NetworkUtilities.ScanPort( IPAddress.Parse( "10.8.110.212" ), 11 );
+            NetworkUtilities.ScanPort( IPAddress.Parse( "10.8.110.212" ), 1, 4 );
         }
 
         #endregion // PortScanRegion
