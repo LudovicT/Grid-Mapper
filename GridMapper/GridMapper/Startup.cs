@@ -18,7 +18,7 @@ namespace GridMapper
 		{
 			_cmdConsole = false;
 			_maximumTasks = 50;
-			//_ipToTest = getLocalIPRange();
+			_ipToTest = NetworkUtilities.AutoIpRange();
 			int _pingTimeout = 1000;
 		}
 
