@@ -15,16 +15,7 @@ namespace GridMapper
         {
             for (int PortToScan = StartingPort; PortToScan <= LastPort; PortToScan++)
             {
-                TcpClient TcpScanner = new TcpClient();
-                try
-                {
-                    TcpScanner.Connect(IPAddr, PortToScan);
-                    Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN");
-                }
-                catch
-                {
-                    Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE");
-                }
+                ScanPort( IPAddr, PortToScan );
             }
         }
         public static void ScanPort( IPAddress IPAddr, int PortToScan )
