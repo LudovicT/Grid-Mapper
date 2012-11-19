@@ -11,11 +11,9 @@ namespace GridMapper
 {
     static public partial class NetworkUtilities
     {
-        public static void ScanPort()
+        public static void ScanPort( IPAddress IPAddr, int StartingPort, int LastPort )
         {
-            int StartingPort = 1; // à implémenter dans les args de la méthode plus tard
-            int LastPort = 80;
-            IPAddress IPAddr = Dns.GetHostEntry( "www.contoso.com" ).AddressList[0]; // exemple fourni dans MSDN
+          //  IPAddress IPAddr = Dns.GetHostEntry( "www.contoso.com" ).AddressList[0];
 
             for ( int PortToCheck = StartingPort; PortToCheck <= LastPort; PortToCheck++ )
             {
