@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -141,5 +141,12 @@ namespace GridMapper.Test
         }
 
         #endregion // PortScanRegion
+
+		[Test]
+		public void IpRange()
+		{
+			IPAddress ip = IPAddress.Parse("10.8.102.131");
+			NetworkUtilities.IpRange(ip,20);
+		}
     }
 }
