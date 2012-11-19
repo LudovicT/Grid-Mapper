@@ -6,6 +6,7 @@ using NUnit.Framework;
 using System.Net.NetworkInformation;
 using System.Net;
 using GridMapper.NetworkModelObject;
+using System.Threading;
 
 namespace GridMapper.Test
 {
@@ -13,12 +14,12 @@ namespace GridMapper.Test
 	public class TestNetwork
 	{
 		[Test]
-		public void TestPingCollection()
+		public void TestPingCollectionAdd()
 		{
-			NetworkUtilities.Ping( IPAddress.Parse( "127.0.0.1" ), 120 );
-
-			Assert.That( Network.IPAddresses.Count == 1 );
-			Assert.That( Network.IPAddresses[0].Address == IPAddress.Parse( "127.0.0.1" ) );
+			NetworkUtilities.TaskPinger( NetworkUtilities.AutoIpRange(), 120 );
+			Thread.Sleep( 5000 );
+			Assert.That( Network.IPAddresses.Count >= 1 );
+			Network.IPAddresses.Clear();
 		}
 	}
 }

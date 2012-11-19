@@ -35,6 +35,8 @@ namespace GridMapper.NetworkModelObject
 		{
 			if( IPAddresses.TryAdd( pingReply.Address, pingReply ) )
 				IPAddressesIsModified = true;
+			else if( IPAddresses.TryUpdate( pingReply.Address, pingReply, pingReply ) )
+				IPAddressesIsModified = true;
 		}
 
 		public static void MacAddressHandling( IPAddress ipAddress, PhysicalAddress macAddress )
@@ -54,6 +56,8 @@ namespace GridMapper.NetworkModelObject
 				//    Hosts.TryAdd( ipAddres	s, new Host( ipAddress, macAddress ) );
 				//}
 			}
+			else if( MacAddresses.TryUpdate( ipAddress, macAddress, macAddress))
+				MacAddressesIsModified = true;
 		}
 
 		public static void HostNameHandler( IPHostEntry hostEntry )
