@@ -21,19 +21,13 @@ namespace GridMapper
 		/// </summary>
 		/// <param name="Ips">The list of IpAddress</param>
 		/// <param name="maxTask">The maximum number of tasks running in parallel</param>
-		public static void GlobalTaskGetMacAddress( List<IPAddress> Ips, int maxTask )
+		public static void TaskGetMacAddress( List<IPAddress> Ips)
 		{
 			List<Task> Tasks = new List<Task>();
 			for( int i = 0 ; i < Ips.Count ; i++ )
 			{
 				int value = i;
 				Tasks.Add( TaskGetMacAddress( Ips[value] ) );
-
-				//wait for the maximum number of parallel tasks to be completed, be it successful or not
-				if( i % maxTask == 0 )
-				{
-					Task.WaitAll( Tasks.ToArray() );
-				}
 			}
 		}
 

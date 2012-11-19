@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,12 +12,12 @@ namespace GridMapper.NetworkModelObject
 	{
 		//va etre utile que lorsqu'on va faire des fichiers ou affiche dans NShape
 		static public ConcurrentDictionary<IPAddress, IHostEntity> HostsEntities = new ConcurrentDictionary<IPAddress, IHostEntity>();
-		static ConcurrentDictionary<IPAddress, IHost> Hosts = new ConcurrentDictionary<IPAddress, IHost>();
+		static public ConcurrentDictionary<IPAddress, IHost> Hosts = new ConcurrentDictionary<IPAddress, IHost>();
 
 		//va servir directement pour l'affichage en mode console ou form (plus simple à manipuler
-		static ConcurrentDictionary<IPAddress, PingReply> IPAddresses = new ConcurrentDictionary<IPAddress, PingReply>();
-		static ConcurrentDictionary<IPAddress, PhysicalAddress> MacAddresses = new ConcurrentDictionary<IPAddress, PhysicalAddress>();
-		static ConcurrentDictionary<IPAddress, IPHostEntry> HostsEntries = new ConcurrentDictionary<IPAddress, IPHostEntry>();
+		static public ConcurrentDictionary<IPAddress, PingReply> IPAddresses = new ConcurrentDictionary<IPAddress, PingReply>();
+		static public ConcurrentDictionary<IPAddress, PhysicalAddress> MacAddresses = new ConcurrentDictionary<IPAddress, PhysicalAddress>();
+		static public ConcurrentDictionary<IPAddress, IPHostEntry> HostsEntries = new ConcurrentDictionary<IPAddress, IPHostEntry>();
 
 		static bool HostsEntitiesIsModified = false;
 		static bool HostsIsModified = false;
@@ -41,8 +41,6 @@ namespace GridMapper.NetworkModelObject
 			//si l'ip n'est pas déja présente = true
 			if( MacAddresses.TryAdd( ipAddress, macAddress ) )
 			{
-				MacAddressesIsModified = true;
-
 				//PingReply pingReply;
 				//if( IPAddresses.TryGetValue( ipAddress, out pingReply ) )
 				//{
@@ -50,7 +48,7 @@ namespace GridMapper.NetworkModelObject
 				//}
 				//else
 				//{
-				//    Hosts.TryAdd( ipAddres	s, new Host( ipAddress, macAddress ) );
+				//    Hosts.TryAdd( ipAddress, new Host( ipAddress, macAddress ) );
 				//}
 			}
 		}
@@ -61,8 +59,7 @@ namespace GridMapper.NetworkModelObject
 			{
 				if( !IPAddresses.ContainsKey( ip ) )
 					NewIpDetected( hostEntry, new NewIpDetectedEventArgs(ip) ); //probleme lié au sender
-				if( HostsEntries.TryAdd( ip, hostEntry ) )
-					HostsEntriesIsModified = true;
+				HostsEntries.TryAdd( ip, hostEntry );
 			}
 		}
 	}

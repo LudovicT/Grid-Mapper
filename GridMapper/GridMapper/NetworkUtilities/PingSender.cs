@@ -11,28 +11,28 @@ namespace GridMapper
 {
 	public static partial class NetworkUtilities
 	{
-		public static Task TaskPinger( IList<IPAddress> ipCollection )
+		static public Task TaskPinger( IList<IPAddress> ipCollection, int timeout )
 		{
 			//start a new task and stock it, we only start one task because the ping method SendAsync is already asyncronous
 			Task task = Task.Factory.StartNew( () =>
 			{
-				ListPinger( ipCollection );
+				ListPinger( ipCollection, timeout );
 			} );
 			return task;
 		}
 
-		public static void ListPinger( IList<IPAddress> ipCollection )
+		public static void ListPinger( IList<IPAddress> ipCollection, int timeout )
 		{
 			foreach( IPAddress ipAddress in ipCollection )
 			{
-				Ping( ipAddress );
+				Ping( ipAddress, timeout );
 			}
 		}
 
-		public static void Ping( IPAddress ipAddress )
+		public static void Ping( IPAddress ipAddress, int timeout )
 		{
 			Ping pi = new Ping();
-			pi.SendAsync( ipAddress, 200, pi );
+			pi.SendAsync( ipAddress, timeout, pi );
 			pi.PingCompleted += new PingCompletedEventHandler( asyncPingComplete );
 		}
 

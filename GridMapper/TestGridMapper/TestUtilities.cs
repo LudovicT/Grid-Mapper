@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -84,10 +84,10 @@ namespace GridMapper.Test
 				//Ips.Add( TrueIp );
 				Ips.Add( TrueIp );
 			}
-			//NetworkUtilities.TaskGetMacAddress( Ips );
+			NetworkUtilities.TaskGetMacAddress( Ips );
 		}
 
-#endregion //ARPRegion
+        #endregion //ARPRegion
 
 		#region PingRegion
 
@@ -99,7 +99,7 @@ namespace GridMapper.Test
 			{
 				addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
 			}
-			NetworkUtilities.ListPinger( addressToTest );
+			NetworkUtilities.ListPinger( addressToTest ,200);
 		}
 
 		[Test]
@@ -110,7 +110,7 @@ namespace GridMapper.Test
 			{
 				addressToTest.Add( IPAddress.Parse( "192.168.1.27" ) );
 			}
-			NetworkUtilities.TaskPinger( addressToTest );
+			NetworkUtilities.TaskPinger( addressToTest ,200);
 		}
 
 		#endregion //PingRegion
@@ -130,7 +130,16 @@ namespace GridMapper.Test
 			T1.Wait();
 			Task.WaitAll( tasks.ToArray() );
 			Console.WriteLine( "ok" );
-		}
+        }
 
-	}
+        #region PortScanRegion
+
+        [Test]
+        public void PerformTestScanPort()
+        {
+            NetworkUtilities.ScanPort( IPAddress.Parse( "10.8.99.66" ), 1, 80 );
+        }
+
+        #endregion // PortScanRegion
+    }
 }
