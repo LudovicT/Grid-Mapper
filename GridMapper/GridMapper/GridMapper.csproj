@@ -126,6 +126,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NetworkUtilities\ARPSender.cs" />
+    <Compile Include="NetworkUtilities\IpRange.cs" />
     <Compile Include="NetworkUtilities\PingSender.cs" />
     <Compile Include="NetworkUtilities\PortScanner.cs" />
     <Compile Include="NetworkUtilities\ReverseDnsResolver.cs" />
