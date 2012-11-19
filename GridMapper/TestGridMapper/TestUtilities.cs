@@ -145,8 +145,13 @@ namespace GridMapper.Test
 		[Test]
 		public void IpRange()
 		{
-			IPAddress ip = IPAddress.Parse("10.8.102.131");
+			IPAddress ip = IPAddress.Parse("10.8.110.230");
 			NetworkUtilities.IpRange(ip,20);
+		}
+		[Test]
+		public void AutoIpRange()
+		{
+			NetworkUtilities.AutoIpRange().ForEach( IP => Console.WriteLine( IP ));
 		}
     }
 }

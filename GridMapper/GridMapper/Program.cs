@@ -75,6 +75,7 @@ namespace GridMapper
 			Utilities.Arguments args = new Utilities.Arguments( startupArgs );
 			Console.Title = "GridMapper";
 
+			StartupOptions.IpToTest.ForEach( IP => Console.WriteLine( IP ) );
 			if ( StartupOptions.CmdConsole )
 			{
 				//hide the path message
