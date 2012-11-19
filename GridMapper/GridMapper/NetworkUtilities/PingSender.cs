@@ -40,7 +40,7 @@ namespace GridMapper
 		{
 			if( e.Reply.Status == IPStatus.Success )
 			{
-				//_autoBuilder.SuperPingerHandling( e.Reply );
+				Network.SuperPingerHandling( e.Reply );
 			}
 		}
 	}
