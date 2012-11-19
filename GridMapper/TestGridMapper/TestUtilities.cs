@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -84,7 +84,7 @@ namespace GridMapper.Test
 				//Ips.Add( TrueIp );
 				Ips.Add( TrueIp );
 			}
-			//NetworkUtilities.TaskGetMacAddress( Ips );
+			NetworkUtilities.TaskGetMacAddress( Ips );
 		}
 
         #endregion //ARPRegion

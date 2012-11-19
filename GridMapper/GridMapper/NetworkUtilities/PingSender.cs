@@ -11,7 +11,6 @@ namespace GridMapper
 {
 	public static partial class NetworkUtilities
 	{
-		public static Task TaskPinger( IList<IPAddress> ipCollection )
 		static public Task TaskPinger( IList<IPAddress> ipCollection, int timeout )
 		{
 			//start a new task and stock it, we only start one task because the ping method SendAsync is already asyncronous
@@ -23,7 +22,6 @@ namespace GridMapper
 		}
 
 		public static void ListPinger( IList<IPAddress> ipCollection, int timeout )
-		public static void ListPinger( IList<IPAddress> ipCollection )
 		{
 			foreach( IPAddress ipAddress in ipCollection )
 			{
@@ -31,7 +29,6 @@ namespace GridMapper
 			}
 		}
 
-		public static void Ping( IPAddress ipAddress )
 		public static void Ping( IPAddress ipAddress, int timeout )
 		{
 			Ping pi = new Ping();

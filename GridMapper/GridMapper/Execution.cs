@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Threading;
+using GridMapper.NetworkModelObject;
 
 namespace GridMapper
 {
@@ -17,9 +18,10 @@ namespace GridMapper
 			Task task = Task.Factory.StartNew( () =>
 				{
 					NetworkUtilities.TaskPinger( StartupOptions.IpToTest, StartupOptions.PingTimeout );
-				} ).ContinueWith( () => 
+				} )
+				.ContinueWith( result => 
 					{
-						if ( Network.IPAddresses.count > 0 )
+						if ( Network.IPAddresses.Count > 0 )
 						{
 							foreach ( IPAddress IP in Network.IPAddresses.Keys )
 							{
@@ -30,7 +32,7 @@ namespace GridMapper
 						{
 							tokenSource.Cancel();
 						}
-					}, token);
+					});
 		}
 	}
 }
