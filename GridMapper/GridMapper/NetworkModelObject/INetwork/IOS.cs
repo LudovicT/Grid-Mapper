@@ -7,5 +7,9 @@ namespace GridMapper.NetworkModelObject
 {
 	interface IOS
 	{
+        Version OsVersion { get; }
+        string OsPlatform { get; }
+        string OsSerialNumber { get; }
+        string OsName { get; }
 	}
 }
