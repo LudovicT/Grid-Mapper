@@ -10,15 +10,17 @@ namespace GridMapper.NetworkModelObject
 {
 	public static class Network
 	{
+		#region properties
+
 		//va etre utile que lorsqu'on va faire des fichiers ou affiche dans NShape
-		//static public ConcurrentDictionary<IPAddress, IHostEntity> HostsEntities = new ConcurrentDictionary<IPAddress, IHostEntity>();
-		//static public ConcurrentDictionary<IPAddress, IHost> Hosts = new ConcurrentDictionary<IPAddress, IHost>();
+		static ConcurrentDictionary<IPAddress, IHostEntity> _hostsEntities = new ConcurrentDictionary<IPAddress, IHostEntity>();
+		static ConcurrentDictionary<IPAddress, IHost> _hosts = new ConcurrentDictionary<IPAddress, IHost>();
 
 		//va servir directement pour l'affichage en mode console ou form (plus simple à manipuler
-		static public ConcurrentDictionary<IPAddress, PingReply> IPAddresses = new ConcurrentDictionary<IPAddress, PingReply>();
-		static public ConcurrentDictionary<IPAddress, PhysicalAddress> MacAddresses = new ConcurrentDictionary<IPAddress, PhysicalAddress>();
-		static public ConcurrentDictionary<IPAddress, IPHostEntry> HostsEntries = new ConcurrentDictionary<IPAddress, IPHostEntry>();
-		static public ConcurrentDictionary<IPAddress, bool[]> PortsStatus = new ConcurrentDictionary<IPAddress, bool[]>();
+		static ConcurrentDictionary<IPAddress, PingReply> _ipAddresses = new ConcurrentDictionary<IPAddress, PingReply>();
+		static ConcurrentDictionary<IPAddress, PhysicalAddress> _macAddresses = new ConcurrentDictionary<IPAddress, PhysicalAddress>();
+		static ConcurrentDictionary<IPAddress, IPHostEntry> _hostsEntries = new ConcurrentDictionary<IPAddress, IPHostEntry>();
+		static ConcurrentDictionary<IPAddress, bool[]> _portsStatus = new ConcurrentDictionary<IPAddress, bool[]>();
 
 		static bool HostsEntitiesIsModified = false;
 		static bool HostsIsModified = false;
@@ -28,21 +30,60 @@ namespace GridMapper.NetworkModelObject
 		static bool HostsEntriesIsModified = false;
 
 		public static event NewIpDetectedEventHandler NewIpDetected;
+		public static event AddIPAddressEventHandler IPAddressAdded;
+		public static event AddMacAddressEventHandler AddMacAddressEvent;
+		public static event AddHostEntryEventHandler AddHostEntryEvent;
 
 		public delegate void NewIpDetectedEventHandler( object sender, NewIpDetectedEventArgs e );
+		public delegate void AddIPAddressEventHandler( object sender, AddIPAddressEventArgs e );
+		public delegate void AddMacAddressEventHandler( object sender, AddMacAddressEventArgs e );
+		public delegate void AddHostEntryEventHandler( object sender, AddHostEntryEventArgs e );
+
+		#endregion properties
+
+		#region getter setter
+
+		static public ConcurrentDictionary<IPAddress, IHostEntity> HostsEntities 
+		{
+			get { return _hostsEntities; }
+		}
+		static public ConcurrentDictionary<IPAddress, IHost> Hosts 
+		{
+			get { return _hosts; }
+		}
+		static public ConcurrentDictionary<IPAddress, PingReply> IPAddresses 
+		{
+			get { return _ipAddresses; }
+		}
+		static public ConcurrentDictionary<IPAddress, PhysicalAddress> MacAddresses 
+		{
+			get { return _macAddresses; }
+		}
+		static public ConcurrentDictionary<IPAddress, IPHostEntry> HostsEntries
+		{
+			get { return _hostsEntries; }
+		}
+		static public ConcurrentDictionary<IPAddress, bool[]> PortsStatus
+		{
+			get { return _portsStatus; }
+		}
+
+		#endregion //getter setter
+
+		#region method
 
 		public static void SuperPingerHandling( PingReply pingReply )
 		{
-			if( IPAddresses.TryAdd( pingReply.Address, pingReply ) )
+			if( _ipAddresses.TryAdd( pingReply.Address, pingReply ) )
 				IPAddressesIsModified = true;
-			else if( IPAddresses.TryUpdate( pingReply.Address, pingReply, pingReply ) )
+			else if( _ipAddresses.TryUpdate( pingReply.Address, pingReply, pingReply ) )
 				IPAddressesIsModified = true;
 		}
 
 		public static void MacAddressHandling( IPAddress ipAddress, PhysicalAddress macAddress )
 		{
 			//si l'ip n'est pas déja présente = true
-			if( MacAddresses.TryAdd( ipAddress, macAddress ) )
+			if( _macAddresses.TryAdd( ipAddress, macAddress ) )
 			{
 				MacAddressesIsModified = true;
 
@@ -56,7 +97,7 @@ namespace GridMapper.NetworkModelObject
 				//    Hosts.TryAdd( ipAddres	s, new Host( ipAddress, macAddress ) );
 				//}
 			}
-			else if( MacAddresses.TryUpdate( ipAddress, macAddress, macAddress))
+			else if( _macAddresses.TryUpdate( ipAddress, macAddress, macAddress))
 				MacAddressesIsModified = true;
 		}
 
@@ -64,9 +105,12 @@ namespace GridMapper.NetworkModelObject
 		{
 			foreach( IPAddress ip in hostEntry.AddressList )
 			{
-				if( !IPAddresses.ContainsKey( ip ) )
-					NewIpDetected( hostEntry, new NewIpDetectedEventArgs( ip ) ); //probleme lié au sender
-				if( HostsEntries.TryAdd( ip, hostEntry ) )
+				if( !_ipAddresses.ContainsKey( ip ) )
+				{
+					NewIpDetectedEventArgs e = new NewIpDetectedEventArgs( ip );
+					if( e != null ) NewIpDetected( hostEntry, e ); //probleme lié au sender
+				}
+				else if( _hostsEntries.TryAdd( ip, hostEntry ) ) //le else pour le moment pour eviter que des infos se perdent
 					HostsEntriesIsModified = true;
 			}
 		}
@@ -74,21 +118,24 @@ namespace GridMapper.NetworkModelObject
 		public static void PortStatusHandler(IPAddress ipAddress, int port, bool status )
 		{
 			bool[] ports;
-			if( PortsStatus.TryGetValue( ipAddress, out ports ) )
+			if( _portsStatus.TryGetValue( ipAddress, out ports ) )
 			{
 				ports[port] = status;
-				PortsStatus.TryUpdate( ipAddress, ports, ports );
+				_portsStatus.TryUpdate( ipAddress, ports, ports );
 			}
 			else
 			{
 				ports = new bool[65536];
 				ports[port] = status;
-				PortsStatus.TryAdd( ipAddress, ports );
+				_portsStatus.TryAdd( ipAddress, ports );
 			}
+		}
 
-		} 
+		#endregion //method
 	}
-	
+
+	#region EventArgs
+
 	public class NewIpDetectedEventArgs : EventArgs
 	{
 		IPAddress _ipAddress = null;
@@ -104,4 +151,70 @@ namespace GridMapper.NetworkModelObject
 			get { return _ipAddress; }
 		}	
 	}
+
+	public class AddIPAddressEventArgs : EventArgs
+	{
+		PingReply _pingReply = null;
+
+		public AddIPAddressEventArgs( PingReply pingReply )
+		{
+			if( pingReply == null ) throw new NullReferenceException();
+			_pingReply = pingReply;
+		}
+
+		public PingReply PingReply
+		{
+			get { return _pingReply; }
+		}
+	}
+
+	public class AddMacAddressEventArgs : EventArgs
+	{
+		IPAddress _ipAddress = null;
+		PhysicalAddress _macAddress = null;
+
+		public AddMacAddressEventArgs( IPAddress ipAddress, PhysicalAddress macAddress )
+		{
+			if( ipAddress == null ) throw new NullReferenceException( "IPAddress is null" );
+			if( macAddress == null ) throw new NullReferenceException("MacAddress is null");
+			_ipAddress = ipAddress;
+			_macAddress = macAddress;
+		}
+
+		public IPAddress IpAddress
+		{
+			get { return _ipAddress; }
+		}
+
+		public PhysicalAddress MacAddress
+		{
+			get { return _macAddress; }
+		}
+	}
+
+	public class AddHostEntryEventArgs : EventArgs
+	{
+		IPAddress _ipAddress = null;
+		IPHostEntry _ipHostEntry = null;
+
+		public AddHostEntryEventArgs( IPAddress ipAddress, IPHostEntry ipHostEntry )
+		{
+			if( ipAddress == null ) throw new NullReferenceException( "IPAddress is null" );
+			if( ipHostEntry == null ) throw new NullReferenceException( "IPHostEntry is null" );
+			_ipAddress = ipAddress;
+			_ipHostEntry = ipHostEntry;
+		}
+
+		public IPAddress IpAddress
+		{
+			get { return _ipAddress; }
+		}
+
+		public IPHostEntry IPHostEntry
+		{
+			get { return _ipHostEntry; }
+		}
+	}
+
+	#endregion //EventArgs
 }

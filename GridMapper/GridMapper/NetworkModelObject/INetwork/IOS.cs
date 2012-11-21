@@ -5,11 +5,11 @@ using System.Text;
 
 namespace GridMapper.NetworkModelObject
 {
-	interface IOS
+	public interface IOS
 	{
-        Version OsVersion { get; }
-        string OsPlatform { get; }
-        string OsSerialNumber { get; }
-        string OsName { get; }
+		Version OsVersion { get; }
+		string OsPlatform { get; }
+		string OsSerialNumber { get; }
+		string OsName { get; }
 	}
 }

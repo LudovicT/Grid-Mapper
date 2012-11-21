@@ -21,5 +21,23 @@ namespace GridMapper.Test
 			Assert.That( Network.IPAddresses.Count >= 1 );
 			Network.IPAddresses.Clear();
 		}
+
+		[Test]
+		public void TestARPCollectionAdd()
+		{
+			NetworkUtilities.TaskGetMacAddress( NetworkUtilities.AutoIpRange() );
+			Thread.Sleep( 5000 );
+			Assert.That( Network.MacAddresses.Count >= 1 );
+			Network.MacAddresses.Clear();
+		}
+
+		[Test]
+		public void TestHostNameCollectionAdd()
+		{
+			NetworkUtilities.GetHostName( NetworkUtilities.AutoIpRange() );
+			Thread.Sleep( 5000 );
+			Assert.That( Network.HostsEntries.Count >= 1 );
+			Network.HostsEntries.Clear();
+		}
 	}
 }

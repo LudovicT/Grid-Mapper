@@ -6,7 +6,7 @@ using System.Net.NetworkInformation;
 
 namespace GridMapper.NetworkModelObject
 {
-	interface ICAMdata
+	public interface ICAMdata
 	{
 		int Port { get; }
 		int VLAN { get; }

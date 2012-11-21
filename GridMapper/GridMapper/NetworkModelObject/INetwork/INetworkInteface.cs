@@ -6,7 +6,7 @@ using System.Net.NetworkInformation;
 
 namespace GridMapper.NetworkModelObject
 {
-	interface INetworkInterface : INetworkItem
+	public interface INetworkInterface : INetworkItem
 	{
 		PhysicalAddress Mac { get; }
 	}
