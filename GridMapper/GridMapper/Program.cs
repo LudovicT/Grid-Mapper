@@ -87,14 +87,16 @@ namespace GridMapper
 			}
 
 			int maxTasks;
+			Console.WriteLine( args["t"].Count );
 			//help message get priority over everything
-			if ( args.IsTrue( "h" ) || args.IsTrue( "?" ) ||args.IsTrue( "help" ) )
+			if ( args.IsTrue( "h" ) || args.IsTrue( "?" ) || args.IsTrue( "help" ) || 
+				 args.Exists( "h" ) || args.Exists( "?" ) || args.Exists( "help" ) )
 			{
 				printHelp();
 			}
 			else
 			{
-				if ( ( args.Exists( "t" ) &&	 int.TryParse( args.Single( "tasks" ), out maxTasks ) ) 
+				if ( ( args.Exists( "t" ) &&	 int.TryParse( args.Single( "t" ), out maxTasks ) ) 
 					|| args.Exists( "tasks" ) && int.TryParse( args.Single( "tasks" ), out maxTasks ) )
 				{
 					if ( maxTasks >= 1 && maxTasks <= 2000 )
