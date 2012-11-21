@@ -51,6 +51,7 @@ namespace GridMapper
 			byte[] IPByte = IP.GetAddressBytes();
 			int CIDR = -1;
 
+			int bitCount = 0;
 			int i = 0;
 			while ( i < 3 )
 			{
@@ -61,7 +62,14 @@ namespace GridMapper
 				}
 				else
 				{
-					int.TryParse(Math.Sqrt(256 - IPByte[i]).ToString(),out CIDR);
+					for ( int j = 0; j < 8; j++ )
+					{
+						if ( ( IPByte[i] & Convert.ToInt32( ( Math.Pow( 2, j ) ) ) ) != 0 )
+						{
+							bitCount++;
+						}
+					}
+					CIDR = bitCount + 8*i;
 					break;
 				}
 			}
@@ -69,7 +77,7 @@ namespace GridMapper
 			{
 				throw new OperationCanceledException();
 			}
-			return (8*(i+1) - CIDR);
+			return CIDR;
 		}
 
 		private static IPAddress GetSubnetMask( IPAddress address )
