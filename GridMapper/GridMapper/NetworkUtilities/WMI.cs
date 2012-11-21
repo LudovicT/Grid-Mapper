@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GridMapper
 {
-	static public partial class NetworkUtilities
+	static public class WMICollector
 	{
 		static public Task WMI( IList<IPAddress> ipCollection )
 		{

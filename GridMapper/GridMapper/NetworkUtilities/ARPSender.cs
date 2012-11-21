@@ -10,7 +10,7 @@ using System.Net.NetworkInformation;
 
 namespace GridMapper
 {
-	public static  partial class NetworkUtilities
+	public static class ARPSender
 	{
 		[DllImport( "iphlpapi.dll", ExactSpelling = true )]
 		public static extern int SendARP( int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen );

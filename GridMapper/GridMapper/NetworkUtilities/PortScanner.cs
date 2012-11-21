@@ -10,7 +10,7 @@ using System.Net.Sockets;
 
 namespace GridMapper
 {
-    static public partial class NetworkUtilities
+    static public class PortScanner
     {
 		public static Task TaskScanPort(IPAddress IPAddr, int StartingPort, int LastPort )
 		{

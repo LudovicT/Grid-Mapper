@@ -45,7 +45,7 @@ namespace GridMapper.Test
 			//get the interface mac
 			PhysicalAddress TrueMac = PhysicalAddress.Parse( TrueNic.GetPhysicalAddress().ToString() );
 			//get the interface mac from arp
-			PhysicalAddress fetchedMac = NetworkUtilities.GetMacAddress( TrueIp );
+			PhysicalAddress fetchedMac = ARPSender.GetMacAddress( TrueIp );
 
 			Assert.That( fetchedMac.ToString()  == TrueMac.ToString() , "physical addresses does not match");
 		}
@@ -84,7 +84,7 @@ namespace GridMapper.Test
 				//Ips.Add( TrueIp );
 				Ips.Add( TrueIp );
 			}
-			NetworkUtilities.TaskGetMacAddress( Ips );
+			ARPSender.TaskGetMacAddress( Ips );
 		}
 
         #endregion //ARPRegion
@@ -99,7 +99,7 @@ namespace GridMapper.Test
 			{
 				addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
 			}
-			NetworkUtilities.ListPinger( addressToTest ,200);
+			PingSender.ListPinger( addressToTest ,200);
 		}
 
 		[Test]
@@ -110,7 +110,7 @@ namespace GridMapper.Test
 			{
 				addressToTest.Add( IPAddress.Parse( "192.168.1.27" ) );
 			}
-			NetworkUtilities.TaskPinger( addressToTest ,200);
+			PingSender.TaskPinger( addressToTest ,200);
 		}
 
 		#endregion //PingRegion
@@ -124,7 +124,7 @@ namespace GridMapper.Test
 					for( int i = 0 ; i < 400 ; i++ )
 					{
 						Console.WriteLine( i );
-						tasks.Add( NetworkUtilities.GetHostName( IPAddress.Parse( "10.8.99.66" ) ) );
+						tasks.Add( ReverseDnsResolver.GetHostName( IPAddress.Parse( "10.8.99.66" ) ) );
 					}
 				} );
 			T1.Wait();
@@ -141,7 +141,7 @@ namespace GridMapper.Test
 			Task T1 = Task.Factory.StartNew( () =>
 			{
 				for(int i = 0 ; i < 1024 ; i++ )
-					tasks.Add( NetworkUtilities.ScanPort( IPAddress.Parse( "5.9.87.133" ), i) );
+					tasks.Add( PortScanner.ScanPort( IPAddress.Parse( "5.9.87.133" ), i) );
 			} );
 			T1.Wait();
 			Task.WaitAll( tasks.ToArray() );
@@ -154,12 +154,12 @@ namespace GridMapper.Test
 		public void IpRange()
 		{
 			IPAddress ip = IPAddress.Parse("10.8.110.230");
-			NetworkUtilities.IpRange(ip,20);
+			IPRange.IpRange(ip,20);
 		}
 		[Test]
 		public void AutoIpRange()
 		{
-			NetworkUtilities.AutoIpRange().ForEach( IP => Console.WriteLine( IP ));
+			IPRange.AutoIpRange().ForEach( IP => Console.WriteLine( IP ));
 		}
     }
 }

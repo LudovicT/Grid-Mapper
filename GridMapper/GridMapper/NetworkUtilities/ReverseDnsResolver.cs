@@ -8,7 +8,7 @@ using GridMapper.NetworkModelObject;
 
 namespace GridMapper
 {
-	public static  partial class NetworkUtilities
+	public static class ReverseDnsResolver
 	{
 		static public Task GetHostName( IList<IPAddress> ipCollection )
 		{

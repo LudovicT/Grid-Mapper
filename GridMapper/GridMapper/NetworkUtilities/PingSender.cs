@@ -9,7 +9,7 @@ using GridMapper.NetworkModelObject;
 
 namespace GridMapper
 {
-	public static partial class NetworkUtilities
+	public static class PingSender
 	{
 		static public Task TaskPinger( IList<IPAddress> ipCollection, int timeout )
 		{

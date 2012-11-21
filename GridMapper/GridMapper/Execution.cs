@@ -17,7 +17,7 @@ namespace GridMapper
 			CancellationToken token = tokenSource.Token;
 			Task task = Task.Factory.StartNew( () =>
 				{
-					NetworkUtilities.TaskPinger( StartupOptions.IpToTest, StartupOptions.PingTimeout );
+					PingSender.TaskPinger( StartupOptions.IpToTest, StartupOptions.PingTimeout );
 				} )
 				.ContinueWith( result => 
 					{
@@ -25,7 +25,7 @@ namespace GridMapper
 						{
 							foreach ( IPAddress IP in Network.IPAddresses.Keys )
 							{
-								NetworkUtilities.TaskGetMacAddress( IP );
+								ARPSender.TaskGetMacAddress( IP );
 							}
 						}
 						else

@@ -8,7 +8,7 @@ using System.Net.Sockets;
 
 namespace GridMapper
 {
-	static public partial class NetworkUtilities
+	static public class IPRange
 	{
 		public static List<IPAddress> IpRange( IPAddress ip, int maskBits )
 		{

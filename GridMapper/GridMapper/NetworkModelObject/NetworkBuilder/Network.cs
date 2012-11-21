@@ -31,13 +31,13 @@ namespace GridMapper.NetworkModelObject
 
 		public static event NewIpDetectedEventHandler NewIpDetected;
 		public static event AddIPAddressEventHandler IPAddressAdded;
-		public static event AddMacAddressEventHandler AddMacAddressEvent;
-		public static event AddHostEntryEventHandler AddHostEntryEvent;
+		public static event AddMacAddressEventHandler MacAddressAdded;
+		public static event AddHostEntryEventHandler HostEntryAdded;
 
-		public delegate void NewIpDetectedEventHandler( object sender, NewIpDetectedEventArgs e );
-		public delegate void AddIPAddressEventHandler( object sender, AddIPAddressEventArgs e );
-		public delegate void AddMacAddressEventHandler( object sender, AddMacAddressEventArgs e );
-		public delegate void AddHostEntryEventHandler( object sender, AddHostEntryEventArgs e );
+		public delegate void NewIpDetectedEventHandler(NewIpDetectedEventArgs e );
+		public delegate void AddIPAddressEventHandler(IPAddressAddedEventArgs e );
+		public delegate void AddMacAddressEventHandler(MacAddressAddedEventArgs e );
+		public delegate void AddHostEntryEventHandler(HostEntryAddedEventArgs e );
 
 		#endregion properties
 
@@ -75,9 +75,14 @@ namespace GridMapper.NetworkModelObject
 		public static void SuperPingerHandling( PingReply pingReply )
 		{
 			if( _ipAddresses.TryAdd( pingReply.Address, pingReply ) )
+			{
+				IPAddressAddedEventArgs e = new IPAddressAddedEventArgs( pingReply );
+				if( e != null ) IPAddressAdded( e );
 				IPAddressesIsModified = true;
-			else if( _ipAddresses.TryUpdate( pingReply.Address, pingReply, pingReply ) )
-				IPAddressesIsModified = true;
+			}
+			//peut etre useless
+			//else if( _ipAddresses.TryUpdate( pingReply.Address, pingReply, pingReply ) )
+			//    IPAddressesIsModified = true;
 		}
 
 		public static void MacAddressHandling( IPAddress ipAddress, PhysicalAddress macAddress )
@@ -86,6 +91,8 @@ namespace GridMapper.NetworkModelObject
 			if( _macAddresses.TryAdd( ipAddress, macAddress ) )
 			{
 				MacAddressesIsModified = true;
+				MacAddressAddedEventArgs e = new MacAddressAddedEventArgs( ipAddress, macAddress );
+				if( e != null ) MacAddressAdded( e );
 
 				//PingReply pingReply;
 				//if( IPAddresses.TryGetValue( ipAddress, out pingReply ) )
@@ -108,10 +115,14 @@ namespace GridMapper.NetworkModelObject
 				if( !_ipAddresses.ContainsKey( ip ) )
 				{
 					NewIpDetectedEventArgs e = new NewIpDetectedEventArgs( ip );
-					if( e != null ) NewIpDetected( hostEntry, e ); //probleme lié au sender
+					if( e != null ) NewIpDetected( e ); //probleme lié au sender
 				}
-				else if( _hostsEntries.TryAdd( ip, hostEntry ) ) //le else pour le moment pour eviter que des infos se perdent
+				else if( _hostsEntries.TryAdd( ip, hostEntry ) ) //le else pour le moment pour eviter que des infos se perdent par rapport au traitement des nouvelle ip detecté
+				{
+					HostEntryAddedEventArgs e = new HostEntryAddedEventArgs( ip, hostEntry );
+					if( e != null ) HostEntryAdded( e );
 					HostsEntriesIsModified = true;
+				}
 			}
 		}
 
@@ -152,11 +163,11 @@ namespace GridMapper.NetworkModelObject
 		}	
 	}
 
-	public class AddIPAddressEventArgs : EventArgs
+	public class IPAddressAddedEventArgs : EventArgs
 	{
 		PingReply _pingReply = null;
 
-		public AddIPAddressEventArgs( PingReply pingReply )
+		public IPAddressAddedEventArgs( PingReply pingReply )
 		{
 			if( pingReply == null ) throw new NullReferenceException();
 			_pingReply = pingReply;
@@ -168,12 +179,12 @@ namespace GridMapper.NetworkModelObject
 		}
 	}
 
-	public class AddMacAddressEventArgs : EventArgs
+	public class MacAddressAddedEventArgs : EventArgs
 	{
 		IPAddress _ipAddress = null;
 		PhysicalAddress _macAddress = null;
 
-		public AddMacAddressEventArgs( IPAddress ipAddress, PhysicalAddress macAddress )
+		public MacAddressAddedEventArgs( IPAddress ipAddress, PhysicalAddress macAddress )
 		{
 			if( ipAddress == null ) throw new NullReferenceException( "IPAddress is null" );
 			if( macAddress == null ) throw new NullReferenceException("MacAddress is null");
@@ -192,12 +203,12 @@ namespace GridMapper.NetworkModelObject
 		}
 	}
 
-	public class AddHostEntryEventArgs : EventArgs
+	public class HostEntryAddedEventArgs : EventArgs
 	{
 		IPAddress _ipAddress = null;
 		IPHostEntry _ipHostEntry = null;
 
-		public AddHostEntryEventArgs( IPAddress ipAddress, IPHostEntry ipHostEntry )
+		public HostEntryAddedEventArgs( IPAddress ipAddress, IPHostEntry ipHostEntry )
 		{
 			if( ipAddress == null ) throw new NullReferenceException( "IPAddress is null" );
 			if( ipHostEntry == null ) throw new NullReferenceException( "IPHostEntry is null" );
