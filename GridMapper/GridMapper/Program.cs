@@ -88,22 +88,23 @@ namespace GridMapper
 
 			int maxTasks;
 			//help message get priority over everything
-			if ( args.IsTrue( "h" ) || args.IsTrue( "?" ) ||args.IsTrue( "help" ) )
+			if ( args.IsTrue( "h" ) || args.IsTrue( "?" ) || args.IsTrue( "help" ) || 
+				 args.Exists( "h" ) || args.Exists( "?" ) || args.Exists( "help" ) )
 			{
 				printHelp();
 			}
 			else
 			{
-				if ( ( args.Exists( "t" ) &&	 int.TryParse( args.Single( "tasks" ), out maxTasks ) ) 
+				if ( ( args.Exists( "t" ) &&	 int.TryParse( args.Single( "t" ), out maxTasks ) ) 
 					|| args.Exists( "tasks" ) && int.TryParse( args.Single( "tasks" ), out maxTasks ) )
 				{
-					if ( maxTasks >= 1 && maxTasks <= 2000 )
+					if ( maxTasks >= 5 && maxTasks <= 2000 )
 					{
 						StartupOptions.MaximumTasks = maxTasks;
 					}
 					else
 					{
-						Console.WriteLine( "The number of task must be between 1 and 2000, reasonnable limit is around 500" );
+						Console.WriteLine( "The number of tasks must be between 5 and 2000, reasonnable limit is around 500" );
 					}
 				}
 				else
