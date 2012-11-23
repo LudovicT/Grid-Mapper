@@ -125,12 +125,13 @@
             this.FromIP.BackColor = System.Drawing.SystemColors.Window;
             this.FromIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.FromIP.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.FromIP.Location = new System.Drawing.Point(132, 27);
+            this.FromIP.Location = new System.Drawing.Point(172, 25);
+            this.FromIP.MinimumSize = new System.Drawing.Size(114, 22);
             this.FromIP.Name = "FromIP";
             this.FromIP.ReadOnly = false;
             this.FromIP.Size = new System.Drawing.Size(120, 22);
             this.FromIP.TabIndex = 4;
-            this.FromIP.Text = "...";
+            this.FromIP.Text = "0.0.0.0";
             this.FromIP.Click += new System.EventHandler(this.ipAddressControl1_Click);
             // 
             // ToIP
@@ -140,30 +141,31 @@
             this.ToIP.BackColor = System.Drawing.SystemColors.Window;
             this.ToIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ToIP.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.ToIP.Location = new System.Drawing.Point(292, 27);
+            this.ToIP.Location = new System.Drawing.Point(324, 25);
+            this.ToIP.MinimumSize = new System.Drawing.Size(114, 22);
             this.ToIP.Name = "ToIP";
             this.ToIP.ReadOnly = false;
             this.ToIP.Size = new System.Drawing.Size(120, 22);
             this.ToIP.TabIndex = 5;
-            this.ToIP.Text = "...";
+            this.ToIP.Text = "0.0.0.0";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(40, 28);
+            this.label1.Location = new System.Drawing.Point(84, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(86, 17);
+            this.label1.Size = new System.Drawing.Size(82, 17);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Range from ";
+            this.label1.Text = "Range from";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(258, 28);
+            this.label2.Location = new System.Drawing.Point(298, 28);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(28, 17);
+            this.label2.Size = new System.Drawing.Size(20, 17);
             this.label2.TabIndex = 7;
-            this.label2.Text = " to ";
+            this.label2.Text = "to";
             // 
             // Form1
             // 
