@@ -19,7 +19,7 @@ namespace GridMapper
 			_cmdConsole = false;
 			_maximumTasks = 50;
 			_ipToTest = null;
-			int _pingTimeout = 1000;
+			_pingTimeout = 1000;
 		}
 
 		public bool CmdConsole
