@@ -8,7 +8,7 @@ using System.Net.Sockets;
 
 namespace GridMapper
 {
-	static public class IPRange
+	public class IPRange
 	{
 		public static List<IPAddress> IpRange( IPAddress ip, int maskBits )
 		{
@@ -46,14 +46,14 @@ namespace GridMapper
 			return IpRange( machineIP, SubnetMaskToCIDR(GetSubnetMask( machineIP )) );
 		}
 
-		private static int SubnetMaskToCIDR(IPAddress IP)
+		static int SubnetMaskToCIDR(IPAddress IP)
 		{
 			byte[] IPByte = IP.GetAddressBytes();
 			int CIDR = -1;
 
 			int bitCount = 0;
 			int i = 0;
-			while ( i < 3 )
+			while ( i <= 3 )
 			{
 				if (IPByte[i] == 255 )
 				{
@@ -73,14 +73,15 @@ namespace GridMapper
 					break;
 				}
 			}
-			if ( i == 3 && CIDR == -1)
+			Console.WriteLine("i = " +i+" & cidr = "+ CIDR);
+			if ( i == 4 && CIDR == -1)
 			{
 				throw new OperationCanceledException();
 			}
 			return CIDR;
 		}
 
-		private static IPAddress GetSubnetMask( IPAddress address )
+		static IPAddress GetSubnetMask( IPAddress address )
 		{
 			foreach ( NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces() )
 			{

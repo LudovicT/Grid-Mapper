@@ -9,39 +9,26 @@ using GridMapper.NetworkModelObject;
 
 namespace GridMapper
 {
-	public static class PingSender
+	public class PingSender
 	{
-		static public Task TaskPinger( IList<IPAddress> ipCollection, int timeout )
+		int _timeout;
+
+		public PingSender()
 		{
-			//start a new task and stock it, we only start one task because the ping method SendAsync is already asyncronous
-			Task task = Task.Factory.StartNew( () =>
-			{
-				ListPinger( ipCollection, timeout );
-			} );
-			return task;
+			_timeout = 200;
+		}
+		public PingSender( Option op )
+		{
+			_timeout = op.PingTimeout;
 		}
 
-		public static void ListPinger( IList<IPAddress> ipCollection, int timeout )
+		public PingReply Ping( IPAddress ipAddress )
 		{
-			foreach( IPAddress ipAddress in ipCollection )
-			{
-				Ping( ipAddress, timeout );
-			}
+			return Ping( ipAddress, _timeout );
 		}
-
-		public static void Ping( IPAddress ipAddress, int timeout )
+		public PingReply Ping( IPAddress ipAddress, int timeout )
 		{
-			Ping pi = new Ping();
-			pi.SendAsync( ipAddress, timeout, pi );
-			pi.PingCompleted += new PingCompletedEventHandler( asyncPingComplete );
-		}
-
-		static void asyncPingComplete( object sender, PingCompletedEventArgs e )
-		{
-			if( e.Reply.Status == IPStatus.Success )
-			{
-				Network.SuperPingerHandling( e.Reply );
-			}
+			return new Ping().Send( ipAddress, timeout );
 		}
 	}
 }
