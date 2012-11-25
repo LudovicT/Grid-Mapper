@@ -14,7 +14,6 @@ namespace GridMapper.Test
 	[TestFixture]
 	public class TestARP
 	{
-
 		#region ARPRegion
 
 		[Test]
@@ -91,7 +90,6 @@ namespace GridMapper.Test
 		}
 
         #endregion //ARPRegion
-
 	}
 	[TestFixture]
 	public class TestPING
@@ -114,11 +112,11 @@ namespace GridMapper.Test
 
 
 		#endregion //PingRegion
-		
     }
 	[TestFixture]
 	public class TestDNSSolver
 	{
+		#region DNSRegion
 		[Test]
 		public void GetHostNameTest()
 		{
@@ -128,9 +126,9 @@ namespace GridMapper.Test
 				new ReverseDnsResolver().GetHostName( IPAddress.Parse( "8.8.8.8" ) );
 			}
 			Console.WriteLine( "ok" );
-        }
-		
-    }
+		}
+		#endregion //DNSRegion
+	}
 	[TestFixture]
 	public class TestPortScan
 	{
@@ -219,6 +217,7 @@ namespace GridMapper.Test
 	[TestFixture]
 	public class TestIpRange
 	{
+		#region IPRange
 		[Test]
 		public void IpRange()
 		{
@@ -230,5 +229,6 @@ namespace GridMapper.Test
 		{
 			IPRange.AutoIpRange().ForEach( IP => Console.WriteLine( IP ));
 		}
+		#endregion //IPRange
     }
 }
