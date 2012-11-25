@@ -33,7 +33,18 @@ namespace GridMapper
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(@"C:\Windows");
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "XML File|*.xml";
+            openFileDialog1.Title = "Select a XML File";
+
+            // Show the Dialog.
+            // If the user clicked OK in the dialog and
+            // a .CUR file was selected, open it.
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                // Assign the cursor in the Stream to the Form's Cursor property.
+                this.Cursor = new Cursor(openFileDialog1.OpenFile());
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -54,7 +65,19 @@ namespace GridMapper
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // take a look
-            System.Diagnostics.Process.Start(@"C:\Windows");
+            //System.Diagnostics.Process.Start(@"C:\Windows");
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "XML File|*.xml";
+            openFileDialog1.Title = "Select a XML File";
+
+            // Show the Dialog.
+            // If the user clicked OK in the dialog and
+            // a .CUR file was selected, open it.
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                // Assign the cursor in the Stream to the Form's Cursor property.
+                this.Cursor = new Cursor(openFileDialog1.OpenFile());
+            }
         }
 	}
 }
