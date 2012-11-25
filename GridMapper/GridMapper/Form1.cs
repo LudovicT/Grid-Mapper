@@ -33,12 +33,12 @@ namespace GridMapper
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-
+            System.Diagnostics.Process.Start(@"C:\Windows");
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -49,6 +49,12 @@ namespace GridMapper
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Environment.Exit(1);
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // take a look
+            System.Diagnostics.Process.Start(@"C:\Windows");
         }
 	}
 }
