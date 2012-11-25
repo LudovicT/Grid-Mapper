@@ -138,6 +138,7 @@
     <Compile Include="Parameters\Options.cs" />
     <Compile Include="Repository\INetworkDictionaryItem.cs" />
     <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\NetworkDictionaryItem.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
