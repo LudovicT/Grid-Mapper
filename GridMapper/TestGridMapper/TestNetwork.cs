@@ -16,7 +16,10 @@ namespace GridMapper.Test
 		[Test]
 		public void TestPingCollectionAdd()
 		{
-			PingSender.TaskPinger( IPRange.AutoIpRange(), 120 );
+			foreach ( IPAddress ip in IPRange.AutoIpRange() )
+			{
+				new PingSender().Ping( ip, 120 );
+			}
 			Thread.Sleep( 5000 );
 			Assert.That( Network.IPAddresses.Count >= 1 );
 			Network.IPAddresses.Clear();
@@ -25,7 +28,10 @@ namespace GridMapper.Test
 		[Test]
 		public void TestARPCollectionAdd()
 		{
-			ARPSender.TaskGetMacAddress( IPRange.AutoIpRange() );
+			foreach ( IPAddress ip in IPRange.AutoIpRange() )
+			{
+				new ARPSender().GetMac( ip);
+			}
 			Thread.Sleep( 5000 );
 			Assert.That( Network.MacAddresses.Count >= 1 );
 			Network.MacAddresses.Clear();
@@ -34,7 +40,10 @@ namespace GridMapper.Test
 		[Test]
 		public void TestHostNameCollectionAdd()
 		{
-			ReverseDnsResolver.GetHostName( IPRange.AutoIpRange() );
+			foreach ( IPAddress ip in IPRange.AutoIpRange() )
+			{
+				new ReverseDnsResolver().GetHostName( ip );
+			}
 			Thread.Sleep( 5000 );
 			Assert.That( Network.HostsEntries.Count >= 1 );
 			Network.HostsEntries.Clear();

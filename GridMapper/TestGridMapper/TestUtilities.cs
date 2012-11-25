@@ -45,7 +45,7 @@ namespace GridMapper.Test
 			//get the interface mac
 			PhysicalAddress TrueMac = PhysicalAddress.Parse( TrueNic.GetPhysicalAddress().ToString() );
 			//get the interface mac from arp
-			PhysicalAddress fetchedMac = ARPSender.GetMacAddress( TrueIp );
+			PhysicalAddress fetchedMac = new ARPSender().GetMac( TrueIp );
 
 			Assert.That( fetchedMac.ToString()  == TrueMac.ToString() , "physical addresses does not match");
 		}
@@ -84,7 +84,10 @@ namespace GridMapper.Test
 				//Ips.Add( TrueIp );
 				Ips.Add( TrueIp );
 			}
-			ARPSender.TaskGetMacAddress( Ips );
+			foreach(IPAddress Ip in Ips)
+			{
+				new ARPSender().GetMac( Ip );
+			}
 		}
 
         #endregion //ARPRegion
@@ -92,62 +95,59 @@ namespace GridMapper.Test
 		#region PingRegion
 
 		[Test]
-		public void PerformanceTestAsyncPinger()
+		public void PerformanceTestPinger()
 		{
 			List<IPAddress> addressToTest = new List<IPAddress>();
 			for( int i = 0 ; i < 400 ; i++ )
 			{
-				addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
+				addressToTest.Add( IPAddress.Parse( "8.8.8.8" ) );
 			}
-			PingSender.ListPinger( addressToTest ,200);
+			foreach ( IPAddress Ip in addressToTest )
+			{
+				Console.WriteLine(new PingSender().Ping( Ip , 200 ).Status);
+			}
 		}
 
-		[Test]
-		public void PerformanceTestTaskPinger()
-		{
-			List<IPAddress> addressToTest = new List<IPAddress>();
-			for( int i = 0 ; i < 400 ; i++ )
-			{
-				addressToTest.Add( IPAddress.Parse( "192.168.1.27" ) );
-			}
-			PingSender.TaskPinger( addressToTest ,200);
-		}
 
 		#endregion //PingRegion
 
 		[Test]
 		public void GetHostNameTest()
 		{
-			List<Task> tasks = new List<Task>();
-			Task T1 = Task.Factory.StartNew( () =>
-				{
-					for( int i = 0 ; i < 400 ; i++ )
-					{
-						Console.WriteLine( i );
-						tasks.Add( ReverseDnsResolver.GetHostName( IPAddress.Parse( "10.8.99.66" ) ) );
-					}
-				} );
-			T1.Wait();
-			Task.WaitAll( tasks.ToArray() );
+			for( int i = 0 ; i < 400 ; i++ )
+			{
+				Console.WriteLine( i );
+				new ReverseDnsResolver().GetHostName( IPAddress.Parse( "8.8.8.8" ) );
+			}
 			Console.WriteLine( "ok" );
         }
 
         #region PortScanRegion
 
         [Test]
-        public void PerformTestScanPort()
+        public void PerformTestScanPortWithParallelForeach()
         {
-			List<Task> tasks = new List<Task>();
-			Task T1 = Task.Factory.StartNew( () =>
+			List<int> inc = new List<int>();
+			for ( int i = 0; i < 1024; i++ )
 			{
-				for(int i = 0 ; i < 1024 ; i++ )
-					tasks.Add( PortScanner.ScanPort( IPAddress.Parse( "5.9.87.133" ), i) );
-			} );
-			T1.Wait();
-			Task.WaitAll( tasks.ToArray() );
+				inc.Add(i);
+			}
+			Parallel.ForEach<int>(inc,new ParallelOptions { MaxDegreeOfParallelism = 200 }, i => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), i));
 			Console.WriteLine( "ok" );
         }
-
+		
+        [Test]
+        public void PerformTestScanPortWithTasks()
+        {
+			const int taskCount = 200;
+			List<Task> tasks = new List<Task>();
+			for (int i = 0; i < taskCount; i++)
+			{
+				int temp = i;
+				tasks.Add(Task.Factory.StartNew( () => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), temp ) ));
+			}
+			Task.WaitAll( tasks.ToArray() );
+		}
         #endregion // PortScanRegion
 
 		[Test]
