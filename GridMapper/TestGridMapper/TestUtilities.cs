@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +12,7 @@ using System.Threading;
 namespace GridMapper.Test
 {
 	[TestFixture]
-	public class TestUtilities
+	public class TestARP
 	{
 
 		#region ARPRegion
@@ -92,6 +92,10 @@ namespace GridMapper.Test
 
         #endregion //ARPRegion
 
+	}
+	[TestFixture]
+	public class TestPING
+	{
 		#region PingRegion
 
 		[Test]
@@ -110,7 +114,11 @@ namespace GridMapper.Test
 
 
 		#endregion //PingRegion
-
+		
+    }
+	[TestFixture]
+	public class TestDNSSolver
+	{
 		[Test]
 		public void GetHostNameTest()
 		{
@@ -121,12 +129,29 @@ namespace GridMapper.Test
 			}
 			Console.WriteLine( "ok" );
         }
-
+		
+    }
+	[TestFixture]
+	public class TestPortScan
+	{
         #region PortScanRegion
 
         [Test]
         public void PerformTestScanPortWithParallelForeach()
-        {
+		{
+			int minWORK;
+			int minIOC;
+			int maxWORK;
+			int maxIOC;
+			ThreadPool.GetMinThreads( out minWORK, out minIOC );
+			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
+			Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			Console.WriteLine( "max : " + maxWORK + " " + maxIOC );
+			if ( ThreadPool.SetMinThreads( 50, 50 ) )
+			{
+				ThreadPool.GetMinThreads( out minWORK, out minIOC );
+				Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			}
 			List<int> inc = new List<int>();
 			for ( int i = 0; i < 1024; i++ )
 			{
@@ -135,21 +160,65 @@ namespace GridMapper.Test
 			Parallel.ForEach<int>(inc,new ParallelOptions { MaxDegreeOfParallelism = 200 }, i => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), i));
 			Console.WriteLine( "ok" );
         }
-		
-        [Test]
-        public void PerformTestScanPortWithTasks()
-        {
-			const int taskCount = 200;
+
+		[Test]
+		public void PerformTestScanPortWithTasks()
+		{
+			int minWORK;
+			int minIOC;
+			int maxWORK;
+			int maxIOC;
+			ThreadPool.GetMinThreads( out minWORK, out minIOC );
+			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
+			Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			Console.WriteLine( "max : " + maxWORK + " " + maxIOC );
+			if ( ThreadPool.SetMinThreads( 50, 50 ) )
+			{
+				ThreadPool.GetMinThreads( out minWORK, out minIOC );
+				Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			}
+			const int taskCount = 1024;
 			List<Task> tasks = new List<Task>();
-			for (int i = 0; i < taskCount; i++)
+			for ( int i = 0; i < taskCount; i++ )
 			{
 				int temp = i;
-				tasks.Add(Task.Factory.StartNew( () => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), temp ) ));
+				tasks.Add( Task.Factory.StartNew( () => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), temp ) ) );
 			}
 			Task.WaitAll( tasks.ToArray() );
 		}
-        #endregion // PortScanRegion
 
+		[Test]
+		public void PerformTestScanPortWithPLINQ()
+		{
+			const int taskCount = 1024;
+			int minWORK;
+			int minIOC;
+			int maxWORK;
+			int maxIOC;
+			ThreadPool.GetMinThreads( out minWORK, out minIOC );
+			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
+			Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			Console.WriteLine( "max : " + maxWORK + " " + maxIOC );
+			if ( ThreadPool.SetMinThreads( 50, 50 ) )
+			{
+				ThreadPool.GetMinThreads( out minWORK, out minIOC );
+				Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			}
+			List<Action> tasks = new List<Action>();
+			for ( int i = 0; i < taskCount; i++ )
+			{
+				int temp = i;
+				tasks.Add( () => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), temp ) );
+			}
+			Task task = Task.Factory.StartNew( () => tasks.AsParallel().WithDegreeOfParallelism( 50 ).ForAll(t => t.Invoke()) );
+			task.Wait();
+		}
+        #endregion // PortScanRegion
+		
+    }
+	[TestFixture]
+	public class TestIpRange
+	{
 		[Test]
 		public void IpRange()
 		{

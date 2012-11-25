@@ -20,15 +20,19 @@ namespace GridMapper
 			try
 			{
 				s.Connect(IPAddr, PortToScan);
-				if (s.Connected == true) // Port is in use and connection is successful
-					Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN");
+				if ( s.Connected == true ) // Port is in use and connection is successful
+				{
+					//Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN");
+				}
 				s.Close();
 				return true;
 			}
 			catch ( SocketException ex )
 			{
 				if ( ex.ErrorCode == 10061 )  // Port is unused and could not establish connection
-					Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE");
+				{
+					//Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE");
+				}
 				return false;
 			}
         }
