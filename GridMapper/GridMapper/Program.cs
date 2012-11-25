@@ -40,7 +40,7 @@ namespace GridMapper
 			string[] startupArgs = Environment.GetCommandLineArgs();
 			if ( startupArgs.Length > 1)
 			{
-				Startup StartupOptions = new Startup();
+				Option StartupOptions = new Option();
 
 				IntPtr ptr = GetForegroundWindow();
 				int u;
@@ -70,9 +70,9 @@ namespace GridMapper
 			
 		}
 
-		static void ConsoleMain( string[] startupArgs, Startup StartupOptions )
+		static void ConsoleMain( string[] startupArgs, Option StartupOptions )
 		{
-			Utilities.Arguments args = new Utilities.Arguments( startupArgs );
+			Arguments args = new Arguments( startupArgs );
 			Console.Title = "GridMapper";
 
 			if ( StartupOptions.CmdConsole )

@@ -7,14 +7,14 @@ using System.Net;
 namespace GridMapper
 {
 
-	class Startup
+	public class Option
 	{
 		bool _cmdConsole;
 		int _maximumTasks;
 		List<IPAddress> _ipToTest;
 		int _pingTimeout;
 
-		public Startup()
+		public Option()
 		{
 			_cmdConsole = false;
 			_maximumTasks = 50;
