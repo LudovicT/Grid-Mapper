@@ -23,12 +23,12 @@ namespace GridMapper.NetworkModelObject
 		static ConcurrentDictionary<IPAddress, IPHostEntry> _hostsEntries = new ConcurrentDictionary<IPAddress, IPHostEntry>();
 		static ConcurrentDictionary<IPAddress, bool[]> _portsStatus = new ConcurrentDictionary<IPAddress, bool[]>();
 
-		//static bool HostsEntitiesIsModified = false;
-		//static bool HostsIsModified = false;
+		static bool HostsEntitiesIsModified = false;
+		static bool HostsIsModified = false;
 
-		//static bool IPAddressesIsModified = false;
-		//static bool MacAddressesIsModified = false;
-		//static bool HostsEntriesIsModified = false;
+		static bool IPAddressesIsModified = false;
+		static bool MacAddressesIsModified = false;
+		static bool HostsEntriesIsModified = false;
 
 		public static event NewIpDetectedEventHandler NewIpDetected;
 		public static event AddIPAddressEventHandler IPAddressAdded;
