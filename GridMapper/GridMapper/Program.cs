@@ -78,13 +78,7 @@ namespace GridMapper
 
 			if ( StartupOptions.CmdConsole )
 			{
-				//hide the path message
-				string blankSpace = string.Empty;
-				for ( int i = 0; i <= Environment.CurrentDirectory.Length; i++ )
-				{
-					blankSpace += " ";
-				}
-				Console.WriteLine( "\r" + blankSpace );
+				ConsoleHelper.DeletePath();
 			}
 
 			int maxTasks;
@@ -92,7 +86,7 @@ namespace GridMapper
 			if ( args.IsTrue( "h" ) || args.IsTrue( "?" ) || args.IsTrue( "help" ) || 
 				 args.Exists( "h" ) || args.Exists( "?" ) || args.Exists( "help" ) )
 			{
-				printHelp();
+				ConsoleHelper.PrintHelp();
 			}
 			else
 			{
@@ -132,16 +126,6 @@ namespace GridMapper
 				Console.WriteLine( "Press a key to continue ..." );
 				Console.ReadKey( true );
 			}
-		}
-
-		static void printHelp()
-		{
-			Console.WriteLine( "Usage : gridmapper [-h|-?] [-t]" );
-			Console.WriteLine( "" );
-			Console.WriteLine( "Options :" );
-			Console.WriteLine( "	-h,-help	Print this help message" );
-			Console.WriteLine( "	-?			Print this help message" );
-			Console.WriteLine( "	-t,-tasks	Specify the maximum simultanous task running (default is 50)" );
 		}
 
 	}

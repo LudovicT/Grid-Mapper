@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,6 @@ namespace GridMapper
 
         public bool ScanPort( IPAddress IPAddr, int PortToScan )
         {
-			// METHODE DE VINCENT
 			Socket s = new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
 			try
 			{
