@@ -10,14 +10,30 @@ namespace GridMapper
 {
 	public class IPRange
 	{
-		public static List<IPAddress> IpRange( IPAddress ip, int maskBits )
+		public static uint IPAddressToUint(IPAddress ip)
 		{
 			byte[] addressBytes = ip.GetAddressBytes();
-			int intIP = addressBytes[0] * 16777216 + addressBytes[1] * 65536 + addressBytes[2] * 256 + addressBytes[3];
+			uint intIP;
+			if ( BitConverter.IsLittleEndian )
+			{
+				intIP =(uint)( addressBytes[0] * 16777216 + addressBytes[1] * 65536 + addressBytes[2] * 256 + addressBytes[3]);
+			}
+			else
+			{
+				intIP =(uint) (addressBytes[3] * 16777216 + addressBytes[2] * 65536 + addressBytes[1] * 256 + addressBytes[0]);
+			}
+			return intIP;
+		}
+
+		public static List<uint> IpRange( IPAddress ip, int maskBits )
+		{
+			byte[] addressBytes = ip.GetAddressBytes();
+			int intIP = 0;
+			intIP = (int)IPAddressToUint( ip );
 			int mask = ~( ( 1 << ( 32 - maskBits ) ) - 1 );
 			int StartIP = intIP & mask;
 			int EndIP = ( intIP & mask ) | ~mask;
-			List<IPAddress> IPs = new List<IPAddress>();
+			List<uint> IPs = new List<uint>();
 
 			//dodge an infinite loop
 			if ( StartIP < 0 )
@@ -26,14 +42,13 @@ namespace GridMapper
 				EndIP = StartIP;
 				StartIP = temp;
 			}
-
-			for ( uint i = (uint)StartIP; i <= (uint)EndIP; i++ )
-			{
-				IPs.Add( IPAddress.Parse( i.ToString() ) );
-			}
+			uint startIP = (uint)StartIP;
+			uint endIP = (uint)EndIP;
+			IPs.Add( startIP );
+			IPs.Add( endIP );
 			return IPs;
 		}
-		public static List<IPAddress> AutoIpRange()
+		public static List<uint> AutoIpRange()
 		{
 			IPAddress machineIP = IPAddress.None;
 			foreach ( IPAddress ip in System.Net.Dns.GetHostEntry( Environment.MachineName ).AddressList )
@@ -76,7 +91,7 @@ namespace GridMapper
 			Console.WriteLine("i = " +i+" & cidr = "+ CIDR);
 			if ( i == 4 && CIDR == -1)
 			{
-				throw new OperationCanceledException();
+				throw new InvalidOperationException();
 			}
 			return CIDR;
 		}
