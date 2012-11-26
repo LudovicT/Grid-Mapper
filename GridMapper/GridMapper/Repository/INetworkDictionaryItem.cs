@@ -13,11 +13,12 @@ namespace GridMapper.Repository
 		IHost Host { get; }
 		IHostEntity HostEntity { get; } //test si il est possible de créer un hostentity
 		PingReply PingReply { get; }
+		IPAddress IPAddress { get; }
 		PhysicalAddress MacAddress { get; }
 		IPHostEntry HostEntry { get; }
 		bool[] PortStatus { get; }
 
 		//juste des idées
-		bool update(Object o);//on lui passe l'objet a update 
+		bool Update( INetworkDictionaryItem networkDictionaryItem );//on lui passe l'objet a update 
 	}
 }

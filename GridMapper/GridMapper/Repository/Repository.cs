@@ -17,22 +17,29 @@ namespace GridMapper.Repository
 			get { return _networkDictionaryItems; } 
 		}
 
-		Repository()
+		public Repository()
 		{
 			_networkDictionaryItems = new ConcurrentDictionary<IPAddress, INetworkDictionaryItem>();
 		}
 
-		//INetworkDictionaryItem Find(IPAddress ipAddress )
-		//{
-		//    INetworkDictionaryItem networkDictionaryItem;
-		//    _networkDictionaryItems.TryGetValue( ipAddress, out networkDictionaryItem );
-		//    return networkDictionaryItem;
-		//}
-
 		public bool AddOrUpdate( IPAddress ipAddress, PingReply pingReply )
 		{
-			_networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem() );
-			return true;
+			if( !_networkDictionaryItems.ContainsKey( ipAddress ) )
+				return _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( pingReply ) );
+			INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
+			networkDictionaryItem.Update( new NetworkDictionaryItem( pingReply ) );
+			return _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
+
+			//if( _networkDictionaryItems.ContainsKey( ipAddress ) )
+			//{
+			//    INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
+			//    networkDictionaryItem.update( new NetworkDictionaryItem( pingReply ) );
+			//    return _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
+			//}
+			//else
+			//{
+			//    return _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( pingReply ) );
+			//}
 		}
 	}
 }
