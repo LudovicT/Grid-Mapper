@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="NetworkModelObject\ClassNetwork\Host.cs" />
     <Compile Include="NetworkModelObject\ClassNetwork\HostEntity.cs" />
+    <Compile Include="NetworkModelObject\ClassNetwork\OS.cs" />
     <Compile Include="NetworkModelObject\INetwork\IAdministrableSwitch.cs" />
     <Compile Include="NetworkModelObject\INetwork\ICAMdata.cs" />
     <Compile Include="NetworkModelObject\INetwork\IFirewall.cs" />

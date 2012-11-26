@@ -17,8 +17,9 @@ namespace GridMapper.Repository
 		PhysicalAddress MacAddress { get; }
 		IPHostEntry HostEntry { get; }
 		bool[] PortStatus { get; }
+		IOS OS { get; }
 
-		//juste des idées
-		bool Update( INetworkDictionaryItem networkDictionaryItem );//on lui passe l'objet a update 
+		bool Update( INetworkDictionaryItem networkDictionaryItem );
+		bool ChangePort( int index, bool statusPort );
 	}
 }
