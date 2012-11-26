@@ -89,8 +89,10 @@
     <ApplicationIcon>Logo_GridMapper.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IPAddressControlLib">
-      <HintPath>.\IPAddressControlLib.dll</HintPath>
+    <Reference Include="IPAddressControlLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=55e96405d8fd6d61, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>resx\IPAddressControlLib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
