@@ -95,36 +95,34 @@ namespace GridMapper
 					IPsParser parser = new IPsParser();
 					List<IPAddress> test = parser.IPArgumentsParser(args.Single("IP"));
 				}
-				if ( ( args.Exists( "t" ) &&	 int.TryParse( args.Single( "t" ), out maxTasks ) ) 
-					|| args.Exists( "tasks" ) && int.TryParse( args.Single( "tasks" ), out maxTasks ) )
+				if( args.Exists( "t" ) || args.Exists( "tasks" ) )
 				{
-					if ( maxTasks >= 5 && maxTasks <= 2000 )
+					if ( int.TryParse( args.Single( "t" ), out maxTasks )|| int.TryParse( args.Single( "tasks" ), out maxTasks ) )
 					{
-						StartupOptions.MaximumTasks = maxTasks;
+						if ( maxTasks >= 5 && maxTasks <= 400 )
+						{
+							StartupOptions.MaximumTasks = maxTasks;
+						}
+						else
+						{
+							Console.WriteLine( "The number of tasks must be between 5 and 2000, reasonnable limit is around 500" );
+						}
 					}
 					else
 					{
-						Console.WriteLine( "The number of tasks must be between 5 and 2000, reasonnable limit is around 500" );
+						Console.WriteLine( "Invalid argument for -t" );
 					}
-				}
-				else
-				{
-					Console.WriteLine( "Invalid argument for -t" );
 				}
 			}
 
 
 			if ( StartupOptions.CmdConsole )
 			{
-				//show the path message
-				Console.WriteLine( Environment.NewLine );
-				Console.Write( Environment.CurrentDirectory.ToString() + ">" );
+				ConsoleHelper.ShowPath();
 			}
 			else
 			{
-				Console.WriteLine( Environment.NewLine );
-				Console.WriteLine( "Press a key to continue ..." );
-				Console.ReadKey( true );
+				ConsoleHelper.EndOfProgram();
 			}
 		}
 
