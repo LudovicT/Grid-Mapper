@@ -27,5 +27,17 @@ namespace GridMapper
 			Console.WriteLine( "\r" + blankSpace );
 		}
 
+		public static void ShowPath()
+		{
+			Console.WriteLine( Environment.NewLine );
+			Console.Write( Environment.CurrentDirectory.ToString() + ">" );
+		}
+		
+		public static void EndOfProgram()
+		{
+			Console.WriteLine( Environment.NewLine );
+			Console.WriteLine( "Press a key to continue ..." );
+			Console.ReadKey( true );
+		}
 	}
 }

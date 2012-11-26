@@ -116,15 +116,11 @@ namespace GridMapper
 
 			if ( StartupOptions.CmdConsole )
 			{
-				//show the path message
-				Console.WriteLine( Environment.NewLine );
-				Console.Write( Environment.CurrentDirectory.ToString() + ">" );
+				ConsoleHelper.ShowPath();
 			}
 			else
 			{
-				Console.WriteLine( Environment.NewLine );
-				Console.WriteLine( "Press a key to continue ..." );
-				Console.ReadKey( true );
+				ConsoleHelper.EndOfProgram();
 			}
 		}
 
