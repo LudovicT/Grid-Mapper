@@ -222,12 +222,22 @@ namespace GridMapper.Test
 		public void IpRange()
 		{
 			IPAddress ip = IPAddress.Parse("10.8.110.230");
-			IPRange.IpRange(ip,20);
+			List<uint> ips = IPRange.IpRange(ip,20);
+			ips.Sort();
+			for ( uint i = ips[0]; i < ips[1] ; i++ )
+			{
+				Console.WriteLine(IPAddress.Parse(i.ToString()));
+			}
 		}
 		[Test]
 		public void AutoIpRange()
 		{
-			IPRange.AutoIpRange().ForEach( IP => Console.WriteLine( IP ));
+			List<uint> ips = IPRange.AutoIpRange();
+			ips.Sort();
+			for ( uint i = ips[0]; i < ips[1]; i++ )
+			{
+				Console.WriteLine( IPAddress.Parse( i.ToString() ) );
+			}
 		}
 		#endregion //IPRange
     }
