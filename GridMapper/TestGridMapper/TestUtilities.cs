@@ -84,10 +84,10 @@ namespace GridMapper.Test
 				//Ips.Add( TrueIp );
 				Ips.Add( TrueIp );
 			}
-			//NetworkUtilities.TaskGetMacAddress( Ips );
+			NetworkUtilities.TaskGetMacAddress( Ips );
 		}
 
-#endregion //ARPRegion
+        #endregion //ARPRegion
 
 		#region PingRegion
 
@@ -99,7 +99,7 @@ namespace GridMapper.Test
 			{
 				addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
 			}
-			NetworkUtilities.ListPinger( addressToTest );
+			NetworkUtilities.ListPinger( addressToTest ,200);
 		}
 
 		[Test]
@@ -110,7 +110,7 @@ namespace GridMapper.Test
 			{
 				addressToTest.Add( IPAddress.Parse( "192.168.1.27" ) );
 			}
-			NetworkUtilities.TaskPinger( addressToTest );
+			NetworkUtilities.TaskPinger( addressToTest ,200);
 		}
 
 		#endregion //PingRegion
@@ -130,7 +130,36 @@ namespace GridMapper.Test
 			T1.Wait();
 			Task.WaitAll( tasks.ToArray() );
 			Console.WriteLine( "ok" );
-		}
+        }
 
-	}
+        #region PortScanRegion
+
+        [Test]
+        public void PerformTestScanPort()
+        {
+			List<Task> tasks = new List<Task>();
+			Task T1 = Task.Factory.StartNew( () =>
+			{
+				for(int i = 0 ; i < 1024 ; i++ )
+					tasks.Add( NetworkUtilities.ScanPort( IPAddress.Parse( "5.9.87.133" ), i) );
+			} );
+			T1.Wait();
+			Task.WaitAll( tasks.ToArray() );
+			Console.WriteLine( "ok" );
+        }
+
+        #endregion // PortScanRegion
+
+		[Test]
+		public void IpRange()
+		{
+			IPAddress ip = IPAddress.Parse("10.8.110.230");
+			NetworkUtilities.IpRange(ip,20);
+		}
+		[Test]
+		public void AutoIpRange()
+		{
+			NetworkUtilities.AutoIpRange().ForEach( IP => Console.WriteLine( IP ));
+		}
+    }
 }
