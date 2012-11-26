@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using GridMapper.Parameters;
 
 namespace GridMapper
 {
@@ -95,6 +96,11 @@ namespace GridMapper
 			}
 			else
 			{
+				if ( args.Exists("IP"))
+				{
+					IPsParser parser = new IPsParser();
+					List<IPAddress> test = parser.IPArgumentsParser(args.Single("IP"));
+				}
 				if ( ( args.Exists( "t" ) &&	 int.TryParse( args.Single( "t" ), out maxTasks ) ) 
 					|| args.Exists( "tasks" ) && int.TryParse( args.Single( "tasks" ), out maxTasks ) )
 				{

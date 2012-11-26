@@ -131,6 +131,7 @@
     <Compile Include="NetworkUtilities\PortScanner.cs" />
     <Compile Include="NetworkUtilities\ReverseDnsResolver.cs" />
     <Compile Include="NetworkUtilities\WMI.cs" />
+    <Compile Include="Parameters\IPsParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawPacketSender.cs" />
