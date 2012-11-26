@@ -26,7 +26,6 @@ namespace GridMapper.Repository
 		public IPHostEntry HostEntry { get { return _hostEntry; } }
 		public bool[] PortStatus { get { return _portStatus; } }
 
-		//juste des idées
 		public bool Update( INetworkDictionaryItem networkDictionaryItem )
 		{
 			//peut etre une methode plus mieu
@@ -36,20 +35,48 @@ namespace GridMapper.Repository
 			if( networkDictionaryItem.IPAddress != null ) _ipAddress = networkDictionaryItem.IPAddress;
 			if( networkDictionaryItem.MacAddress != null ) _macAddress = networkDictionaryItem.MacAddress;
 			if( networkDictionaryItem.HostEntry != null ) _hostEntry = networkDictionaryItem.HostEntry;
-			//pas sur que cela fonctionne
-			if( networkDictionaryItem.PortStatus == _portStatus ) _portStatus = networkDictionaryItem.PortStatus;
 
+			return true; //fail
+		}
+
+		public bool ChangePort( int indexPort, bool portStatus )
+		{
+			_portStatus[index] = valeur;
 			return true;
 		}
 
 		internal NetworkDictionaryItem()
+			: this( null, null, null ,null)
+		{
+		}
+
+		internal NetworkDictionaryItem(IPAddress ipAddress)
+			: this( ipAddress, null, null, null )
 		{
 		}
 
 		internal NetworkDictionaryItem(PingReply pingReply)
+			: this( pingReply.Address, pingReply, null, null )
 		{
-			_ipAddress = pingReply.Address;
+		}
+
+		internal NetworkDictionaryItem( IPAddress ipAddress, IPHostEntry hostEntry )
+			: this( ipAddress, null, null, hostEntry )
+		{
+		}
+
+		internal NetworkDictionaryItem( IPAddress ipAddress, PhysicalAddress macAddress )
+			: this( ipAddress, null, macAddress, null )
+		{
+		}
+
+		internal NetworkDictionaryItem( IPAddress ipAddress, PingReply pingReply, PhysicalAddress macAddress, IPHostEntry hostEntry )
+		{
+			_ipAddress = ipAddress;
 			_pingReply = pingReply;
+			_macAddress = macAddress;
+			_hostEntry = hostEntry;
+			_portStatus = new bool[65536];
 		}
 	}
 }

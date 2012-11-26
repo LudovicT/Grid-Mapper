@@ -24,22 +24,73 @@ namespace GridMapper.Repository
 
 		public bool AddOrUpdate( IPAddress ipAddress, PingReply pingReply )
 		{
-			if( !_networkDictionaryItems.ContainsKey( ipAddress ) )
-				return _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( pingReply ) );
-			INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
-			networkDictionaryItem.Update( new NetworkDictionaryItem( pingReply ) );
-			return _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
-
-			//if( _networkDictionaryItems.ContainsKey( ipAddress ) )
-			//{
-			//    INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
-			//    networkDictionaryItem.update( new NetworkDictionaryItem( pingReply ) );
-			//    return _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
-			//}
-			//else
-			//{
+			//if( !_networkDictionaryItems.ContainsKey( ipAddress ) )
 			//    return _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( pingReply ) );
-			//}
+			//INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
+			//networkDictionaryItem.Update( new NetworkDictionaryItem( pingReply ) );
+			//return _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
+
+			if( _networkDictionaryItems.ContainsKey( ipAddress ) )
+			{
+				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
+				networkDictionaryItem.Update( new NetworkDictionaryItem( pingReply ) );
+				return _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
+			}
+			else
+			{
+				return _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( pingReply ) );
+			}
+		}
+
+		public bool AddOrUpdate( IPAddress ipAddress, PhysicalAddress macAddress )
+		{
+			if( _networkDictionaryItems.ContainsKey( ipAddress ) )
+			{
+				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
+				networkDictionaryItem.Update( new NetworkDictionaryItem( ipAddress, macAddress ) );
+				return _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
+			}
+			else
+			{
+				return _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, macAddress ) );
+			}
+		}
+
+		public bool AddOrUpdate( IPAddress ipAddress, IPHostEntry hostEntry)
+		{
+			if( _networkDictionaryItems.ContainsKey( ipAddress ) )
+			{
+				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
+				networkDictionaryItem.Update( new NetworkDictionaryItem( ipAddress, hostEntry ) );
+				return _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
+			}
+			else
+			{
+				return _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, hostEntry ) );
+			}
+		}
+
+		public bool AddOrUpdate( IPAddress ipAddress, int indexPort, bool statusPort )
+		{
+			if( _networkDictionaryItems.ContainsKey( ipAddress ) )
+			{
+				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
+				networkDictionaryItem.ChangePort( indexPort, statusPort );
+				return _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
+			}
+			else
+			{
+				//FAIL
+				_networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress ) );
+				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
+				networkDictionaryItem.ChangePort( indexPort, statusPort );
+				return _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
+			}
+		}
+
+		public ICollection<IPAddress> GetIPAddresses()
+		{
+			return _networkDictionaryItems.Keys;
 		}
 	}
 }
