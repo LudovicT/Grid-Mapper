@@ -105,7 +105,7 @@
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -142,6 +142,7 @@
             this.startScanToolStripMenuItem.Name = "startScanToolStripMenuItem";
             this.startScanToolStripMenuItem.Size = new System.Drawing.Size(85, 24);
             this.startScanToolStripMenuItem.Text = "Start scan";
+            this.startScanToolStripMenuItem.Click += new System.EventHandler(this.startScanToolStripMenuItem_Click);
             // 
             // toolStrip1
             // 

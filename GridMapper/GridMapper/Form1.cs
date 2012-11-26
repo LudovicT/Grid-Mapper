@@ -34,7 +34,7 @@ namespace GridMapper
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp";
+            openFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp|Text File|*.txt|Other XML File|*.*";
             openFileDialog1.Title = "Select a Map File";
 
             // Show the Dialog.
@@ -67,12 +67,7 @@ namespace GridMapper
             // take a look
             //System.Diagnostics.Process.Start(@"C:\Windows");
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp";
-            openFileDialog1.Title = "Select a Map File";
-
-            // Show the Dialog.
-            // If the user clicked OK in the dialog and
-            // a .CUR file was selected, open it.
+            openFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp|Text File|*.txt|Other XML File|*.*";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 // Assign the cursor in the Stream to the Form's Cursor property.
@@ -85,7 +80,7 @@ namespace GridMapper
             // Displays a SaveFileDialog so the user can save the Image
             // assigned to Button2.
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp";
+            saveFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp|Text File|*.txt";
             saveFileDialog1.Title = "Save a Map File";
             saveFileDialog1.ShowDialog();
 
@@ -105,7 +100,7 @@ namespace GridMapper
             // Displays a SaveFileDialog so the user can save the Image
             // assigned to Button2.
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp";
+            saveFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp|Text File|*.txt";
             saveFileDialog1.Title = "Save a Map File";
             saveFileDialog1.ShowDialog();
 
@@ -118,6 +113,11 @@ namespace GridMapper
 
                 fs.Close();
             }
+        }
+
+        private void startScanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 	}
 }
