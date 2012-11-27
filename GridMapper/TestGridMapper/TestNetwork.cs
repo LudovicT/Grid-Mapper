@@ -7,9 +7,21 @@ using System.Net.NetworkInformation;
 using System.Net;
 using GridMapper.NetworkModelObject;
 using System.Threading;
+using System.Reflection;
 
 namespace GridMapper.Test
 {
+	[TestFixture]
+	public class TestTaskManager
+	{
+		[Test]
+		public void ExecuteTask()
+		{
+			PingReply ping = (PingReply)new TaskManager().run( new PingSender().Ping( IPAddress.Parse( "192.168.1.1" ) ) );
+			Console.WriteLine( ping.Address + " " + ping.Status );
+
+		}
+	}
 	//[TestFixture]
 	//public class TestNetwork
 	//{

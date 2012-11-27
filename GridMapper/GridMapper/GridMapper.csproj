@@ -143,6 +143,7 @@
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\NetworkDictionaryItem.cs" />
     <Compile Include="Repository\Repository.cs" />
+    <Compile Include="TaskManager.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

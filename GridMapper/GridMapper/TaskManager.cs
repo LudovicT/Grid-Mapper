@@ -8,9 +8,10 @@ namespace GridMapper
 {
 	public class TaskManager
 	{
-		public object run(Func<object> action)
+		public object run(object action)
 		{
-			Task<object> task = Task.Factory.StartNew<object>( action );
+			Task<object> task = Task.Factory.StartNew<object>(() =>  action );
+			task.Wait();
 			return task.Result;
 		}
 	}
