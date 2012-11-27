@@ -41,7 +41,7 @@ namespace GridMapper
 								_repository.AddOrUpdate( ip, pingSender.Ping( ip ) );
 							} );
 					}
-				} ).ContinueWith( (a) =>
+				} ).ContinueWith( ( a ) =>
 					{
 						ARPSender arpSender = new ARPSender();
 						ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
@@ -56,7 +56,10 @@ namespace GridMapper
 								_repository.AddOrUpdate( ip, dnsResolver.GetHostName( ip ) );
 							} );
 						}
-					} );
+					} ).ContinueWith( ( b ) =>
+						{
+							//fait peter l'event
+						} );
 		}
 
 		#endregion

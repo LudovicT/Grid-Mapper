@@ -17,6 +17,7 @@ namespace GridMapper
 		{
 			_timeout = 200;
 		}
+
 		public PingSender( Option op )
 		{
 			_timeout = op.PingTimeout;
