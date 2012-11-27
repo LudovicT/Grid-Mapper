@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 using System.Net.NetworkInformation;
 using GridMapper.NetworkModelObject;
 
-namespace GridMapper.Repository
+namespace GridMapper.NetworkRepository
 {
 	public class Repository : IRepository
 	{

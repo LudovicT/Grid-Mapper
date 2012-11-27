@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Threading;
 using GridMapper.NetworkModelObject;
-using GridMapper.Repository;
+using GridMapper.NetworkRepository;
+using System.Net.NetworkInformation;
 
 namespace GridMapper
 {
@@ -30,13 +31,40 @@ namespace GridMapper
 
 		public void StartScan()
 		{
-			throw new NotImplementedException();
+			Task task1 = Task.Factory.StartNew( () =>
+				{
+					PingSender pingSender = new PingSender( Option );
+					foreach( IPAddress ip in _option.IpToTest )
+					{
+						Task task2 = Task.Factory.StartNew( () =>
+							{
+								_repository.AddOrUpdate( ip, pingSender.Ping( ip ) );
+							} );
+					}
+				} ).ContinueWith( (a) =>
+					{
+						ARPSender arpSender = new ARPSender();
+						ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
+						foreach( IPAddress ip in _repository.GetIPAddresses() )
+						{
+							Task task2 = Task.Factory.StartNew( () =>
+							{
+								_repository.AddOrUpdate( ip, arpSender.GetMac( ip ) );
+							} );
+							Task task3 = Task.Factory.StartNew( () =>
+							{
+								_repository.AddOrUpdate( ip, dnsResolver.GetHostName( ip ) );
+							} );
+						}
+					} );
 		}
 
 		#endregion
 
-		public Execution( Option StartupOptions )
+		public Execution( Option startupOptions )
 		{
+			_option = startupOptions;
+			_repository = new Repository();
 		}
 	}
 }

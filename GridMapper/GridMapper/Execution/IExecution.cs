@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GridMapper.Repository;
+using GridMapper.NetworkRepository;
 
 namespace GridMapper
 {

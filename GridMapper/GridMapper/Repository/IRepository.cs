@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using GridMapper.NetworkModelObject;
 
-namespace GridMapper.Repository
+namespace GridMapper.NetworkRepository
 {
 	public interface IRepository
 	{
