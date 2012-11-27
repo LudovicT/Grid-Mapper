@@ -93,7 +93,11 @@ namespace GridMapper
 				if ( args.Exists("IP"))
 				{
 					IPsParser parser = new IPsParser();
-					List<IPAddress> test = parser.IPArgumentsParser(args.Single("IP"));
+					List<IPAddress> IPsToHandle = parser.IPArgumentsParser(args.Single("IP"));
+					foreach (IPAddress IP in IPsToHandle)
+					{
+						Console.WriteLine(IP);
+					}
 				}
 				if( args.Exists( "t" ) || args.Exists( "tasks" ) )
 				{
