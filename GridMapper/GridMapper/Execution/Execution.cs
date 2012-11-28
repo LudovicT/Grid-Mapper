@@ -15,19 +15,14 @@ namespace GridMapper
 	{
 		Option _option;
 		IRepository _repository;
+		TaskManager _taskManager;
 
 
 		#region IExecution Membres
 
-		public Option Option
-		{
-			get { return _option; }
-		}
+		public Option Option { get { return _option; } }
 
-		public IRepository Repository
-		{
-			get { return _repository; }
-		}
+		public IRepository Repository { get { return _repository; } }
 
 		public void StartScan()
 		{
