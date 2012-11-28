@@ -39,7 +39,6 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.LoadScan = new System.Windows.Forms.ToolStripButton();
             this.SaveScan = new System.Windows.Forms.ToolStripButton();
@@ -49,6 +48,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.ProgressScan = new System.Windows.Forms.ProgressBar();
+            this.startToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.fastScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.portScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.iPScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -77,7 +80,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.optionToolStripMenuItem,
-            this.startScanToolStripMenuItem});
+            this.startToolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
@@ -134,15 +137,8 @@
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(130, 24);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.optionsToolStripMenuItem.Text = "Options";
-            // 
-            // startScanToolStripMenuItem
-            // 
-            this.startScanToolStripMenuItem.Name = "startScanToolStripMenuItem";
-            this.startScanToolStripMenuItem.Size = new System.Drawing.Size(85, 24);
-            this.startScanToolStripMenuItem.Text = "Start scan";
-            this.startScanToolStripMenuItem.Click += new System.EventHandler(this.startScanToolStripMenuItem_Click);
             // 
             // toolStrip1
             // 
@@ -246,6 +242,34 @@
             this.ProgressScan.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.ProgressScan.TabIndex = 8;
             // 
+            // startToolStripMenuItem1
+            // 
+            this.startToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fastScanToolStripMenuItem,
+            this.portScanToolStripMenuItem,
+            this.iPScanToolStripMenuItem});
+            this.startToolStripMenuItem1.Name = "startToolStripMenuItem1";
+            this.startToolStripMenuItem1.Size = new System.Drawing.Size(52, 24);
+            this.startToolStripMenuItem1.Text = "Start";
+            // 
+            // fastScanToolStripMenuItem
+            // 
+            this.fastScanToolStripMenuItem.Name = "fastScanToolStripMenuItem";
+            this.fastScanToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.fastScanToolStripMenuItem.Text = "Fast scan";
+            // 
+            // portScanToolStripMenuItem
+            // 
+            this.portScanToolStripMenuItem.Name = "portScanToolStripMenuItem";
+            this.portScanToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.portScanToolStripMenuItem.Text = "Port scan";
+            // 
+            // iPScanToolStripMenuItem
+            // 
+            this.iPScanToolStripMenuItem.Name = "iPScanToolStripMenuItem";
+            this.iPScanToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.iPScanToolStripMenuItem.Text = "IP scan";
+            // 
             // GridWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -299,7 +323,10 @@
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem startScanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem fastScanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem portScanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem iPScanToolStripMenuItem;
 	}
 }
 
