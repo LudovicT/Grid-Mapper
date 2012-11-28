@@ -12,11 +12,19 @@ namespace GridMapper.NetworkRepository
 	{
 		IDictionary<IPAddress, INetworkDictionaryItem> NetworkDictionaryItems { get; }
 
-		bool AddOrUpdate( IPAddress ipAddress, PingReply pingReply );
-		bool AddOrUpdate( IPAddress ipAddress, PhysicalAddress macAddress );
-		bool AddOrUpdate( IPAddress ipAddress, IPHostEntry hostEntry);
-		bool AddOrUpdate( IPAddress ipAddress, int indexPort, bool statusPort );
-		bool AddOrUpdate( IPAddress ipAddress, IOS os );
+		//a changer par des interface
+		//public event RepositoryUpdatedEventHandler OnRepositoryUpdated;
+		//public delegate void RepositoryUpdatedEventHandler( object sender, RepositoryUpdatedEventArg e );
+
+		void AddOrUpdate( IPAddress ipAddress, PingReply pingReply );
+		void AddOrUpdate( IPAddress ipAddress, PhysicalAddress macAddress );
+		void AddOrUpdate( IPAddress ipAddress, IPHostEntry hostEntry );
+		void AddOrUpdate( IPAddress ipAddress, int indexPort, bool statusPort );
+		void AddOrUpdate( IPAddress ipAddress, IOS os );
 		ICollection<IPAddress> GetIPAddresses();
+
+
 	}
+
+	
 }
