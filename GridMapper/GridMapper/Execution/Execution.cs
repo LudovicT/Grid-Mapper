@@ -15,7 +15,6 @@ namespace GridMapper
 	{
 		Option _option;
 		IRepository _repository;
-		TaskManager _taskManager;
 
 
 		#region IExecution Membres

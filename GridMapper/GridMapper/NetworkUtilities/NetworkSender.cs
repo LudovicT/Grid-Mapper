@@ -15,7 +15,6 @@ namespace GridMapper.NetworkUtilities
 		WMICollector _wmiCollector;
 
 		Option _option;
-		TaskManager _taskManager;
 
 		public NetworkSender(Option option)
 		{
@@ -26,7 +25,6 @@ namespace GridMapper.NetworkUtilities
 			_wmiCollector = new WMICollector();
 
 			_option = option;
-			_taskManager = new TaskManager();
 		}
 	}
 }
