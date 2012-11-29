@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,39 +9,27 @@ using GridMapper.NetworkModelObject;
 
 namespace GridMapper
 {
-	public static partial class NetworkUtilities
+	public class PingSender
 	{
-		static public Task TaskPinger( IList<IPAddress> ipCollection, int timeout )
+		int _timeout;
+
+		public PingSender()
 		{
-			//start a new task and stock it, we only start one task because the ping method SendAsync is already asyncronous
-			Task task = Task.Factory.StartNew( () =>
-			{
-				ListPinger( ipCollection, timeout );
-			} );
-			return task;
+			_timeout = 200;
 		}
 
-		public static void ListPinger( IList<IPAddress> ipCollection, int timeout )
+		public PingSender( Option op )
 		{
-			foreach( IPAddress ipAddress in ipCollection )
-			{
-				Ping( ipAddress, timeout );
-			}
+			_timeout = op.PingTimeout;
 		}
 
-		public static void Ping( IPAddress ipAddress, int timeout )
+		public PingReply Ping( IPAddress ipAddress )
 		{
-			Ping pi = new Ping();
-			pi.SendAsync( ipAddress, timeout, pi );
-			pi.PingCompleted += new PingCompletedEventHandler( asyncPingComplete );
+			return Ping( ipAddress, _timeout );
 		}
-
-		static void asyncPingComplete( object sender, PingCompletedEventArgs e )
+		public PingReply Ping( IPAddress ipAddress, int timeout )
 		{
-			if( e.Reply.Status == IPStatus.Success )
-			{
-				Network.SuperPingerHandling( e.Reply );
-			}
+			return new Ping().Send( ipAddress, timeout );
 		}
 	}
 }

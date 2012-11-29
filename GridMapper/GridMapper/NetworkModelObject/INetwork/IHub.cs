@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace GridMapper.NetworkModelObject
 {
-	interface IHub : INetworkItem
+	public interface IHub : INetworkItem
 	{
 		ReadOnlyCollection<INetworkItem> NetworkItems { get; }
 	}

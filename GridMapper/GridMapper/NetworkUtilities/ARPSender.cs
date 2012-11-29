@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,48 +10,17 @@ using System.Net.NetworkInformation;
 
 namespace GridMapper
 {
-	public static  partial class NetworkUtilities
+	public class ARPSender
 	{
 		[DllImport( "iphlpapi.dll", ExactSpelling = true )]
-		public static extern int SendARP( int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen );
-
-
-		/// <summary>
-		/// Get a set of MACs from a set of Ips using a set number of task
-		/// </summary>
-		/// <param name="Ips">The list of IpAddress</param>
-		/// <param name="maxTask">The maximum number of tasks running in parallel</param>
-		public static void TaskGetMacAddress( List<IPAddress> Ips)
-		{
-			List<Task> Tasks = new List<Task>();
-			for( int i = 0 ; i < Ips.Count ; i++ )
-			{
-				int value = i;
-				Tasks.Add( TaskGetMacAddress( Ips[value] ) );
-			}
-		}
-
-		/// <summary>
-		/// A task getting the MAC from an Ip
-		/// </summary>
-		/// <param name="Ip">The ip address to get in MAC form</param>
-		/// <returns>The created task</returns>
-		public static Task TaskGetMacAddress( IPAddress Ip )
-		{
-			//start the task using aa lamba function and return the task for future uses
-			Task task = Task.Factory.StartNew( () =>
-			{
-				Network.MacAddressHandling( Ip, GetMacAddress( Ip ) );
-			} );
-			return task;
-		}
+		static extern int SendARP( int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen );
 
 		/// <summary>
 		/// Get the MAC addresse from any given Ip which is reachable
 		/// </summary>
 		/// <param name="dst">The ip which we would like to get the MAC address</param>
 		/// <returns>The MAC address</returns>
-		public static PhysicalAddress GetMacAddress( IPAddress dst )
+		public PhysicalAddress GetMac( IPAddress dst )
 		{
 			int intAddress = BitConverter.ToInt32( dst.GetAddressBytes(), 0 );
 			byte[] macAddr = new byte[6];

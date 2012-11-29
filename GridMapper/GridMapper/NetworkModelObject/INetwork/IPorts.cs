@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GridMapper.NetworkModelObject
 {
-	interface IPorts
+	public interface IPorts
 	{
 	}
 }

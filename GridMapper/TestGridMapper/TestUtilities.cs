@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +12,8 @@ using System.Threading;
 namespace GridMapper.Test
 {
 	[TestFixture]
-	public class TestUtilities
+	public class TestARP
 	{
-
 		#region ARPRegion
 
 		[Test]
@@ -45,7 +44,7 @@ namespace GridMapper.Test
 			//get the interface mac
 			PhysicalAddress TrueMac = PhysicalAddress.Parse( TrueNic.GetPhysicalAddress().ToString() );
 			//get the interface mac from arp
-			PhysicalAddress fetchedMac = NetworkUtilities.GetMacAddress( TrueIp );
+			PhysicalAddress fetchedMac = new ARPSender().GetMac( TrueIp );
 
 			Assert.That( fetchedMac.ToString()  == TrueMac.ToString() , "physical addresses does not match");
 		}
@@ -84,82 +83,162 @@ namespace GridMapper.Test
 				//Ips.Add( TrueIp );
 				Ips.Add( TrueIp );
 			}
-			NetworkUtilities.TaskGetMacAddress( Ips );
+			foreach(IPAddress Ip in Ips)
+			{
+				new ARPSender().GetMac( Ip );
+			}
 		}
 
         #endregion //ARPRegion
-
+	}
+	[TestFixture]
+	public class TestPING
+	{
 		#region PingRegion
 
 		[Test]
-		public void PerformanceTestAsyncPinger()
+		public void PerformanceTestPinger()
 		{
 			List<IPAddress> addressToTest = new List<IPAddress>();
 			for( int i = 0 ; i < 400 ; i++ )
 			{
-				addressToTest.Add( IPAddress.Parse( "127.0.0.1" ) );
+				addressToTest.Add( IPAddress.Parse( "8.8.8.8" ) );
 			}
-			NetworkUtilities.ListPinger( addressToTest ,200);
+			foreach ( IPAddress Ip in addressToTest )
+			{
+				Console.WriteLine(new PingSender().Ping( Ip , 200 ).Status);
+			}
 		}
 
-		[Test]
-		public void PerformanceTestTaskPinger()
-		{
-			List<IPAddress> addressToTest = new List<IPAddress>();
-			for( int i = 0 ; i < 400 ; i++ )
-			{
-				addressToTest.Add( IPAddress.Parse( "192.168.1.27" ) );
-			}
-			NetworkUtilities.TaskPinger( addressToTest ,200);
-		}
 
 		#endregion //PingRegion
-
+    }
+	[TestFixture]
+	public class TestDNSSolver
+	{
+		#region DNSRegion
 		[Test]
 		public void GetHostNameTest()
 		{
-			List<Task> tasks = new List<Task>();
-			Task T1 = Task.Factory.StartNew( () =>
-				{
-					for( int i = 0 ; i < 400 ; i++ )
-					{
-						Console.WriteLine( i );
-						tasks.Add( NetworkUtilities.GetHostName( IPAddress.Parse( "10.8.99.66" ) ) );
-					}
-				} );
-			T1.Wait();
-			Task.WaitAll( tasks.ToArray() );
+			for( int i = 0 ; i < 400 ; i++ )
+			{
+				Console.WriteLine( i );
+				new ReverseDnsResolver().GetHostName( IPAddress.Parse( "8.8.8.8" ) );
+			}
 			Console.WriteLine( "ok" );
-        }
-
+		}
+		#endregion //DNSRegion
+	}
+	[TestFixture]
+	public class TestPortScan
+	{
         #region PortScanRegion
 
         [Test]
-        public void PerformTestScanPort()
-        {
-			List<Task> tasks = new List<Task>();
-			Task T1 = Task.Factory.StartNew( () =>
+        public void PerformTestScanPortWithParallelForeach()
+		{
+			int minWORK;
+			int minIOC;
+			int maxWORK;
+			int maxIOC;
+			ThreadPool.GetMinThreads( out minWORK, out minIOC );
+			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
+			Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			Console.WriteLine( "max : " + maxWORK + " " + maxIOC );
+			if ( ThreadPool.SetMinThreads( 50, 50 ) )
 			{
-				for(int i = 0 ; i < 1024 ; i++ )
-					tasks.Add( NetworkUtilities.ScanPort( IPAddress.Parse( "5.9.87.133" ), i) );
-			} );
-			T1.Wait();
-			Task.WaitAll( tasks.ToArray() );
+				ThreadPool.GetMinThreads( out minWORK, out minIOC );
+				Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			}
+			List<int> inc = new List<int>();
+			for ( int i = 0; i < 1024; i++ )
+			{
+				inc.Add(i);
+			}
+			Parallel.ForEach<int>(inc,new ParallelOptions { MaxDegreeOfParallelism = 200 }, i => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), i));
 			Console.WriteLine( "ok" );
         }
 
-        #endregion // PortScanRegion
+		[Test]
+		public void PerformTestScanPortWithTasks()
+		{
+			int minWORK;
+			int minIOC;
+			int maxWORK;
+			int maxIOC;
+			ThreadPool.GetMinThreads( out minWORK, out minIOC );
+			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
+			Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			Console.WriteLine( "max : " + maxWORK + " " + maxIOC );
+			if ( ThreadPool.SetMinThreads( 50, 50 ) )
+			{
+				ThreadPool.GetMinThreads( out minWORK, out minIOC );
+				Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			}
+			const int taskCount = 1024;
+			List<Task> tasks = new List<Task>();
+			for ( int i = 0; i < taskCount; i++ )
+			{
+				int temp = i;
+				tasks.Add( Task.Factory.StartNew( () => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), temp ) ) );
+			}
+			Task.WaitAll( tasks.ToArray() );
+		}
 
+		[Test]
+		public void PerformTestScanPortWithPLINQ()
+		{
+			const int taskCount = 1024;
+			int minWORK;
+			int minIOC;
+			int maxWORK;
+			int maxIOC;
+			ThreadPool.GetMinThreads( out minWORK, out minIOC );
+			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
+			Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			Console.WriteLine( "max : " + maxWORK + " " + maxIOC );
+			if ( ThreadPool.SetMinThreads( 50, 50 ) )
+			{
+				ThreadPool.GetMinThreads( out minWORK, out minIOC );
+				Console.WriteLine( "min : " + minWORK + " " + minIOC );
+			}
+			List<Action> tasks = new List<Action>();
+			for ( int i = 0; i < taskCount; i++ )
+			{
+				int temp = i;
+				tasks.Add( () => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), temp ) );
+			}
+			Task task = Task.Factory.StartNew( () => tasks.AsParallel().WithDegreeOfParallelism( 50 ).ForAll(t => t.Invoke()) );
+			task.Wait();
+		}
+        #endregion // PortScanRegion
+		
+    }
+	[TestFixture]
+	public class TestIpRange
+	{
+		#region IPRange
 		[Test]
 		public void IpRange()
 		{
 			IPAddress ip = IPAddress.Parse("10.8.110.230");
-			NetworkUtilities.IpRange(ip,20);
+			List<uint> ips = IPRange.IpRange(ip,20);
+			ips.Sort();
+			for ( uint i = ips[0]; i < ips[1] ; i++ )
+			{
+				Console.WriteLine(IPAddress.Parse(i.ToString()));
+			}
 		}
 		[Test]
 		public void AutoIpRange()
 		{
-			NetworkUtilities.AutoIpRange().ForEach( IP => Console.WriteLine( IP ));
+			List<uint> ips = IPRange.AutoIpRange();
+			ips.Sort();
+			for ( uint i = ips[0]; i < ips[1]; i++ )
+			{
+				Console.WriteLine( IPAddress.Parse( i.ToString() ) );
+			}
 		}
+		#endregion //IPRange
     }
 }

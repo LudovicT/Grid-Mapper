@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GridMapper.NetworkModelObject
 {
-	interface IServer
+	public interface IServer
 	{
 		//IDhcp Dhcp { get; }
 		//IDns Dns { get; }

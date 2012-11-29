@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,19 +7,19 @@ using System.Net;
 namespace GridMapper
 {
 
-	class Startup
+	public class Option
 	{
 		bool _cmdConsole;
 		int _maximumTasks;
 		List<IPAddress> _ipToTest;
 		int _pingTimeout;
 
-		public Startup()
+		public Option()
 		{
 			_cmdConsole = false;
 			_maximumTasks = 50;
-			_ipToTest = NetworkUtilities.AutoIpRange();
-			int _pingTimeout = 1000;
+			_ipToTest = null;
+			_pingTimeout = 1000;
 		}
 
 		public bool CmdConsole
