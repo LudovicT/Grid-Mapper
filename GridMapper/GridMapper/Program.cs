@@ -11,7 +11,6 @@ using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-using GridMapper.Parameters;
 
 namespace GridMapper
 {
@@ -38,11 +37,17 @@ namespace GridMapper
 		[STAThread]
 		static void Main()
 		{
+			//FAIL
+			Option StartupOptions = new Option();
+			List<IPAddress> list = new List<IPAddress>();
+			list.Add(IPAddress.Parse("192.168.1.27"));
+			list.Add(IPAddress.Parse("192.168.1.1"));
+			StartupOptions.IpToTest = list;
+
+
 			string[] startupArgs = Environment.GetCommandLineArgs();
 			if ( startupArgs.Length > 1)
 			{
-				Option StartupOptions = new Option();
-
 				IntPtr ptr = GetForegroundWindow();
 				int u;
 				GetWindowThreadProcessId( ptr, out u );
@@ -66,7 +71,7 @@ namespace GridMapper
 			{
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault( false );
-				Application.Run( new GridWindow() );
+				Application.Run( new GridWindow( StartupOptions ) );
 			}
 			
 		}
@@ -92,12 +97,12 @@ namespace GridMapper
 			{
 				if ( args.Exists("IP"))
 				{
-					IPsParser parser = new IPsParser();
-					List<IPAddress> IPsToHandle = parser.IPArgumentsParser(args.Single("IP"));
-					foreach (IPAddress IP in IPsToHandle)
-					{
-						Console.WriteLine(IP);
-					}
+					//IPsParser parser = new IPsParser();
+					//List<IPAddress> IPsToHandle = parser.IPArgumentsParser(args.Single("IP"));
+					//foreach (IPAddress IP in IPsToHandle)
+					//{
+					//    Console.WriteLine(IP);
+					//}
 				}
 				if( args.Exists( "t" ) || args.Exists( "tasks" ) )
 				{
