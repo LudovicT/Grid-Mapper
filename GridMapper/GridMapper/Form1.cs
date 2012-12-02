@@ -33,17 +33,17 @@ namespace GridMapper
 			dataGridView1.Columns[1].Name = "MacAddress";
 			dataGridView1.Columns[2].Name = "HostName";
 
-			Repository.OnRepositoryUpdated += new GridMapper.NetworkRepository.Repository.RepositoryUpdatedEventHandler( UpdateDataGridView );
+			//Repository.OnRepositoryUpdated += new GridMapper.NetworkRepository.Repository.RepositoryUpdatedEventHandler( UpdateDataGridView );
 
 
 			
 		}
 
-		void UpdateDataGridView( object sender, RepositoryUpdatedEventArg e )
-		{
-			string[] row = { e.NetworkDictionaryItem.IPAddress.ToString(), e.NetworkDictionaryItem.MacAddress.ToString(), e.NetworkDictionaryItem.HostEntry.HostName.ToString()};
-			dataGridView1.Rows.Add( row );
-		}
+		//void UpdateDataGridView( object sender, RepositoryUpdatedEventArg e )
+		//{
+		//    string[] row = { e.NetworkDictionaryItem.IPAddress.ToString(), e.NetworkDictionaryItem.MacAddress.ToString(), e.NetworkDictionaryItem.HostEntry.HostName.ToString()};
+		//    dataGridView1.Rows.Add( row );
+		//}
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
