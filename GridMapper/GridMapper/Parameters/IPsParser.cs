@@ -9,6 +9,9 @@ namespace GridMapper
 {
 	public class IPParserResult
 	{
+		public IPParserResult()
+		{
+		}
 		internal IPParserResult( string errorMessage, IEnumerable<IPAddressRange> result )
 		{
 			Debug.Assert( ( errorMessage == null ) == ( result != null ) );
@@ -42,7 +45,7 @@ namespace GridMapper
 			List<IPAddressRange> Result = new List<IPAddressRange>();
 			IPAddress CurrentIP;
 			IPAddressRange IPRange;
-			string errorMessage = string.Empty;
+			string errorMessage = null;
 
 			while ( parser.IsIPAddressShort( out CurrentIP ) )
 			{
@@ -53,6 +56,11 @@ namespace GridMapper
 				else if ( parser.IsIPAddressRange( CurrentIP, out IPRange ) )
 				{
 					Result.Add( IPRange );
+					if ( parser.IsNewIPAddress )
+					{
+						continue;
+					}
+					break;
 				}
 				else
 				{
@@ -75,10 +83,12 @@ namespace GridMapper
 
 			char Current { get { return _s[_pos]; } }
 
+			char Next { get { return _s[_pos+1]; } }
+
 			bool Forward()
 			{
 				// Skip whitespaces...
-				while ( MatchChar( ' ' ) ){}
+				while ( Current == ' ' && Next == ' ') { _pos++; }
 				return ++_pos < _s.Length;
 			}
 
@@ -161,7 +171,11 @@ namespace GridMapper
 			{
 				b = 0;
 				string returnedByte = "";
-				while ( Char.IsDigit( Current ) )
+				if ( Current == ' ' )
+				{
+					Forward();
+				}
+				while (!IsEndOfInput && Char.IsDigit( Current ))
 				{
 					returnedByte += Current;
 					Forward();
