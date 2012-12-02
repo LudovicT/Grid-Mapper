@@ -33,6 +33,12 @@ namespace GridMapper.Parameters
 		{
 			public IPAddress From { get; private set; }
 			public IPAddress To { get; private set; }
+			
+			public IPAddressRange( IPAddress ipFrom, IPAddress ipTo )
+			{
+				From = ipFrom;
+				To = ipTo;
+			}
 
 		}
 
@@ -60,18 +66,33 @@ namespace GridMapper.Parameters
 				bool Forward()
 				{
 					// Skip whitespaces...
+					while ( MatchChar( ' ' ) )
+					{
+						_pos++;
+					}
 					return ++_pos < _s.Length;
 				}
 
 				bool IsEndOfInput { get { return _pos >= _s.Length; } }
 
+				//public IPAddress LastIP { get { return 
+
 				public bool IsIPAddressRange( out IPAddressRange r )
 				{
+					r = null;
 					if ( MatchChar( '-' ) )
 					{
-						
+						IPAddress ipFrom = null;
+						IPAddress ipTo = null;
+						// Get last IP...
+						// ipFrom =
+						if ( IsIPAddressShort( out ipTo, 255 ) )
+						{
+							r = new IPAddressRange( ipFrom, ipTo );
+							return true;
+						}
+						return false;
 					}
-					r = null;
 					return false;
 				}
 
@@ -133,24 +154,16 @@ namespace GridMapper.Parameters
 				private bool IsByte( out byte b )
 				{
 					b = 0;
-					string bString = "";
-					if ( Char.IsDigit( Current ) )
+					string returnedByte = "";
+					while ( Char.IsDigit( Current ) )
 					{
-						bString += Current;
+						returnedByte += Current;
 						Forward();
-						if ( Char.IsDigit( Current ) )
-						{
-							bString += Current;
-							Forward();
-							if ( Char.IsDigit( Current ) )
-							{
-								bString += Current;
-							}
-						}
 					}
-					if( bString != String.Empty)
+
+					if ( returnedByte != String.Empty )
 					{
-						if ( byte.TryParse( bString, out b ) )
+						if ( byte.TryParse( returnedByte, out b ) )
 						{
 							return true;
 						}
