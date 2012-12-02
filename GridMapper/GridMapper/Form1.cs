@@ -6,14 +6,43 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GridMapper.NetworkRepository;
 
 namespace GridMapper
 {
 	public partial class GridWindow : Form
 	{
-		public GridWindow()
+		Option _startUpOption;
+		Execution _exe;
+		public GridWindow(Option StartUpOptions)
 		{
+			_startUpOption = StartUpOptions;
+			_exe = new Execution( StartUpOptions );
+
 			InitializeComponent();
+		}
+
+		void InitializeDataGridView()
+		{
+			dataGridView1.AllowUserToResizeColumns = false;
+			dataGridView1.AllowUserToResizeRows = false;
+			dataGridView1.RowHeadersVisible = false;
+
+			dataGridView1.ColumnCount = 3;
+			dataGridView1.Columns[0].Name = "IPAddress";
+			dataGridView1.Columns[1].Name = "MacAddress";
+			dataGridView1.Columns[2].Name = "HostName";
+
+			Repository.OnRepositoryUpdated += new GridMapper.NetworkRepository.Repository.RepositoryUpdatedEventHandler( UpdateDataGridView );
+
+
+			
+		}
+
+		void UpdateDataGridView( object sender, RepositoryUpdatedEventArg e )
+		{
+			string[] row = { e.NetworkDictionaryItem.IPAddress.ToString(), e.NetworkDictionaryItem.MacAddress.ToString(), e.NetworkDictionaryItem.HostEntry.HostName.ToString()};
+			dataGridView1.Rows.Add( row );
 		}
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -50,11 +79,6 @@ namespace GridMapper
         private void Form1_Load(object sender, EventArgs e)
         {
             
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -119,5 +143,10 @@ namespace GridMapper
         {
 
         }
+
+		private void fastScanToolStripMenuItem_Click( object sender, EventArgs e )
+		{
+			_exe.StartScan();
+		}
 	}
 }

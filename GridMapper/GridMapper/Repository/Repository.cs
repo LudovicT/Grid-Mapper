@@ -19,7 +19,7 @@ namespace GridMapper.NetworkRepository
 		}
 
 		//a changer par une interface
-		public event RepositoryUpdatedEventHandler OnRepositoryUpdated;
+		public static event RepositoryUpdatedEventHandler OnRepositoryUpdated;
 		public delegate void RepositoryUpdatedEventHandler( object sender, RepositoryUpdatedEventArg e );
 
 		public Repository()
