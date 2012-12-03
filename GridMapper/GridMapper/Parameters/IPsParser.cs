@@ -42,7 +42,7 @@ namespace GridMapper
 		static public IPParserResult TryParse( string rangeOfIP )
 		{
 			Parser parser = new Parser(rangeOfIP);
-			List<IPAddressRange> Result = new List<IPAddressRange>();
+			List<IPAddressRange> result = new List<IPAddressRange>();
 			IPAddress CurrentIP;
 			IPAddressRange IPRange;
 			string errorMessage = null;
@@ -51,11 +51,11 @@ namespace GridMapper
 			{
 				if(parser.IsNewIPAddress)
 				{
-					Result.Add( new IPAddressRange( CurrentIP, CurrentIP ) );
+					result.Add( new IPAddressRange( CurrentIP, CurrentIP ) );
 				}
 				else if ( parser.IsIPAddressRange( CurrentIP, out IPRange ) )
 				{
-					Result.Add( IPRange );
+					result.Add( IPRange );
 					if ( parser.IsNewIPAddress )
 					{
 						continue;
@@ -64,10 +64,10 @@ namespace GridMapper
 				}
 				else
 				{
-					Result.Add( new IPAddressRange( CurrentIP, CurrentIP ) );
+					result.Add( new IPAddressRange( CurrentIP, CurrentIP ) );
 				}
 			}
-			return new IPParserResult(errorMessage, Result);
+			return new IPParserResult(errorMessage, result);
 		}
 
 		class Parser
@@ -83,13 +83,8 @@ namespace GridMapper
 
 			char Current { get { return _s[_pos]; } }
 
-			char Next { get { return _s[_pos+1]; } }
-
 			bool Forward()
 			{
-				// Skip whitespaces...
-				while ( Current == ' ' && Next == ' ') { _pos++; }
-				return ++_pos < _s.Length;
 			}
 
 			bool IsEndOfInput { get { return _pos >= _s.Length; } }
