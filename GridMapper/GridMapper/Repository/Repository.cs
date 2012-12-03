@@ -6,6 +6,8 @@ using System.Net;
 using System.Collections.Concurrent;
 using System.Net.NetworkInformation;
 using GridMapper.NetworkModelObject;
+using System.IO;
+using System.Xml;
 
 namespace GridMapper.NetworkRepository
 {
@@ -43,12 +45,12 @@ namespace GridMapper.NetworkRepository
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
 				networkDictionaryItem.Update( new NetworkDictionaryItem( pingReply ) );
 				_networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
-				OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
+				//OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
 			}
 			else
 			{
 				_networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( pingReply ) );
-				OnRepositoryUpdated(this, new RepositoryUpdatedEventArg(_networkDictionaryItems[ipAddress]));
+				//OnRepositoryUpdated(this, new RepositoryUpdatedEventArg(_networkDictionaryItems[ipAddress]));
 			}
 		}
 
@@ -62,12 +64,12 @@ namespace GridMapper.NetworkRepository
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
 				networkDictionaryItem.Update( new NetworkDictionaryItem( ipAddress, macAddress ) );
 				_networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
-				OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
+				//OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
 			}
 			else
 			{
 				_networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, macAddress ) );
-				OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
+				//OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
 			}
 		}
 
@@ -135,6 +137,28 @@ namespace GridMapper.NetworkRepository
 		public ICollection<IPAddress> GetIPAddresses()
 		{
 			return _networkDictionaryItems.Keys;
+		}
+
+		public void XmlWriter()
+		{
+			XmlTextWriter myXmlTextWriter = new XmlTextWriter( "nouveauxlivres.xml", null );
+			myXmlTextWriter.Formatting = Formatting.Indented;
+			myXmlTextWriter.WriteStartDocument( false );
+
+			myXmlTextWriter.WriteStartElement( "network" );
+
+			foreach( NetworkDictionaryItem item in _networkDictionaryItems.Values )
+			{
+				myXmlTextWriter.WriteStartElement( "networkitem", null );
+				myXmlTextWriter.WriteElementString( "ipaddress", item.IPAddress.ToString() );
+				myXmlTextWriter.WriteElementString( "macaddress", item.MacAddress.ToString() );
+				//myXmlTextWriter.WriteElementString( "HostName", item.HostEntry.HostName.ToString() );
+				myXmlTextWriter.WriteEndElement();
+			}
+
+			myXmlTextWriter.WriteEndElement();
+			myXmlTextWriter.Flush();
+			myXmlTextWriter.Close();
 		}
 	}
 
