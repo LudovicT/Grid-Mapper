@@ -92,7 +92,7 @@
     <Reference Include="IPAddressControlLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=55e96405d8fd6d61, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>resx\IPAddressControlLib.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -135,9 +135,6 @@
     <Compile Include="NetworkModelObject\INetwork\IServer.cs" />
     <Compile Include="NetworkModelObject\INetwork\ISwitch.cs" />
     <Compile Include="NetworkUtilities\NetworkSender.cs" />
-    <Compile Include="Obselete\NetworkBuilder\Network.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="NetworkUtilities\ARPSender.cs" />
     <Compile Include="NetworkUtilities\IpRange.cs" />
     <Compile Include="NetworkUtilities\PingSender.cs" />
