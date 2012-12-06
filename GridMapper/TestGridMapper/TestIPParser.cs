@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,6 +51,11 @@ namespace GridMapper.Test
 			tryresult( "0.0.0.0-1.1.1.1,2.2.2.2" );
 		}
 		[Test]
+		public void BigRange()
+		{
+			tryresult( "0-255" );
+		}
+		[Test]
 		public void MalformatedIPAddressRange()
 		{
 			tryresult( "0.0.0.0--1.1.1.1" );
@@ -59,6 +64,11 @@ namespace GridMapper.Test
 		public void WhitespaceIPAddress()
 		{
 			tryresult( "   0 . 0 . 0 . 0" );
+		}
+		[Test]
+		public void RemoveIPAddress()
+		{
+			tryresult( "0.0.0.0,1.1.1.1,!1.1.1.1" );
 		}
 
 		internal void tryresult (string StringToTest)
