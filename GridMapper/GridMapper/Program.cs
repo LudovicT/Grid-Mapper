@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using GridMapper.Parameters;
 
 namespace GridMapper
 {
@@ -106,7 +107,13 @@ namespace GridMapper
 				}
 				if (args.Exists("p"))
 				{
-					List<Int32> PortsToHandle = new List<Int32>(); 
+					List<Int32> PortsToHandle = new List<Int32>();
+					PortsParser parser = new PortsParser();
+					PortsToHandle = parser.PortsParser(args.Single("p"));
+					foreach (Int32 ports in PortsToHandle)
+					{
+						Console.WriteLine(ports);
+					}
 				}
 				if( args.Exists( "t" ) || args.Exists( "tasks" ) )
 				{
