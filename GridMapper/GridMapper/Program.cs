@@ -114,6 +114,7 @@ namespace GridMapper
 					{
 						Console.WriteLine(ports);
 					}
+					IEnumerable<Int32> IEPortsToHandle = PortsToHandle;
 				}
 				if( args.Exists( "t" ) || args.Exists( "tasks" ) )
 				{
