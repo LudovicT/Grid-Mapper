@@ -104,6 +104,10 @@ namespace GridMapper
 					//    Console.WriteLine(IP);
 					//}
 				}
+				if (args.Exists("p"))
+				{
+					List<Int32> PortsToHandle = new List<Int32>(); 
+				}
 				if( args.Exists( "t" ) || args.Exists( "tasks" ) )
 				{
 					if ( int.TryParse( args.Single( "t" ), out maxTasks )|| int.TryParse( args.Single( "tasks" ), out maxTasks ) )
