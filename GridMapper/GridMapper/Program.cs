@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
 using System.Threading;
@@ -11,7 +12,8 @@ using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-using GridMapper.Parameters;
+using GridMapper;
+
 
 namespace GridMapper
 {
@@ -107,14 +109,9 @@ namespace GridMapper
 				}
 				if (args.Exists("p"))
 				{
-					List<Int32> PortsToHandle = new List<Int32>();
-					PortsParser parser = new PortsParser();
-					PortsToHandle = parser.PortsParser(args.Single("p"));
-					foreach (Int32 ports in PortsToHandle)
-					{
-						Console.WriteLine(ports);
-					}
-					IEnumerable<Int32> IEPortsToHandle = PortsToHandle;
+					PortsParserResult PortsToHandle = PortsParser.MainPortsParser(args.Single("p"));
+					IEnumerator enumerator = PortsToHandle.Result.GetEnumerator();
+
 				}
 				if( args.Exists( "t" ) || args.Exists( "tasks" ) )
 				{

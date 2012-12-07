@@ -139,6 +139,7 @@ namespace GridMapper.NetworkRepository
 			return _networkDictionaryItems.Keys;
 		}
 
+		//version de merde
 		public void XmlWriter()
 		{
 			XmlTextWriter myXmlTextWriter = new XmlTextWriter( "nouveauxlivres.xml", null );
