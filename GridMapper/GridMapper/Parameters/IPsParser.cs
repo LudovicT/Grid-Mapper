@@ -1,11 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace GridMapper
 {
@@ -14,16 +14,16 @@ namespace GridMapper
 		public IPParserResult()
 		{
 		}
-		internal IPParserResult( string errorMessage, IEnumerable<IPAddressV4Range> result )
+		internal IPParserResult( string errorMessage, IEnumerable<int> result )
 		{
-			//Debug.Assert( ( errorMessage == null ) == ( result != null ) );
+			Debug.Assert( ( errorMessage == null ) == ( result != null ) );
 			ErrorMessage = errorMessage;
 			Result = result;
 		}
 
 		public bool HasError { get { return ErrorMessage != null; } }
 		public string ErrorMessage { get; private set; }
-		public IEnumerable<IPAddressV4Range> Result { get; private set; }
+		public IEnumerable<int> Result { get; private set; }
 	}
 
 	[StructLayout( LayoutKind.Explicit )]
@@ -79,9 +79,10 @@ namespace GridMapper
 		End,
 	}
 
-	public class IPRangeList : IEnumerable<IPAddressV4Range>
+	public class IPRangeList : IEnumerable<int>
 	{
 		public readonly List<IPAddressV4Range> storage = new List<IPAddressV4Range>();
+
 		public void Add( IPAddressV4 ip )
 		{
 			storage.Add(new IPAddressV4Range(ip,ip));
@@ -94,47 +95,36 @@ namespace GridMapper
 
 		public void Remove( IPAddressV4 ip )
 		{
-			storage.RemoveAll( IPV4Range => 
-			{
-				return ( IPV4Range.From.Address == ip.Address && IPV4Range.To.Address == ip.Address );
-			});
+			//storage.RemoveAll( IPV4Range => 
+			//{
+			//    return ( IPV4Range.From.Address == ip.Address && IPV4Range.To.Address == ip.Address );
+			//});
 		}
 
 		public void Remove( IPAddressV4 from, IPAddressV4 to )
 		{
-			storage.RemoveAll( IPV4Range =>
-			{
-				return ( IPV4Range.From.Address == from.Address && IPV4Range.To.Address == to.Address );
-			} );
+			//storage.RemoveAll( IPV4Range =>
+			//{
+			//    return ( IPV4Range.From.Address == from.Address && IPV4Range.To.Address == to.Address );
+			//} );
 		}
 
-		public IEnumerator<IPAddressV4Range> GetEnumerator()
+
+		public IEnumerator<int> GetEnumerator()
 		{
-			foreach ( IPAddressV4Range item in storage )
+			foreach ( IPAddressV4Range IPRange in storage )
 			{
-				yield return item;
+				for ( int i = IPRange.From.Address; i <= IPRange.To.Address; i++ )
+				{
+					yield return i;
+				}
 			}
 		}
+
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
-		}
-	}
-
-	public class GetRange
-	{
-		public IEnumerable<IPAddressV4> GetIPRange( int startIP, int endIP )
-		{
-			uint sIP = (uint)startIP;
-			uint eIP = (uint)endIP;
-			IPAddressV4 IPV4 = new IPAddressV4();
-			while (sIP <= eIP)
-			{
-				IPV4.Address = (int)sIP;
-				yield return IPV4;
-				sIP++;
-			}
 		}
 	}
 
@@ -160,58 +150,29 @@ namespace GridMapper
 			IPAddressV4 currentIP;
 			IPAddressV4 IPRange;
 			string errorMessage = null;
-			Token token;
-			while ((token = parser.NextToken()) != Token.End )
+			while ( parser.NextToken() != Token.End )
 			{
-				if ( token == Token.Exclude )
+				switch ( parser.NextToken( out currentIP, out IPRange ) )
 				{
-					switch ( parser.NextToken( out currentIP, out IPRange ) )
-					{
-						case Token.New:
-						case Token.End:
-							result.Remove( currentIP );
-							break;
-						case Token.Range:
-						case Token.CIDR:
-							result.Remove( currentIP, IPRange );
-							break;
-						case Token.ExcludeIP:
-							result.Remove( currentIP );
-							break;
-						case Token.ExcludeRange:
-						case Token.ExcludeCIDR:
-							result.Remove( currentIP, IPRange );
-							break;
-						case Token.Unknow:
-						case Token.ExcludeUnknow:
-							errorMessage = "Invalid Format";
-							break;
-					}
-				}
-				else
-				{
-					switch ( parser.NextToken( out currentIP, out IPRange ) )
-					{
-						case Token.New:
-						case Token.End:
-							result.Add( currentIP );
-							break;
-						case Token.Range:
-						case Token.CIDR:
-							result.Add( currentIP, IPRange );
-							break;
-						case Token.ExcludeIP:
-							result.Remove( currentIP );
-							break;
-						case Token.ExcludeRange:
-						case Token.ExcludeCIDR:
-							result.Remove( currentIP, IPRange );
-							break;
-						case Token.Unknow:
-						case Token.ExcludeUnknow:
-							errorMessage = "Invalid Format";
-							break;
-					}
+					case Token.New:
+					case Token.End:
+						result.Add( currentIP );
+						break;
+					case Token.Range:
+					case Token.CIDR:
+						result.Add( currentIP, IPRange );
+						break;
+					case Token.ExcludeIP:
+						result.Remove( currentIP );
+						break;
+					case Token.ExcludeRange:
+					case Token.ExcludeCIDR:
+						result.Remove( currentIP, IPRange );
+						break;
+					case Token.Unknow:
+					case Token.ExcludeUnknow:
+						errorMessage = "Invalid Format";
+						return new IPParserResult( errorMessage, null );
 				}
 			}
 			return new IPParserResult(errorMessage, result);
@@ -286,6 +247,10 @@ namespace GridMapper
 						switch ( NextToken() )
 						{
 							case Token.New:
+								if ( NextToken() == Token.Exclude )
+								{
+									return Token.Exclude;
+								}
 								return Token.New;
 							case Token.Range:
 								if ( IsIPAddressV4Short( out ip2, 255 ) )
@@ -372,10 +337,20 @@ namespace GridMapper
 					&& MatchChar( '.' )
 					&& IsByte( out b4 ) )
 				{
-					ip.B0 = b1;
-					ip.B1 = b2;
-					ip.B2 = b3;
-					ip.B3 = b4;
+					if ( BitConverter.IsLittleEndian )
+					{
+						ip.B0 = b4;
+						ip.B1 = b3;
+						ip.B2 = b2;
+						ip.B3 = b1;
+					}
+					else
+					{
+						ip.B0 = b1;
+						ip.B1 = b2;
+						ip.B2 = b3;
+						ip.B3 = b4;
+					}
 					return true;
 				}
 				return false;
@@ -399,10 +374,20 @@ namespace GridMapper
 							}
 						}
 					}
-					ip.B0 = b1;
-					ip.B1 = b2;
-					ip.B2 = b3;
-					ip.B3 = b4;
+					if ( BitConverter.IsLittleEndian )
+					{
+						ip.B0 = b4;
+						ip.B1 = b3;
+						ip.B2 = b2;
+						ip.B3 = b1;
+					}
+					else
+					{
+						ip.B0 = b1;
+						ip.B1 = b2;
+						ip.B2 = b3;
+						ip.B3 = b4;
+					}
 					return true;
 				}
 				return false;
