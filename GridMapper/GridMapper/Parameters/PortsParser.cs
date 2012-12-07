@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace GridMapper.Parameters
+namespace GridMapper
 {
 	public class PortsParserResult
 	{
