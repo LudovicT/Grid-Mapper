@@ -66,8 +66,8 @@ namespace GridMapper
 
 	public enum Token
 	{
-		Unknow,
-		ExcludeUnknow,
+		Unknown,
+		ExcludeUnknown,
 		WhiteSpace,
 		New,
 		Range,
@@ -169,9 +169,9 @@ namespace GridMapper
 					case Token.ExcludeCIDR:
 						result.Remove( currentIP, IPRange );
 						break;
-					case Token.Unknow:
-					case Token.ExcludeUnknow:
-						errorMessage = "Invalid Format";
+					case Token.Unknown:
+					case Token.ExcludeUnknown:
+						errorMessage = "Invalid format for IP Arguments";
 						return new IPParserResult( errorMessage, null );
 				}
 			}
@@ -230,7 +230,7 @@ namespace GridMapper
 							Forward();
 							return Token.WhiteSpace;
 						default:
-							return Token.Unknow;
+							return Token.Unknown;
 					}
 				}
 				return Token.End;
@@ -264,7 +264,7 @@ namespace GridMapper
 							case Token.End:
 								return Token.End;
 							default:
-								return Token.Unknow;
+								return Token.Unknown;
 						}
 					}
 					switch ( NextToken() )
@@ -291,11 +291,11 @@ namespace GridMapper
 										return Token.Exclude;
 								}
 							}
-							return Token.ExcludeUnknow;
+							return Token.ExcludeUnknown;
 						case Token.End:
 							return Token.End;
 						default:
-							return Token.Unknow;
+							return Token.Unknown;
 
 					}
 				}
