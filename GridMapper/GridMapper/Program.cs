@@ -109,7 +109,7 @@ namespace GridMapper
 				}
 				if (args.Exists("p"))
 				{
-					PortsParserResult PortsToHandle = PortsParser.PortsParser(args.Single("p"));
+					PortsParserResult PortsToHandle = PortsParser.MainPortsParser(args.Single("p"));
 					IEnumerator enumerator = PortsToHandle.Result.GetEnumerator();
 
 				}
