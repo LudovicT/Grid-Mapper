@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-using GridMapper.Parameters;
+using GridMapper;
 
 
 namespace GridMapper
