@@ -25,7 +25,7 @@ namespace GridMapper
 					//Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN");
 				}
 				s.Close();
-				PortScanCompleted(this, new PortScanCompletedEventArgs(IPAddr, PortToScan, true) );
+				PortScanCompleted( this, new PortScanCompletedEventArgs( IPAddr, new PortComputer( PortToScan, true ) ) );
 				return true;
 			}
 			catch ( SocketException ex )
@@ -34,7 +34,7 @@ namespace GridMapper
 				{
 					//Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE");
 				}
-				PortScanCompleted( this, new PortScanCompletedEventArgs( IPAddr, PortToScan, false ) );
+				PortScanCompleted( this, new PortScanCompletedEventArgs( IPAddr, new PortComputer(PortToScan, false) ) );
 				return false;
 			}
         }
@@ -42,21 +42,18 @@ namespace GridMapper
 		public class PortScanCompletedEventArgs : EventArgs
 		{
 			IPAddress _ipAddress;
-			int _port;
+			PortComputer _portComputer;
 			bool _status;
 
-			public PortScanCompletedEventArgs( IPAddress ipAddress, int port, bool status)
+			public PortScanCompletedEventArgs( IPAddress ipAddress, PortComputer portComputer )
 			{
 				if( ipAddress == null ) throw new NullReferenceException( "ipAddress" );
-				if( port > 65535 || port < 0) throw new ArgumentOutOfRangeException( "port" );
 				_ipAddress = ipAddress;
-				_port = port;
-				_status = status;
+				_portComputer = portComputer;
 			}
 
-			public int Port { get { return _port; } }
+			public PortComputer Port { get { return _portComputer; } }
 			public IPAddress IpAddress { get { return _ipAddress; } }
-			public bool Status { get { return _status; } }
 		}
     }
 }
