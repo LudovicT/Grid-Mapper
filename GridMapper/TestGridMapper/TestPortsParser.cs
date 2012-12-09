@@ -18,9 +18,16 @@ namespace GridMapper.Test
 		internal void TryPortsParser( string PortsToParse )
 		{
 			PortsParserResult PortsToHandle = PortsParser.MainPortsParser( PortsToParse );
-			foreach ( Int32 port in PortsToHandle.Result )
+			if (PortsToHandle.HasError == true)
 			{
-				Console.WriteLine( port );
+				Console.WriteLine(PortsToHandle.ErrorMessage);
+			}
+			else
+			{
+				foreach (ushort port in PortsToHandle.Result)
+				{
+					Console.WriteLine(port);
+				}
 			}
 		}
 	}
