@@ -151,19 +151,20 @@
 			// fastScanToolStripMenuItem
 			// 
 			this.fastScanToolStripMenuItem.Name = "fastScanToolStripMenuItem";
-			this.fastScanToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.fastScanToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.fastScanToolStripMenuItem.Text = "Fast scan";
+			this.fastScanToolStripMenuItem.Click += new System.EventHandler(this.fastScanToolStripMenuItem_Click_1);
 			// 
 			// portScanToolStripMenuItem
 			// 
 			this.portScanToolStripMenuItem.Name = "portScanToolStripMenuItem";
-			this.portScanToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.portScanToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.portScanToolStripMenuItem.Text = "Port scan";
 			// 
 			// iPScanToolStripMenuItem
 			// 
 			this.iPScanToolStripMenuItem.Name = "iPScanToolStripMenuItem";
-			this.iPScanToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.iPScanToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.iPScanToolStripMenuItem.Text = "IP scan";
 			// 
 			// toolStrip1
@@ -215,7 +216,7 @@
 			this.FromIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.FromIP.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.FromIP.Location = new System.Drawing.Point(129, 20);
-			this.FromIP.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.FromIP.Margin = new System.Windows.Forms.Padding(2);
 			this.FromIP.MinimumSize = new System.Drawing.Size(87, 20);
 			this.FromIP.Name = "FromIP";
 			this.FromIP.ReadOnly = false;
@@ -232,7 +233,7 @@
 			this.ToIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.ToIP.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.ToIP.Location = new System.Drawing.Point(243, 20);
-			this.ToIP.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.ToIP.Margin = new System.Windows.Forms.Padding(2);
 			this.ToIP.MinimumSize = new System.Drawing.Size(87, 20);
 			this.ToIP.Name = "ToIP";
 			this.ToIP.ReadOnly = false;
@@ -265,7 +266,7 @@
 			this.ProgressScan.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.ProgressScan.Location = new System.Drawing.Point(65, 444);
-			this.ProgressScan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.ProgressScan.Margin = new System.Windows.Forms.Padding(2);
 			this.ProgressScan.Name = "ProgressScan";
 			this.ProgressScan.Size = new System.Drawing.Size(612, 20);
 			this.ProgressScan.Style = System.Windows.Forms.ProgressBarStyle.Continuous;

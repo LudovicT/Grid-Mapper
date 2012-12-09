@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using GridMapper.NetworkRepository;
+using System.Net.NetworkInformation;
 
 namespace GridMapper
 {
@@ -14,12 +15,19 @@ namespace GridMapper
 	{
 		Option _startUpOption;
 		Execution _exe;
+
+		// définition du delegate qui sera utilisé
+		private delegate void UpdateDataGrid( object sender, PingCompletedEventArgs e );
+		// ****************
+		private UpdateDataGrid m_upLbl; 
+
 		public GridWindow(Option StartUpOptions)
 		{
 			_startUpOption = StartUpOptions;
 			_exe = new Execution( StartUpOptions );
 
 			InitializeComponent();
+			InitializeDataGridView();
 		}
 
 		void InitializeDataGridView()
@@ -33,17 +41,20 @@ namespace GridMapper
 			dataGridView1.Columns[1].Name = "MacAddress";
 			dataGridView1.Columns[2].Name = "HostName";
 
-			//Repository.OnRepositoryUpdated += new GridMapper.NetworkRepository.Repository.RepositoryUpdatedEventHandler( UpdateDataGridView );
-
-
+			PingSender.PingCompleted += UpdateDataGridView;
 			
 		}
 
-		//void UpdateDataGridView( object sender, RepositoryUpdatedEventArg e )
-		//{
-		//    string[] row = { e.NetworkDictionaryItem.IPAddress.ToString(), e.NetworkDictionaryItem.MacAddress.ToString(), e.NetworkDictionaryItem.HostEntry.HostName.ToString()};
-		//    dataGridView1.Rows.Add( row );
-		//}
+		public void UpdateDataGridView( object sender, PingCompletedEventArgs e )
+		{
+			dataGridView1.Invoke( new UpdateDataGrid( UpdateDataGridView2 ), new object[]{ sender, e } );
+		}
+
+		public void UpdateDataGridView2( object sender, PingCompletedEventArgs e )
+		{
+			string[] row = { e.PingReply.Address.ToString(), "" , "" };
+			dataGridView1.Rows.Add( row );
+		}
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
@@ -145,6 +156,11 @@ namespace GridMapper
         }
 
 		private void fastScanToolStripMenuItem_Click( object sender, EventArgs e )
+		{
+			_exe.StartScan();
+		}
+
+		private void fastScanToolStripMenuItem_Click_1( object sender, EventArgs e )
 		{
 			_exe.StartScan();
 		}
