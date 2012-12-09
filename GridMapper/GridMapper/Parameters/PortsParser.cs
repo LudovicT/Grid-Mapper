@@ -88,6 +88,22 @@ namespace GridMapper
 				{
 					if (IsPort( out us1 ))
 					{
+						switch ( NextToken() )
+						{
+							case Token.New:
+								return Token.New;
+							case Token.End:
+								return Token.End;
+							default:
+								return Token.Unknown;
+						}
+					}
+					switch ( NextToken() )
+					{
+						case Token.End:
+							return Token.End;
+						default:
+							return Token.Unknown;
 					}
 				}
 				return Token.End;

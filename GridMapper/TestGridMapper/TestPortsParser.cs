@@ -13,7 +13,7 @@ namespace GridMapper.Test
 		[Test]
 		public void PerformTestPortsParser()
 		{
-			TryPortsParser("42,56,887,987");
+			TryPortsParser("hello");
 		}
 		internal void TryPortsParser( string PortsToParse )
 		{
