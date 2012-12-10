@@ -13,8 +13,7 @@ namespace GridMapper
 	{
 		int _timeout;
 
-		public static event PingCompletedEventHandler PingCompleted;
-		public delegate void PingCompletedEventHandler( object sender, PingCompletedEventArgs e );
+		public static event EventHandler<PingCompletedEventArgs> PingCompleted;
 
 		public PingSender()
 		{
@@ -34,22 +33,23 @@ namespace GridMapper
 		public PingReply Ping( IPAddress ipAddress, int timeout )
 		{
 			PingReply pingReply = new Ping().Send( ipAddress, timeout );
-			if( pingReply.Address != null)
-				PingCompleted(this, new PingCompletedEventArgs(pingReply) );
-			return pingReply;
+			if( pingReply.Address != null )
+			{
+				PingCompleted( this, new PingCompletedEventArgs( pingReply ) );
+				return pingReply;
+			}
+			return null;
 		}
 	}
 
 	public class PingCompletedEventArgs : EventArgs
 	{
-		PingReply _pingReply;
-
 		public PingCompletedEventArgs( PingReply pingReply )
 		{
 			if( pingReply == null ) throw new NullReferenceException();
-			_pingReply = pingReply;
+			PingReply = pingReply;
 		}
 
-		public PingReply PingReply { get { return _pingReply; } }
+		public PingReply PingReply { get; private set; }
 	}
 }

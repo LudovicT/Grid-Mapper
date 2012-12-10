@@ -27,30 +27,28 @@ namespace GridMapper
 		{
 			Task task1 = Task.Factory.StartNew( () =>
 				{
-					//PingSender pingSender = new PingSender( Option );
+					PingSender pingSender = new PingSender( Option );
 					Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
 						{
-							PingSender pingSender = new PingSender( Option );
+							//PingSender pingSender = new PingSender( Option );
 							IPAddress ip = IPAddress.Parse( ipInt.ToString() );
-							_repository.AddOrUpdate( ip, pingSender.Ping( ip ) );
+							PingReply pingReply = pingSender.Ping( ip );
+							if( pingReply != null ) _repository.AddOrUpdate( ip, pingReply );
 						} );
-				} ); // a retirer quand on enelve les comms
-				/*} ).ContinueWith( ( a ) =>
+				} ).ContinueWith( ( a ) =>
 					{
 						ARPSender arpSender = new ARPSender();
 						ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
-						foreach( IPAddress ip in _repository.GetIPAddresses() )
+						Parallel.ForEach<IPAddress>( _repository.GetIPAddresses(), new ParallelOptions { MaxDegreeOfParallelism = 200 }, ip =>
 						{
-							Task task2 = Task.Factory.StartNew( () =>
-							{
-								_repository.AddOrUpdate( ip, arpSender.GetMac( ip ) );
-							} );
-							Task task3 = Task.Factory.StartNew( () =>
-							{
-								_repository.AddOrUpdate( ip, dnsResolver.GetHostName( ip ) );
-							} );
-						}
-					} ).ContinueWith( ( b ) =>
+							_repository.AddOrUpdate( ip, arpSender.GetMac( ip ) );
+						} );
+						//Task task3 = Task.Factory.StartNew( () =>
+						//{
+						//    _repository.AddOrUpdate( ip, dnsResolver.GetHostName( ip ) );
+						//} );
+					} );
+					/*} ).ContinueWith( ( b ) =>
 						{
 							//fait peter l'event
 						} );*/

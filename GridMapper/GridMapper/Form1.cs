@@ -17,7 +17,7 @@ namespace GridMapper
 		Option _startUpOption;
 		Execution _exe;
 
-		// définition du delegate qui sera utilisé
+		// définition du delegate qui sera utilisé pour traiter les events
 		private delegate void UpdateDataGrid<T>( object sender, T e );
 		// **************** 
 
