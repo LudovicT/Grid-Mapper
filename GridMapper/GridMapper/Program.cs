@@ -96,21 +96,21 @@ namespace GridMapper
 			}
 			else
 			{
-				if ( args.Exists("IP"))
-				{
-					//IPsParser parser = new IPsParser();
-					//List<IPAddress> IPsToHandle = parser.IPArgumentsParser(args.Single("IP"));
-					//foreach (IPAddress IP in IPsToHandle)
-					//{
-					//    Console.WriteLine(IP);
-					//}
-				}
-				if (args.Exists("p"))
-				{
-					PortsParserResult PortsToHandle = PortsParser.MainPortsParser(args.Single("p"));
-					IEnumerator enumerator = PortsToHandle.Result.GetEnumerator();
+				//if ( args.Exists("IP"))
+				//{
+				//    //IPsParser parser = new IPsParser();
+				//    //List<IPAddress> IPsToHandle = parser.IPArgumentsParser(args.Single("IP"));
+				//    //foreach (IPAddress IP in IPsToHandle)
+				//    //{
+				//    //    Console.WriteLine(IP);
+				//    //}
+				//}
+				//if (args.Exists("p"))
+				//{
+				//    //PortsParserResult PortsToHandle = PortsParser.MainPortsParser(args.Single("p"));
+				//    //IEnumerator enumerator = PortsToHandle.Result.GetEnumerator();
 
-				}
+				//}
 				if( args.Exists( "t" ) || args.Exists( "tasks" ) )
 				{
 					if ( int.TryParse( args.Single( "t" ), out maxTasks )|| int.TryParse( args.Single( "tasks" ), out maxTasks ) )

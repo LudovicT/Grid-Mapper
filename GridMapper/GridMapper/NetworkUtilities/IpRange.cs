@@ -93,7 +93,6 @@ namespace GridMapper
 					break;
 				}
 			}
-			Console.WriteLine("i = " +i+" & cidr = "+ CIDR);
 			if ( i == 4 && CIDR == -1)
 			{
 				throw new InvalidOperationException();
