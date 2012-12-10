@@ -232,9 +232,8 @@ namespace GridMapper.Test
 		[Test]
 		public void AutoIpRange()
 		{
-			List<uint> ips = IPRange.AutoIpRange();
-			ips.Sort();
-			for ( uint i = ips[0]; i < ips[1]; i++ )
+			IPParserResult ips = IPRange.AutoIpRange();
+			foreach( int i in ips.Result)
 			{
 				Console.WriteLine( IPAddress.Parse( i.ToString() ) );
 			}
