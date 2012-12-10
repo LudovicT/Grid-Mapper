@@ -48,8 +48,9 @@ namespace GridMapper
 			IPs.Add( endIP );
 			return IPs;
 		}
-		public static List<uint> AutoIpRange()
+		public static IPParserResult AutoIpRange()
 		{
+			List<uint> uip = new List<uint>();
 			IPAddress machineIP = IPAddress.None;
 			foreach ( IPAddress ip in System.Net.Dns.GetHostEntry( Environment.MachineName ).AddressList )
 			{
@@ -58,7 +59,11 @@ namespace GridMapper
 					machineIP = ip;
 				}
 			}
-			return IpRange( machineIP, SubnetMaskToCIDR(GetSubnetMask( machineIP )) );
+			uip = IpRange( machineIP, SubnetMaskToCIDR( GetSubnetMask( machineIP ) ) );
+			IPAddress ip1 = IPAddress.Parse(uip[0].ToString());
+			IPAddress ip2 = IPAddress.Parse(uip[1].ToString());
+			string StringToTest = ip1.ToString() + "-" + ip2.ToString();
+			return IPParser.TryParse( StringToTest );
 		}
 
 		static int SubnetMaskToCIDR(IPAddress IP)
