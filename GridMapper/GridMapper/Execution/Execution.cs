@@ -27,15 +27,14 @@ namespace GridMapper
 		{
 			Task task1 = Task.Factory.StartNew( () =>
 				{
-					PingSender pingSender = new PingSender( Option );
-					foreach( IPAddress ip in _option.IpToTest )
-					{
-						Task task2 = Task.Factory.StartNew( () =>
-							{
-								_repository.AddOrUpdate( ip, pingSender.Ping( ip ) );
-							} );
-					}
-				} ).ContinueWith( ( a ) =>
+					//PingSender pingSender = new PingSender( Option );
+					Parallel.ForEach<IPAddress>( _option.IpToTest, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ip =>
+						{
+							PingSender pingSender = new PingSender( Option );
+							_repository.AddOrUpdate( ip, pingSender.Ping( ip ) );
+						} );
+				} ); // a retirer quand on enelve les comms
+				/*} ).ContinueWith( ( a ) =>
 					{
 						ARPSender arpSender = new ARPSender();
 						ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
@@ -53,7 +52,7 @@ namespace GridMapper
 					} ).ContinueWith( ( b ) =>
 						{
 							//fait peter l'event
-						} );
+						} );*/
 		}
 
 		#endregion

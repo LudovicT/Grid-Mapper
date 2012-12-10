@@ -34,7 +34,8 @@ namespace GridMapper
 		public PingReply Ping( IPAddress ipAddress, int timeout )
 		{
 			PingReply pingReply = new Ping().Send( ipAddress, timeout );
-			PingCompleted(this, new PingCompletedEventArgs(pingReply) );
+			if( pingReply.Address != null)
+				PingCompleted(this, new PingCompletedEventArgs(pingReply) );
 			return pingReply;
 		}
 	}
