@@ -18,9 +18,8 @@ namespace GridMapper
 		Execution _exe;
 
 		// définition du delegate qui sera utilisé
-		private delegate void UpdateDataGrid( object sender, PingCompletedEventArgs e );
-		// ****************
-		private UpdateDataGrid m_upLbl; 
+		private delegate void UpdateDataGrid<T>( object sender, T e );
+		// **************** 
 
 		public GridWindow(Option StartUpOptions)
 		{
@@ -48,7 +47,7 @@ namespace GridMapper
 
 		public void UpdateDataGridView( object sender, PingCompletedEventArgs e )
 		{
-			dataGridView1.Invoke( new UpdateDataGrid( UpdateDataGridView2 ), new object[]{ sender, e } );
+			dataGridView1.Invoke( new UpdateDataGrid<PingCompletedEventArgs>( UpdateDataGridView2 ), new object[]{ sender, e } );
 		}
 
 		public void UpdateDataGridView2( object sender, PingCompletedEventArgs e )
