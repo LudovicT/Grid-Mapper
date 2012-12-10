@@ -43,10 +43,7 @@ namespace GridMapper
 			//FAIL
 			Option StartupOptions = new Option();
 			List<IPAddress> list = new List<IPAddress>();
-			list.Add(IPAddress.Parse("192.168.1.21"));
-			list.Add( IPAddress.Parse( "192.168.1.27" ) );
-			list.Add(IPAddress.Parse("192.168.1.1"));  
-			StartupOptions.IpToTest = list;
+			StartupOptions.IpToTest = IPRange.AutoIpRange();
 
 
 			string[] startupArgs = Environment.GetCommandLineArgs();
