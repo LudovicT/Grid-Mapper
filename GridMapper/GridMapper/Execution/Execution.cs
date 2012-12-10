@@ -28,9 +28,10 @@ namespace GridMapper
 			Task task1 = Task.Factory.StartNew( () =>
 				{
 					//PingSender pingSender = new PingSender( Option );
-					Parallel.ForEach<IPAddress>( _option.IpToTest, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ip =>
+					Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
 						{
 							PingSender pingSender = new PingSender( Option );
+							IPAddress ip = IPAddress.Parse( ipInt.ToString() );
 							_repository.AddOrUpdate( ip, pingSender.Ping( ip ) );
 						} );
 				} ); // a retirer quand on enelve les comms

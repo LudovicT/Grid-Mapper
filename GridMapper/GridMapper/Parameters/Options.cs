@@ -11,7 +11,7 @@ namespace GridMapper
 	{
 		bool _cmdConsole;
 		int _maximumTasks;
-		IEnumerable<IPAddress> _ipToTest;
+		IPParserResult _ipToTest;
 		int _pingTimeout;
 
 		public Option()
@@ -58,7 +58,7 @@ namespace GridMapper
 			}
 		}
 
-		public IEnumerable<IPAddress> IpToTest
+		public IPParserResult IpToTest
 		{
 			get
 			{
