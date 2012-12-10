@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using GridMapper.NetworkRepository;
 using System.Net.NetworkInformation;
+using System.Threading;
 
 namespace GridMapper
 {
@@ -162,6 +163,8 @@ namespace GridMapper
 
 		private void fastScanToolStripMenuItem_Click_1( object sender, EventArgs e )
 		{
+			dataGridView1.DataSource = null;
+			dataGridView1.DataMember = null;
 			_exe.StartScan();
 		}
 	}
