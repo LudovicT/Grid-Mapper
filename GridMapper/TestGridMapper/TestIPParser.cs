@@ -59,7 +59,12 @@ namespace GridMapper.Test
 		[Test]
 		public void MalformatedIPAddressRange()
 		{
-			tryresult( "0.0.0.0--0.0.1.1" , string.Empty);
+			tryresult( "0.0.0.0--0.0.1.1", string.Empty );
+		}
+		[Test]
+		public void MalformatedIPAddressRange2()
+		{
+			tryresult( "0.0.0.0,,0.0.1.1", string.Empty );
 		}
 		[Test]
 		public void WhitespaceIPAddress()
