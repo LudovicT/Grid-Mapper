@@ -198,5 +198,27 @@ namespace GridMapper
 			dataGridView1.DataMember = null;
 			_exe.StartScan();
 		}
+
+        private void ProgressScan_Click(object sender, EventArgs e)
+        {
+            ProgressScan.Minimum = 0;
+            ProgressScan.Maximum = 100;
+            ProgressScan.Value = ProgressScan.Minimum;
+            while (ProgressScan.Value < ProgressScan.Maximum)
+            {
+                ProgressScan.Value = _exe.Progress();
+                System.Threading.Thread.Sleep(1000);
+            }
+
+            // ce code degeux marche 
+            //ProgressScan.Minimum = 0;
+            //ProgressScan.Maximum = 10;
+            //ProgressScan.Value = ProgressScan.Minimum;
+            //while (ProgressScan.Value < ProgressScan.Maximum)
+            //{
+            //    ProgressScan.Value += 1;
+            //    System.Threading.Thread.Sleep(1); //Cette ligne ne sert qu'a stopper l'exécution 1 seconde entre chaque changement de la progressBar.
+            //}
+        }
 	}
 }

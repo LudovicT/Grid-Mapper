@@ -206,7 +206,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 53);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(915, 493);
             this.dataGridView1.TabIndex = 3;
@@ -272,6 +272,7 @@
             this.ProgressScan.Size = new System.Drawing.Size(816, 25);
             this.ProgressScan.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.ProgressScan.TabIndex = 8;
+            this.ProgressScan.Click += new System.EventHandler(this.ProgressScan_Click);
             // 
             // GridWindow
             // 
@@ -289,7 +290,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "GridWindow";
             this.Text = "Grid Mapper";
             this.Load += new System.EventHandler(this.Form1_Load);
