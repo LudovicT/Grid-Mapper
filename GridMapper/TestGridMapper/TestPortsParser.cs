@@ -38,7 +38,7 @@ namespace GridMapper.Test
 		[Test]
 		public void TestForNegativeValues()
 		{
-			TryPortsParser("0");
+			TryPortsParser("-1");
 		}
 		//[Test]  --> trigger Debug.Assert ... so it is not wise !
 		//public void NoPortsProvided()
