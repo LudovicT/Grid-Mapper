@@ -18,10 +18,9 @@ namespace GridMapper
 		Option _startUpOption;
 		Execution _exe;
 
-		// définition du delegate qui sera utilisé
-		private delegate void UpdateDataGrid( object sender, PingCompletedEventArgs e );
-		// ****************
-		private UpdateDataGrid m_upLbl; 
+		// définition du delegate qui sera utilisé pour traiter les events
+		private delegate void UpdateDataGrid<T>( object sender, T e );
+		// **************** 
 
 		public GridWindow(Option StartUpOptions)
 		{
@@ -52,19 +51,42 @@ namespace GridMapper
 			dataGridView1.Columns[3].DataPropertyName = "HostName";
 			dataGridView1.Columns[3].Name = "HostName";
 
-			PingSender.PingCompleted += UpdateDataGridView;
+			//PingSender.PingCompleted += UpdateDataGridView;
+			//ARPSender.MacCompleted += UpdateDataGridView;
+			Repository.OnRepositoryUpdated += UpdateDataGridView;
 			
 		}
 
 		public void UpdateDataGridView( object sender, PingCompletedEventArgs e )
 		{
-			dataGridView1.Invoke( new UpdateDataGrid( UpdateDataGridView2 ), new object[]{ sender, e } );
+			dataGridView1.Invoke( new UpdateDataGrid<PingCompletedEventArgs>( UpdateDataGridView2 ), new object[]{ sender, e } );
+		}
+		public void UpdateDataGridView( object sender, MacCompletedEventArgs e )
+		{
+			dataGridView1.Invoke( new UpdateDataGrid<MacCompletedEventArgs>( UpdateDataGridView2 ), new object[] { sender, e } );
+		}
+		public void UpdateDataGridView( object sender, RepositoryUpdatedEventArg e )
+		{
+			dataGridView1.Invoke( new UpdateDataGrid<RepositoryUpdatedEventArg>( UpdateDataGridView2 ), new object[] { sender, e } );
 		}
 
 		public void UpdateDataGridView2( object sender, PingCompletedEventArgs e )
 		{
 			string[] row = { e.PingReply.Address.Address.ToString(), e.PingReply.Address.ToString(), "" , "" };
 			dataGridView1.Rows.Add( row );
+		}
+		public void UpdateDataGridView2( object sender, MacCompletedEventArgs e )
+		{
+		}
+		public void UpdateDataGridView2( object sender, RepositoryUpdatedEventArg e )
+		{
+			dataGridView1.DataSource = null;
+			dataGridView1.DataMember = null;
+			foreach( INetworkDictionaryItem item in e.ReadOnlyRepository )
+			{
+				string[] row = { item.IPAddress.ToString(), "", "" };
+				dataGridView1.Rows.Add( row );
+			}
 		}
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -99,8 +121,7 @@ namespace GridMapper
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-            
+        { 
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
