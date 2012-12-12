@@ -10,11 +10,10 @@ namespace GridMapper
 		public UInt16 Port;
 		public bool Status;
 
-		//questiona poser est ce qu'on le garde pour le confort ou vaut mieu virer et l'utilisateur se demerde ?'
+		//questiona poser est ce qu'on le garde pour le confort ou vaut mieu virer et l'utilisateur se demerde ?' IL SE DEMERDE !! ^^
 		public PortComputer( int port, bool status )
 		{
-			//a mettre en anglais
-			if( port < 0 || port > 65535 ) throw new ArgumentOutOfRangeException( "Le port doit être comprit entre 0 et 65535" );
+			if( port < 0 || port > 65535 ) throw new ArgumentOutOfRangeException( "The port need to be in range of 0 to 65535" );
 			Port = (UInt16) port;
 			Status = status;
 		}
