@@ -73,7 +73,7 @@ namespace GridMapper
 					{
 						case ',' :
 							Next();
-							if ( !( Char.IsDigit( Current ) ) )
+							if ( !( Char.IsDigit( Current ) ) ) // return error for any spaces, commas and such that should not be here
 								return Token.Unknown; 
 							return Token.New;
 						default :
@@ -115,14 +115,7 @@ namespace GridMapper
 
 			bool Next()
 			{
-				// Skip whitespaces...
-				if (Current == ' ')
-				{
-					while ( !IsEndOfInput && Current == ' ' ) _pos++;
-					return true;
-				}
-				else
-					return ++_pos < _s.Length;
+				return ++_pos < _s.Length;
 			}
 
 			bool IsEndOfInput { get { return _pos >= _s.Length; } }
