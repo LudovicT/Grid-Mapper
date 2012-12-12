@@ -31,7 +31,7 @@ namespace GridMapper.Test
 			TryPortsParser( "Hello, am I a port to be scanned ? That is the question !" );
 		}
 		[Test]
-		public void InexistantPorts()
+		public void InexistentPorts()
 		{
 			TryPortsParser( "78568" );
 		}

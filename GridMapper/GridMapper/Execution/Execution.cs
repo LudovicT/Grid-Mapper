@@ -69,6 +69,18 @@ namespace GridMapper
 						} );*/
 		}
 
+        public int Progress()
+        {
+            int taskToDoPerIp = 3;
+            //total of IP tested
+            int IpTotal = 0;
+            foreach (int ip in _option.IpToTest.Result)
+            {
+                ++IpTotal;
+            }
+
+            return (IpTotal * taskToDoPerIp) / 100;
+        }
 		#endregion
 
 		public Execution( Option startupOptions )
