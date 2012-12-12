@@ -34,11 +34,12 @@ namespace GridMapper
 		New,
 		Range,
 		CIDR,
+		End,
 		Exclude,
 		ExcludeIP,
 		ExcludeRange,
 		ExcludeCIDR,
-		End,
+		ExcludeEnd,
 	}
 
 	public class IPRangeList : IEnumerable<int>
@@ -47,28 +48,168 @@ namespace GridMapper
 
 		public void Add( IPAddressV4 ip )
 		{
+			if ( storage.Count > 0 )
+			{
+				int count;
+				do
+				{
+					count = storage.Count;
+					for ( int i = 0; i < storage.Count; i++ )
+					{
+						IPAddressV4Range IPV4Range = storage[i];
+						if ( IsBetween( ip, IPV4Range.From, IPV4Range.To ) ) return;
+					}
+				} while ( storage.Count != count );
+			}
 			storage.Add(new IPAddressV4Range(ip,ip));
+			storage.Sort((IPAddressV4Range a, IPAddressV4Range b) => a.From.Address.CompareTo(b.From.Address));
 		}
 
 		public void Add( IPAddressV4 from, IPAddressV4 to )
 		{
-			storage.Add( new IPAddressV4Range( from, to ) );
+			bool added = false;
+			if ( storage.Count > 0 )
+			{
+				int count;
+				do
+				{
+					count = storage.Count;
+					for ( int i = 0; i < storage.Count; i++ )
+					{
+						IPAddressV4Range IPV4Range = storage[i];
+						//already in the storage
+						// Disposition
+						// -----------------		IPV4Range
+						//      --------			from, to
+						if ( IsBetween( from, IPV4Range.From, IPV4Range.To ) && IsBetween( to, IPV4Range.From, IPV4Range.To ) ) return;
+
+						// Disposition
+						// ------------				IPV4Range
+						//      --------------		from, to
+						if ( IsBetween( from, IPV4Range.From, IPV4Range.To ) && !IsBetween( to, IPV4Range.From, IPV4Range.To ) )
+						{
+							Remove( IPV4Range.From, IPV4Range.To );
+							storage.Add( new IPAddressV4Range( IPV4Range.From, to ) );
+							added = true;
+						}
+
+						// Disposition
+						//      --------------		IPV4Range
+						// ------------				from, to
+						if ( !IsBetween( from, IPV4Range.From, IPV4Range.To ) && IsBetween( to, IPV4Range.From, IPV4Range.To ) )
+						{
+							Remove( IPV4Range.From, IPV4Range.To );
+							storage.Add( new IPAddressV4Range( from, IPV4Range.To ) );
+							added = true;
+						}
+					}
+				} while ( storage.Count != count );
+			}
+			if ( !added )
+			{
+				storage.Add( new IPAddressV4Range( from, to ) );
+			}
+			storage.Sort( ( IPAddressV4Range a, IPAddressV4Range b ) => a.From.Address.CompareTo( b.From.Address ) );
 		}
 
 		public void Remove( IPAddressV4 ip )
 		{
-			//storage.RemoveAll( IPV4Range => 
-			//{
-			//    return ( IPV4Range.From.Address == ip.Address && IPV4Range.To.Address == ip.Address );
-			//});
+			IPAddressV4 tmpFrom;
+			IPAddressV4 tmpTo;
+
+			//exclusive border of the exclusion
+			tmpFrom = ip;
+			tmpTo = ip;
+			tmpFrom.Address--;
+			tmpTo.Address--;
+
+			if ( storage.Count > 0 )
+			{
+				int count;
+				do
+				{
+					count = storage.Count;
+					for ( int i = 0; i < storage.Count; i++ )
+					{
+						IPAddressV4Range IPV4Range = storage[i];
+						if ( IsBetween( ip, IPV4Range.From, IPV4Range.To ) )
+						{
+							Remove( IPV4Range.From, IPV4Range.To );
+							//check if the range is not a single IP
+							if ( IPV4Range.From.Address != IPV4Range.To.Address )
+							{
+								Add( IPV4Range.From, tmpFrom );
+								Add( tmpTo, IPV4Range.To );
+							}
+						}
+					}
+				} while ( storage.Count != count );
+			}
 		}
 
 		public void Remove( IPAddressV4 from, IPAddressV4 to )
 		{
-			//storage.RemoveAll( IPV4Range =>
-			//{
-			//    return ( IPV4Range.From.Address == from.Address && IPV4Range.To.Address == to.Address );
-			//} );
+			IPAddressV4 tmpFrom;
+			IPAddressV4 tmpTo;
+
+			//for the exclusive exlusion
+			tmpFrom = from;
+			tmpTo = to;
+			tmpFrom.Address--;
+			tmpTo.Address--;
+
+			if ( storage.Count > 0 )
+			{
+				int count;
+				do
+				{
+					count = storage.Count;
+					for ( int i = 0; i < storage.Count; i++ )
+					{
+						IPAddressV4Range IPV4Range = storage[i];
+						// Disposition
+						// -----------------		IPV4Range
+						//      --------			from, to
+						if ( IsBetween( from, IPV4Range.From, IPV4Range.To ) && IsBetween( to, IPV4Range.From, IPV4Range.To ) )
+						{
+							storage.Remove( IPV4Range );
+							//if not a full range deletion then add the remaining
+							if ( IPV4Range.From.Address != from.Address && IPV4Range.To.Address != to.Address )
+							{
+								Add( IPV4Range.From, tmpFrom );
+								Add( tmpTo, IPV4Range.To );
+							}
+						}
+
+						// Disposition
+						// ------------				IPV4Range
+						//      --------------		from, to
+						if ( IsBetween( from, IPV4Range.From, IPV4Range.To ) && !IsBetween( to, IPV4Range.From, IPV4Range.To ) )
+						{
+							storage.Remove( IPV4Range );
+							Add( IPV4Range.From, tmpFrom );
+						}
+
+						// Disposition
+						//      --------------		IPV4Range
+						// ------------				from, to
+						if ( !IsBetween( from, IPV4Range.From, IPV4Range.To ) && IsBetween( to, IPV4Range.From, IPV4Range.To ) )
+						{
+							storage.Remove( IPV4Range );
+							Add( tmpTo, IPV4Range.To );
+						}
+
+
+						// Disposition
+						//		----				IPV4Range
+						//   ---------------		from, to
+						if ( IsBetween( IPV4Range.From, from, to ) && IsBetween( IPV4Range.To, from, to ) )
+						{
+							storage.Remove( IPV4Range );
+						}
+					}
+				} while ( storage.Count != count );
+			}
 		}
 
 
@@ -83,11 +224,19 @@ namespace GridMapper
 			}
 		}
 
-
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
 		}
+
+		bool IsBetween( IPAddressV4 search, IPAddressV4 from, IPAddressV4 to ) 
+		{
+			if ( from.Address > to.Address  )
+			{
+				return from.Address >= search.Address && search.Address >= to.Address;
+			}
+			return from.Address <= search.Address && search.Address <= to.Address;
+		} 
 	}
 
 	public class IPAddressV4Range
@@ -112,7 +261,7 @@ namespace GridMapper
 			IPAddressV4 currentIP;
 			IPAddressV4 IPRange;
 			string errorMessage = null;
-			while ( parser.NextToken() != Token.End )
+			while ( parser.IsNotEndOfInput )
 			{
 				switch ( parser.NextToken( out currentIP, out IPRange ) )
 				{
@@ -125,6 +274,7 @@ namespace GridMapper
 						result.Add( currentIP, IPRange );
 						break;
 					case Token.ExcludeIP:
+					case Token.ExcludeEnd:
 						result.Remove( currentIP );
 						break;
 					case Token.ExcludeRange:
@@ -155,24 +305,16 @@ namespace GridMapper
 
 			bool Forward()
 			{
-				// Skip whitespaces...
-				if ( Current == ' ' )
-				{
-					while ( !IsEndOfInput && Current == ' ' ) _pos++;
-					return true;
-				}
-				else
-				{
-					return ++_pos < _s.Length;
-				}
+				return ++_pos < _s.Length;
 			}
 
 			bool IsEndOfInput { get { return _pos >= _s.Length; } }
 
+			public bool IsNotEndOfInput { get { return !IsEndOfInput; } }
 
 			public Token NextToken( )
 			{
-				if ( !IsEndOfInput )
+				if ( IsNotEndOfInput )
 				{
 					switch ( Current )
 					{
@@ -202,63 +344,90 @@ namespace GridMapper
 			{
 				ip1 = new IPAddressV4();
 				ip2 = new IPAddressV4();
-				if ( !IsEndOfInput )
+				Token token;
+				if ( IsNotEndOfInput )
 				{
-					if ( IsIPAddressV4Full( out ip1 ) )
+					if ( Current != '!' )
+					{
+						if ( IsIPAddressV4Full( out ip1 ) )
+						{
+							switch ( NextToken() )
+							{
+								case Token.New:
+									return Token.New;
+								case Token.Range:
+									if ( IsIPAddressV4Full( out ip2 ) )
+									{
+										token = NextToken();
+										if ( token == Token.New || token == Token.End )
+										{
+											return Token.Range;
+										}
+										else
+										{
+											return Token.Unknown;
+										}
+									}
+									break;
+								case Token.CIDR:
+									//todo
+									return Token.CIDR;
+								case Token.End:
+									return Token.End;
+								default:
+									return Token.Unknown;
+							}
+						}
+						else
+						{
+							return Token.Unknown;
+						}
+					}
+					else if ( Current == '!' )
 					{
 						switch ( NextToken() )
 						{
-							case Token.New:
-								if ( NextToken() == Token.Exclude )
+							case Token.Exclude:
+								if ( IsIPAddressV4Full( out ip1 ) )
 								{
-									return Token.Exclude;
-								}
-								return Token.New;
-							case Token.Range:
-								if ( IsIPAddressV4Full( out ip2 ) )
-								{
-									return Token.Range;
-								}
-								break;
-							case Token.CIDR:
-								//todo
-								return Token.CIDR;
+									switch ( NextToken() )
+									{
+										case Token.New:
+											return Token.ExcludeIP;
+										case Token.Range:
+											if ( IsIPAddressV4Full( out ip2 ) )
+											{
+												token = NextToken();
+												if ( token == Token.New || token == Token.End )
+												{
+													return Token.ExcludeRange;
+												}
+												else
+												{
+													return Token.ExcludeUnknown;
+												}
+											}
+											break;
+										case Token.CIDR:
+											//todo
+											return Token.ExcludeCIDR;
+										case Token.End:
+											return Token.ExcludeEnd;
+										default:
+											return Token.ExcludeUnknown;
+										}
+									}
+									else
+									{
+										return Token.End;
+									}
+								return Token.ExcludeUnknown;
 							case Token.End:
 								return Token.End;
 							default:
-								return Token.Unknown;
-						}
-					}
-					switch ( NextToken() )
-					{
-						case Token.Exclude:
-							if ( IsIPAddressV4Full( out ip1 ) )
-							{
-								switch ( NextToken() )
-								{
-									case Token.New:
-										return Token.ExcludeIP;
-									case Token.Range:
-										if ( IsIPAddressV4Full( out ip2 ) )
-										{
-											return Token.ExcludeRange;
-										}
-										break;
-									case Token.CIDR:
-										//todo
-										return Token.ExcludeCIDR;
-									case Token.End:
-										return Token.End;
-									default:
-										return Token.Exclude;
-								}
-							}
-							return Token.ExcludeUnknown;
-						case Token.End:
-							return Token.End;
-						default:
-							return Token.Unknown;
+								return Token.ExcludeUnknown;
 
+						}
 					}
 				}
 				return Token.End;
@@ -357,11 +526,11 @@ namespace GridMapper
 
 			private bool MatchChar( char c )
 			{
-				if ( !IsEndOfInput && Current == ' ' )
+				if ( IsNotEndOfInput && Current == ' ' )
 				{
 					Forward();
 				}
-				if ( !IsEndOfInput && Current == c )
+				if ( IsNotEndOfInput && Current == c )
 				{
 					Forward();
 					return true;
@@ -377,7 +546,7 @@ namespace GridMapper
 				{
 					Forward();
 				}
-				while (!IsEndOfInput && Char.IsDigit( Current ))
+				while (IsNotEndOfInput && Char.IsDigit( Current ))
 				{
 					returnedByte += Current;
 					Forward();
