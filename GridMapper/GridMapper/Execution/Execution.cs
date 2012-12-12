@@ -49,8 +49,7 @@ namespace GridMapper
 							if( pingReply != null ) 
 								_repository.AddOrUpdate( ip, pingReply );
 						} );
-				} );
-			task1.Wait();/*.ContinueWith( ( a ) =>
+				} );/*.ContinueWith( ( a ) =>
 					{
 						ARPSender arpSender = new ARPSender();
 						ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
@@ -78,8 +77,8 @@ namespace GridMapper
             {
                 ++IpTotal;
             }
-
-            return (IpTotal * taskToDoPerIp) / 100;
+			int restToDo = ( IpTotal * taskToDoPerIp ) / ( IpTotal * taskToDoPerIp );
+            return restToDo;
         }
 		#endregion
 

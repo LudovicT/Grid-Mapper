@@ -17,6 +17,7 @@ namespace GridMapper
 	{
 		Option _startUpOption;
 		Execution _exe;
+		int TaskLeft = 0;
 
 		// définition du delegate qui sera utilisé pour traiter les events
 		private delegate void UpdateDataGrid<T>( object sender, T e );
@@ -26,7 +27,6 @@ namespace GridMapper
 		{
 			_startUpOption = StartUpOptions;
 			_exe = new Execution( StartUpOptions );
-
 			InitializeComponent();
 			InitializeDataGridView();
 		}
@@ -133,7 +133,7 @@ namespace GridMapper
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        { 
+        {
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -202,6 +202,9 @@ namespace GridMapper
 		private void fastScanToolStripMenuItem_Click( object sender, EventArgs e )
 		{
 			_exe.StartScan();
+			backgroundWorker1.RunWorkerAsync();
+			backgroundWorker1.WorkerReportsProgress = true;
+			TaskLeft = _startUpOption.IPToTestCount;
 		}
 
 		private void fastScanToolStripMenuItem_Click_1( object sender, EventArgs e )
@@ -209,28 +212,23 @@ namespace GridMapper
 			dataGridView1.DataSource = null;
 			dataGridView1.DataMember = null;
 			_exe.StartScan();
+			backgroundWorker1.RunWorkerAsync();
+			backgroundWorker1.WorkerReportsProgress = true;
+			TaskLeft = _startUpOption.IPToTestCount;
 		}
 
-        private void ProgressScan_Click(object sender, EventArgs e)
-        {
-            ProgressScan.Minimum = 0;
-            ProgressScan.Maximum = 100;
-            ProgressScan.Value = ProgressScan.Minimum;
-            while (ProgressScan.Value < ProgressScan.Maximum)
-            {
-                ProgressScan.Value = _exe.Progress();
-                System.Threading.Thread.Sleep(1000);
-            }
+		private void backgroundWorker1_DoWork( object sender, DoWorkEventArgs e )
+		{
+			int IPCount = _startUpOption.IPToTestCount;
+			int i = 0;
+			i = Convert.ToInt32(Math.Round( (double)( ( ( IPCount - TaskLeft ) / IPCount ) * 100 ) ) );
+			Thread.Sleep( 50 );
+			backgroundWorker1.ReportProgress( i );
+		}
 
-            // ce code degeux marche 
-            //ProgressScan.Minimum = 0;
-            //ProgressScan.Maximum = 10;
-            //ProgressScan.Value = ProgressScan.Minimum;
-            //while (ProgressScan.Value < ProgressScan.Maximum)
-            //{
-            //    ProgressScan.Value += 1;
-            //    System.Threading.Thread.Sleep(1); //Cette ligne ne sert qu'a stopper l'exécution 1 seconde entre chaque changement de la progressBar.
-            //}
-        }
+		private void backgroundWorker1_ProgressChanged( object sender, ProgressChangedEventArgs e )
+		{
+			ProgressScan.Value = e.ProgressPercentage;
+		}
 	}
 }
