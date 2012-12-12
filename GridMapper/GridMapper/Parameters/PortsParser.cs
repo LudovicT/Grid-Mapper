@@ -73,6 +73,8 @@ namespace GridMapper
 					{
 						case ',' :
 							Next();
+							if ( !( Char.IsDigit( Current ) ) )
+								return Token.Unknown; 
 							return Token.New;
 						default :
 							return Token.Unknown;
