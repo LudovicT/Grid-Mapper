@@ -42,6 +42,7 @@ namespace GridMapper
 			dataGridView1.Columns[2].Name = "HostName";
 
 			PingSender.PingCompleted += UpdateDataGridView;
+			ARPSender.MacCompleted += UpdateDataGridView;
 			
 		}
 
@@ -49,11 +50,18 @@ namespace GridMapper
 		{
 			dataGridView1.Invoke( new UpdateDataGrid<PingCompletedEventArgs>( UpdateDataGridView2 ), new object[]{ sender, e } );
 		}
+		public void UpdateDataGridView( object sender, MacCompletedEventArgs e )
+		{
+			dataGridView1.Invoke( new UpdateDataGrid<PingCompletedEventArgs>( UpdateDataGridView2 ), new object[] { sender, e } );
+		}
 
 		public void UpdateDataGridView2( object sender, PingCompletedEventArgs e )
 		{
 			string[] row = { e.PingReply.Address.ToString(), "" , "" };
 			dataGridView1.Rows.Add( row );
+		}
+		public void UpdateDataGridView2( object sender, MacCompletedEventArgs e )
+		{
 		}
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -88,8 +96,7 @@ namespace GridMapper
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-            
+        { 
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

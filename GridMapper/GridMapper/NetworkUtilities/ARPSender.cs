@@ -40,19 +40,19 @@ namespace GridMapper
 			MacCompleted( this, new MacCompletedEventArgs( dst, macAddress ) );
 			return macAddress;
 		}
+	}
 
-		public class MacCompletedEventArgs : EventArgs
+	public class MacCompletedEventArgs : EventArgs
+	{
+		internal MacCompletedEventArgs( IPAddress ipAddress, PhysicalAddress macAddress )
 		{
-			internal MacCompletedEventArgs( IPAddress ipAddress, PhysicalAddress macAddress )
-			{
-				if( macAddress == null ) throw new NullReferenceException( "macAddress" );
-				if( ipAddress == null ) throw new NullReferenceException( "ipAddress" );
-				MacAddress = macAddress;
-				IpAddress = ipAddress;
-			}
-
-			public PhysicalAddress MacAddress { get; private set; }
-			public IPAddress IpAddress { get; private set; }	
+			if( macAddress == null ) throw new NullReferenceException( "macAddress" );
+			if( ipAddress == null ) throw new NullReferenceException( "ipAddress" );
+			MacAddress = macAddress;
+			IpAddress = ipAddress;
 		}
+
+		public PhysicalAddress MacAddress { get; private set; }
+		public IPAddress IpAddress { get; private set; }
 	}
 }
