@@ -204,7 +204,7 @@ namespace GridMapper
 				ip2 = new IPAddressV4();
 				if ( !IsEndOfInput )
 				{
-					if ( IsIPAddressV4Short( out ip1 ) )
+					if ( IsIPAddressV4Full( out ip1 ) )
 					{
 						switch ( NextToken() )
 						{
@@ -215,7 +215,7 @@ namespace GridMapper
 								}
 								return Token.New;
 							case Token.Range:
-								if ( IsIPAddressV4Short( out ip2, 255 ) )
+								if ( IsIPAddressV4Full( out ip2 ) )
 								{
 									return Token.Range;
 								}
@@ -232,14 +232,14 @@ namespace GridMapper
 					switch ( NextToken() )
 					{
 						case Token.Exclude:
-							if ( IsIPAddressV4Short( out ip1 ) )
+							if ( IsIPAddressV4Full( out ip1 ) )
 							{
 								switch ( NextToken() )
 								{
 									case Token.New:
 										return Token.ExcludeIP;
 									case Token.Range:
-										if ( IsIPAddressV4Short( out ip2, 255 ) )
+										if ( IsIPAddressV4Full( out ip2 ) )
 										{
 											return Token.ExcludeRange;
 										}
@@ -272,7 +272,7 @@ namespace GridMapper
 				if ( MatchChar( '-' ) )
 				{
 					IPAddressV4 ipTo;
-					if ( IsIPAddressV4Short( out ipTo, 255 ) )
+					if ( IsIPAddressV4Full( out ipTo ) )
 					{
 						r = new IPAddressV4Range( ipFrom, ipTo );
 						return true;
