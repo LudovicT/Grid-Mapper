@@ -72,7 +72,13 @@ namespace GridMapper
 
 		public void UpdateDataGridView2( object sender, PingCompletedEventArgs e )
 		{
-			string[] row = { e.PingReply.Address.Address.ToString(), e.PingReply.Address.ToString(), "" , "" };
+			byte[] b = e.PingReply.Address.GetAddressBytes();
+			IPAddressV4 ip = new IPAddressV4();
+			ip.B0 = b[0];
+			ip.B1 = b[1];
+			ip.B2 = b[2];
+			ip.B3 = b[3];
+			string[] row = { ip.Address.ToString(), e.PingReply.Address.ToString(), "" , "" };
 			dataGridView1.Rows.Add( row );
 		}
 		public void UpdateDataGridView2( object sender, MacCompletedEventArgs e )
@@ -84,7 +90,13 @@ namespace GridMapper
 			dataGridView1.DataMember = null;
 			foreach( INetworkDictionaryItem item in e.ReadOnlyRepository )
 			{
-				string[] row = { item.IPAddress.ToString(), "", "" };
+				byte[] b = item.IPAddress.GetAddressBytes();
+				IPAddressV4 ip = new IPAddressV4();
+				ip.B0 = b[0];
+				ip.B1 = b[1];
+				ip.B2 = b[2];
+				ip.B3 = b[3];
+				string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", "" };
 				dataGridView1.Rows.Add( row );
 			}
 		}

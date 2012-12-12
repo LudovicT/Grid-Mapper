@@ -49,7 +49,8 @@ namespace GridMapper
 							if( pingReply != null ) 
 								_repository.AddOrUpdate( ip, pingReply );
 						} );
-				} ).ContinueWith( ( a ) =>
+				} );
+			task1.Wait();/*.ContinueWith( ( a ) =>
 					{
 						ARPSender arpSender = new ARPSender();
 						ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
