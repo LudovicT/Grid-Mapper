@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using GridMapper.NetworkRepository;
 using System.Net.NetworkInformation;
 using System.Threading;
+using System.Net;
 
 namespace GridMapper
 {
@@ -36,11 +37,20 @@ namespace GridMapper
 			dataGridView1.AllowUserToResizeColumns = false;
 			dataGridView1.AllowUserToResizeRows = false;
 			dataGridView1.RowHeadersVisible = false;
+			dataGridView1.AutoGenerateColumns = false;
+			dataGridView1.AllowUserToAddRows = false;
 
-			dataGridView1.ColumnCount = 3;
-			dataGridView1.Columns[0].Name = "IPAddress";
-			dataGridView1.Columns[1].Name = "MacAddress";
-			dataGridView1.Columns[2].Name = "HostName";
+			dataGridView1.ColumnCount = 4;
+			dataGridView1.Columns[0].DataPropertyName = "Id";
+			dataGridView1.Columns[0].Name = "Id";
+			dataGridView1.Columns[0].Visible = false;
+			dataGridView1.Columns[1].DataPropertyName = "IPAddress";
+			dataGridView1.Columns[1].Name = "IPAddress";
+			dataGridView1.Columns[1].SortMode = DataGridViewColumnSortMode.Programmatic;
+			dataGridView1.Columns[2].DataPropertyName = "MacAddress";
+			dataGridView1.Columns[2].Name = "MacAddress";
+			dataGridView1.Columns[3].DataPropertyName = "HostName";
+			dataGridView1.Columns[3].Name = "HostName";
 
 			PingSender.PingCompleted += UpdateDataGridView;
 			
@@ -53,7 +63,7 @@ namespace GridMapper
 
 		public void UpdateDataGridView2( object sender, PingCompletedEventArgs e )
 		{
-			string[] row = { e.PingReply.Address.ToString(), "" , "" };
+			string[] row = { e.PingReply.Address.Address.ToString(), e.PingReply.Address.ToString(), "" , "" };
 			dataGridView1.Rows.Add( row );
 		}
 
