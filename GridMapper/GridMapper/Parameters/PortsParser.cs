@@ -8,7 +8,7 @@ namespace GridMapper
 {
 	public class PortsParserResult
 	{
-		internal PortsParserResult(string errorMessage, List<ushort> result)
+		internal PortsParserResult( string errorMessage, List<ushort> result )
 		{
 			Debug.Assert( ( errorMessage == null ) == ( result != null ) );
 			ErrorMessage = errorMessage;
@@ -27,25 +27,25 @@ namespace GridMapper
 			Parser parser = new Parser( PortsToParse );
 			ushort currentPort;
 
-			if (PortsToParse == string.Empty)
+			if ( PortsToParse == string.Empty )
 				errorMessage = "No ports provided";
 			else
 			{
-				while (parser.NextToken() != Token.End)
+				while ( parser.NextToken() != Token.End )
 				{
-					switch ( parser.NextToken( out currentPort) )
+					switch ( parser.NextToken( out currentPort ) )
 					{
 						case Token.New:
 						case Token.End:
-							PortsList.Add(currentPort);
+							PortsList.Add( currentPort );
 							break;
 						case Token.Unknown:
 							errorMessage = "Invalid format for ports arguments";
-							return new PortsParserResult(errorMessage, null);
+							return new PortsParserResult( errorMessage, null );
 					}
 				}
 			}
-			return new PortsParserResult( errorMessage, PortsList);
+			return new PortsParserResult( errorMessage, PortsList );
 		}
 		public enum Token
 		{
@@ -59,7 +59,7 @@ namespace GridMapper
 			readonly string _s;
 			int _pos;
 
-			public Parser(string s)
+			public Parser( string s )
 			{
 				_s = s;
 				_pos = 0;
@@ -73,7 +73,7 @@ namespace GridMapper
 					{
 						case ',' :
 							Next();
-							if ( !( Char.IsDigit( Current ) ) ) // return error for any spaces, commas and such that should not be here
+							if ( !( Char.IsDigit( Current ) ) ) // return error for any spaces, commas and such that should not be present
 								return Token.Unknown; 
 							return Token.New;
 						default :
@@ -86,9 +86,9 @@ namespace GridMapper
 			public Token NextToken(out ushort us1)
 			{
 				us1 = 0;
-				if (!IsEndOfInput)
+				if ( !IsEndOfInput )
 				{
-					if (IsPort( out us1 ))
+					if ( IsPort( out us1 ) )
 					{
 						switch ( NextToken() )
 						{
@@ -100,12 +100,17 @@ namespace GridMapper
 								return Token.Unknown;
 						}
 					}
-					switch ( NextToken() )
+					else if ( us1 <= 0 || us1 > 65535 )
+						return Token.Unknown;
+					else
 					{
-						case Token.End:
-							return Token.End;
-						default:
-							return Token.Unknown;
+						switch ( NextToken() )
+						{
+							case Token.End:
+								return Token.End;
+							default:
+								return Token.Unknown;
+						}
 					}
 				}
 				return Token.End;
@@ -134,32 +139,32 @@ namespace GridMapper
 				return false;
 			}
 
-			public bool IsPort(out ushort us1)
+			public bool IsPort( out ushort us1 )
 			{
 				us1 = 0;
-				return IsUShort( out us1 );
+				return ( IsUShort( out us1 ) );
 			}
 
-			public bool IsUShort(out ushort us1)
+			public bool IsUShort( out ushort us1 )
 			{
 				us1 = 0;
 				string returnedUShort = String.Empty;
-				if (Current == ' ')
+				if ( Current == ' ' )
 				{
 					Next();
 				}
-				while (!IsEndOfInput && Char.IsDigit(Current))
+				while ( !IsEndOfInput && Char.IsDigit( Current ) )
 				{
 					returnedUShort += Current;
 					Next();
 				}
-
-				if (returnedUShort != String.Empty)
+				if ( returnedUShort != String.Empty )
 				{
-					if (ushort.TryParse(returnedUShort, out us1))
-					{
-						return true;
-					}
+					if ( ushort.TryParse( returnedUShort, out us1 ) )
+						if ( us1 == 0 )
+							return false;
+						else
+							return true;
 					return false;
 				}
 				return false;

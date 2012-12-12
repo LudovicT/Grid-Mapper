@@ -15,7 +15,7 @@ namespace GridMapper
 			Console.WriteLine( "	-h,-help	Print this help message" );
 			Console.WriteLine( "	-?			Print this help message" );
 			Console.WriteLine( "	-t,-tasks	Specify the maximum simultanous task running (default is 50)" );
-			Console.WriteLine( "    -p,-ports   Specify the ports to be scanned (between 1 and 65365)" );
+			Console.WriteLine( "    -p,-ports   Specify the ports to be scanned (between 1 and 65535)" );
 		}
 		public static void DeletePath()
 		{

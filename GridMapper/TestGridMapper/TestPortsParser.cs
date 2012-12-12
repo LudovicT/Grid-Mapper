@@ -11,22 +11,53 @@ namespace GridMapper.Test
 	public class TestPortsParser
 	{
 		[Test]
-		public void PerformTestPortsParser()
+		public void PerformTestPortsParserNoEror()
 		{
-			TryPortsParser("32, 33");
+			TryPortsParser( "32,33,34,76,999,65365" );
 		}
+		[Test]
+		public void MoreThanOneComma()
+		{
+			TryPortsParser( "32,33,,,,55" );
+		}
+		[Test]
+		public void SpacesBetweenValues()
+		{
+			TryPortsParser( "43  ,  21" );
+		}
+		[Test]
+		public void InvalidValues()
+		{
+			TryPortsParser( "Hello, am I a port to be scanned ? That is the question !" );
+		}
+		[Test]
+		public void InexistantPorts()
+		{
+			TryPortsParser( "78568" );
+		}
+		[Test]
+		public void TestForNegativeValues()
+		{
+			TryPortsParser("0");
+		}
+		//[Test]  --> trigger Debug.Assert ... so it is not wise !
+		//public void NoPortsProvided()
+		//{
+		//    TryPortsParser( "" );
+		//}
 		internal void TryPortsParser( string PortsToParse )
 		{
+			Console.WriteLine( "Parsing : \'" + PortsToParse + "\' :" );
 			PortsParserResult PortsToHandle = PortsParser.MainPortsParser( PortsToParse );
 			if (PortsToHandle.HasError == true)
 			{
-				Console.WriteLine(PortsToHandle.ErrorMessage);
+				Console.WriteLine( PortsToHandle.ErrorMessage );
 			}
 			else
 			{
-				foreach (ushort port in PortsToHandle.Result)
+				foreach ( ushort port in PortsToHandle.Result )
 				{
-					Console.WriteLine(port);
+					Console.WriteLine( port.ToString() );
 				}
 			}
 		}
