@@ -13,7 +13,7 @@ namespace GridMapper
 		//questiona poser est ce qu'on le garde pour le confort ou vaut mieu virer et l'utilisateur se demerde ?' IL SE DEMERDE !! ^^
 		public PortComputer( int port, bool status )
 		{
-			if( port < 0 || port > 65535 ) throw new ArgumentOutOfRangeException( "The port need to be in range of 0 to 65535" );
+			if( port < 0 || port > 65535 ) throw new ArgumentOutOfRangeException( "The port must be in range of 0 to 65535" );
 			Port = (UInt16) port;
 			Status = status;
 		}
