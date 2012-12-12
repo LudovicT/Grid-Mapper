@@ -41,8 +41,9 @@ namespace GridMapper
 			dataGridView1.Columns[1].Name = "MacAddress";
 			dataGridView1.Columns[2].Name = "HostName";
 
-			PingSender.PingCompleted += UpdateDataGridView;
-			ARPSender.MacCompleted += UpdateDataGridView;
+			//PingSender.PingCompleted += UpdateDataGridView;
+			//ARPSender.MacCompleted += UpdateDataGridView;
+			Repository.OnRepositoryUpdated += UpdateDataGridView;
 			
 		}
 
@@ -52,7 +53,11 @@ namespace GridMapper
 		}
 		public void UpdateDataGridView( object sender, MacCompletedEventArgs e )
 		{
-			dataGridView1.Invoke( new UpdateDataGrid<PingCompletedEventArgs>( UpdateDataGridView2 ), new object[] { sender, e } );
+			dataGridView1.Invoke( new UpdateDataGrid<MacCompletedEventArgs>( UpdateDataGridView2 ), new object[] { sender, e } );
+		}
+		public void UpdateDataGridView( object sender, RepositoryUpdatedEventArg e )
+		{
+			dataGridView1.Invoke( new UpdateDataGrid<RepositoryUpdatedEventArg>( UpdateDataGridView2 ), new object[] { sender, e } );
 		}
 
 		public void UpdateDataGridView2( object sender, PingCompletedEventArgs e )
@@ -62,6 +67,16 @@ namespace GridMapper
 		}
 		public void UpdateDataGridView2( object sender, MacCompletedEventArgs e )
 		{
+		}
+		public void UpdateDataGridView2( object sender, RepositoryUpdatedEventArg e )
+		{
+			dataGridView1.DataSource = null;
+			dataGridView1.DataMember = null;
+			foreach( INetworkDictionaryItem item in e.ReadOnlyRepository )
+			{
+				string[] row = { item.IPAddress.ToString(), "", "" };
+				dataGridView1.Rows.Add( row );
+			}
 		}
 
         private void textBox1_TextChanged(object sender, EventArgs e)

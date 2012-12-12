@@ -25,6 +25,19 @@ namespace GridMapper
 
 		public void StartScan()
 		{
+			_repository = new Repository();
+
+			int minWORK;
+			int minIOC;
+			int maxWORK;
+			int maxIOC;
+			ThreadPool.GetMinThreads( out minWORK, out minIOC );
+			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
+			if( ThreadPool.SetMinThreads( 200, 200 ) )
+			{
+				ThreadPool.GetMinThreads( out minWORK, out minIOC );
+			}
+
 			Task task1 = Task.Factory.StartNew( () =>
 				{
 					PingSender pingSender = new PingSender( Option );
@@ -33,7 +46,8 @@ namespace GridMapper
 							//PingSender pingSender = new PingSender( Option );
 							IPAddress ip = IPAddress.Parse( ipInt.ToString() );
 							PingReply pingReply = pingSender.Ping( ip );
-							if( pingReply != null ) _repository.AddOrUpdate( ip, pingReply );
+							if( pingReply != null ) 
+								_repository.AddOrUpdate( ip, pingReply );
 						} );
 				} ).ContinueWith( ( a ) =>
 					{

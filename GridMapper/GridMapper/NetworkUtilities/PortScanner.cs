@@ -23,9 +23,9 @@ namespace GridMapper
 				if ( s.Connected == true ) // Port is in use and connection is successful
 				{
 					//Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN");
+					PortScanCompleted( this, new PortScanCompletedEventArgs( IPAddr, new PortComputer( PortToScan, true ) ) );
 				}
 				s.Close();
-				PortScanCompleted( this, new PortScanCompletedEventArgs( IPAddr, new PortComputer( PortToScan, true ) ) );
 				return true;
 			}
 			catch ( SocketException ex )
@@ -33,8 +33,8 @@ namespace GridMapper
 				if ( ex.ErrorCode == 10061 )  // Port is unused and could not establish connection
 				{
 					//Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE");
+					PortScanCompleted( this, new PortScanCompletedEventArgs( IPAddr, new PortComputer(PortToScan, false) ) );
 				}
-				PortScanCompleted( this, new PortScanCompletedEventArgs( IPAddr, new PortComputer(PortToScan, false) ) );
 				return false;
 			}
         }

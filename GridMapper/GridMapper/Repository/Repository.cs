@@ -8,12 +8,17 @@ using System.Net.NetworkInformation;
 using GridMapper.NetworkModelObject;
 using System.IO;
 using System.Xml;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace GridMapper.NetworkRepository
 {
 	public class Repository : IRepository
 	{
 		ConcurrentDictionary<IPAddress, INetworkDictionaryItem> _networkDictionaryItems;
+		bool _isModified;
+		bool _isOpen;
 
 		public IDictionary<IPAddress, INetworkDictionaryItem> NetworkDictionaryItems 
 		{
@@ -21,36 +26,31 @@ namespace GridMapper.NetworkRepository
 		}
 
 		//a changer par une interface
-		public static event RepositoryUpdatedEventHandler OnRepositoryUpdated;
-		public delegate void RepositoryUpdatedEventHandler( object sender, RepositoryUpdatedEventArg e );
+		public static event EventHandler<RepositoryUpdatedEventArg> OnRepositoryUpdated;
 
 		public Repository()
 		{
 			_networkDictionaryItems = new ConcurrentDictionary<IPAddress, INetworkDictionaryItem>();
+			_isOpen = true;
+			_isModified = false;
+			Thread th = new Thread( RepositoryUpdateTimer );
+			th.Start();
 		}
 
 		public void AddOrUpdate( IPAddress ipAddress, PingReply pingReply )
 		{
 			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
 			if( pingReply == null ) throw new ArgumentNullException( "pingReply" );
-
-			//if( !_networkDictionaryItems.ContainsKey( ipAddress ) )
-			//    return _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( pingReply ) );
-			//INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
-			//networkDictionaryItem.Update( new NetworkDictionaryItem( pingReply ) );
-			//return _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
-
+			
 			if( _networkDictionaryItems.ContainsKey( ipAddress ) )
 			{
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
 				networkDictionaryItem.Update( new NetworkDictionaryItem( pingReply ) );
-				_networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
-				//OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
+				_isModified = _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
 			}
 			else
 			{
-				_networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( pingReply ) );
-				//OnRepositoryUpdated(this, new RepositoryUpdatedEventArg(_networkDictionaryItems[ipAddress]));
+				_isModified = _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( pingReply ) );
 			}
 		}
 
@@ -63,13 +63,12 @@ namespace GridMapper.NetworkRepository
 			{
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
 				networkDictionaryItem.Update( new NetworkDictionaryItem( ipAddress, macAddress ) );
-				_networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
-				//OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
+				_isModified = _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
 			}
 			else
 			{
 				_networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, macAddress ) );
-				//OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
+				_isModified = true;
 			}
 		}
 
@@ -82,16 +81,15 @@ namespace GridMapper.NetworkRepository
 			{
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
 				networkDictionaryItem.Update( new NetworkDictionaryItem( ipAddress, hostEntry ) );
-				_networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
-				OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
+				_isModified = _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
 			}
 			else
 			{
-				_networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, hostEntry ) );
-				OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
+				_isModified = _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, hostEntry ) );
 			}
 		}
 
+		//NEED REFACTORING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		public void AddOrUpdate( IPAddress ipAddress, int indexPort, bool statusPort )
 		{
 			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
@@ -101,8 +99,7 @@ namespace GridMapper.NetworkRepository
 			{
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
 				networkDictionaryItem.ChangePort( indexPort, statusPort );
-				_networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
-				OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
+				_isModified = _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
 			}
 			else
 			{
@@ -111,7 +108,6 @@ namespace GridMapper.NetworkRepository
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
 				networkDictionaryItem.ChangePort( indexPort, statusPort );
 				_networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
-				OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
 			}
 		}
 
@@ -124,19 +120,30 @@ namespace GridMapper.NetworkRepository
 			{
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
 				networkDictionaryItem.Update( new NetworkDictionaryItem( ipAddress, os ) );
-				_networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
-				OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
+				_isModified = _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
 			}
 			else
 			{
-				_networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, os ) );
-				OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems[ipAddress] ) );
+				_isModified = _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, os ) );
 			}
 		}
 
 		public ICollection<IPAddress> GetIPAddresses()
 		{
 			return _networkDictionaryItems.Keys;
+		}
+
+		private void RepositoryUpdateTimer()
+		{
+			while(_isOpen)
+			{
+				Thread.Sleep(2000);
+				if( _isModified )
+				{
+					_isModified = false;
+					OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems ) );
+				}
+			}
 		}
 
 		//version de merde
@@ -163,16 +170,14 @@ namespace GridMapper.NetworkRepository
 		}
 	}
 
-	public class RepositoryUpdatedEventArg
+	public class RepositoryUpdatedEventArg : EventArgs
 	{
-		private INetworkDictionaryItem _networkDictionaryItem = null;
-
-		public RepositoryUpdatedEventArg( INetworkDictionaryItem networkDictionaryItem )
+		public RepositoryUpdatedEventArg( ConcurrentDictionary<IPAddress, INetworkDictionaryItem> concurrentDictionary )
 		{
-			if( networkDictionaryItem == null ) throw new NullReferenceException();
-			_networkDictionaryItem = networkDictionaryItem;
+			if( concurrentDictionary == null ) throw new NullReferenceException();
+			ReadOnlyRepository = new ReadOnlyCollection<INetworkDictionaryItem>(concurrentDictionary.Values.ToList<INetworkDictionaryItem>());
 		}
 
-		public INetworkDictionaryItem NetworkDictionaryItem { get { return _networkDictionaryItem; } }
+		public ReadOnlyCollection<INetworkDictionaryItem> ReadOnlyRepository { get; private set; }
 	}
 }
