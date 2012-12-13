@@ -102,6 +102,12 @@ namespace GridMapper.Test
 			tryresult( "0.0.0.0-0.0.1.1,0.0.0.0-0.0.1.1" );
 		}
 
+		[Test]
+		public void IPAddress192()
+		{
+			tryresult( "192.168.1.255" );
+		}
+
 		internal void tryresult (string StringToTest, string assert = null)
 		{
 			Console.WriteLine( "Testing string : " + StringToTest );
@@ -119,7 +125,7 @@ namespace GridMapper.Test
 			{
 				foreach ( var ip in Result.Result )
 				{
-					Console.WriteLine(IPAddress.Parse(ip.ToString()).ToString());
+					Console.WriteLine(IPAddress.Parse(((uint)ip).ToString()).ToString());
 				}
 			}
 		}
