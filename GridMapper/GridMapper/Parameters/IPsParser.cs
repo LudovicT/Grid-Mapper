@@ -116,11 +116,13 @@ namespace GridMapper
 						{
 							Remove( IPV4Range.From, IPV4Range.To );
 							Add( from, IPV4Range.To );
+							added = true;
 						}
 						if ( IsNextOfTo( from, IPV4Range.From, IPV4Range.To ) || IsNextOfTo( from, IPV4Range.To ) )
 						{
 							Remove( IPV4Range.From, IPV4Range.To );
 							Add( IPV4Range.From, to );
+							added = true;
 						}
 					}
 				} while ( storage.Count != count );
