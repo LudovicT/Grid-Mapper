@@ -73,11 +73,7 @@ namespace GridMapper
             int taskToDoPerIp = 3;
             //total of IP tested
             int IpTotal = 0;
-            foreach (int ip in _option.IpToTest.Result)
-            {
-                ++IpTotal;
-            }
-			int restToDo = ( IpTotal * taskToDoPerIp ) / ( IpTotal * taskToDoPerIp );
+           int restToDo = ( IpTotal * taskToDoPerIp ) / ( IpTotal * taskToDoPerIp );
             return restToDo;
         }
 		#endregion

@@ -17,7 +17,7 @@ namespace GridMapper
 	{
 		Option _startUpOption;
 		Execution _exe;
-		int TaskLeft = 0;
+        int OperationLeft = 0;
 
 		// définition du delegate qui sera utilisé pour traiter les events
 		private delegate void UpdateDataGrid<T>( object sender, T e );
@@ -204,7 +204,7 @@ namespace GridMapper
 			_exe.StartScan();
 			backgroundWorker1.RunWorkerAsync();
 			backgroundWorker1.WorkerReportsProgress = true;
-			TaskLeft = _startUpOption.IPToTestCount;
+			OperationLeft = _startUpOption.IPToTestCount*_startUpOption.OperationCount;
 		}
 
 		private void fastScanToolStripMenuItem_Click_1( object sender, EventArgs e )
@@ -213,15 +213,15 @@ namespace GridMapper
 			dataGridView1.DataMember = null;
 			_exe.StartScan();
 			backgroundWorker1.RunWorkerAsync();
-			backgroundWorker1.WorkerReportsProgress = true;
-			TaskLeft = _startUpOption.IPToTestCount;
+            backgroundWorker1.WorkerReportsProgress = true;
+            OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
 		}
 
 		private void backgroundWorker1_DoWork( object sender, DoWorkEventArgs e )
 		{
 			int IPCount = _startUpOption.IPToTestCount;
 			int i = 0;
-			i = Convert.ToInt32(Math.Round( (double)( ( ( IPCount - TaskLeft ) / IPCount ) * 100 ) ) );
+			i = Convert.ToInt32(Math.Round( (double)( OperationLeft / (_startUpOption.IPToTestCount * _startUpOption.OperationCount) *100 ) ) );
 			Thread.Sleep( 50 );
 			backgroundWorker1.ReportProgress( i );
 		}

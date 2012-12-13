@@ -6,22 +6,17 @@ using System.Net;
 
 namespace GridMapper
 {
-	public class OptionList
-	{
-		public bool Ping = true;
-		public bool Arp = true;
-		public bool Dns = true;
-		public bool Port = false;
-	}
-
 
 	public class Option
 	{
+		public readonly bool Ping = true;
+		public bool Arp = true;
+		public bool Dns = true;
+		public bool Port = false;
 		bool _cmdConsole;
 		int _maximumTasks;
 		IPParserResult _ipToTest;
 		int _pingTimeout;
-		OptionList Options = new OptionList();
 
 		public Option()
 		{
@@ -95,16 +90,17 @@ namespace GridMapper
 				return 0;
 			}
 		}
-		//public int OperationCount
-		//{
-		//    //get
-		//    //{
-		//    //    int i = 0;
-		//    //    if ( option )
-		//    //    {
-		//    //        i++;
-		//    //    }
-		//    //}
-		//}
+        public int OperationCount
+        {
+            get
+            {
+                int i = 0;
+                if (Ping)i++;
+                if (Arp)i++;
+                return i;
+            }
+        }
+
+        
 	}
 }
