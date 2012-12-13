@@ -44,8 +44,16 @@ namespace GridMapper
 			}
 			uint startIP = (uint)StartIP;
 			uint endIP = (uint)EndIP;
-			IPs.Add( startIP );
-			IPs.Add( endIP );
+			if ( startIP < endIP )
+			{
+				IPs.Add( startIP );
+				IPs.Add( endIP );
+			}
+			else if ( startIP > endIP )
+			{
+				IPs.Add( endIP );
+				IPs.Add( startIP );
+			}
 			return IPs;
 		}
 		public static IPParserResult AutoIpRange()

@@ -220,10 +220,17 @@ namespace GridMapper
 		private void backgroundWorker1_DoWork( object sender, DoWorkEventArgs e )
 		{
 			int IPCount = _startUpOption.IPToTestCount;
-			int i = 0;
-			i = Convert.ToInt32(Math.Round( (double)( ( ( IPCount - TaskLeft ) / IPCount ) * 100 ) ) );
-			Thread.Sleep( 50 );
-			backgroundWorker1.ReportProgress( i );
+			if ( IPCount > 0 )
+			{
+				int i = 5;
+				i = Convert.ToInt32( Math.Round( (double)( ( ( IPCount - TaskLeft ) / IPCount ) * 100 ) ) );
+				Thread.Sleep( 50 );
+				backgroundWorker1.ReportProgress( i );
+			}
+			else
+			{
+				backgroundWorker1.ReportProgress( 100 );
+			}
 		}
 
 		private void backgroundWorker1_ProgressChanged( object sender, ProgressChangedEventArgs e )
