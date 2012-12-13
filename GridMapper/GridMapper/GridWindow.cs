@@ -96,8 +96,26 @@ namespace GridMapper
 				ip.B1 = b[1];
 				ip.B2 = b[2];
 				ip.B3 = b[3];
-				string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", "" };
-				dataGridView1.Rows.Add( row );
+				if( item.MacAddress != null && item.HostEntry != null )
+				{
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), item.HostEntry.HostName.ToString() };
+					dataGridView1.Rows.Add( row );
+				}
+				else if( item.MacAddress != null )
+				{
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), "" };
+					dataGridView1.Rows.Add( row );
+				}
+				else if( item.HostEntry != null )
+				{
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", item.HostEntry.HostName.ToString() };
+					dataGridView1.Rows.Add( row );
+				}
+				else
+				{
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", "" };
+					dataGridView1.Rows.Add( row );
+				}
 			}
 		}
 
@@ -220,17 +238,10 @@ namespace GridMapper
 		private void backgroundWorker1_DoWork( object sender, DoWorkEventArgs e )
 		{
 			int IPCount = _startUpOption.IPToTestCount;
-			if (IPCount > 0)
-			{
-				int i = 0;
-				i = Convert.ToInt32(Math.Round( (double)( OperationLeft / (_startUpOption.IPToTestCount * _startUpOption.OperationCount) *100 ) ) );
-				Thread.Sleep( 50 );
-				backgroundWorker1.ReportProgress( i );
-			}
-			else
-			{
-				backgroundWorker1.ReportProgress( 100 );
-			}
+			int i = 0;
+			i = Convert.ToInt32(Math.Round( (double)( OperationLeft / (_startUpOption.IPToTestCount * _startUpOption.OperationCount) *100 ) ) );
+			Thread.Sleep( 50 );
+			backgroundWorker1.ReportProgress( i );
 		}
 
 		private void backgroundWorker1_ProgressChanged( object sender, ProgressChangedEventArgs e )
