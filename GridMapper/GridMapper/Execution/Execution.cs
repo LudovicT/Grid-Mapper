@@ -41,13 +41,27 @@ namespace GridMapper
 			Task task1 = Task.Factory.StartNew( () =>
 				{
 					PingSender pingSender = new PingSender( Option );
+					ARPSender arpSender = new ARPSender();
+					ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
 					Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
 						{
 							//PingSender pingSender = new PingSender( Option );
 							IPAddress ip = IPAddress.Parse( ipInt.ToString() );
 							PingReply pingReply = pingSender.Ping( ip );
-							if( pingReply != null ) 
+							if( pingReply != null )
+							{
 								_repository.AddOrUpdate( ip, pingReply );
+								Task task2 = Task.Factory.StartNew( () =>
+								{
+									IPAddress temp = ip;
+									_repository.AddOrUpdate( ip, arpSender.GetMac( ip ) );
+								} );
+								Task task3 = Task.Factory.StartNew( () =>
+								{
+									IPAddress temp = ip;
+									_repository.AddOrUpdate( ip, dnsResolver.GetHostName( ip ) );
+								} );
+							}
 						} );
 				} );/*.ContinueWith( ( a ) =>
 					{
