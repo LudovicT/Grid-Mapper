@@ -143,7 +143,7 @@ namespace GridMapper
 			tmpFrom = ip;
 			tmpTo = ip;
 			tmpFrom.Address--;
-			tmpTo.Address--;
+			tmpTo.Address++;
 
 			if ( storage.Count > 0 )
 			{
@@ -178,7 +178,7 @@ namespace GridMapper
 			tmpFrom = from;
 			tmpTo = to;
 			tmpFrom.Address--;
-			tmpTo.Address--;
+			tmpTo.Address++;
 
 			if ( storage.Count > 0 )
 			{
@@ -200,6 +200,16 @@ namespace GridMapper
 							{
 								Add( IPV4Range.From, tmpFrom );
 								Add( tmpTo, IPV4Range.To );
+							}
+							//inclusive left
+							if ( IPV4Range.From.Address == from.Address && IPV4Range.To.Address != to.Address )
+							{
+								Add( tmpTo, IPV4Range.To );
+							}
+							//inclusive right
+							if ( IPV4Range.From.Address != from.Address && IPV4Range.To.Address == to.Address )
+							{
+								Add( IPV4Range.From, tmpFrom );
 							}
 						}
 
@@ -394,6 +404,7 @@ namespace GridMapper
 			{
 				ip1 = new IPAddressV4();
 				ip2 = new IPAddressV4();
+				int CIDR = 0;
 				Token token;
 				if ( IsNotEndOfInput )
 				{
@@ -418,10 +429,21 @@ namespace GridMapper
 											return Token.Unknown;
 										}
 									}
-									break;
+									return Token.Unknown;
 								case Token.CIDR:
-									//todo
-									return Token.CIDR;
+									if ( IsCIDR( out CIDR ) && IsCIDRRange( ip1, CIDR, out ip1, out ip2 ) )
+									{
+										token = NextToken();
+										if ( token == Token.New || token == Token.End )
+										{
+											return Token.CIDR;
+										}
+										else
+										{
+											return Token.Unknown;
+										}
+									}
+									return Token.Unknown;
 								case Token.End:
 									return Token.End;
 								default:
@@ -459,7 +481,18 @@ namespace GridMapper
 											}
 											break;
 										case Token.CIDR:
-											//todo
+											if ( IsCIDR( out CIDR ) && IsCIDRRange( ip1, CIDR, out ip1, out ip2 ) )
+											{
+												token = NextToken();
+												if ( token == Token.New || token == Token.End )
+												{
+													return Token.ExcludeCIDR;
+												}
+												else
+												{
+													return Token.Unknown;
+												}
+											}
 											return Token.ExcludeCIDR;
 										case Token.End:
 											return Token.ExcludeEnd;
@@ -574,6 +607,39 @@ namespace GridMapper
 				return false;
 			}
 
+			public bool IsCIDRRange( IPAddressV4 ip, int maskBits, out IPAddressV4 start, out IPAddressV4 end )
+			{
+				start = new IPAddressV4();
+				end = new IPAddressV4();
+				int mask = ~( ( 1 << ( 32 - maskBits ) ) - 1 );
+				int StartIP = ip.Address & mask;
+				int EndIP = ( ip.Address & mask ) | ~mask;
+				List<uint> IPs = new List<uint>();
+
+				//dodge an infinite loop
+				if ( StartIP < 0 )
+				{
+					var temp = EndIP;
+					EndIP = StartIP;
+					StartIP = temp;
+				}
+				uint startIP = (uint)StartIP;
+				uint endIP = (uint)EndIP;
+				if ( startIP < endIP )
+				{
+					start.Address = (int)startIP;
+					end.Address = (int)endIP;
+					return true;
+				}
+				else if ( startIP > endIP )
+				{
+					end.Address = (int)startIP;
+					start.Address = (int)endIP;
+					return true;
+				}
+				return false;
+			}
+
 			private bool MatchChar( char c )
 			{
 				if ( IsNotEndOfInput && Current == ' ' )
@@ -591,7 +657,7 @@ namespace GridMapper
 			private bool IsByte( out byte b )
 			{
 				b = 0;
-				string returnedByte = "";
+				string returnedByte = string.Empty;
 				if ( Current == ' ' )
 				{
 					Forward();
@@ -605,6 +671,30 @@ namespace GridMapper
 				if ( returnedByte != String.Empty )
 				{
 					if ( byte.TryParse( returnedByte, out b ) )
+					{
+						return true;
+					}
+					return false;
+				}
+				return false;
+			}
+
+			private bool IsCIDR( out int CIDR )
+			{
+				CIDR = 0;
+				string CIDRString = string.Empty;
+				if ( Current == ' ' )
+				{
+					Forward();
+				}
+				while ( IsNotEndOfInput && Char.IsDigit( Current ) )
+				{
+					CIDRString += Current;
+					Forward();
+				}
+				if ( CIDRString != string.Empty )
+				{
+					if ( int.TryParse( CIDRString, out CIDR ) && CIDR >= 0 && CIDR <= 32 )
 					{
 						return true;
 					}
