@@ -96,7 +96,22 @@ namespace GridMapper
 				ip.B1 = b[1];
 				ip.B2 = b[2];
 				ip.B3 = b[3];
-				string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", "" };
+				if( item.MacAddress != null )
+				{
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", "" };
+				}
+				else if( item.HostEntry.HostName != null )
+				{
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", item.HostEntry.ToString() };
+				}
+				else if( item.MacAddress != null && item.HostEntry.HostName != null )
+				{
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.IPAddress.ToString(), item.HostEntry.ToString() };
+				}
+				else
+				{
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", "" };
+				}
 				dataGridView1.Rows.Add( row );
 			}
 		}
