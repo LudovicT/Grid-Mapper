@@ -17,6 +17,7 @@ namespace GridMapper
 	{
 		Option _startUpOption;
 		Execution _exe;
+		int TaskLeft = 0;
 
 		// définition du delegate qui sera utilisé pour traiter les events
 		private delegate void UpdateDataGrid<T>( object sender, T e );
@@ -26,7 +27,6 @@ namespace GridMapper
 		{
 			_startUpOption = StartUpOptions;
 			_exe = new Execution( StartUpOptions );
-
 			InitializeComponent();
 			InitializeDataGridView();
 		}
@@ -72,7 +72,13 @@ namespace GridMapper
 
 		public void UpdateDataGridView2( object sender, PingCompletedEventArgs e )
 		{
-			string[] row = { e.PingReply.Address.Address.ToString(), e.PingReply.Address.ToString(), "" , "" };
+			byte[] b = e.PingReply.Address.GetAddressBytes();
+			IPAddressV4 ip = new IPAddressV4();
+			ip.B0 = b[0];
+			ip.B1 = b[1];
+			ip.B2 = b[2];
+			ip.B3 = b[3];
+			string[] row = { ip.Address.ToString(), e.PingReply.Address.ToString(), "" , "" };
 			dataGridView1.Rows.Add( row );
 		}
 		public void UpdateDataGridView2( object sender, MacCompletedEventArgs e )
@@ -84,7 +90,13 @@ namespace GridMapper
 			dataGridView1.DataMember = null;
 			foreach( INetworkDictionaryItem item in e.ReadOnlyRepository )
 			{
-				string[] row = { item.IPAddress.ToString(), "", "" };
+				byte[] b = item.IPAddress.GetAddressBytes();
+				IPAddressV4 ip = new IPAddressV4();
+				ip.B0 = b[0];
+				ip.B1 = b[1];
+				ip.B2 = b[2];
+				ip.B3 = b[3];
+				string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", "" };
 				dataGridView1.Rows.Add( row );
 			}
 		}
@@ -121,7 +133,7 @@ namespace GridMapper
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        { 
+        {
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -190,6 +202,9 @@ namespace GridMapper
 		private void fastScanToolStripMenuItem_Click( object sender, EventArgs e )
 		{
 			_exe.StartScan();
+			backgroundWorker1.RunWorkerAsync();
+			backgroundWorker1.WorkerReportsProgress = true;
+			TaskLeft = _startUpOption.IPToTestCount;
 		}
 
 		private void fastScanToolStripMenuItem_Click_1( object sender, EventArgs e )
@@ -197,6 +212,23 @@ namespace GridMapper
 			dataGridView1.DataSource = null;
 			dataGridView1.DataMember = null;
 			_exe.StartScan();
+			backgroundWorker1.RunWorkerAsync();
+			backgroundWorker1.WorkerReportsProgress = true;
+			TaskLeft = _startUpOption.IPToTestCount;
+		}
+
+		private void backgroundWorker1_DoWork( object sender, DoWorkEventArgs e )
+		{
+			int IPCount = _startUpOption.IPToTestCount;
+			int i = 0;
+			i = Convert.ToInt32(Math.Round( (double)( ( ( IPCount - TaskLeft ) / IPCount ) * 100 ) ) );
+			Thread.Sleep( 50 );
+			backgroundWorker1.ReportProgress( i );
+		}
+
+		private void backgroundWorker1_ProgressChanged( object sender, ProgressChangedEventArgs e )
+		{
+			ProgressScan.Value = e.ProgressPercentage;
 		}
 	}
 }

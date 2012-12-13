@@ -34,12 +34,12 @@ namespace GridMapper.Test
 		[Test]
 		public void OneIPAddressShort()
 		{
-			tryresult( "0.1" );
+			tryresult( "0.1", string.Empty );
 		}
 		[Test]
 		public void OneIPAddressRangeShort()
 		{
-			tryresult( "0.0-0.0.1" );
+			tryresult( "0.0-0.0.1", string.Empty );
 		}
 		[Test]
 		public void OneIPAddressAndIPAddressRange()
@@ -54,7 +54,7 @@ namespace GridMapper.Test
 		[Test]
 		public void BigRange()
 		{
-			tryresult( "0-255" , "0.0.0.0-255.255.255.255,");
+			tryresult( "0-255" , string.Empty);
 		}
 		[Test]
 		public void MalformatedIPAddressRange()
@@ -69,18 +69,42 @@ namespace GridMapper.Test
 		[Test]
 		public void WhitespaceIPAddress()
 		{
-			tryresult( "   0 . 0 . 0 . 0" , "0.0.0.0-0.0.0.0,");
+			tryresult( "   0 . 0 . 0 . 0", string.Empty );
 		}
 		[Test]
-		public void RemoveIPAddress()
+		public void RemoveOneIPAddress()
 		{
 			tryresult( "0.0.0.0,1.1.1.1,!1.1.1.1" );
+		}
+		[Test]
+		public void RemoveTwoIPAddress()
+		{
+			tryresult( "0.0.0.0,0.0.0.1,1.1.1.1,!0.0.0.0,!1.1.1.1" );
+		}
+		[Test]
+		public void RemoveOneIPRange()
+		{
+			tryresult( "0.0.0.0,0.1.1.1,1.1.1.1,!0.0.1.1-2.2.2.2" );
+		}
+		[Test]
+		public void RemoveFullRangeTest()
+		{
+			tryresult( "0.0.0.0-0.0.5.255,!0.0.1.1-0.0.3.2,!0.0.3.255-0.0.4.200" );
+		}
+		[Test]
+		public void AddTwiceSameIPAddress()
+		{
+			tryresult( "0.0.0.0,0.0.0.0" );
+		}
+		[Test]
+		public void AddTwiceSameIPRangeAddress()
+		{
+			tryresult( "0.0.0.0-0.0.1.1,0.0.0.0-0.0.1.1" );
 		}
 
 		internal void tryresult (string StringToTest, string assert = null)
 		{
 			Console.WriteLine( "Testing string : " + StringToTest );
-			List<string> built = new List<string>();
 			IPParserResult Result = new IPParserResult();
 			Result = IPParser.TryParse( StringToTest );
 			if ( Result.HasError )
@@ -88,12 +112,7 @@ namespace GridMapper.Test
 				Console.WriteLine( Result.ErrorMessage + " error" );
 				if ( assert != null )
 				{
-					Assert.That( built.Count == 0 );
 					Console.WriteLine( "WINNING LOT" );
-				}
-				else
-				{
-					Console.WriteLine( built );
 				}
 			}
 			else

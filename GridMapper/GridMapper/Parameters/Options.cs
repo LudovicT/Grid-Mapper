@@ -6,6 +6,14 @@ using System.Net;
 
 namespace GridMapper
 {
+	public class OptionList
+	{
+		public bool Ping = true;
+		public bool Arp = true;
+		public bool Dns = true;
+		public bool Port = false;
+	}
+
 
 	public class Option
 	{
@@ -13,6 +21,7 @@ namespace GridMapper
 		int _maximumTasks;
 		IPParserResult _ipToTest;
 		int _pingTimeout;
+		OptionList Options = new OptionList();
 
 		public Option()
 		{
@@ -69,5 +78,33 @@ namespace GridMapper
 				_ipToTest = value;
 			}
 		}
+
+		public int IPToTestCount
+		{
+			get
+			{
+				int i = 0;
+				if ( _ipToTest.Result != null )
+				{
+					foreach ( int ip in _ipToTest.Result )
+					{
+						i++;
+					}
+					return i;
+				}
+				return 0;
+			}
+		}
+		//public int OperationCount
+		//{
+		//    //get
+		//    //{
+		//    //    int i = 0;
+		//    //    if ( option )
+		//    //    {
+		//    //        i++;
+		//    //    }
+		//    //}
+		//}
 	}
 }
