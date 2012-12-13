@@ -27,7 +27,6 @@ namespace GridMapper
 
 		public static List<uint> IpRange( IPAddress ip, int maskBits )
 		{
-			byte[] addressBytes = ip.GetAddressBytes();
 			int intIP = 0;
 			intIP = (int)IPAddressToUint( ip );
 			int mask = ~( ( 1 << ( 32 - maskBits ) ) - 1 );
