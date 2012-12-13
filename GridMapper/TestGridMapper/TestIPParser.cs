@@ -101,6 +101,22 @@ namespace GridMapper.Test
 		{
 			tryresult( "0.0.0.0-0.0.1.1,0.0.0.0-0.0.1.1" );
 		}
+		[Test]
+		public void AddConsecutiveIPAddress()
+		{
+			tryresult( "0.0.0.0,0.0.0.1,0.0.0.2" );
+		}
+		[Test]
+		public void AddConsecutiveIPRange()
+		{
+			tryresult( "0.0.0.0-0.0.1.0,0.0.1.1-0.0.1.255" );
+		}
+
+		[Test]
+		public void IPAddress192()
+		{
+			tryresult( "192.168.1.255" );
+		}
 
 		internal void tryresult (string StringToTest, string assert = null)
 		{
@@ -119,7 +135,7 @@ namespace GridMapper.Test
 			{
 				foreach ( var ip in Result.Result )
 				{
-					Console.WriteLine(IPAddress.Parse(ip.ToString()).ToString());
+					Console.WriteLine(IPAddress.Parse(((uint)ip).ToString()).ToString());
 				}
 			}
 		}

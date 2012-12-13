@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -235,10 +235,17 @@ namespace GridMapper
 		private void backgroundWorker1_DoWork( object sender, DoWorkEventArgs e )
 		{
 			int IPCount = _startUpOption.IPToTestCount;
-			int i = 0;
-			i = Convert.ToInt32(Math.Round( (double)( OperationLeft / (_startUpOption.IPToTestCount * _startUpOption.OperationCount) *100 ) ) );
-			Thread.Sleep( 50 );
-			backgroundWorker1.ReportProgress( i );
+			if (IPCount > 0)
+			{
+				int i = 0;
+				i = Convert.ToInt32(Math.Round( (double)( OperationLeft / (_startUpOption.IPToTestCount * _startUpOption.OperationCount) *100 ) ) );
+				Thread.Sleep( 50 );
+				backgroundWorker1.ReportProgress( i );
+			}
+			else
+			{
+				backgroundWorker1.ReportProgress( 100 );
+			}
 		}
 
 		private void backgroundWorker1_ProgressChanged( object sender, ProgressChangedEventArgs e )

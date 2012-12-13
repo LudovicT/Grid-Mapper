@@ -46,7 +46,7 @@ namespace GridMapper
 					Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
 						{
 							//PingSender pingSender = new PingSender( Option );
-							IPAddress ip = IPAddress.Parse( ipInt.ToString() );
+							IPAddress ip = IPAddress.Parse( ((uint)ipInt).ToString() );
 							PingReply pingReply = pingSender.Ping( ip );
 							if( pingReply != null )
 							{

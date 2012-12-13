@@ -58,6 +58,16 @@ namespace GridMapper
 					{
 						IPAddressV4Range IPV4Range = storage[i];
 						if ( IsBetween( ip, IPV4Range.From, IPV4Range.To ) ) return;
+						if ( IsNextOfFrom( ip, IPV4Range.From, IPV4Range.To ) || IsNextOfFrom( ip, IPV4Range.From))
+						{
+							Remove( IPV4Range.From, IPV4Range.To );
+							Add( ip, IPV4Range.To );
+						}
+						if ( IsNextOfTo( ip, IPV4Range.From, IPV4Range.To ) || IsNextOfTo( ip, IPV4Range.To))
+						{
+							Remove( IPV4Range.From, IPV4Range.To );
+							Add( IPV4Range.From, ip );
+						}
 					}
 				} while ( storage.Count != count );
 			}
@@ -101,6 +111,16 @@ namespace GridMapper
 							Remove( IPV4Range.From, IPV4Range.To );
 							storage.Add( new IPAddressV4Range( from, IPV4Range.To ) );
 							added = true;
+						}
+						if ( IsNextOfFrom( to, IPV4Range.From, IPV4Range.To ) || IsNextOfFrom( to, IPV4Range.From ) )
+						{
+							Remove( IPV4Range.From, IPV4Range.To );
+							Add( from, IPV4Range.To );
+						}
+						if ( IsNextOfTo( from, IPV4Range.From, IPV4Range.To ) || IsNextOfTo( from, IPV4Range.To ) )
+						{
+							Remove( IPV4Range.From, IPV4Range.To );
+							Add( IPV4Range.From, to );
 						}
 					}
 				} while ( storage.Count != count );
@@ -228,15 +248,43 @@ namespace GridMapper
 		{
 			return GetEnumerator();
 		}
-
-		bool IsBetween( IPAddressV4 search, IPAddressV4 from, IPAddressV4 to ) 
+		/// <summary>
+		/// Return a bool depending if search is between from and to
+		/// </summary>
+		/// <param name="search">the search</param>
+		/// <param name="from">the left side of the range</param>
+		/// <param name="to">the right side of the range</param>
+		/// <returns>true if search is between from and to</returns>
+		bool IsBetween( IPAddressV4 search, IPAddressV4 from, IPAddressV4 to )
 		{
-			if ( from.Address > to.Address  )
+			if ( from.Address > to.Address )
 			{
 				return from.Address >= search.Address && search.Address >= to.Address;
 			}
 			return from.Address <= search.Address && search.Address <= to.Address;
-		} 
+		}
+
+		// single ip range
+		bool IsNextOfFrom( IPAddressV4 search, IPAddressV4 from, IPAddressV4 to )
+		{
+			return search.Address + 1 == from.Address && search.Address + 1 == to.Address;
+		}
+		// range of ip
+		bool IsNextOfFrom( IPAddressV4 search, IPAddressV4 from)
+		{
+			return search.Address + 1 == from.Address;
+		}
+
+		// single ip range
+		bool IsNextOfTo( IPAddressV4 search, IPAddressV4 from, IPAddressV4 to )
+		{
+			return search.Address - 1 == from.Address && search.Address - 1 == to.Address;
+		}
+		//range of ip
+		bool IsNextOfTo( IPAddressV4 search, IPAddressV4 to )
+		{
+			return search.Address - 1 == to.Address;
+		}
 	}
 
 	public class IPAddressV4Range
