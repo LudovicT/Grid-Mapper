@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -237,5 +237,10 @@ namespace GridMapper
 		{
 			ProgressScan.Value = e.ProgressPercentage;
 		}
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
 	}
 }
