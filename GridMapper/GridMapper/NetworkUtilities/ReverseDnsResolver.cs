@@ -14,9 +14,16 @@ namespace GridMapper
 
 		public IPHostEntry GetHostName(IPAddress ipAddress)
 		{
-			IPHostEntry hostEntry = Dns.GetHostEntry( ipAddress );
+			try
+			{
+				IPHostEntry hostEntry = Dns.GetHostEntry( ipAddress );
+				return hostEntry;
+			}
+			catch
+			{
+				return null;
+			}
 			//HostNameCompleted( this, new HostNameCompletedEventArgs( ipAddress, hostEntry ) );
-			return hostEntry;
 		}
 
 		public class HostNameCompletedEventArgs : EventArgs

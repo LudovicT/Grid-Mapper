@@ -51,8 +51,16 @@ namespace GridMapper
 							if( pingReply != null )
 							{
 								_repository.AddOrUpdate( ip, pingReply );
-								_repository.AddOrUpdate( ip, arpSender.GetMac( ip ) );
-								_repository.AddOrUpdate( ip, dnsResolver.GetHostName( ip ) );
+								PhysicalAddress mac = arpSender.GetMac( ip );
+								if ( mac != PhysicalAddress.None )
+								{
+									_repository.AddOrUpdate( ip, mac );
+								}
+								IPHostEntry dns = dnsResolver.GetHostName( ip );
+								if ( dns != null )
+								{
+									_repository.AddOrUpdate( ip, dns );
+								}
 							}
 						} );
 				} );/*.ContinueWith( ( a ) =>
