@@ -101,6 +101,16 @@ namespace GridMapper.Test
 		{
 			tryresult( "0.0.0.0-0.0.1.1,0.0.0.0-0.0.1.1" );
 		}
+		[Test]
+		public void AddConsecutiveIPAddress()
+		{
+			tryresult( "0.0.0.0,0.0.0.1,0.0.0.2" );
+		}
+		[Test]
+		public void AddConsecutiveIPRange()
+		{
+			tryresult( "0.0.0.0-0.0.1.0,0.0.1.1-0.0.1.255" );
+		}
 
 		[Test]
 		public void IPAddress192()
