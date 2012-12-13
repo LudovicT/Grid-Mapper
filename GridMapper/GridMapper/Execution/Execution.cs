@@ -51,16 +51,8 @@ namespace GridMapper
 							if( pingReply != null )
 							{
 								_repository.AddOrUpdate( ip, pingReply );
-								Task task2 = Task.Factory.StartNew( () =>
-								{
-									IPAddress temp = ip;
-									_repository.AddOrUpdate( ip, arpSender.GetMac( ip ) );
-								} );
-								Task task3 = Task.Factory.StartNew( () =>
-								{
-									IPAddress temp = ip;
-									_repository.AddOrUpdate( ip, dnsResolver.GetHostName( ip ) );
-								} );
+								_repository.AddOrUpdate( ip, arpSender.GetMac( ip ) );
+								_repository.AddOrUpdate( ip, dnsResolver.GetHostName( ip ) );
 							}
 						} );
 				} );/*.ContinueWith( ( a ) =>

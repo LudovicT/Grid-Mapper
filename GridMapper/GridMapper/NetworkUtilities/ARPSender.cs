@@ -37,8 +37,8 @@ namespace GridMapper
 				str[i] = macAddr[i].ToString( "x2" );
 			string fullMac = string.Join( "", str ).ToUpper();
 			PhysicalAddress macAddress = PhysicalAddress.Parse( fullMac );
-			if( macAddress != null )
-				MacCompleted( this, new MacCompletedEventArgs( dst, macAddress ) );
+			//if( macAddress != null )
+				//MacCompleted( this, new MacCompletedEventArgs( dst, macAddress ) );
 			return macAddress;
 		}
 	}
