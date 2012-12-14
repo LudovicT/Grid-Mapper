@@ -16,7 +16,7 @@ namespace GridMapper
 		Option _option;
 		IRepository _repository;
 
-		public static event EventHandler<TaskCompletedEventArgs> TaskCompleted;
+		public static event EventHandler<TaskCompletedEventArgs> TaskCompleted; 
 		public static event EventHandler IsFinish;
 
 		#region IExecution Membres
