@@ -259,5 +259,15 @@ namespace GridMapper
             Option_window Option = new Option_window();
             Option.ShowDialog();
         }
+
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = null;
+            dataGridView1.DataMember = null;
+            _exe.StartScan();
+            backgroundWorker1.RunWorkerAsync();
+            backgroundWorker1.WorkerReportsProgress = true;
+            OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
+        }
 	}
 }

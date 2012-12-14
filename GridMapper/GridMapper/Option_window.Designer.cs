@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Option_window));
             this.option_cancel = new System.Windows.Forms.Button();
             this.option_accept = new System.Windows.Forms.Button();
             this.option_ping = new System.Windows.Forms.CheckBox();
@@ -164,6 +165,7 @@
             this.Controls.Add(this.option_cancel);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Option_window";
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
