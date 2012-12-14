@@ -38,13 +38,10 @@
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aRPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dNSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timeOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TimeoutSelected = new System.Windows.Forms.ToolStripTextBox();
-            this.maximumTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
             this.startToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.fastScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,7 +56,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.ProgressScan = new System.Windows.Forms.ProgressBar();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.advancedOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -141,11 +139,19 @@
             this.aRPToolStripMenuItem,
             this.dNSToolStripMenuItem,
             this.portToolStripMenuItem,
-            this.timeOutToolStripMenuItem,
-            this.maximumTaskToolStripMenuItem});
+            this.toolStripSeparator1,
+            this.advancedOptionToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
             this.optionToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
             this.optionToolStripMenuItem.Text = "Option";
+            // 
+            // pingToolStripMenuItem
+            // 
+            this.pingToolStripMenuItem.Checked = true;
+            this.pingToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.pingToolStripMenuItem.Name = "pingToolStripMenuItem";
+            this.pingToolStripMenuItem.Size = new System.Drawing.Size(248, 24);
+            this.pingToolStripMenuItem.Text = "Ping (cannot be changed)";
             // 
             // aRPToolStripMenuItem
             // 
@@ -153,7 +159,7 @@
             this.aRPToolStripMenuItem.CheckOnClick = true;
             this.aRPToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.aRPToolStripMenuItem.Name = "aRPToolStripMenuItem";
-            this.aRPToolStripMenuItem.Size = new System.Drawing.Size(177, 24);
+            this.aRPToolStripMenuItem.Size = new System.Drawing.Size(248, 24);
             this.aRPToolStripMenuItem.Text = "ARP";
             // 
             // dNSToolStripMenuItem
@@ -162,7 +168,7 @@
             this.dNSToolStripMenuItem.CheckOnClick = true;
             this.dNSToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.dNSToolStripMenuItem.Name = "dNSToolStripMenuItem";
-            this.dNSToolStripMenuItem.Size = new System.Drawing.Size(177, 24);
+            this.dNSToolStripMenuItem.Size = new System.Drawing.Size(248, 24);
             this.dNSToolStripMenuItem.Text = "DNS";
             // 
             // portToolStripMenuItem
@@ -171,34 +177,8 @@
             this.portToolStripMenuItem.CheckOnClick = true;
             this.portToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.portToolStripMenuItem.Name = "portToolStripMenuItem";
-            this.portToolStripMenuItem.Size = new System.Drawing.Size(177, 24);
+            this.portToolStripMenuItem.Size = new System.Drawing.Size(248, 24);
             this.portToolStripMenuItem.Text = "Port";
-            // 
-            // timeOutToolStripMenuItem
-            // 
-            this.timeOutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TimeoutSelected});
-            this.timeOutToolStripMenuItem.Name = "timeOutToolStripMenuItem";
-            this.timeOutToolStripMenuItem.Size = new System.Drawing.Size(177, 24);
-            this.timeOutToolStripMenuItem.Text = "Timeout";
-            // 
-            // TimeoutSelected
-            // 
-            this.TimeoutSelected.Name = "TimeoutSelected";
-            this.TimeoutSelected.Size = new System.Drawing.Size(100, 27);
-            // 
-            // maximumTaskToolStripMenuItem
-            // 
-            this.maximumTaskToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBox2});
-            this.maximumTaskToolStripMenuItem.Name = "maximumTaskToolStripMenuItem";
-            this.maximumTaskToolStripMenuItem.Size = new System.Drawing.Size(177, 24);
-            this.maximumTaskToolStripMenuItem.Text = "Maximum Task";
-            // 
-            // toolStripTextBox2
-            // 
-            this.toolStripTextBox2.Name = "toolStripTextBox2";
-            this.toolStripTextBox2.Size = new System.Drawing.Size(100, 27);
             // 
             // startToolStripMenuItem1
             // 
@@ -338,13 +318,17 @@
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             // 
-            // pingToolStripMenuItem
+            // toolStripSeparator1
             // 
-            this.pingToolStripMenuItem.Checked = true;
-            this.pingToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.pingToolStripMenuItem.Name = "pingToolStripMenuItem";
-            this.pingToolStripMenuItem.Size = new System.Drawing.Size(248, 24);
-            this.pingToolStripMenuItem.Text = "Ping (cannot be changed)";
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(245, 6);
+            // 
+            // advancedOptionToolStripMenuItem
+            // 
+            this.advancedOptionToolStripMenuItem.Name = "advancedOptionToolStripMenuItem";
+            this.advancedOptionToolStripMenuItem.Size = new System.Drawing.Size(248, 24);
+            this.advancedOptionToolStripMenuItem.Text = "Advanced options";
+            this.advancedOptionToolStripMenuItem.Click += new System.EventHandler(this.advancedOptionToolStripMenuItem_Click);
             // 
             // GridWindow
             // 
@@ -406,11 +390,9 @@
         private System.Windows.Forms.ToolStripMenuItem aRPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dNSToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem portToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem timeOutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripTextBox TimeoutSelected;
-        private System.Windows.Forms.ToolStripMenuItem maximumTaskToolStripMenuItem;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
         private System.Windows.Forms.ToolStripMenuItem pingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem advancedOptionToolStripMenuItem;
 	}
 }
 

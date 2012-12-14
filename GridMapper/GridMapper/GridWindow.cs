@@ -253,5 +253,10 @@ namespace GridMapper
         {
 
         }
+
+        private void advancedOptionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Option_window();
+        }
 	}
 }
