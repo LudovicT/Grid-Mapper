@@ -161,6 +161,9 @@
     </Compile>
     <Compile Include="Struct\IPAddressV4.cs" />
     <Compile Include="Struct\PortComputer.cs" />
+    <EmbeddedResource Include="GridWindow.en-US.resx">
+      <DependentUpon>GridWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GridWindow.resx">
       <DependentUpon>GridWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
