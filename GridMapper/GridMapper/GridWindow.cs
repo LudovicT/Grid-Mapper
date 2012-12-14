@@ -256,7 +256,8 @@ namespace GridMapper
 
         private void advancedOptionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new Option_window();
+            Option_window Option = new Option_window();
+            Option.ShowDialog();
         }
 	}
 }

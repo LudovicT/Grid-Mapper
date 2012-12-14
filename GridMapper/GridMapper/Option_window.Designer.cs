@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.option_cancel = new System.Windows.Forms.Button();
             this.option_accept = new System.Windows.Forms.Button();
             this.option_ping = new System.Windows.Forms.CheckBox();
@@ -43,24 +40,21 @@
             this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // fontDialog1
-            // 
-            this.fontDialog1.Color = System.Drawing.SystemColors.ControlText;
-            // 
             // option_cancel
             // 
             this.option_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.option_cancel.Location = new System.Drawing.Point(173, 384);
+            this.option_cancel.Location = new System.Drawing.Point(166, 372);
             this.option_cancel.Name = "option_cancel";
             this.option_cancel.Size = new System.Drawing.Size(75, 23);
             this.option_cancel.TabIndex = 0;
             this.option_cancel.Text = "Cancel";
             this.option_cancel.UseVisualStyleBackColor = true;
+            this.option_cancel.Click += new System.EventHandler(this.option_cancel_Click);
             // 
             // option_accept
             // 
             this.option_accept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.option_accept.Location = new System.Drawing.Point(77, 384);
+            this.option_accept.Location = new System.Drawing.Point(70, 372);
             this.option_accept.Name = "option_accept";
             this.option_accept.Size = new System.Drawing.Size(75, 23);
             this.option_accept.TabIndex = 1;
@@ -156,7 +150,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(260, 419);
+            this.ClientSize = new System.Drawing.Size(253, 407);
             this.ControlBox = false;
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -170,14 +164,12 @@
             this.Controls.Add(this.option_cancel);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
-            this.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.Name = "Option_window";
             this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -185,8 +177,6 @@
 
         #endregion
 
-        private System.IO.Ports.SerialPort serialPort1;
-        private System.Windows.Forms.FontDialog fontDialog1;
         private System.Windows.Forms.Button option_cancel;
         private System.Windows.Forms.Button option_accept;
         private System.Windows.Forms.CheckBox option_ping;
