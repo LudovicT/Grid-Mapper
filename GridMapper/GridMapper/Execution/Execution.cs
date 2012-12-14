@@ -16,6 +16,8 @@ namespace GridMapper
 		Option _option;
 		IRepository _repository;
 
+		public static event EventHandler<TaskCompletedEventArgs> TaskCompleted;
+		public static event EventHandler IsFinish;
 
 		#region IExecution Membres
 
@@ -52,39 +54,34 @@ namespace GridMapper
 							if( pingReply != null )
 							{
 								_repository.AddOrUpdate( ip, pingReply );
+								TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								PhysicalAddress mac = arpSender.GetMac( ip );
-								if ( mac != PhysicalAddress.None )
+								if( mac != PhysicalAddress.None )
 								{
 									_repository.AddOrUpdate( ip, mac );
+									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
 								IPHostEntry dns = dnsResolver.GetHostName( ip );
-								if ( dns != null )
+								if( dns != null )
 								{
 									_repository.AddOrUpdate( ip, dns );
+									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
 								//ne gere pas le option des port a scan
 								PortComputer portComputer = portScanner.ScanPort( ip, 80 );
 								if( portComputer.Port != 0 )
+								{
 									_repository.AddOrUpdate( ip, portComputer );
+									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+								}
 							}
+							else
+								TaskCompleted( this, new TaskCompletedEventArgs( 4 ) );
 						} );
-				} );/*.ContinueWith( ( a ) =>
+				} ).ContinueWith( (a) =>
 					{
-						ARPSender arpSender = new ARPSender();
-						ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
-						Parallel.ForEach<IPAddress>( _repository.GetIPAddresses(), new ParallelOptions { MaxDegreeOfParallelism = 200 }, ip =>
-						{
-							_repository.AddOrUpdate( ip, arpSender.GetMac( ip ) );
-						} );
-						//Task task3 = Task.Factory.StartNew( () =>
-						//{
-						//    _repository.AddOrUpdate( ip, dnsResolver.GetHostName( ip ) );
-						//} );
+						IsFinish( this, null );
 					} );
-					/*} ).ContinueWith( ( b ) =>
-						{
-							//fait peter l'event
-						} );*/
 		}
 
         public int Progress()
@@ -102,5 +99,16 @@ namespace GridMapper
 			_option = startupOptions;
 			_repository = new Repository();
 		}
+	}
+
+	public class TaskCompletedEventArgs : EventArgs
+	{
+
+		public TaskCompletedEventArgs( int taskCompleted )
+		{
+			TaskCompleted = taskCompleted;
+		}
+
+		public int TaskCompleted { get; private set; }
 	}
 }
