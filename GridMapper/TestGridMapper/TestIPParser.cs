@@ -117,6 +117,41 @@ namespace GridMapper.Test
 		{
 			tryresult( "192.168.1.255" );
 		}
+		[Test]
+		public void CIDROneIP()
+		{
+			tryresult( "0.0.0.25/29" );
+		}
+		[Test]
+		public void CIDRTwoIP()
+		{
+			tryresult( "0.0.0.25/29,0.0.0.80/29" );
+		}
+		[Test]
+		public void CIDRRemoveIP()
+		{
+			tryresult( "0.0.0.25/29,!0.0.0.26" );
+		}
+		[Test]
+		public void CIDRRemoveIPRange()
+		{
+			tryresult( "0.0.0.25/29,!0.0.0.25-0.0.0.30" );
+		}
+		[Test]
+		public void CIDRRemoveIPCIDR()
+		{
+			tryresult( "0.0.0.25/26,!0.0.0.31/28,!0.0.0.32/28" );
+		}
+		[Test]
+		public void CIDRTwoIpCIDRRemoveIPRange()
+		{
+			tryresult( "0.0.0.25/27,0.0.0.85/27,!0.0.0.3-0.0.0.91" );
+		}
+		[Test]
+		public void CIDRTwoIpCIDRRemoveIPRangeAddIPCIDR()
+		{
+			tryresult( "0.0.0.25/27,0.0.0.85/27,!0.0.0.3-0.0.0.91,0.0.0.40/29" );
+		}
 
 		internal void tryresult (string StringToTest, string assert = null)
 		{

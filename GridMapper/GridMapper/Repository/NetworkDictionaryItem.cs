@@ -20,7 +20,7 @@ namespace GridMapper.NetworkRepository
 		IPAddress _ipAddress;
 		PhysicalAddress _macAddress;
 		IPHostEntry _hostEntry;
-		bool[] _portStatus;
+		IList<PortComputer> _ports;
 		IOS _os;
 
 		public IHost Host { get { return _host; } }
@@ -29,7 +29,7 @@ namespace GridMapper.NetworkRepository
 		public IPAddress IPAddress { get { return _ipAddress; } }
 		public PhysicalAddress MacAddress { get { return _macAddress; } }
 		public IPHostEntry HostEntry { get { return _hostEntry; } }
-		public bool[] PortStatus { get { return _portStatus; } }
+		public IList<PortComputer> Ports { get { return _ports; } }
 		public IOS OS { get { return _os; } }
 
 		public bool Update( INetworkDictionaryItem networkDictionaryItem )
@@ -46,10 +46,11 @@ namespace GridMapper.NetworkRepository
 			return true; //FAIL
 		}
 
-		public bool ChangePort( int indexPort, bool portStatus )
+		public bool ChangePort( PortComputer portComputer )
 		{
-			_portStatus[indexPort] = portStatus;
-			return true; //FAIL
+			if( portComputer.Status == true )
+				_ports.Add( portComputer );
+			return portComputer.Status; //FAIL
 		}
 
 		internal NetworkDictionaryItem()
@@ -89,7 +90,7 @@ namespace GridMapper.NetworkRepository
 			_macAddress = macAddress;
 			_hostEntry = hostEntry;
 			_os = os;
-			_portStatus = new bool[65536];
+			_ports = new List<PortComputer>();
 		}
 	}
 }

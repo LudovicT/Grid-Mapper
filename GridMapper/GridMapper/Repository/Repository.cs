@@ -90,15 +90,14 @@ namespace GridMapper.NetworkRepository
 		}
 
 		//NEED REFACTORING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		public void AddOrUpdate( IPAddress ipAddress, int indexPort, bool statusPort )
+		public void AddOrUpdate( IPAddress ipAddress, PortComputer portComputer )
 		{
 			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
-			if( indexPort > 65535 ) throw new ArgumentOutOfRangeException( "indexPort" );
 			
 			if( _networkDictionaryItems.ContainsKey( ipAddress ) )
 			{
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
-				networkDictionaryItem.ChangePort( indexPort, statusPort );
+				networkDictionaryItem.ChangePort( portComputer );
 				_isModified = _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
 			}
 			else
@@ -106,8 +105,8 @@ namespace GridMapper.NetworkRepository
 				//FAIL
 				_networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress ) );
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
-				networkDictionaryItem.ChangePort( indexPort, statusPort );
-				_networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
+				networkDictionaryItem.ChangePort( portComputer );
+				_isModified = _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
 			}
 		}
 

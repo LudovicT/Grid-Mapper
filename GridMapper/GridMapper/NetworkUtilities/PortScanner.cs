@@ -14,7 +14,7 @@ namespace GridMapper
     {
 		public event EventHandler<PortScanCompletedEventArgs> PortScanCompleted;
 
-        public bool ScanPort( IPAddress IPAddr, int PortToScan )
+		public PortComputer ScanPort( IPAddress IPAddr, int PortToScan )
         {
 			Socket s = new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
 			try
@@ -22,21 +22,25 @@ namespace GridMapper
 				s.Connect(IPAddr, PortToScan);
 				if ( s.Connected == true ) // Port is in use and connection is successful
 				{
+					PortComputer port = new PortComputer( PortToScan, true );
 					//Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN");
-					PortScanCompleted( this, new PortScanCompletedEventArgs( IPAddr, new PortComputer( PortToScan, true ) ) );
+					//PortScanCompleted( this,  new PortScanCompletedEventArgs( IPAddr, port ) );
+					s.Close();
+					return port;
 				}
-				s.Close();
-				return true;
 			}
 			catch ( SocketException ex )
 			{
 				if ( ex.ErrorCode == 10061 )  // Port is unused and could not establish connection
 				{
+					PortComputer port = new PortComputer( PortToScan, false );
 					//Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE");
-					PortScanCompleted( this, new PortScanCompletedEventArgs( IPAddr, new PortComputer(PortToScan, false) ) );
+					//PortScanCompleted( this, new PortScanCompletedEventArgs( IPAddr, port ) );
+					s.Close();
+					return port;
 				}
-				return false;
 			}
+			return new PortComputer();
         }
 
 		public class PortScanCompletedEventArgs : EventArgs
