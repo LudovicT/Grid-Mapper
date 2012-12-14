@@ -61,6 +61,7 @@
             this.option_accept.TabIndex = 1;
             this.option_accept.Text = "OK";
             this.option_accept.UseVisualStyleBackColor = true;
+            this.option_accept.Click += new System.EventHandler(this.option_accept_Click);
             // 
             // option_ping
             // 
@@ -119,6 +120,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 22);
             this.textBox1.TabIndex = 6;
+            this.textBox1.Text = "1000";
             // 
             // textBox2
             // 

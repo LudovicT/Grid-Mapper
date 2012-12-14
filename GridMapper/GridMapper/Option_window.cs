@@ -16,12 +16,12 @@ namespace GridMapper
             InitializeComponent();
         }
 
-        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void option_cancel_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
-        private void option_cancel_Click(object sender, EventArgs e)
+        private void option_accept_Click(object sender, EventArgs e)
         {
             this.Close();
         }
