@@ -19,7 +19,7 @@ namespace GridMapper.NetworkRepository
 		void AddOrUpdate( IPAddress ipAddress, PingReply pingReply );
 		void AddOrUpdate( IPAddress ipAddress, PhysicalAddress macAddress );
 		void AddOrUpdate( IPAddress ipAddress, IPHostEntry hostEntry );
-		void AddOrUpdate( IPAddress ipAddress, int indexPort, bool statusPort );
+		void AddOrUpdate( IPAddress ipAddress, PortComputer portComputer );
 		void AddOrUpdate( IPAddress ipAddress, IOS os );
 		ICollection<IPAddress> GetIPAddresses();
 

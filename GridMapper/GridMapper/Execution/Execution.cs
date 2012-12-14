@@ -43,6 +43,7 @@ namespace GridMapper
 					PingSender pingSender = new PingSender( Option );
 					ARPSender arpSender = new ARPSender();
 					ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
+					PortScanner portScanner = new PortScanner();
 					Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
 						{
 							//PingSender pingSender = new PingSender( Option );
@@ -61,6 +62,10 @@ namespace GridMapper
 								{
 									_repository.AddOrUpdate( ip, dns );
 								}
+								//ne gere pas le option des port a scan
+								PortComputer portComputer = portScanner.ScanPort( ip, 80 );
+								if( portComputer.Port != 0 )
+									_repository.AddOrUpdate( ip, portComputer );
 							}
 						} );
 				} );/*.ContinueWith( ( a ) =>

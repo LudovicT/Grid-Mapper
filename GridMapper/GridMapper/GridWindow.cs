@@ -39,7 +39,7 @@ namespace GridMapper
 			dataGridView1.AutoGenerateColumns = false;
 			dataGridView1.AllowUserToAddRows = false;
 
-			dataGridView1.ColumnCount = 4;
+			dataGridView1.ColumnCount = 5;
 			dataGridView1.Columns[0].DataPropertyName = "Id";
 			dataGridView1.Columns[0].Name = "Id";
 			dataGridView1.Columns[0].Visible = false;
@@ -50,6 +50,8 @@ namespace GridMapper
 			dataGridView1.Columns[2].Name = "MacAddress";
 			dataGridView1.Columns[3].DataPropertyName = "HostName";
 			dataGridView1.Columns[3].Name = "HostName";
+			dataGridView1.Columns[4].DataPropertyName = "Ports";
+			dataGridView1.Columns[4].Name = "Ports";
 
 			//PingSender.PingCompleted += UpdateDataGridView;
 			//ARPSender.MacCompleted += UpdateDataGridView;
@@ -96,24 +98,33 @@ namespace GridMapper
 				ip.B1 = b[1];
 				ip.B2 = b[2];
 				ip.B3 = b[3];
+				string portToString = "";
+				//pour l'affichage des virgule
+				if( item.Ports.Count > 0 )
+				{
+					portToString += item.Ports[0].Port.ToString();
+					for( int i = 1 ; i < item.Ports.Count ; i++ )
+						portToString += ", " + item.Ports[i].Port.ToString();
+				}
+
 				if( item.MacAddress != null && item.HostEntry != null )
 				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), item.HostEntry.HostName.ToString() };
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), item.HostEntry.HostName.ToString(), portToString };
 					dataGridView1.Rows.Add( row );
 				}
 				else if( item.MacAddress != null )
 				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), "" };
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), "", portToString };
 					dataGridView1.Rows.Add( row );
 				}
 				else if( item.HostEntry != null )
 				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", item.HostEntry.HostName.ToString() };
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", item.HostEntry.HostName.ToString(), portToString };
 					dataGridView1.Rows.Add( row );
 				}
 				else
 				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", "" };
+					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", "", portToString };
 					dataGridView1.Rows.Add( row );
 				}
 			}
