@@ -54,33 +54,33 @@ namespace GridMapper
 							if( pingReply != null )
 							{
 								_repository.AddOrUpdate( ip, pingReply );
-								TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+								//TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								PhysicalAddress mac = arpSender.GetMac( ip );
 								if( mac != PhysicalAddress.None )
 								{
 									_repository.AddOrUpdate( ip, mac );
-									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+									//TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
 								IPHostEntry dns = dnsResolver.GetHostName( ip );
 								if( dns != null )
 								{
 									_repository.AddOrUpdate( ip, dns );
-									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+									//TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
 								//ne gere pas le option des port a scan
-								PortComputer portComputer = portScanner.ScanPort( ip, 80 );
-								if( portComputer.Port != 0 )
-								{
-									_repository.AddOrUpdate( ip, portComputer );
-									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-								}
+								//PortComputer portComputer = portScanner.ScanPort( ip, 80 );
+								//if( portComputer.Port != 0 )
+								//{
+									//_repository.AddOrUpdate( ip, portComputer );
+									//TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+								//}
 							}
-							else
-								TaskCompleted( this, new TaskCompletedEventArgs( 4 ) );
+							//else
+								//TaskCompleted( this, new TaskCompletedEventArgs( 4 ) );
 						} );
 				} ).ContinueWith( (a) =>
 					{
-						IsFinish( this, null );
+						//IsFinish( this, null );
 					} );
 		}
 
