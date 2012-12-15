@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
 using System.Threading;
@@ -11,6 +12,8 @@ using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using GridMapper;
+
 
 namespace GridMapper
 {
@@ -37,11 +40,15 @@ namespace GridMapper
 		[STAThread]
 		static void Main()
 		{
+			//FAIL
+			Option StartupOptions = new Option();
+			List<IPAddress> list = new List<IPAddress>();
+			StartupOptions.IpToTest = IPRange.AutoIpRange();
+
+
 			string[] startupArgs = Environment.GetCommandLineArgs();
 			if ( startupArgs.Length > 1)
 			{
-				Startup StartupOptions = new Startup();
-
 				IntPtr ptr = GetForegroundWindow();
 				int u;
 				GetWindowThreadProcessId( ptr, out u );
@@ -65,76 +72,74 @@ namespace GridMapper
 			{
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault( false );
-				Application.Run( new Form1() );
+				Application.Run( new GridWindow( StartupOptions ) );
 			}
 			
 		}
 
-		static void ConsoleMain( string[] startupArgs, Startup StartupOptions )
+		static void ConsoleMain( string[] startupArgs, Option StartupOptions )
 		{
-			Utilities.Arguments args = new Utilities.Arguments( startupArgs );
+			Arguments args = new Arguments( startupArgs );
 			Console.Title = "GridMapper";
 
 			if ( StartupOptions.CmdConsole )
 			{
-				//hide the path message
-				string blankSpace = string.Empty;
-				for ( int i = 0; i <= Environment.CurrentDirectory.Length; i++ )
-				{
-					blankSpace += " ";
-				}
-				Console.WriteLine( "\r" + blankSpace );
+				ConsoleHelper.DeletePath();
 			}
 
 			int maxTasks;
 			//help message get priority over everything
-			if ( args.IsTrue( "h" ) || args.IsTrue( "?" ) ||args.IsTrue( "help" ) )
+			if ( args.IsTrue( "h" ) || args.IsTrue( "?" ) || args.IsTrue( "help" ) || 
+				 args.Exists( "h" ) || args.Exists( "?" ) || args.Exists( "help" ) )
 			{
-				printHelp();
+				ConsoleHelper.PrintHelp();
 			}
 			else
 			{
-				if ( ( args.Exists( "t" ) &&	 int.TryParse( args.Single( "tasks" ), out maxTasks ) ) 
-					|| args.Exists( "tasks" ) && int.TryParse( args.Single( "tasks" ), out maxTasks ) )
+				//if ( args.Exists("IP"))
+				//{
+				//    //IPsParser parser = new IPsParser();
+				//    //List<IPAddress> IPsToHandle = parser.IPArgumentsParser(args.Single("IP"));
+				//    //foreach (IPAddress IP in IPsToHandle)
+				//    //{
+				//    //    Console.WriteLine(IP);
+				//    //}
+				//}
+				//if (args.Exists("p"))
+				//{
+				//    //PortsParserResult PortsToHandle = PortsParser.MainPortsParser(args.Single("p"));
+				//    //IEnumerator enumerator = PortsToHandle.Result.GetEnumerator();
+
+				//}
+				if( args.Exists( "t" ) || args.Exists( "tasks" ) )
 				{
-					if ( maxTasks >= 1 && maxTasks <= 2000 )
+					if ( int.TryParse( args.Single( "t" ), out maxTasks )|| int.TryParse( args.Single( "tasks" ), out maxTasks ) )
 					{
-						StartupOptions.MaximumTasks = maxTasks;
+						if ( maxTasks >= 5 && maxTasks <= 400 )
+						{
+							StartupOptions.MaximumTasks = maxTasks;
+						}
+						else
+						{
+							Console.WriteLine( "The number of tasks must be between 5 and 2000, reasonnable limit is around 500" );
+						}
 					}
 					else
 					{
-						Console.WriteLine( "The number of task must be between 1 and 2000, reasonnable limit is around 500" );
+						Console.WriteLine( "Invalid argument for -t" );
 					}
-				}
-				else
-				{
-					Console.WriteLine( "Invalid argument for -t" );
 				}
 			}
 
 
 			if ( StartupOptions.CmdConsole )
 			{
-				//show the path message
-				Console.WriteLine( Environment.NewLine );
-				Console.Write( Environment.CurrentDirectory.ToString() + ">" );
+				ConsoleHelper.ShowPath();
 			}
 			else
 			{
-				Console.WriteLine( Environment.NewLine );
-				Console.WriteLine( "Press a key to continue ..." );
-				Console.ReadKey( true );
+				ConsoleHelper.EndOfProgram();
 			}
-		}
-
-		static void printHelp()
-		{
-			Console.WriteLine( "Usage : gridmapper [-h|-?] [-t]" );
-			Console.WriteLine( "" );
-			Console.WriteLine( "Options :" );
-			Console.WriteLine( "	-h,-help	Print this help message" );
-			Console.WriteLine( "	-?			Print this help message" );
-			Console.WriteLine( "	-t,-tasks	Specify the maximum simultanous task running (default is 50)" );
 		}
 
 	}

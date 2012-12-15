@@ -5,7 +5,14 @@ using System.Text;
 
 namespace GridMapper.NetworkModelObject
 {
-	interface IOS
+	public interface IOS
 	{
+		String OsVersion { get; }
+		string OsCpu { get; }
+		string OsRam { get; }
+		string OsComputerModel { get; }
+		string OsSerialNumber { get; }
+		string OsName { get; }
+		string OsAssetTag { get; }
 	}
 }

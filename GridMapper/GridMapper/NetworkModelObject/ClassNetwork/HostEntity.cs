@@ -7,7 +7,7 @@ using System.IO;
 
 namespace GridMapper.NetworkModelObject
 {
-	class HostEntity : IHostEntity
+	public class HostEntity : IHostEntity
 	{
 		ReadOnlyCollection<IHost> _hosts;
 		string _nameOS;

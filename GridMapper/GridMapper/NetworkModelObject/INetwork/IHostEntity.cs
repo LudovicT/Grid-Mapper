@@ -7,7 +7,7 @@ using System.IO;
 
 namespace GridMapper.NetworkModelObject
 {
-	interface IHostEntity
+	public interface IHostEntity
 	{
 		IServer Server { get; }
 		IFirewall Firewall { get; }

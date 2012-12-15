@@ -8,40 +8,26 @@ using System.Threading.Tasks;
 
 namespace GridMapper
 {
-	static public partial class NetworkUtilities
+	public class WMICollector
 	{
-		static public Task WMI( IList<IPAddress> ipCollection )
-		{
-			Task task = Task.Factory.StartNew( () =>
-			{
-				foreach ( IPAddress ipAddress in ipCollection )
-					WMI( ipAddress );
-			} );
-			return task;
-		}
-
 		/// <summary>
-		/// Set the WMI Query tu be able to get the main information of the targeted computer
+		/// Get all the intersting info of WMI from an ip
 		/// </summary>
-		/// <param name="Ip">The target of the WMI Query</param>
-		/// <returns>The started task</returns>
-		public static Task WMI( IPAddress Ip )
+		/// <param name="ipAddress">The target ip</param>
+		/// <returns>A dictionary with the content searched</returns>
+		public Dictionary<string,string> WMI( IPAddress ipAddress )
 		{
 			Dictionary<string, string> results = new Dictionary<string, string>();
-			Task task = Task.Factory.StartNew( () =>
-				{
-					ManagementScope scope = new ManagementScope( @"\\" + Ip + @"\root\cimv2" );
-					scope.Connect();
-					WMIProcess( scope, "Name", "Win32_OperatingSystem", "Operation System Name" ).ToList().ForEach( x => results[x.Key] = x.Value );
-					WMIProcess( scope, "Caption", "Win32_OperatingSystem", "Windows Name" ).ToList().ForEach( x => results[x.Key] = x.Value );
-					WMIProcess( scope, "Name", "Win32_Processor", "CPU Make,Model" ).ToList().ForEach( x => results[x.Key] = x.Value );
-					WMIProcess( scope, "TotalPhysicalMemory", "Win32_ComputerSystem", "RAM Size" ).ToList().ForEach( x => results[x.Key] = x.Value );
-					WMIProcess( scope, "Model", "Win32_ComputerSystem", "Computer Model" ).ToList().ForEach( x => results[x.Key] = x.Value );
-					WMIProcess( scope, "SerialNumber", "Win32_SystemEnclosure", "Serial Number" ).ToList().ForEach( x => results[x.Key] = x.Value );
-					WMIProcess( scope, "SMBIOSAssetTag", "Win32_SystemEnclosure", "Asset Tag" ).ToList().ForEach( x => results[x.Key] = x.Value );
-				}
-			);
-			return task;
+			ManagementScope scope = new ManagementScope( @"\\" + ipAddress + @"\root\cimv2" );
+			scope.Connect();
+			WMIProcessQuery( scope, "Name", "Win32_OperatingSystem", "Operation System Name" ).ToList().ForEach( x => results[x.Key] = x.Value );
+			WMIProcessQuery( scope, "Caption", "Win32_OperatingSystem", "Windows Name" ).ToList().ForEach( x => results[x.Key] = x.Value );
+			WMIProcessQuery( scope, "Name", "Win32_Processor", "CPU Make,Model" ).ToList().ForEach( x => results[x.Key] = x.Value );
+			WMIProcessQuery( scope, "TotalPhysicalMemory", "Win32_ComputerSystem", "RAM Size" ).ToList().ForEach( x => results[x.Key] = x.Value );
+			WMIProcessQuery( scope, "Model", "Win32_ComputerSystem", "Computer Model" ).ToList().ForEach( x => results[x.Key] = x.Value );
+			WMIProcessQuery( scope, "SerialNumber", "Win32_SystemEnclosure", "Serial Number" ).ToList().ForEach( x => results[x.Key] = x.Value );
+			WMIProcessQuery( scope, "SMBIOSAssetTag", "Win32_SystemEnclosure", "Asset Tag" ).ToList().ForEach( x => results[x.Key] = x.Value );
+			return results;
 		}
 
 		/// <summary>
@@ -52,7 +38,7 @@ namespace GridMapper
 		/// <param name="QueryLocation">The location of the search</param>
 		/// <param name="Name">The name given to that search</param>
 		/// <returns>A dictionary with the results</returns>
-		static Dictionary<string,string> WMIProcess( ManagementScope scope, string QuerySearch, string QueryLocation , string Name = null)
+		Dictionary<string,string> WMIProcessQuery( ManagementScope scope, string QuerySearch, string QueryLocation , string Name = null)
 		{
 			Dictionary<string, string> results = new Dictionary<string, string>();
 			SelectQuery query = new SelectQuery( "SELECT " + QuerySearch + " FROM " + QueryLocation );

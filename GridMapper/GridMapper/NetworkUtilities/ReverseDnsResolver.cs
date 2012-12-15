@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,25 +8,39 @@ using GridMapper.NetworkModelObject;
 
 namespace GridMapper
 {
-	public static  partial class NetworkUtilities
+	public class ReverseDnsResolver
 	{
-		static public Task GetHostName( IList<IPAddress> ipCollection )
+		public event EventHandler<HostNameCompletedEventArgs> HostNameCompleted;
+
+		public IPHostEntry GetHostName(IPAddress ipAddress)
 		{
-			Task task = Task.Factory.StartNew( () =>
+			try
 			{
-				foreach( IPAddress ipAddress in ipCollection )
-					GetHostName( ipAddress );
-			} );
-			return task;
+				IPHostEntry hostEntry = Dns.GetHostEntry( ipAddress );
+				return hostEntry;
+			}
+			catch
+			{
+				return null;
+			}
+			//HostNameCompleted( this, new HostNameCompletedEventArgs( ipAddress, hostEntry ) );
 		}
 
-		static public Task GetHostName(IPAddress ipAddress)
+		public class HostNameCompletedEventArgs : EventArgs
 		{
-			Task task = Task.Factory.StartNew( () =>
+			IPAddress _ipAddress;
+			IPHostEntry _hostEntry;
+
+			public HostNameCompletedEventArgs( IPAddress ipAddress, IPHostEntry hostEntry )
 			{
-				Network.HostNameHandler( Dns.GetHostEntry( ipAddress ) );
-			} );
-			return task;
+				if( ipAddress == null ) throw new NullReferenceException( "ipAddress" );
+				if( hostEntry == null ) throw new NullReferenceException( "hostEntry" );
+				_ipAddress = ipAddress;
+				_hostEntry = hostEntry;
+			}
+
+			public IPHostEntry HostEntry { get { return _hostEntry; } }
+			public IPAddress IpAddress { get { return _ipAddress; } }
 		}
 	}
 }

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace GridMapper.NetworkModelObject
 {
-	interface IHost : INetworkInterface
+	public interface IHost : INetworkInterface
 	{
 		IPAddress IpAddress { get; }
 		int Latency { get; }

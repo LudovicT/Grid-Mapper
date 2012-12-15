@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GridMapper.NetworkModelObject.INetwork
 {
-	interface INetworkPrinter : IHost
+	public interface INetworkPrinter : IHost
 	{
 	}
 }
