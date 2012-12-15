@@ -190,7 +190,7 @@ namespace GridMapper
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Environment.Exit(0);
+			Close();
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
