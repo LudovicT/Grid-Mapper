@@ -27,8 +27,31 @@ namespace GridMapper
 		{
 			_startUpOption = StartUpOptions;
 			_exe = new Execution( StartUpOptions );
+			_exe.TaskCompleted += new Execution.TaskEndedEventHandler( ProgressChanged );
+			//_exe.IsFinished += new EventHandler( FinishedExecution );
 			InitializeComponent();
 			InitializeDataGridView();
+		}
+
+		private void FinishedExecution( object sender, EventArgs e )
+		{
+			timer1.Stop();
+		}
+
+		private void ProgressChanged( object sender, TaskCompletedEventArgs e )
+		{
+			if ( e != null && OperationLeft == 0 )
+			{
+				FinishedExecution(this, null);
+			}
+			else if ( e!= null)
+			{
+				if ( OperationLeft >= e.TaskCompleted )
+				{
+					Interlocked.Add(ref OperationLeft, - e.TaskCompleted);
+				}
+				else throw new ConstraintException( " wrong number of operation " );
+			}
 		}
 
 		void InitializeDataGridView()
@@ -167,7 +190,7 @@ namespace GridMapper
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Environment.Exit(1);
+            Environment.Exit(0);
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -230,39 +253,31 @@ namespace GridMapper
 
 		private void fastScanToolStripMenuItem_Click( object sender, EventArgs e )
 		{
+			OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
 			_exe.StartScan();
-			backgroundWorker1.RunWorkerAsync();
-			backgroundWorker1.WorkerReportsProgress = true;
-			OperationLeft = _startUpOption.IPToTestCount*_startUpOption.OperationCount;
+			timer1.Start();
 		}
 
 		private void fastScanToolStripMenuItem_Click_1( object sender, EventArgs e )
 		{
 			dataGridView1.DataSource = null;
 			dataGridView1.DataMember = null;
+			OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
 			_exe.StartScan();
-			backgroundWorker1.RunWorkerAsync();
-            backgroundWorker1.WorkerReportsProgress = true;
-            OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
+			timer1.Start();
 		}
 
-		private void backgroundWorker1_DoWork( object sender, DoWorkEventArgs e )
+
+		private void timer1_Tick( object sender, EventArgs e )
 		{
-			int IPCount = _startUpOption.IPToTestCount;
 			int i = 0;
-			i = Convert.ToInt32(Math.Round( (double)( OperationLeft / (_startUpOption.IPToTestCount * _startUpOption.OperationCount) *100 ) ) );
-			Thread.Sleep( 50 );
-			backgroundWorker1.ReportProgress( i );
+			i = Convert.ToInt32( Math.Round( 100 - (double)OperationLeft / ( _startUpOption.IPToTestCount * _startUpOption.OperationCount ) * 100 ) );
+			ProgressScan.Value = i;
 		}
 
-		private void backgroundWorker1_ProgressChanged( object sender, ProgressChangedEventArgs e )
+		private void GridWindow_FormClosed( object sender, FormClosedEventArgs e )
 		{
-			ProgressScan.Value = e.ProgressPercentage;
+			
 		}
-
-        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 	}
 }

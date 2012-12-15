@@ -8,6 +8,7 @@ using System.Threading;
 using GridMapper.NetworkModelObject;
 using GridMapper.NetworkRepository;
 using System.Net.NetworkInformation;
+using System.ComponentModel;
 
 namespace GridMapper
 {
@@ -16,8 +17,9 @@ namespace GridMapper
 		Option _option;
 		IRepository _repository;
 
-		public static event EventHandler<TaskCompletedEventArgs> TaskCompleted;
-		public static event EventHandler IsFinish;
+		public delegate void TaskEndedEventHandler( object sender, TaskCompletedEventArgs e );
+		public event TaskEndedEventHandler TaskCompleted;
+		public event EventHandler IsFinished;
 
 		#region IExecution Membres
 
@@ -27,15 +29,13 @@ namespace GridMapper
 
 		public void StartScan()
 		{
-			_repository = new Repository();
-
 			int minWORK;
 			int minIOC;
 			int maxWORK;
 			int maxIOC;
 			ThreadPool.GetMinThreads( out minWORK, out minIOC );
 			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
-			if( ThreadPool.SetMinThreads( 200, 200 ) )
+			if( ThreadPool.SetMinThreads( 50, 50 ) )
 			{
 				ThreadPool.GetMinThreads( out minWORK, out minIOC );
 			}
@@ -55,32 +55,43 @@ namespace GridMapper
 							{
 								_repository.AddOrUpdate( ip, pingReply );
 								TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-								PhysicalAddress mac = arpSender.GetMac( ip );
-								if( mac != PhysicalAddress.None )
+								if ( Option.Arp )
 								{
-									_repository.AddOrUpdate( ip, mac );
+									PhysicalAddress mac = arpSender.GetMac( ip );
+									if ( mac != PhysicalAddress.None )
+									{
+										_repository.AddOrUpdate( ip, mac );
+									}
 									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
-								IPHostEntry dns = dnsResolver.GetHostName( ip );
-								if( dns != null )
+								if ( Option.Dns )
 								{
-									_repository.AddOrUpdate( ip, dns );
+									IPHostEntry dns = dnsResolver.GetHostName( ip );
+									if ( dns != null )
+									{
+										_repository.AddOrUpdate( ip, dns );
+									}
 									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
-								//ne gere pas le option des port a scan
-								PortComputer portComputer = portScanner.ScanPort( ip, 80 );
-								if( portComputer.Port != 0 )
+								if ( Option.Port )
 								{
-									_repository.AddOrUpdate( ip, portComputer );
+									//ne gere pas le option des port a scan
+									PortComputer portComputer = portScanner.ScanPort( ip, 80 );
+									if ( portComputer.Port != 0 )
+									{
+										_repository.AddOrUpdate( ip, portComputer );
+									}
 									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
 							}
 							else
-								TaskCompleted( this, new TaskCompletedEventArgs( 4 ) );
+								TaskCompleted( this, new TaskCompletedEventArgs( Option.OperationCount ) );
 						} );
 				} ).ContinueWith( (a) =>
 					{
-						IsFinish( this, null );
+						_repository.EndThreads();
+						//IsFinished( this, null );
+						//TaskCompleted( this, null );
 					} );
 		}
 
