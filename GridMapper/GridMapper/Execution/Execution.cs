@@ -29,6 +29,7 @@ namespace GridMapper
 
 		public void StartScan()
 		{
+			_repository = new Repository();
 			int minWORK;
 			int minIOC;
 			int maxWORK;
@@ -108,7 +109,6 @@ namespace GridMapper
 		public Execution( Option startupOptions )
 		{
 			_option = startupOptions;
-			_repository = new Repository();
 		}
 	}
 
