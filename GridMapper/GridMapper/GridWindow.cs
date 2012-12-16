@@ -27,7 +27,7 @@ namespace GridMapper
 		{
 			_startUpOption = StartUpOptions;
 			_exe = new Execution( StartUpOptions );
-			_exe.TaskCompleted += new Execution.TaskEndedEventHandler( ProgressChanged );
+			_exe.TaskCompleted += ProgressChanged;
 			//_exe.IsFinished += new EventHandler( FinishedExecution );
 			InitializeComponent();
 			InitializeDataGridView();

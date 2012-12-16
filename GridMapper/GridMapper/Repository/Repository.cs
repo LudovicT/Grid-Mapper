@@ -25,7 +25,6 @@ namespace GridMapper.NetworkRepository
 			get { return _networkDictionaryItems; } 
 		}
 
-		//a changer par une interface
 		public static event EventHandler<RepositoryUpdatedEventArg> OnRepositoryUpdated;
 
 		public Repository()
@@ -67,8 +66,7 @@ namespace GridMapper.NetworkRepository
 			}
 			else
 			{
-				_networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, macAddress ) );
-				_isModified = true;
+				_isModified = _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, macAddress ) );
 			}
 		}
 
@@ -146,9 +144,9 @@ namespace GridMapper.NetworkRepository
 		}
 
 		//version de merde
-		public void XmlWriter()
+		public void XmlWriter(Stream stream)
 		{
-			XmlTextWriter myXmlTextWriter = new XmlTextWriter( "nouveauxlivres.xml", null );
+			XmlTextWriter myXmlTextWriter = new XmlTextWriter( stream, null );
 			myXmlTextWriter.Formatting = Formatting.Indented;
 			myXmlTextWriter.WriteStartDocument( false );
 

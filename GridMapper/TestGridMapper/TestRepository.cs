@@ -33,7 +33,7 @@ namespace GridMapper.Test
 			} ).ContinueWith( ( a ) =>
 			{
 				//pour le moment voir direct dans le dossier
-				repo.XmlWriter();
+				//repo.XmlWriter();
 			} );
 		}
 

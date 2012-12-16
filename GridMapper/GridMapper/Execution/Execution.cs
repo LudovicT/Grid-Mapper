@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,9 +16,8 @@ namespace GridMapper
 	{
 		Option _option;
 		IRepository _repository;
-
-		public delegate void TaskEndedEventHandler( object sender, TaskCompletedEventArgs e );
-		public event TaskEndedEventHandler TaskCompleted;
+		
+		public event EventHandler<TaskCompletedEventArgs> TaskCompleted;
 		public event EventHandler IsFinished;
 
 		#region IExecution Membres
