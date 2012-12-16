@@ -12,7 +12,7 @@ namespace GridMapper
 		public readonly bool Ping = true;
 		public bool Arp = true;
 		public bool Dns = true;
-		public bool Port = false;
+		public bool Port = true;
 		bool _cmdConsole;
 		int _maximumTasks;
 		IPParserResult _ipToTest;
@@ -95,8 +95,10 @@ namespace GridMapper
             get
             {
                 int i = 0;
-                if (Ping)i++;
-                if (Arp)i++;
+                if ( Ping ) i++;
+                if ( Arp ) i++;
+				if ( Dns ) i++;
+				if ( Port ) i++;
                 return i;
             }
         }

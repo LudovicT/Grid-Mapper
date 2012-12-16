@@ -24,6 +24,8 @@ namespace GridMapper.NetworkRepository
 		ICollection<IPAddress> GetIPAddresses();
 
 
+
+		void EndThreads();
 	}
 
 	

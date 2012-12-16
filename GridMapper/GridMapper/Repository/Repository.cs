@@ -167,6 +167,11 @@ namespace GridMapper.NetworkRepository
 			myXmlTextWriter.Flush();
 			myXmlTextWriter.Close();
 		}
+
+		public void EndThreads()
+		{
+			_isOpen = false;
+		}
 	}
 
 	public class RepositoryUpdatedEventArg : EventArgs
