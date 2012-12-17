@@ -141,6 +141,12 @@
     <Compile Include="NetworkUtilities\PortScanner.cs" />
     <Compile Include="NetworkUtilities\ReverseDnsResolver.cs" />
     <Compile Include="NetworkUtilities\WMI.cs" />
+    <Compile Include="Option_window.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Option_window.Designer.cs">
+      <DependentUpon>Option_window.cs</DependentUpon>
+    </Compile>
     <Compile Include="Parameters\IPsParser.cs" />
     <Compile Include="Parameters\PortsParser.cs" />
     <Compile Include="Program.cs" />
@@ -158,6 +164,9 @@
     <EmbeddedResource Include="GridWindow.resx">
       <DependentUpon>GridWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Option_window.resx">
+      <DependentUpon>Option_window.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -183,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Logo_GridMapper.ico" />
+    <None Include="resx\Logo_GridMapper.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

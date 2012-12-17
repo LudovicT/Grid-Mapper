@@ -257,5 +257,20 @@ namespace GridMapper
 		{
 			
 		}
+
+        private void advancedOptionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Option_window Option = new Option_window();
+            Option.ShowDialog();
+        }
+
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = null;
+            dataGridView1.DataMember = null;
+			OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
+            _exe.StartScan();
+			timer1.Start();
+        }
 	}
 }

@@ -29,7 +29,7 @@ namespace GridMapper
 			uint macAddrLen = (uint)macAddr.Length;
 			if( SendARP( intAddress, 0, macAddr, ref macAddrLen ) != 0 )
 			{
-				throw new InvalidOperationException( "SendARP failed." );
+				return PhysicalAddress.None;
 			}
 
 			string[] str = new string[(int)macAddrLen];
