@@ -40,5 +40,9 @@ namespace GridMapper
 			Console.WriteLine( "Press a key to continue ..." );
 			Console.ReadKey( true );
 		}
+		//public static void PrintResult(object sender, PrintResultEventsArgs e)
+		//{
+		//    //
+		//}
 	}
 }
