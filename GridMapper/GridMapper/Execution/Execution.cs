@@ -76,7 +76,7 @@ namespace GridMapper
 								}
 								if ( Option.Port )
 								{
-									//ne gere pas le option des port a scan
+									//ne gere pas l'option des port a scan
 									PortComputer portComputer = portScanner.ScanPort( ip, 80 );
 									if ( portComputer.Port != 0 )
 									{
