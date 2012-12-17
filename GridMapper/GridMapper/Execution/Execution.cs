@@ -77,10 +77,10 @@ namespace GridMapper
 								if ( Option.Port )
 								{
 									//ne gere pas l'option des port a scan
-									PortComputer portComputer = portScanner.ScanPort( ip, 80 );
-									if ( portComputer.Port != 0 )
+									ushort portToTest = 80;
+									if ( portScanner.ScanPort( ip, portToTest ) )
 									{
-										_repository.AddOrUpdate( ip, portComputer );
+										_repository.AddOrUpdate( ip, portToTest );
 									}
 									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}

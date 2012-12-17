@@ -103,9 +103,9 @@ namespace GridMapper
 				//pour l'affichage des virgule
 				if( item.Ports.Count > 0 )
 				{
-					portToString += item.Ports[0].Port.ToString();
+					portToString += item.Ports[0].ToString();
 					for( int i = 1 ; i < item.Ports.Count ; i++ )
-						portToString += ", " + item.Ports[i].Port.ToString();
+						portToString += ", " + item.Ports[i].ToString();
 				}
 
 				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None && item.HostEntry != null )

@@ -88,7 +88,7 @@ namespace GridMapper.NetworkRepository
 		}
 
 		//NEED REFACTORING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		public void AddOrUpdate( IPAddress ipAddress, PortComputer portComputer )
+		public void AddOrUpdate( IPAddress ipAddress, ushort portComputer )
 		{
 			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
 			
@@ -165,16 +165,13 @@ namespace GridMapper.NetworkRepository
 					myXmlTextWriter.WriteElementString( "HostName", item.HostEntry.HostName.ToString() );
 				}
 				string ports = string.Empty;
-				foreach ( PortComputer port in item.Ports )
+				foreach ( ushort port in item.Ports )
 				{
-					if ( port.Status == true )
+					if ( ports != string.Empty )
 					{
-						if ( ports != string.Empty )
-						{
-							ports += ",";
-						}
-						ports += port.Port.ToString();
+						ports += ",";
 					}
+					ports += port.ToString();
 				}
 				if ( ports != string.Empty )
 				{
