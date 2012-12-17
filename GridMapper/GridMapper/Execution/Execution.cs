@@ -9,6 +9,7 @@ using GridMapper.NetworkModelObject;
 using GridMapper.NetworkRepository;
 using System.Net.NetworkInformation;
 using System.ComponentModel;
+using System.IO;
 
 namespace GridMapper
 {
@@ -35,7 +36,7 @@ namespace GridMapper
 			int maxIOC;
 			ThreadPool.GetMinThreads( out minWORK, out minIOC );
 			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
-			if( ThreadPool.SetMinThreads( 50, 50 ) )
+			if( ThreadPool.SetMinThreads( 200, 200 ) )
 			{
 				ThreadPool.GetMinThreads( out minWORK, out minIOC );
 			}
@@ -104,6 +105,11 @@ namespace GridMapper
             return restToDo;
         }
 		#endregion
+
+		public void SaveRepoXml(Stream stream)
+		{
+			_repository.XmlWriter(stream);
+		}
 
 		public Execution( Option startupOptions )
 		{

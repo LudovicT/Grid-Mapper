@@ -5,6 +5,7 @@ using System.Text;
 using System.Net;
 using System.Net.NetworkInformation;
 using GridMapper.NetworkModelObject;
+using System.IO;
 
 namespace GridMapper.NetworkRepository
 {
@@ -22,10 +23,8 @@ namespace GridMapper.NetworkRepository
 		void AddOrUpdate( IPAddress ipAddress, PortComputer portComputer );
 		void AddOrUpdate( IPAddress ipAddress, IOS os );
 		ICollection<IPAddress> GetIPAddresses();
-
-
-
 		void EndThreads();
+		void XmlWriter(Stream stream);
 	}
 
 	

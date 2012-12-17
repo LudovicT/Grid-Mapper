@@ -108,12 +108,12 @@ namespace GridMapper
 						portToString += ", " + item.Ports[i].Port.ToString();
 				}
 
-				if( item.MacAddress != PhysicalAddress.None && item.HostEntry != null )
+				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None && item.HostEntry != null )
 				{
 					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), item.HostEntry.HostName.ToString(), portToString };
 					dataGridView1.Rows.Add( row );
 				}
-				else if( item.MacAddress != PhysicalAddress.None )
+				else if( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
 				{
 					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), "", portToString };
 					dataGridView1.Rows.Add( row );
@@ -186,7 +186,7 @@ namespace GridMapper
 
         private void SaveScan_Click(object sender, EventArgs e)
         {
-            // Displays a SaveFileDialog so the user can save the Image
+            // Displays a SaveFileDialog so the user can save the file
             // assigned to Button2.
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp|Text File|*.txt";
@@ -196,9 +196,14 @@ namespace GridMapper
             // If the file name is not an empty string open it for saving.
             if (saveFileDialog1.FileName != "")
             {
-                // Saves the Image via a FileStream created by the OpenFile method.
+                // Saves the file via a FileStream created by the OpenFile method.
                 System.IO.FileStream fs =
                    (System.IO.FileStream)saveFileDialog1.OpenFile();
+
+				if ( saveFileDialog1.FilterIndex == 0 || saveFileDialog1.FilterIndex == 1 )
+				{
+					_exe.SaveRepoXml(fs);
+				}
 
                 fs.Close();
             }
@@ -206,22 +211,7 @@ namespace GridMapper
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Displays a SaveFileDialog so the user can save the Image
-            // assigned to Button2.
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp|Text File|*.txt";
-            saveFileDialog1.Title = "Save a Map File";
-            saveFileDialog1.ShowDialog();
-
-            // If the file name is not an empty string open it for saving.
-            if (saveFileDialog1.FileName != "")
-            {
-                // Saves the Image via a FileStream created by the OpenFile method.
-                System.IO.FileStream fs =
-                   (System.IO.FileStream)saveFileDialog1.OpenFile();
-
-                fs.Close();
-            }
+			SaveScan_Click( sender, e );
         }
 
         private void startScanToolStripMenuItem_Click(object sender, EventArgs e)

@@ -154,10 +154,32 @@ namespace GridMapper.NetworkRepository
 
 			foreach( NetworkDictionaryItem item in _networkDictionaryItems.Values )
 			{
-				myXmlTextWriter.WriteStartElement( "networkitem", null );
-				myXmlTextWriter.WriteElementString( "ipaddress", item.IPAddress.ToString() );
-				myXmlTextWriter.WriteElementString( "macaddress", item.MacAddress.ToString() );
-				//myXmlTextWriter.WriteElementString( "HostName", item.HostEntry.HostName.ToString() );
+				myXmlTextWriter.WriteStartElement( "Networkitem", null );
+				myXmlTextWriter.WriteElementString( "IPaddress", item.IPAddress.ToString() );
+				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
+				{
+					myXmlTextWriter.WriteElementString( "Macaddress", item.MacAddress.ToString() );
+				}
+				if ( item.HostEntry != null && item.HostEntry.HostName != null && item.HostEntry.HostName != string.Empty )
+				{
+					myXmlTextWriter.WriteElementString( "HostName", item.HostEntry.HostName.ToString() );
+				}
+				string ports = string.Empty;
+				foreach ( PortComputer port in item.Ports )
+				{
+					if ( port.Status == true )
+					{
+						if ( ports != string.Empty )
+						{
+							ports += ",";
+						}
+						ports += port.Port.ToString();
+					}
+				}
+				if ( ports != string.Empty )
+				{
+					myXmlTextWriter.WriteElementString( "Ports", ports );
+				}
 				myXmlTextWriter.WriteEndElement();
 			}
 
