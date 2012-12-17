@@ -17,8 +17,9 @@ namespace GridMapper
 		Option _option;
 		IRepository _repository;
 
-		public delegate void TaskEndedEventHandler( object sender, TaskCompletedEventArgs e );
-		public event TaskEndedEventHandler TaskCompleted;
+		//public delegate void TaskEndedEventHandler( object sender, TaskCompletedEventArgs e );
+		//public event TaskEndedEventHandler TaskCompleted;
+		public static event EventHandler<TaskCompletedEventArgs> TaskCompleted;
 		public event EventHandler IsFinished;
 
 		#region IExecution Membres
@@ -84,6 +85,7 @@ namespace GridMapper
 									}
 									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
+								//TaskCompleted( this, new Data());
 							}
 							else
 								TaskCompleted( this, new TaskCompletedEventArgs( Option.OperationCount ) );
@@ -121,5 +123,12 @@ namespace GridMapper
 		}
 
 		public int TaskCompleted { get; private set; }
+	}
+	public class PrintResultEventsArgs : EventArgs
+	{
+		public PrintResultEventsArgs()
+		{
+
+		}
 	}
 }
