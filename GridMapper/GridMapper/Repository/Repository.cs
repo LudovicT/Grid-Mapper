@@ -25,7 +25,6 @@ namespace GridMapper.NetworkRepository
 			get { return _networkDictionaryItems; } 
 		}
 
-		//a changer par une interface
 		public static event EventHandler<RepositoryUpdatedEventArg> OnRepositoryUpdated;
 
 		public Repository()
@@ -67,8 +66,7 @@ namespace GridMapper.NetworkRepository
 			}
 			else
 			{
-				_networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, macAddress ) );
-				_isModified = true;
+				_isModified = _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress, macAddress ) );
 			}
 		}
 
@@ -90,7 +88,7 @@ namespace GridMapper.NetworkRepository
 		}
 
 		//NEED REFACTORING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		public void AddOrUpdate( IPAddress ipAddress, PortComputer portComputer )
+		public void AddOrUpdate( IPAddress ipAddress, ushort portComputer )
 		{
 			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
 			
@@ -146,9 +144,9 @@ namespace GridMapper.NetworkRepository
 		}
 
 		//version de merde
-		public void XmlWriter()
+		public void XmlWriter(Stream stream)
 		{
-			XmlTextWriter myXmlTextWriter = new XmlTextWriter( "nouveauxlivres.xml", null );
+			XmlTextWriter myXmlTextWriter = new XmlTextWriter( stream, null );
 			myXmlTextWriter.Formatting = Formatting.Indented;
 			myXmlTextWriter.WriteStartDocument( false );
 
@@ -156,10 +154,29 @@ namespace GridMapper.NetworkRepository
 
 			foreach( NetworkDictionaryItem item in _networkDictionaryItems.Values )
 			{
-				myXmlTextWriter.WriteStartElement( "networkitem", null );
-				myXmlTextWriter.WriteElementString( "ipaddress", item.IPAddress.ToString() );
-				myXmlTextWriter.WriteElementString( "macaddress", item.MacAddress.ToString() );
-				//myXmlTextWriter.WriteElementString( "HostName", item.HostEntry.HostName.ToString() );
+				myXmlTextWriter.WriteStartElement( "Networkitem", null );
+				myXmlTextWriter.WriteElementString( "IPaddress", item.IPAddress.ToString() );
+				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
+				{
+					myXmlTextWriter.WriteElementString( "Macaddress", item.MacAddress.ToString() );
+				}
+				if ( item.HostEntry != null && item.HostEntry.HostName != null && item.HostEntry.HostName != string.Empty )
+				{
+					myXmlTextWriter.WriteElementString( "HostName", item.HostEntry.HostName.ToString() );
+				}
+				string ports = string.Empty;
+				foreach ( ushort port in item.Ports )
+				{
+					if ( ports != string.Empty )
+					{
+						ports += ",";
+					}
+					ports += port.ToString();
+				}
+				if ( ports != string.Empty )
+				{
+					myXmlTextWriter.WriteElementString( "Ports", ports );
+				}
 				myXmlTextWriter.WriteEndElement();
 			}
 

@@ -9,6 +9,7 @@ using GridMapper.NetworkModelObject;
 using GridMapper.NetworkRepository;
 using System.Net.NetworkInformation;
 using System.ComponentModel;
+using System.IO;
 
 namespace GridMapper
 {
@@ -16,7 +17,7 @@ namespace GridMapper
 	{
 		Option _option;
 		IRepository _repository;
-
+		
 		//public delegate void TaskEndedEventHandler( object sender, TaskCompletedEventArgs e );
 		//public event TaskEndedEventHandler TaskCompleted;
 		public static event EventHandler<TaskCompletedEventArgs> TaskCompleted;
@@ -37,7 +38,7 @@ namespace GridMapper
 			int maxIOC;
 			ThreadPool.GetMinThreads( out minWORK, out minIOC );
 			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
-			if( ThreadPool.SetMinThreads( 50, 50 ) )
+			if( ThreadPool.SetMinThreads( 200, 200 ) )
 			{
 				ThreadPool.GetMinThreads( out minWORK, out minIOC );
 			}
@@ -78,10 +79,10 @@ namespace GridMapper
 								if ( Option.Port )
 								{
 									//ne gere pas l'option des port a scan
-									PortComputer portComputer = portScanner.ScanPort( ip, 80 );
-									if ( portComputer.Port != 0 )
+									ushort portToTest = 80;
+									if ( portScanner.ScanPort( ip, portToTest ) )
 									{
-										_repository.AddOrUpdate( ip, portComputer );
+										_repository.AddOrUpdate( ip, portToTest );
 									}
 									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
@@ -107,6 +108,11 @@ namespace GridMapper
             return restToDo;
         }
 		#endregion
+
+		public void SaveRepoXml(Stream stream)
+		{
+			_repository.XmlWriter(stream);
+		}
 
 		public Execution( Option startupOptions )
 		{

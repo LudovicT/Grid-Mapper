@@ -20,7 +20,7 @@ namespace GridMapper.NetworkRepository
 		IPAddress _ipAddress;
 		PhysicalAddress _macAddress;
 		IPHostEntry _hostEntry;
-		IList<PortComputer> _ports;
+		IList<ushort> _ports;
 		IOS _os;
 
 		public IHost Host { get { return _host; } }
@@ -29,7 +29,7 @@ namespace GridMapper.NetworkRepository
 		public IPAddress IPAddress { get { return _ipAddress; } }
 		public PhysicalAddress MacAddress { get { return _macAddress; } }
 		public IPHostEntry HostEntry { get { return _hostEntry; } }
-		public IList<PortComputer> Ports { get { return _ports; } }
+		public IList<ushort> Ports { get { return _ports; } }
 		public IOS OS { get { return _os; } }
 
 		public bool Update( INetworkDictionaryItem networkDictionaryItem )
@@ -46,11 +46,17 @@ namespace GridMapper.NetworkRepository
 			return true; //FAIL
 		}
 
-		public bool ChangePort( PortComputer portComputer )
+		public bool ChangePort( ushort port )
 		{
-			if( portComputer.Status == true )
-				_ports.Add( portComputer );
-			return portComputer.Status; //FAIL
+			try
+			{
+				_ports.Add( port );
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		internal NetworkDictionaryItem()
@@ -90,7 +96,7 @@ namespace GridMapper.NetworkRepository
 			_macAddress = macAddress;
 			_hostEntry = hostEntry;
 			_os = os;
-			_ports = new List<PortComputer>();
+			_ports = new List<ushort>();
 		}
 	}
 }

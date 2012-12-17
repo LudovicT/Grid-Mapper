@@ -27,7 +27,7 @@ namespace GridMapper
 		{
 			_startUpOption = StartUpOptions;
 			_exe = new Execution( StartUpOptions );
-			_exe.TaskCompleted += new Execution.TaskEndedEventHandler( ProgressChanged );
+			_exe.TaskCompleted += ProgressChanged;
 			//_exe.IsFinished += new EventHandler( FinishedExecution );
 			InitializeComponent();
 			InitializeDataGridView();
@@ -82,33 +82,11 @@ namespace GridMapper
 			
 		}
 
-		public void UpdateDataGridView( object sender, PingCompletedEventArgs e )
-		{
-			dataGridView1.Invoke( new UpdateDataGrid<PingCompletedEventArgs>( UpdateDataGridView2 ), new object[]{ sender, e } );
-		}
-		public void UpdateDataGridView( object sender, MacCompletedEventArgs e )
-		{
-			dataGridView1.Invoke( new UpdateDataGrid<MacCompletedEventArgs>( UpdateDataGridView2 ), new object[] { sender, e } );
-		}
 		public void UpdateDataGridView( object sender, RepositoryUpdatedEventArg e )
 		{
 			dataGridView1.Invoke( new UpdateDataGrid<RepositoryUpdatedEventArg>( UpdateDataGridView2 ), new object[] { sender, e } );
 		}
 
-		public void UpdateDataGridView2( object sender, PingCompletedEventArgs e )
-		{
-			byte[] b = e.PingReply.Address.GetAddressBytes();
-			IPAddressV4 ip = new IPAddressV4();
-			ip.B0 = b[0];
-			ip.B1 = b[1];
-			ip.B2 = b[2];
-			ip.B3 = b[3];
-			string[] row = { ip.Address.ToString(), e.PingReply.Address.ToString(), "" , "" };
-			dataGridView1.Rows.Add( row );
-		}
-		public void UpdateDataGridView2( object sender, MacCompletedEventArgs e )
-		{
-		}
 		public void UpdateDataGridView2( object sender, RepositoryUpdatedEventArg e )
 		{
 			dataGridView1.DataSource = null;
@@ -125,17 +103,17 @@ namespace GridMapper
 				//pour l'affichage des virgule
 				if( item.Ports.Count > 0 )
 				{
-					portToString += item.Ports[0].Port.ToString();
+					portToString += item.Ports[0].ToString();
 					for( int i = 1 ; i < item.Ports.Count ; i++ )
-						portToString += ", " + item.Ports[i].Port.ToString();
+						portToString += ", " + item.Ports[i].ToString();
 				}
 
-				if( item.MacAddress != null && item.HostEntry != null )
+				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None && item.HostEntry != null )
 				{
 					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), item.HostEntry.HostName.ToString(), portToString };
 					dataGridView1.Rows.Add( row );
 				}
-				else if( item.MacAddress != null )
+				else if( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
 				{
 					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), "", portToString };
 					dataGridView1.Rows.Add( row );
@@ -208,7 +186,7 @@ namespace GridMapper
 
         private void SaveScan_Click(object sender, EventArgs e)
         {
-            // Displays a SaveFileDialog so the user can save the Image
+            // Displays a SaveFileDialog so the user can save the file
             // assigned to Button2.
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp|Text File|*.txt";
@@ -218,9 +196,14 @@ namespace GridMapper
             // If the file name is not an empty string open it for saving.
             if (saveFileDialog1.FileName != "")
             {
-                // Saves the Image via a FileStream created by the OpenFile method.
+                // Saves the file via a FileStream created by the OpenFile method.
                 System.IO.FileStream fs =
                    (System.IO.FileStream)saveFileDialog1.OpenFile();
+
+				if ( saveFileDialog1.FilterIndex == 0 || saveFileDialog1.FilterIndex == 1 )
+				{
+					_exe.SaveRepoXml(fs);
+				}
 
                 fs.Close();
             }
@@ -228,22 +211,7 @@ namespace GridMapper
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Displays a SaveFileDialog so the user can save the Image
-            // assigned to Button2.
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp|Text File|*.txt";
-            saveFileDialog1.Title = "Save a Map File";
-            saveFileDialog1.ShowDialog();
-
-            // If the file name is not an empty string open it for saving.
-            if (saveFileDialog1.FileName != "")
-            {
-                // Saves the Image via a FileStream created by the OpenFile method.
-                System.IO.FileStream fs =
-                   (System.IO.FileStream)saveFileDialog1.OpenFile();
-
-                fs.Close();
-            }
+			SaveScan_Click( sender, e );
         }
 
         private void startScanToolStripMenuItem_Click(object sender, EventArgs e)

@@ -16,10 +16,10 @@ namespace GridMapper.NetworkRepository
 		IPAddress IPAddress { get; }
 		PhysicalAddress MacAddress { get; }
 		IPHostEntry HostEntry { get; }
-		IList<PortComputer> Ports { get; }
+		IList<ushort> Ports { get; }
 		IOS OS { get; }
 
 		bool Update( INetworkDictionaryItem networkDictionaryItem );
-		bool ChangePort( PortComputer portComputer );
+		bool ChangePort( ushort port );
 	}
 }
