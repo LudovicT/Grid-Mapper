@@ -20,7 +20,7 @@ namespace GridMapper
 		
 		//public delegate void TaskEndedEventHandler( object sender, TaskCompletedEventArgs e );
 		//public event TaskEndedEventHandler TaskCompleted;
-		public static event EventHandler<TaskCompletedEventArgs> TaskCompleted;
+		public event EventHandler<TaskCompletedEventArgs> TaskCompleted;
 		public event EventHandler IsFinished;
 
 		#region IExecution Membres

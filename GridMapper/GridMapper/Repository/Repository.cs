@@ -9,8 +9,8 @@ using GridMapper.NetworkModelObject;
 using System.IO;
 using System.Xml;
 using System.Threading.Tasks;
-using System.Threading;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace GridMapper.NetworkRepository
 {
@@ -19,6 +19,7 @@ namespace GridMapper.NetworkRepository
 		ConcurrentDictionary<IPAddress, INetworkDictionaryItem> _networkDictionaryItems;
 		bool _isModified;
 		bool _isOpen;
+		System.Timers.Timer timer = new System.Timers.Timer();
 
 		public IDictionary<IPAddress, INetworkDictionaryItem> NetworkDictionaryItems 
 		{
@@ -132,14 +133,25 @@ namespace GridMapper.NetworkRepository
 
 		private void RepositoryUpdateTimer()
 		{
-			while(_isOpen)
+			timer.Interval = 200;
+			timer.Enabled = true;
+			timer.Elapsed += RepositoryUpdate;
+			timer.Start();
+		}
+
+		private void RepositoryUpdate( object sender, EventArgs e )
+		{
+			if ( _isOpen )
 			{
-				Thread.Sleep(2000);
-				if( _isModified )
+				if ( _isModified )
 				{
 					_isModified = false;
 					OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems ) );
 				}
+			}
+			else
+			{
+				timer.Stop();
 			}
 		}
 
