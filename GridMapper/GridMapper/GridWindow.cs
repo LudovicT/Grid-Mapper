@@ -82,33 +82,11 @@ namespace GridMapper
 			
 		}
 
-		public void UpdateDataGridView( object sender, PingCompletedEventArgs e )
-		{
-			dataGridView1.Invoke( new UpdateDataGrid<PingCompletedEventArgs>( UpdateDataGridView2 ), new object[]{ sender, e } );
-		}
-		public void UpdateDataGridView( object sender, MacCompletedEventArgs e )
-		{
-			dataGridView1.Invoke( new UpdateDataGrid<MacCompletedEventArgs>( UpdateDataGridView2 ), new object[] { sender, e } );
-		}
 		public void UpdateDataGridView( object sender, RepositoryUpdatedEventArg e )
 		{
 			dataGridView1.Invoke( new UpdateDataGrid<RepositoryUpdatedEventArg>( UpdateDataGridView2 ), new object[] { sender, e } );
 		}
 
-		public void UpdateDataGridView2( object sender, PingCompletedEventArgs e )
-		{
-			byte[] b = e.PingReply.Address.GetAddressBytes();
-			IPAddressV4 ip = new IPAddressV4();
-			ip.B0 = b[0];
-			ip.B1 = b[1];
-			ip.B2 = b[2];
-			ip.B3 = b[3];
-			string[] row = { ip.Address.ToString(), e.PingReply.Address.ToString(), "" , "" };
-			dataGridView1.Rows.Add( row );
-		}
-		public void UpdateDataGridView2( object sender, MacCompletedEventArgs e )
-		{
-		}
 		public void UpdateDataGridView2( object sender, RepositoryUpdatedEventArg e )
 		{
 			dataGridView1.DataSource = null;
@@ -130,12 +108,12 @@ namespace GridMapper
 						portToString += ", " + item.Ports[i].Port.ToString();
 				}
 
-				if( item.MacAddress != null && item.HostEntry != null )
+				if( item.MacAddress != PhysicalAddress.None && item.HostEntry != null )
 				{
 					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), item.HostEntry.HostName.ToString(), portToString };
 					dataGridView1.Rows.Add( row );
 				}
-				else if( item.MacAddress != null )
+				else if( item.MacAddress != PhysicalAddress.None )
 				{
 					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), "", portToString };
 					dataGridView1.Rows.Add( row );
