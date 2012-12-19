@@ -65,8 +65,13 @@ namespace GridMapper.NetworkRawSender
 			castResponseEndPoint = new IPEndPoint( ipAddress, 0 );
 
 			pingSocket.BeginReceiveFrom( receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref castResponseEndPoint, rveCallback, this );
-			pingSocket.SendTo( pingPacket, castResponseEndPoint );
-			Thread.Sleep( 5 );
+			pingSocket.BeginSendTo( pingPacket, 0, pingPacket.Length, SocketFlags.None, castResponseEndPoint, sendCallback, this );
+			//Thread.Sleep( 5 );
+		}
+
+		private void sendCallback( IAsyncResult ar )
+		{
+			pingSocket.EndSendTo( ar );
 		}
 
 		public static void rveCallback( IAsyncResult ar )

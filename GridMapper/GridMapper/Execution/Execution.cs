@@ -59,13 +59,13 @@ namespace GridMapper
 
 					SendRawPing pingSocket = new SendRawPing();
 
-					//Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
-					//    {
-					foreach(int ipInt in _option.IpToTest.Result)
-					{
+					Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
+						{
+							//foreach(int ipInt in _option.IpToTest.Result)
+							//{
 							//PingSender pingSender = new PingSender( Option );
-								IPAddress ip = IPAddress.Parse( ((uint)ipInt).ToString() );
-								pingSocket.Send( ip );
+							IPAddress ip = IPAddress.Parse( ( (uint)ipInt ).ToString() );
+							pingSocket.Send( ip );
 
 
 							//PingReply pingReply = pingSender.Ping( ip );
@@ -104,8 +104,8 @@ namespace GridMapper
 							//}
 							//else
 							//    TaskCompleted( this, new TaskCompletedEventArgs( Option.OperationCount ) );
-						//} );
-				}
+							//} );
+						} );
 				} ).ContinueWith( (a) =>
 					{
 						//_repository.EndThreads();
