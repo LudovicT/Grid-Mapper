@@ -49,48 +49,65 @@ namespace GridMapper
 					PortScanner portScanner = new PortScanner();
 					Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
 						{
-							//PingSender pingSender = new PingSender( Option );
 							IPAddress ip = IPAddress.Parse( ((uint)ipInt).ToString() );
-							//PingReply pingReply = pingSender.Ping( ip );
-							//if( pingReply != null )
-							//{
-							//    _repository.AddOrUpdate( ip, pingReply );
+							PingReply pingReply = null;
+							PhysicalAddress mac = null;
+							if ( Option.Ping )
+							{
+								pingReply = pingSender.Ping( ip );
+							}
+							if ( Option.Arp )
+							{
+								Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew( () =>
+								arpSender.GetMac( ip ) );
+								mac = task.Result;
+							}
+							if ( pingReply != null || ( mac != null && mac != PhysicalAddress.None ) )
+							{
+								if ( pingReply != null )
+								{
+									_repository.AddOrUpdate( ip, pingReply );
+								}
 								TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-								//if ( Option.Arp )
-								//{
-									PhysicalAddress mac = arpSender.GetMac( ip );
-									if ( mac != PhysicalAddress.None )
+
+								if ( pingReply != null )
+								{
+									Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew(() =>
+									arpSender.GetMac( ip ));
+									mac = task.Result;
+								}
+								if ( mac != null && mac != PhysicalAddress.None)
+								{
+									_repository.AddOrUpdate( ip, mac );
+								}
+								TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+
+								if ( Option.Dns )
+								{
+									IPHostEntry dns = dnsResolver.GetHostName( ip );
+									if ( dns != null )
 									{
-										_repository.AddOrUpdate( ip, mac );
+										_repository.AddOrUpdate( ip, dns );
 									}
 									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-								//}
-								if( mac != null && mac != PhysicalAddress.None )
+								}
+
+								if ( Option.Port )
 								{
-									if( Option.Dns )
+									//ne gere pas l'option des port a scan
+									ushort portToTest = 80;
+									if ( portScanner.ScanPort( ip, portToTest ) )
 									{
-										IPHostEntry dns = dnsResolver.GetHostName( ip );
-										if( dns != null )
-										{
-											_repository.AddOrUpdate( ip, dns );
-										}
-										TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+										_repository.AddOrUpdate( ip, portToTest );
 									}
-									if( Option.Port )
-									{
-										//ne gere pas l'option des port a scan
-										ushort portToTest = 80;
-										if( portScanner.ScanPort( ip, portToTest ) )
-										{
-											_repository.AddOrUpdate( ip, portToTest );
-										}
-										TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-									}
+									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
 								//TaskCompleted( this, new Data());
-							//}
+							}
 							else
-							    TaskCompleted( this, new TaskCompletedEventArgs( Option.OperationCount ) );
+							{
+								TaskCompleted( this, new TaskCompletedEventArgs( Option.OperationCount ) );
+							}
 						} );
 				} ).ContinueWith( (a) =>
 					{
