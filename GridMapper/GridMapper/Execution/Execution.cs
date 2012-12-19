@@ -63,7 +63,6 @@ namespace GridMapper
 						{
 							//foreach(int ipInt in _option.IpToTest.Result)
 							//{
-							//PingSender pingSender = new PingSender( Option );
 							IPAddress ip = IPAddress.Parse( ( (uint)ipInt ).ToString() );
 							pingSocket.Send( ip );
 
@@ -79,10 +78,28 @@ namespace GridMapper
 							//        if ( mac != PhysicalAddress.None )
 							//        {
 							//            _repository.AddOrUpdate( ip, mac );
+							PingReply pingReply = null;
+							PhysicalAddress mac = null;
+							if ( Option.Ping )
+							{
+								pingReply = pingSender.Ping( ip );
+							}
+							if ( Option.Arp )
+							{
+								Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew( () =>
+								arpSender.GetMac( ip ) );
+								mac = task.Result;
+							}
+							if ( pingReply != null || ( mac != null && mac != PhysicalAddress.None ) )
+							{
+								if ( pingReply != null )
+								{
+									_repository.AddOrUpdate( ip, pingReply );
 							//        }
 							//        TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 							//    }
 							//    if ( Option.Dns )
+								}
 							//    {
 							//        IPHostEntry dns = dnsResolver.GetHostName( ip );
 							//        if ( dns != null )
@@ -92,9 +109,19 @@ namespace GridMapper
 							//        TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 							//    }
 							//    if ( Option.Port )
+									Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew(() =>
+									arpSender.GetMac( ip ));
+									mac = task.Result;
+								}
+								if ( mac != null && mac != PhysicalAddress.None)
+								{
+									_repository.AddOrUpdate( ip, mac );
+								}
 							//    {
 							//        //ne gere pas l'option des port a scan
 							//        ushort portToTest = 80;
+								if ( Option.Arp )
+								{
 							//        if ( portScanner.ScanPort( ip, portToTest ) )
 							//        {
 							//            _repository.AddOrUpdate( ip, portToTest );
@@ -105,6 +132,10 @@ namespace GridMapper
 							//else
 							//    TaskCompleted( this, new TaskCompletedEventArgs( Option.OperationCount ) );
 							//} );
+
+								//TaskCompleted( this, new Data());
+							{
+							}
 						} );
 				} ).ContinueWith( (a) =>
 					{
@@ -133,6 +164,16 @@ namespace GridMapper
 		{
 			_option = startupOptions;
 		}
+
+		public void optionsModified(OptionUpdatedEventArgs e)
+		{
+			_option.Arp = e.Arp;
+			_option.Dns = e.Dns;
+			_option.Port = e.Port;
+			_option.PingTimeout = e.Timeout;
+			_option.MaximumTasks = e.Tasks;
+			_option.PortToTest = e.Ports;
+		}
 	}
 
 	public class TaskCompletedEventArgs : EventArgs
@@ -144,5 +185,12 @@ namespace GridMapper
 		}
 
 		public int TaskCompleted { get; private set; }
+	}
+	public class PrintResultEventsArgs : EventArgs
+	{
+		public PrintResultEventsArgs()
+		{
+
+		}
 	}
 }

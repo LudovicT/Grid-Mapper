@@ -44,7 +44,6 @@ namespace GridMapper
 		{
 			IPAddress _ipAddress;
 			ushort _portComputer;
-			bool _status;
 
 			public PortScanCompletedEventArgs( IPAddress ipAddress, ushort portComputer )
 			{

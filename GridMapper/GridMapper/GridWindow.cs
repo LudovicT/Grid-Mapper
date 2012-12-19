@@ -6,10 +6,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using GridMapper.NetworkRepository;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Net;
+using GridMapper.NetworkRepository;
+using GridMapper;
 
 namespace GridMapper
 {
@@ -28,9 +29,14 @@ namespace GridMapper
 			_startUpOption = StartUpOptions;
 			_exe = new Execution( StartUpOptions );
 			_exe.TaskCompleted += ProgressChanged;
-			//_exe.IsFinished += new EventHandler( FinishedExecution );
 			InitializeComponent();
 			InitializeDataGridView();
+		}
+
+		private void OptionChanged( object sender, OptionUpdatedEventArgs e )
+		{
+			_exe.optionsModified(e);
+
 		}
 
 		private void FinishedExecution( object sender, EventArgs e )
@@ -110,12 +116,12 @@ namespace GridMapper
 
 				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None && item.HostEntry != null )
 				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), item.HostEntry.HostName.ToString(), portToString };
+                    string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), ToMac(item.MacAddress.ToString()), item.HostEntry.HostName.ToString(), portToString };
 					dataGridView1.Rows.Add( row );
 				}
 				else if( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
 				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), "", portToString };
+                    string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), ToMac(item.MacAddress.ToString()), "", portToString };
 					dataGridView1.Rows.Add( row );
 				}
 				else if( item.HostEntry != null )
@@ -130,7 +136,7 @@ namespace GridMapper
 				}
 			}
 		}
-
+                
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
@@ -250,7 +256,8 @@ namespace GridMapper
 
         private void advancedOptionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Option_window Option = new Option_window();
+            Option_window Option = new Option_window(_exe.Option);
+			Option.OptionUpdated += new Option_window.OptionUpdatedHandler(OptionChanged);
             Option.ShowDialog();
         }
 
@@ -261,6 +268,36 @@ namespace GridMapper
 			OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
             _exe.StartScan();
 			timer1.Start();
+        }
+
+        static string ToMac(string ToTransform)
+        {
+            string Transform = string.Empty;
+            string Substring = string.Empty;
+            int i = 0;
+            int j = 0;
+
+            while (i < ToTransform.Length / 2)
+            {
+                Substring = ToTransform.Substring(j, 2);
+                Transform += Substring;
+                ++i;
+                j = j + 2;
+                if (i <= 5)
+                {
+                    Transform += ":";
+                }
+            }
+            return Transform;
+        }
+
+        private void ScanButton_Click(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = null;
+            dataGridView1.DataMember = null;
+            OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
+            _exe.StartScan();
+            timer1.Start();
         }
 	}
 }

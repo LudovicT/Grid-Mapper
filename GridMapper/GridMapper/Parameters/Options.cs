@@ -17,6 +17,7 @@ namespace GridMapper
 		int _maximumTasks;
 		IPParserResult _ipToTest;
 		int _pingTimeout;
+		List<ushort> _portToTest;
 
 		public Option()
 		{
@@ -103,6 +104,17 @@ namespace GridMapper
             }
         }
 
+		public List<ushort> PortToTest
+		{
+			get
+			{
+				return _portToTest;
+			}
+			set
+			{
+				_portToTest = value;
+			}
+		}
         
 	}
 }
