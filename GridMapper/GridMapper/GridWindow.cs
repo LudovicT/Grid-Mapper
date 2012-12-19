@@ -110,12 +110,12 @@ namespace GridMapper
 
 				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None && item.HostEntry != null )
 				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), item.HostEntry.HostName.ToString(), portToString };
+                    string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), ToMac(item.MacAddress.ToString()), item.HostEntry.HostName.ToString(), portToString };
 					dataGridView1.Rows.Add( row );
 				}
 				else if( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
 				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), item.MacAddress.ToString(), "", portToString };
+                    string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), ToMac(item.MacAddress.ToString()), "", portToString };
 					dataGridView1.Rows.Add( row );
 				}
 				else if( item.HostEntry != null )
@@ -130,7 +130,7 @@ namespace GridMapper
 				}
 			}
 		}
-
+                
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
@@ -261,6 +261,27 @@ namespace GridMapper
 			OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
             _exe.StartScan();
 			timer1.Start();
+        }
+
+        static string ToMac(string ToTransform)
+        {
+            string Transform = string.Empty;
+            string Substring = string.Empty;
+            int i = 0;
+            int j = 0;
+
+            while (i < ToTransform.Length / 2)
+            {
+                Substring = ToTransform.Substring(j, 2);
+                Transform += Substring;
+                ++i;
+                j = j + 2;
+                if (i <= 5)
+                {
+                    Transform += ":";
+                }
+            }
+            return Transform;
         }
 	}
 }
