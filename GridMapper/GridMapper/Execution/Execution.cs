@@ -43,7 +43,7 @@ namespace GridMapper
 			int maxIOC;
 			ThreadPool.GetMinThreads( out minWORK, out minIOC );
 			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
-			if( ThreadPool.SetMinThreads( 200, 200 ) )
+			if( ThreadPool.SetMinThreads( 4, 4 ) )
 			{
 				ThreadPool.GetMinThreads( out minWORK, out minIOC );
 			}
@@ -59,84 +59,44 @@ namespace GridMapper
 
 					SendRawPing pingSocket = new SendRawPing();
 
-					Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
-						{
-							//foreach(int ipInt in _option.IpToTest.Result)
-							//{
+					//Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
+					//    {
+							foreach(int ipInt in _option.IpToTest.Result)
+							{
 							IPAddress ip = IPAddress.Parse( ( (uint)ipInt ).ToString() );
 							pingSocket.Send( ip );
 
 
-							//PingReply pingReply = pingSender.Ping( ip );
-							//if( pingReply != null )
+							//PingReply pingReply = null;
+							//PhysicalAddress mac = null;
+							//if ( Option.Ping )
 							//{
-							//    _repository.AddOrUpdate( ip, pingReply );
-							//    TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+							//    pingReply = pingSender.Ping( ip );
+							//}
+							//if ( Option.Arp )
+							//{
+							//    Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew( () =>
+							//    arpSender.GetMac( ip ) );
+							//    mac = task.Result;
+							//}
+							//if ( pingReply != null || ( mac != null && mac != PhysicalAddress.None ) )
+							//{
+							//    if ( pingReply != null )
+							//    {
+							//        _repository.AddOrUpdate( ip, pingReply );
+							//        Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew(() =>
+							//        arpSender.GetMac( ip ));
+							//        mac = task.Result;
+							//    }
+							//    if ( mac != null && mac != PhysicalAddress.None)
+							//    {
+							//        _repository.AddOrUpdate( ip, mac );
+							//    }
 							//    if ( Option.Arp )
 							//    {
-							//        PhysicalAddress mac = arpSender.GetMac( ip );
-							//        if ( mac != PhysicalAddress.None )
-							//        {
-							//            _repository.AddOrUpdate( ip, mac );
-							PingReply pingReply = null;
-							PhysicalAddress mac = null;
-							if ( Option.Ping )
-							{
-								pingReply = pingSender.Ping( ip );
-							}
-							if ( Option.Arp )
-							{
-								Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew( () =>
-								arpSender.GetMac( ip ) );
-								mac = task.Result;
-							}
-							if ( pingReply != null || ( mac != null && mac != PhysicalAddress.None ) )
-							{
-								if ( pingReply != null )
-								{
-									_repository.AddOrUpdate( ip, pingReply );
-							//        }
-							//        TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-							//    }
-							//    if ( Option.Dns )
-								}
-							//    {
-							//        IPHostEntry dns = dnsResolver.GetHostName( ip );
-							//        if ( dns != null )
-							//        {
-							//            _repository.AddOrUpdate( ip, dns );
-							//        }
-							//        TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-							//    }
-							//    if ( Option.Port )
-									Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew(() =>
-									arpSender.GetMac( ip ));
-									mac = task.Result;
-								}
-								if ( mac != null && mac != PhysicalAddress.None)
-								{
-									_repository.AddOrUpdate( ip, mac );
-								}
-							//    {
-							//        //ne gere pas l'option des port a scan
-							//        ushort portToTest = 80;
-								if ( Option.Arp )
-								{
-							//        if ( portScanner.ScanPort( ip, portToTest ) )
-							//        {
-							//            _repository.AddOrUpdate( ip, portToTest );
-							//        }
-							//        TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-							//    }
+							//{
 							//}
-							//else
-							//    TaskCompleted( this, new TaskCompletedEventArgs( Option.OperationCount ) );
-							//} );
-
-								//TaskCompleted( this, new Data());
-							{
-							}
-						} );
+						}
 				} ).ContinueWith( (a) =>
 					{
 						//_repository.EndThreads();

@@ -39,7 +39,7 @@ namespace GridMapper.NetworkRawSender
 			IPEndPoint localEndPoint = new IPEndPoint( IPAddress.Any, 0 );
 			pingSocket.Bind( localEndPoint );
 
-			receiveBuffer = new byte[10 + 28 + 8 + dataSize];
+			receiveBuffer = new byte[200 + 28 + 8 + dataSize];
 			pingPayload = new byte[dataSize];
 			for( int i = 0 ; i < pingPayload.Length ; i++ )
 			{
@@ -74,6 +74,10 @@ namespace GridMapper.NetworkRawSender
 			pingSocket.EndSendTo( ar );
 		}
 
+
+		static readonly IPAddress ownIP = Dns.GetHostEntry( Dns.GetHostName() ).AddressList[0];
+		static volatile int i = 0; 
+
 		public static void rveCallback( IAsyncResult ar )
 		{
 			try
@@ -94,11 +98,21 @@ namespace GridMapper.NetworkRawSender
 				//Array.Copy( rawSock.receiveBuffer, offset, pktIcmp, 0, pktIcmp.Length );
 				//icmpv4Header = IcmpHeader.Create( pktIcmp, ref offset );
 
-				SendPing( null, new SendPingEventArgs( ((IPEndPoint)rawSock.castResponseEndPoint).Address ) );
+				if (i == 0 && ownIP == ( (IPEndPoint)rawSock.castResponseEndPoint ).Address )
+				{
+					i++;
+					SendPing( null, new SendPingEventArgs( ( (IPEndPoint)rawSock.castResponseEndPoint ).Address ) );
+					return;
+				}
+				if ( ownIP != ( (IPEndPoint)rawSock.castResponseEndPoint ).Address )
+				{
+					SendPing( null, new SendPingEventArgs( ( (IPEndPoint)rawSock.castResponseEndPoint ).Address ) );
+				}
 			}
 			catch( Exception e )
 			{
-				Console.WriteLine( e.Message );
+				//Console.WriteLine( e.Message );
+				return;
 			}
 		}
 	}
