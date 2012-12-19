@@ -11,6 +11,7 @@ using System.Net.NetworkInformation;
 using System.ComponentModel;
 using System.IO;
 using ConsoleApplication5;
+using GridMapper.NetworkRawSender;
 
 namespace GridMapper
 {
@@ -54,33 +55,18 @@ namespace GridMapper
 					ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
 					PortScanner portScanner = new PortScanner();
 
-					RawSocketPing.SendPing += Repo;
+					SendRawPing.SendPing += Repo;
 
-					RawSocketPing pingSocket = null;
-					string remoteHost = "localhost";
-					IPAddress remoteAddress = null;
-					int dataSize = 100, ttlValue = 128, sendCount = 1;
-					IPHostEntry hostEntry = Dns.GetHostEntry( remoteHost );
-					remoteAddress = hostEntry.AddressList[0];
-					System.Diagnostics.Process proc = System.Diagnostics.Process.GetCurrentProcess();
-
-					pingSocket = new RawSocketPing( remoteAddress.AddressFamily, ttlValue, dataSize, sendCount, (ushort)proc.Id );
+					SendRawPing pingSocket = new SendRawPing();
 
 					//Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
 					//    {
 					foreach(int ipInt in _option.IpToTest.Result)
 					{
-						Task.Factory.StartNew( () =>
-							{
-								//PingSender pingSender = new PingSender( Option );
+							//PingSender pingSender = new PingSender( Option );
 								IPAddress ip = IPAddress.Parse( ((uint)ipInt).ToString() );
+								pingSocket.Send( ip );
 
-								pingSocket.PingAddress = ip;
-								//pingSocket.InitializeSocket();
-								//pingSocket.BuildPingPacket();
-								//pingSocket.DoPing();
-								RawSocketPing.SendPingStatic( ip );
-							} );
 
 							//PingReply pingReply = pingSender.Ping( ip );
 							//if( pingReply != null )
@@ -122,7 +108,7 @@ namespace GridMapper
 				}
 				} ).ContinueWith( (a) =>
 					{
-						_repository.EndThreads();
+						//_repository.EndThreads();
 						//IsFinished( this, null );
 						//TaskCompleted( this, null );
 					} );

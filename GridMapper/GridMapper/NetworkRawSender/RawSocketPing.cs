@@ -9,19 +9,9 @@ using System.Threading;
 
 namespace ConsoleApplication5
 {
-	public class SendPingEventArgs : EventArgs
-	{
-		public SendPingEventArgs( IPAddress ipAddress )
-		{
-			IpAddress = ipAddress;
-		}
-
-		public IPAddress IpAddress { get; private set; }
-	}
 
 	class RawSocketPing
 	{
-		public static event EventHandler<SendPingEventArgs> SendPing;
 
 		public Socket pingSocket;                    // Raw socket handle
 		public AddressFamily pingFamily;             // Indicates IPv4 or IPv6 ping
@@ -396,7 +386,7 @@ namespace ConsoleApplication5
 						elapsedString = "<1";
 					else
 						elapsedString = "=" + elapsedTime.Milliseconds.ToString();
-					SendPing(null, new SendPingEventArgs(rawSock.responseEndPoint.Address) );
+					//SendPing(null, new SendPingEventArgs(rawSock.responseEndPoint.Address) );
 					Console.WriteLine( "Reply from {0}: byte={1} time{2}ms TTL={3} ", rawSock.responseEndPoint.Address.ToString(), bytesReceived, elapsedString, rawSock.pingTtl );
 				}
 
@@ -556,10 +546,10 @@ namespace ConsoleApplication5
 
 				// Remember, raw IPv4 sockets will return the IPv4 header along with all
 				//    subsequent protocol headers
-				//v4Header = Ipv4Header.Create( rawSock.receiveBuffer, ref offset );
-				//pktIcmp = new byte[200 - offset];
-				//Array.Copy( rawSock.receiveBuffer, offset, pktIcmp, 0, pktIcmp.Length );
-				//icmpv4Header = IcmpHeader.Create( pktIcmp, ref offset );
+				v4Header = Ipv4Header.Create( rawSock.receiveBuffer, ref offset );
+				pktIcmp = new byte[200 - offset];
+				Array.Copy( rawSock.receiveBuffer, offset, pktIcmp, 0, pktIcmp.Length );
+				icmpv4Header = IcmpHeader.Create( pktIcmp, ref offset );
 
 				/*Console.WriteLine("Icmp.Id = {0}; Icmp.Sequence = {1}",
 					icmpv4Header.Id,
@@ -569,7 +559,7 @@ namespace ConsoleApplication5
 				//ushort receivedId = icmpv4Header.Id;
 				//if( receivedId == rawSock.pingId )
 				//{
-				SendPing( null, new SendPingEventArgs( ((IPEndPoint)rawSock.castResponseEndPoint).Address ) );
+				//SendPing( null, new SendPingEventArgs( ((IPEndPoint)rawSock.castResponseEndPoint).Address ) );
 				//}
 			}
 			catch( Exception e )

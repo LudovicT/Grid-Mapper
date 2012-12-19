@@ -143,6 +143,7 @@
     <Compile Include="NetworkRawSender\MulticastEndpoint.cs" />
     <Compile Include="NetworkRawSender\ProtocolHeader.cs" />
     <Compile Include="NetworkRawSender\RawSocketPing.cs" />
+    <Compile Include="NetworkRawSender\SendRawPing.cs" />
     <Compile Include="NetworkRawSender\SockaddrConvert.cs" />
     <Compile Include="NetworkRawSender\UdpHeader.cs" />
     <Compile Include="NetworkRawSender\WinsockIoctl.cs" />
