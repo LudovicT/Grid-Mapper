@@ -18,8 +18,6 @@ namespace GridMapper
 		Option _option;
 		IRepository _repository;
 		
-		//public delegate void TaskEndedEventHandler( object sender, TaskCompletedEventArgs e );
-		//public event TaskEndedEventHandler TaskCompleted;
 		public event EventHandler<TaskCompletedEventArgs> TaskCompleted;
 		public event EventHandler IsFinished;
 
@@ -51,22 +49,39 @@ namespace GridMapper
 					PortScanner portScanner = new PortScanner();
 					Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
 						{
-							//PingSender pingSender = new PingSender( Option );
 							IPAddress ip = IPAddress.Parse( ((uint)ipInt).ToString() );
-							PingReply pingReply = pingSender.Ping( ip );
-							if( pingReply != null )
+							PingReply pingReply = null;
+							PhysicalAddress mac = null;
+							if ( Option.Ping )
 							{
-								_repository.AddOrUpdate( ip, pingReply );
-								TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-								if ( Option.Arp )
+								pingReply = pingSender.Ping( ip );
+							}
+							if ( Option.Arp )
+							{
+								Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew( () =>
+								arpSender.GetMac( ip ) );
+								mac = task.Result;
+							}
+							if ( pingReply != null || ( mac != null && mac != PhysicalAddress.None ) )
+							{
+								if ( pingReply != null )
 								{
-									PhysicalAddress mac = arpSender.GetMac( ip );
-									if ( mac != PhysicalAddress.None )
-									{
-										_repository.AddOrUpdate( ip, mac );
-									}
-									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+									_repository.AddOrUpdate( ip, pingReply );
 								}
+								TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+
+								if ( pingReply != null )
+								{
+									Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew(() =>
+									arpSender.GetMac( ip ));
+									mac = task.Result;
+								}
+								if ( mac != null && mac != PhysicalAddress.None)
+								{
+									_repository.AddOrUpdate( ip, mac );
+								}
+								TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+
 								if ( Option.Dns )
 								{
 									IPHostEntry dns = dnsResolver.GetHostName( ip );
@@ -76,6 +91,7 @@ namespace GridMapper
 									}
 									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
+
 								if ( Option.Port )
 								{
 									//ne gere pas l'option des port a scan
@@ -89,7 +105,9 @@ namespace GridMapper
 								//TaskCompleted( this, new Data());
 							}
 							else
+							{
 								TaskCompleted( this, new TaskCompletedEventArgs( Option.OperationCount ) );
+							}
 						} );
 				} ).ContinueWith( (a) =>
 					{
@@ -117,6 +135,16 @@ namespace GridMapper
 		public Execution( Option startupOptions )
 		{
 			_option = startupOptions;
+		}
+
+		public void optionsModified(OptionUpdatedEventArgs e)
+		{
+			_option.Arp = e.Arp;
+			_option.Dns = e.Dns;
+			_option.Port = e.Port;
+			_option.PingTimeout = e.Timeout;
+			_option.MaximumTasks = e.Tasks;
+			_option.PortToTest = e.Ports;
 		}
 	}
 
