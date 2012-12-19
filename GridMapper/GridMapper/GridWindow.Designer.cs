@@ -31,6 +31,8 @@ namespace GridMapper
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GridWindow));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.LoadScan = new System.Windows.Forms.ToolStripButton();
+            this.SaveScan = new System.Windows.Forms.ToolStripButton();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.FromIP = new IPAddressControlLib.IPAddressControl();
             this.ToIP = new IPAddressControlLib.IPAddressControl();
@@ -39,8 +41,6 @@ namespace GridMapper
             this.ProgressScan = new System.Windows.Forms.ProgressBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.ScanButton = new System.Windows.Forms.Button();
-            this.LoadScan = new System.Windows.Forms.ToolStripButton();
-            this.SaveScan = new System.Windows.Forms.ToolStripButton();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,6 +61,7 @@ namespace GridMapper
             this.typeOfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cRIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -78,6 +79,26 @@ namespace GridMapper
             this.toolStrip1.Size = new System.Drawing.Size(552, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // LoadScan
+            // 
+            this.LoadScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.LoadScan.Image = ((System.Drawing.Image)(resources.GetObject("LoadScan.Image")));
+            this.LoadScan.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LoadScan.Name = "LoadScan";
+            this.LoadScan.Size = new System.Drawing.Size(23, 22);
+            this.LoadScan.Text = "LoadScan";
+            this.LoadScan.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // SaveScan
+            // 
+            this.SaveScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SaveScan.Image = ((System.Drawing.Image)(resources.GetObject("SaveScan.Image")));
+            this.SaveScan.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveScan.Name = "SaveScan";
+            this.SaveScan.Size = new System.Drawing.Size(23, 22);
+            this.SaveScan.Text = "SaveScan";
+            this.SaveScan.Click += new System.EventHandler(this.SaveScan_Click);
             // 
             // dataGridView1
             // 
@@ -180,26 +201,6 @@ namespace GridMapper
             this.ScanButton.TabIndex = 9;
             this.ScanButton.UseVisualStyleBackColor = true;
             this.ScanButton.Click += new System.EventHandler(this.ScanButton_Click);
-            // 
-            // LoadScan
-            // 
-            this.LoadScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LoadScan.Image = ((System.Drawing.Image)(resources.GetObject("LoadScan.Image")));
-            this.LoadScan.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.LoadScan.Name = "LoadScan";
-            this.LoadScan.Size = new System.Drawing.Size(23, 22);
-            this.LoadScan.Text = "LoadScan";
-            this.LoadScan.Click += new System.EventHandler(this.toolStripButton1_Click);
-            // 
-            // SaveScan
-            // 
-            this.SaveScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SaveScan.Image = ((System.Drawing.Image)(resources.GetObject("SaveScan.Image")));
-            this.SaveScan.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SaveScan.Name = "SaveScan";
-            this.SaveScan.Size = new System.Drawing.Size(23, 22);
-            this.SaveScan.Text = "SaveScan";
-            this.SaveScan.Click += new System.EventHandler(this.SaveScan_Click);
             // 
             // fileToolStripMenuItem
             // 
@@ -349,7 +350,8 @@ namespace GridMapper
             // 
             this.typeOfToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.rangeToolStripMenuItem,
-            this.cRIDToolStripMenuItem});
+            this.cRIDToolStripMenuItem,
+            this.stringToolStripMenuItem});
             this.typeOfToolStripMenuItem.Name = "typeOfToolStripMenuItem";
             this.typeOfToolStripMenuItem.Size = new System.Drawing.Size(71, 24);
             this.typeOfToolStripMenuItem.Text = "Type of";
@@ -365,6 +367,12 @@ namespace GridMapper
             this.cRIDToolStripMenuItem.Name = "cRIDToolStripMenuItem";
             this.cRIDToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.cRIDToolStripMenuItem.Text = "CRID";
+            // 
+            // stringToolStripMenuItem
+            // 
+            this.stringToolStripMenuItem.Name = "stringToolStripMenuItem";
+            this.stringToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.stringToolStripMenuItem.Text = "String";
             // 
             // GridWindow
             // 
@@ -431,6 +439,7 @@ namespace GridMapper
         private System.Windows.Forms.ToolStripMenuItem typeOfToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rangeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cRIDToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stringToolStripMenuItem;
 	}
 }
 
