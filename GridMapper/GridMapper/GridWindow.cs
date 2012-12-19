@@ -6,10 +6,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using GridMapper.NetworkRepository;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Net;
+using GridMapper.NetworkRepository;
+using GridMapper;
 
 namespace GridMapper
 {
@@ -28,9 +29,14 @@ namespace GridMapper
 			_startUpOption = StartUpOptions;
 			_exe = new Execution( StartUpOptions );
 			_exe.TaskCompleted += ProgressChanged;
-			//_exe.IsFinished += new EventHandler( FinishedExecution );
 			InitializeComponent();
 			InitializeDataGridView();
+		}
+
+		private void OptionChanged( object sender, OptionUpdatedEventArgs e )
+		{
+			_exe.optionsModified(e);
+
 		}
 
 		private void FinishedExecution( object sender, EventArgs e )
@@ -250,7 +256,8 @@ namespace GridMapper
 
         private void advancedOptionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Option_window Option = new Option_window();
+            Option_window Option = new Option_window(_exe.Option);
+			Option.OptionUpdated += new Option_window.OptionUpdatedHandler(OptionChanged);
             Option.ShowDialog();
         }
 

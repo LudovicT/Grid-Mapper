@@ -18,8 +18,6 @@ namespace GridMapper
 		Option _option;
 		IRepository _repository;
 		
-		//public delegate void TaskEndedEventHandler( object sender, TaskCompletedEventArgs e );
-		//public event TaskEndedEventHandler TaskCompleted;
 		public event EventHandler<TaskCompletedEventArgs> TaskCompleted;
 		public event EventHandler IsFinished;
 
@@ -117,6 +115,16 @@ namespace GridMapper
 		public Execution( Option startupOptions )
 		{
 			_option = startupOptions;
+		}
+
+		public void optionsModified(OptionUpdatedEventArgs e)
+		{
+			_option.Arp = e.Arp;
+			_option.Dns = e.Dns;
+			_option.Port = e.Port;
+			_option.PingTimeout = e.Timeout;
+			_option.MaximumTasks = e.Tasks;
+			_option.PortToTest = e.Ports;
 		}
 	}
 
