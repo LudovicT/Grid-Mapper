@@ -51,43 +51,46 @@ namespace GridMapper
 						{
 							//PingSender pingSender = new PingSender( Option );
 							IPAddress ip = IPAddress.Parse( ((uint)ipInt).ToString() );
-							PingReply pingReply = pingSender.Ping( ip );
-							if( pingReply != null )
-							{
-								_repository.AddOrUpdate( ip, pingReply );
+							//PingReply pingReply = pingSender.Ping( ip );
+							//if( pingReply != null )
+							//{
+							//    _repository.AddOrUpdate( ip, pingReply );
 								TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-								if ( Option.Arp )
-								{
+								//if ( Option.Arp )
+								//{
 									PhysicalAddress mac = arpSender.GetMac( ip );
 									if ( mac != PhysicalAddress.None )
 									{
 										_repository.AddOrUpdate( ip, mac );
 									}
 									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-								}
-								if ( Option.Dns )
+								//}
+								if( mac != null && mac != PhysicalAddress.None )
 								{
-									IPHostEntry dns = dnsResolver.GetHostName( ip );
-									if ( dns != null )
+									if( Option.Dns )
 									{
-										_repository.AddOrUpdate( ip, dns );
+										IPHostEntry dns = dnsResolver.GetHostName( ip );
+										if( dns != null )
+										{
+											_repository.AddOrUpdate( ip, dns );
+										}
+										TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 									}
-									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
-								}
-								if ( Option.Port )
-								{
-									//ne gere pas l'option des port a scan
-									ushort portToTest = 80;
-									if ( portScanner.ScanPort( ip, portToTest ) )
+									if( Option.Port )
 									{
-										_repository.AddOrUpdate( ip, portToTest );
+										//ne gere pas l'option des port a scan
+										ushort portToTest = 80;
+										if( portScanner.ScanPort( ip, portToTest ) )
+										{
+											_repository.AddOrUpdate( ip, portToTest );
+										}
+										TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 									}
-									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
 								//TaskCompleted( this, new Data());
-							}
+							//}
 							else
-								TaskCompleted( this, new TaskCompletedEventArgs( Option.OperationCount ) );
+							    TaskCompleted( this, new TaskCompletedEventArgs( Option.OperationCount ) );
 						} );
 				} ).ContinueWith( (a) =>
 					{
