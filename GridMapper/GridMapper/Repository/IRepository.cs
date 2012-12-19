@@ -22,6 +22,7 @@ namespace GridMapper.NetworkRepository
 		void AddOrUpdate( IPAddress ipAddress, IPHostEntry hostEntry );
 		void AddOrUpdate( IPAddress ipAddress, ushort port );
 		void AddOrUpdate( IPAddress ipAddress, IOS os );
+		void AddOrUpdate( IPAddress ipAddress );
 		ICollection<IPAddress> GetIPAddresses();
 		void EndThreads();
 		void XmlWriter(Stream stream);

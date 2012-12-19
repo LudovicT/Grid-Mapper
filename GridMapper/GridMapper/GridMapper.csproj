@@ -161,7 +161,9 @@
     </Compile>
     <Compile Include="Parameters\IPsParser.cs" />
     <Compile Include="Parameters\PortsParser.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Program.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parameters\ArgumentsParser.cs" />
     <Compile Include="Parameters\Options.cs" />

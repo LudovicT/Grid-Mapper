@@ -9,8 +9,20 @@ using System.Threading;
 
 namespace ConsoleApplication5
 {
+	public class SendPingEventArgs : EventArgs
+	{
+		public SendPingEventArgs( IPAddress ipAddress )
+		{
+			IpAddress = ipAddress;
+		}
+
+		public IPAddress IpAddress { get; private set; }
+	}
+
 	class RawSocketPing
 	{
+		public static event EventHandler<SendPingEventArgs> SendPing;
+
 		public Socket pingSocket;                    // Raw socket handle
 		public AddressFamily pingFamily;             // Indicates IPv4 or IPv6 ping
 		public int pingTtl;                                 // Time-to-live value to set on ping
@@ -325,6 +337,8 @@ namespace ConsoleApplication5
 				elapsedTime = DateTime.Now - rawSock.pingSentTime;
 
 				rawSock.responseEndPoint = (IPEndPoint)rawSock.castResponseEndPoint;
+				//Socket.BeginReceiveFrom( rawSock.receiveBuffer, 0, rawSock.receiveBuffer.Length, SocketFlags.None, ref rawSock.castResponseEndPoint, rawSock.receiveCallback, rawSock );
+
 
 				// Here we unwrap the data received back into the respective protocol headers such
 				//    that we can find the ICMP ID in the ICMP or ICMPv6 packet to verify that
@@ -382,7 +396,7 @@ namespace ConsoleApplication5
 						elapsedString = "<1";
 					else
 						elapsedString = "=" + elapsedTime.Milliseconds.ToString();
-
+					SendPing(null, new SendPingEventArgs(rawSock.responseEndPoint.Address) );
 					Console.WriteLine( "Reply from {0}: byte={1} time{2}ms TTL={3} ", rawSock.responseEndPoint.Address.ToString(), bytesReceived, elapsedString, rawSock.pingTtl );
 				}
 
@@ -423,14 +437,14 @@ namespace ConsoleApplication5
 		public void DoPing()
 		{
 			// If the packet hasn't already been built, then build it.
-			Console.WriteLine( "In DoPing() method, do the pinging..." );
-			Console.WriteLine();
+			//Console.WriteLine( "In DoPing() method, do the pinging..." );
+			//Console.WriteLine();
 			if( protocolHeaderList.Count == 0 )
 			{
 				BuildPingPacket();
 			}
 
-			Console.WriteLine( "Pinging {0} with {1} bytes of data ", destEndPoint.Address.ToString(), pingPayloadLength );
+			//Console.WriteLine( "Pinging {0} with {1} bytes of data ", destEndPoint.Address.ToString(), pingPayloadLength );
 
 			try
 			{
@@ -473,16 +487,16 @@ namespace ConsoleApplication5
 					pingSocket.SendTo( pingPacket, destEndPoint );
 
 					// Wait for the async handler to indicate a response was received
-					if( pingReceiveEvent.WaitOne( pingReceiveTimeout, false ) == false )
-					{
-						// timeout occurred
-						Console.WriteLine( "Request timed out." );
-					}
-					else
-					{
-						// Reset the event
-						pingReceiveEvent.Reset();
-					}
+					//if( pingReceiveEvent.WaitOne( pingReceiveTimeout, false ) == false )
+					//{
+					//    // timeout occurred
+					//    Console.WriteLine( "Request timed out." );
+					//}
+					//else
+					//{
+					//    // Reset the event
+					//    pingReceiveEvent.Reset();
+					//}
 
 					// Sleep for a short time before sending the next request
 					//Thread.Sleep( 100 );
@@ -492,6 +506,75 @@ namespace ConsoleApplication5
 			{
 				Console.WriteLine( "Socket error occurred: {0}", err.Message );
 				throw;
+			}
+		}
+
+		public static void SendPingStatic(IPAddress ipAddress)
+		{
+			try
+			{
+				int dataSize = 100, ttlValue = 128, sendCount = 1;
+				System.Diagnostics.Process proc = System.Diagnostics.Process.GetCurrentProcess();
+
+				RawSocketPing RawPingSocket = new RawSocketPing( AddressFamily.InterNetwork, ttlValue, dataSize, sendCount, (ushort)proc.Id );
+				RawPingSocket.PingAddress = ipAddress;
+
+				//Socket pingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.Icmp );
+				//IPEndPoint localEndPoint = new IPEndPoint( IPAddress.Any, 0 );
+				//pingSocket.Bind( localEndPoint );
+				//pingSocket.SetSocketOption( SocketOptionLevel.IP, SocketOptionName.IpTimeToLive, 64 );
+
+				RawPingSocket.InitializeSocket();
+				RawPingSocket.BuildPingPacket();
+
+				RawPingSocket.pingPacket = RawPingSocket.icmpHeader.BuildPacket( RawPingSocket.protocolHeaderList, RawPingSocket.pingPayload );
+				//byte[] pingPacket = { 8, 0, 16, 209, 25, 96, 0, 1 };
+				EndPoint castResponseEndPoint = new IPEndPoint( ipAddress, 0 );
+
+				RawPingSocket.pingSocket.BeginReceiveFrom( RawPingSocket.receiveBuffer, 0, RawPingSocket.receiveBuffer.Length, SocketFlags.None, ref RawPingSocket.castResponseEndPoint, rveCallback, RawPingSocket );
+				RawPingSocket.pingSocket.SendTo( RawPingSocket.pingPacket, castResponseEndPoint );
+			}
+			catch( Exception e )
+			{
+				Console.WriteLine( e.Message );
+			}
+			
+		}
+
+		public static void rveCallback( IAsyncResult ar )
+		{
+			try
+			{
+				RawSocketPing rawSock = (RawSocketPing)ar.AsyncState;
+
+				int bytesReceived = rawSock.pingSocket.EndReceiveFrom( ar, ref rawSock.castResponseEndPoint );
+
+				Ipv4Header v4Header;
+				IcmpHeader icmpv4Header;
+				byte[] pktIcmp;
+				int offset = 0;
+
+				// Remember, raw IPv4 sockets will return the IPv4 header along with all
+				//    subsequent protocol headers
+				//v4Header = Ipv4Header.Create( rawSock.receiveBuffer, ref offset );
+				//pktIcmp = new byte[200 - offset];
+				//Array.Copy( rawSock.receiveBuffer, offset, pktIcmp, 0, pktIcmp.Length );
+				//icmpv4Header = IcmpHeader.Create( pktIcmp, ref offset );
+
+				/*Console.WriteLine("Icmp.Id = {0}; Icmp.Sequence = {1}",
+					icmpv4Header.Id,
+					icmpv4Header.Sequence
+					);*/
+
+				//ushort receivedId = icmpv4Header.Id;
+				//if( receivedId == rawSock.pingId )
+				//{
+				SendPing( null, new SendPingEventArgs( ((IPEndPoint)rawSock.castResponseEndPoint).Address ) );
+				//}
+			}
+			catch( Exception e )
+			{
+				Console.WriteLine( e.Message );
 			}
 		}
 	}

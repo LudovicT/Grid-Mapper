@@ -53,6 +53,22 @@ namespace GridMapper.NetworkRepository
 			}
 		}
 
+		public void AddOrUpdate( IPAddress ipAddress)
+		{
+			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
+
+			if( _networkDictionaryItems.ContainsKey( ipAddress ) )
+			{
+				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
+				networkDictionaryItem.Update( new NetworkDictionaryItem( ipAddress ) );
+				_isModified = _networkDictionaryItems.TryUpdate( ipAddress, networkDictionaryItem, networkDictionaryItem );
+			}
+			else
+			{
+				_isModified = _networkDictionaryItems.TryAdd( ipAddress, new NetworkDictionaryItem( ipAddress ) );
+			}
+		}
+
 		public void AddOrUpdate( IPAddress ipAddress, PhysicalAddress macAddress )
 		{
 			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
