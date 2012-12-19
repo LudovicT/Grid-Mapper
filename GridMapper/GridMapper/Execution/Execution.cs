@@ -80,7 +80,10 @@ namespace GridMapper
 								{
 									_repository.AddOrUpdate( ip, mac );
 								}
-								TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+								if ( Option.Arp )
+								{
+									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+								}
 
 								if ( Option.Dns )
 								{
