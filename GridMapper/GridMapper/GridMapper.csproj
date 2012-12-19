@@ -191,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Logo_GridMapper.ico" />
+    <None Include="Resources\Sans titre.png" />
     <None Include="resx\Logo_GridMapper.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
