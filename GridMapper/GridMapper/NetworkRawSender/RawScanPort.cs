@@ -21,8 +21,10 @@ namespace GridMapper.NetworkRawSender
 			try
 			{
 				_portScanSocket = new Socket( AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.Tcp );
-
 				_portScanSocket.SetSocketOption( SocketOptionLevel.IP, SocketOptionName.IpTimeToLive, 16 );
+				_portScanSocket.SetSocketOption( SocketOptionLevel.IP, SocketOptionName.NoDelay, true );
+				_portScanSocket.SetSocketOption( SocketOptionLevel.IP, SocketOptionName.Linger, 10 );
+
 				//_portScanSocket.SetSocketOption( SocketOptionLevel.IP, SocketOptionName.DontRoute, true );
 
 				//_localEndPoint = new IPEndPoint( IPAddress.Parse("192.168.1.21"), 65000 );
