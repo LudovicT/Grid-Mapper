@@ -56,7 +56,7 @@ namespace GridMapper
 							{
 								pingReply = pingSender.Ping( ip );
 							}
-							if ( Option.Arp )
+							if ( Option.Arping )
 							{
 								Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew( () =>
 								arpSender.GetMac( ip ) );
@@ -142,6 +142,7 @@ namespace GridMapper
 
 		public void optionsModified(OptionUpdatedEventArgs e)
 		{
+			_option.Arping = e.Arping;
 			_option.Arp = e.Arp;
 			_option.Dns = e.Dns;
 			_option.Port = e.Port;

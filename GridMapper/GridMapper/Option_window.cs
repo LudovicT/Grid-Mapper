@@ -16,12 +16,25 @@ namespace GridMapper
 
         public Option_window(Option opt)
         {
-            InitializeComponent();
+			InitializeComponent();
+			option_ARPing.Checked = opt.Arping;
 			option_ARP.Checked = opt.Arp;
 			option_DNS.Checked = opt.Dns;
 			option_ping.Checked = opt.Ping;
+			option_port.Checked = opt.Port;
 			textBox1.Text = opt.PingTimeout.ToString();
 			textBox2.Text = opt.MaximumTasks.ToString();
+
+			string ports = string.Empty;
+			foreach ( ushort port in opt.PortToTest )
+			{
+				if ( ports != String.Empty )
+				{
+					ports += ",";
+				}
+				ports += port.ToString();
+			}
+			textBox3.Text = ports ;
 
         }
 
@@ -42,25 +55,25 @@ namespace GridMapper
 					{
 						if ( tasks >= 5 && tasks <= 2000 )
 						{
-							//if ( option_port.Checked == true )
-							//{
-							//    PortsParserResult ppr = PortsParser.MainPortsParser( textBox3.Text );
-							//    if ( ppr.Result != null )
-							//    {
-							//        OptionUpdatedEventArgs args = new OptionUpdatedEventArgs( option_ARP.Checked, option_DNS.Checked, option_port.Checked, timeout, tasks, ppr.Result );
-							//        this.Close();
-							//    }
-							//    else
-							//    {
-							//        MessageBox.Show( "Incorect input for the ports to search", "Error in port format" );
-							//    }
-							//}
-							//else
-							//{
-								OptionUpdatedEventArgs args = new OptionUpdatedEventArgs( option_ARP.Checked, option_DNS.Checked, false, timeout, tasks, null );
+							if ( option_port.Checked == true )
+							{
+							    PortsParserResult ppr = PortsParser.MainPortsParser( textBox3.Text );
+							    if ( ppr.Result != null )
+							    {
+									OptionUpdatedEventArgs args = new OptionUpdatedEventArgs( option_ARPing.Checked, option_ARP.Checked, option_DNS.Checked, option_port.Checked, timeout, tasks, ppr.Result );
+							        this.Close();
+							    }
+							    else
+							    {
+							        MessageBox.Show( "Incorect input for the ports to search", "Error in port format" );
+							    }
+							}
+							else
+							{
+								OptionUpdatedEventArgs args = new OptionUpdatedEventArgs( option_ARPing.Checked, option_ARP.Checked, option_DNS.Checked, false, timeout, tasks, null );
 								OptionUpdated( this, args );
 								this.Dispose();
-							//}
+							}
 						}
 						else
 						{
@@ -84,11 +97,20 @@ namespace GridMapper
 			}
         }
 
+		private void option_port_CheckedChanged( object sender, EventArgs e )
+		{
+			if ( option_port.Checked == false )
+				textBox3.Hide();
+			else if ( option_port.Checked == true )
+				textBox3.Show();
+		}
+
     }
 		public class OptionUpdatedEventArgs : EventArgs
 		{
-			public OptionUpdatedEventArgs( bool arp, bool dns, bool port, int timeout, int tasks, List<ushort> ports)
+			public OptionUpdatedEventArgs( bool arping, bool arp, bool dns, bool port, int timeout, int tasks, List<ushort> ports)
 			{
+				Arping = arping; ;
 				Arp = arp;
 				Dns = dns;
 				Port = port;
@@ -97,6 +119,7 @@ namespace GridMapper
 				Ports = ports;
 			}
 
+			public bool Arping { get; private set; }
 			public bool Arp { get; private set; }
 			public bool Dns { get; private set; }
 			public bool Port { get; private set; }

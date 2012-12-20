@@ -10,6 +10,7 @@ namespace GridMapper
 	public class Option
 	{
 		public readonly bool Ping = true;
+		public bool Arping = false;
 		public bool Arp = true;
 		public bool Dns = true;
 		public bool Port = true;
@@ -17,7 +18,7 @@ namespace GridMapper
 		int _maximumTasks;
 		IPParserResult _ipToTest;
 		int _pingTimeout;
-		List<ushort> _portToTest;
+		List<ushort> _portToTest = new List<ushort>();
 
 		public Option()
 		{
@@ -25,6 +26,9 @@ namespace GridMapper
 			_maximumTasks = 50;
 			_ipToTest = null;
 			_pingTimeout = 1000;
+			_portToTest.Add( 22 );
+			_portToTest.Add( 80 );
+			_portToTest.Add( 443 );
 		}
 
 		public bool CmdConsole
@@ -96,8 +100,9 @@ namespace GridMapper
             get
             {
                 int i = 0;
-                if ( Ping ) i++;
-                if ( Arp ) i++;
+				if ( Ping ) i++;
+				if ( Arping ) i++;
+				if ( Arp ) i++;
 				if ( Dns ) i++;
 				if ( Port ) i++;
                 return i;
