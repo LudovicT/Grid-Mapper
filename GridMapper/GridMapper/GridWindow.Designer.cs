@@ -28,381 +28,384 @@ namespace GridMapper
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GridWindow));
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.LoadScan = new System.Windows.Forms.ToolStripButton();
-            this.SaveScan = new System.Windows.Forms.ToolStripButton();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.FromIP = new IPAddressControlLib.IPAddressControl();
-            this.ToIP = new IPAddressControlLib.IPAddressControl();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.ProgressScan = new System.Windows.Forms.ProgressBar();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.ScanButton = new System.Windows.Forms.Button();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aRPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dNSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.portToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.advancedOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.fastScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.portScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.iPScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.typeOfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cRIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.menuStrip1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.toolStrip1.CanOverflow = false;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( GridWindow ) );
+			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.LoadScan = new System.Windows.Forms.ToolStripButton();
+			this.SaveScan = new System.Windows.Forms.ToolStripButton();
+			this.dataGridView1 = new System.Windows.Forms.DataGridView();
+			this.FromIP = new IPAddressControlLib.IPAddressControl();
+			this.ToIP = new IPAddressControlLib.IPAddressControl();
+			this.label1 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
+			this.ProgressScan = new System.Windows.Forms.ProgressBar();
+			this.timer1 = new System.Windows.Forms.Timer( this.components );
+			this.ScanButton = new System.Windows.Forms.Button();
+			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.aRPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.dNSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.portToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.advancedOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.startToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.fastScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.portScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.iPScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.typeOfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.rangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.cRIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.stringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStrip1.SuspendLayout();
+			( (System.ComponentModel.ISupportInitialize)( this.dataGridView1 ) ).BeginInit();
+			this.menuStrip1.SuspendLayout();
+			this.SuspendLayout();
+			// 
+			// toolStrip1
+			// 
+			this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.toolStrip1.CanOverflow = false;
+			this.toolStrip1.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.LoadScan,
-            this.SaveScan});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 28);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(552, 25);
-            this.toolStrip1.TabIndex = 2;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // LoadScan
-            // 
-            this.LoadScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LoadScan.Image = ((System.Drawing.Image)(resources.GetObject("LoadScan.Image")));
-            this.LoadScan.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.LoadScan.Name = "LoadScan";
-            this.LoadScan.Size = new System.Drawing.Size(23, 22);
-            this.LoadScan.Text = "LoadScan";
-            this.LoadScan.Click += new System.EventHandler(this.toolStripButton1_Click);
-            // 
-            // SaveScan
-            // 
-            this.SaveScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SaveScan.Image = ((System.Drawing.Image)(resources.GetObject("SaveScan.Image")));
-            this.SaveScan.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SaveScan.Name = "SaveScan";
-            this.SaveScan.Size = new System.Drawing.Size(23, 22);
-            this.SaveScan.Text = "SaveScan";
-            this.SaveScan.Click += new System.EventHandler(this.SaveScan_Click);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 60);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(552, 415);
-            this.dataGridView1.TabIndex = 3;
-            // 
-            // FromIP
-            // 
-            this.FromIP.AllowInternalTab = false;
-            this.FromIP.AutoHeight = true;
-            this.FromIP.BackColor = System.Drawing.SystemColors.Window;
-            this.FromIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.FromIP.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.FromIP.Location = new System.Drawing.Point(172, 25);
-            this.FromIP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.FromIP.MinimumSize = new System.Drawing.Size(114, 22);
-            this.FromIP.Name = "FromIP";
-            this.FromIP.ReadOnly = false;
-            this.FromIP.Size = new System.Drawing.Size(133, 22);
-            this.FromIP.TabIndex = 4;
-            this.FromIP.Text = "0.0.0.0";
-            this.FromIP.Click += new System.EventHandler(this.ipAddressControl1_Click);
-            // 
-            // ToIP
-            // 
-            this.ToIP.AllowInternalTab = false;
-            this.ToIP.AutoHeight = true;
-            this.ToIP.BackColor = System.Drawing.SystemColors.Window;
-            this.ToIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ToIP.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.ToIP.Location = new System.Drawing.Point(337, 25);
-            this.ToIP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ToIP.MinimumSize = new System.Drawing.Size(114, 22);
-            this.ToIP.Name = "ToIP";
-            this.ToIP.ReadOnly = false;
-            this.ToIP.Size = new System.Drawing.Size(150, 22);
-            this.ToIP.TabIndex = 5;
-            this.ToIP.Text = "0.0.0.0";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label1.Location = new System.Drawing.Point(84, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 17);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Range from";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label2.Location = new System.Drawing.Point(311, 28);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(20, 17);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "to";
-            // 
-            // ProgressScan
-            // 
-            this.ProgressScan.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ProgressScan.Location = new System.Drawing.Point(0, 472);
-            this.ProgressScan.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ProgressScan.Name = "ProgressScan";
-            this.ProgressScan.Size = new System.Drawing.Size(552, 26);
-            this.ProgressScan.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.ProgressScan.TabIndex = 8;
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // ScanButton
-            // 
-            this.ScanButton.BackgroundImage = global::GridMapper.Properties.Resources.Sans_titre;
-            this.ScanButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ScanButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ScanButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ScanButton.ForeColor = System.Drawing.SystemColors.Window;
-            this.ScanButton.Location = new System.Drawing.Point(490, 19);
-            this.ScanButton.Margin = new System.Windows.Forms.Padding(0);
-            this.ScanButton.Name = "ScanButton";
-            this.ScanButton.Size = new System.Drawing.Size(59, 34);
-            this.ScanButton.TabIndex = 9;
-            this.ScanButton.UseVisualStyleBackColor = true;
-            this.ScanButton.Click += new System.EventHandler(this.ScanButton_Click);
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SaveScan} );
+			this.toolStrip1.Location = new System.Drawing.Point( 0, 24 );
+			this.toolStrip1.Name = "toolStrip1";
+			this.toolStrip1.Size = new System.Drawing.Size( 414, 25 );
+			this.toolStrip1.TabIndex = 2;
+			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// LoadScan
+			// 
+			this.LoadScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.LoadScan.Image = ( (System.Drawing.Image)( resources.GetObject( "LoadScan.Image" ) ) );
+			this.LoadScan.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.LoadScan.Name = "LoadScan";
+			this.LoadScan.Size = new System.Drawing.Size( 23, 22 );
+			this.LoadScan.Text = "LoadScan";
+			this.LoadScan.Click += new System.EventHandler( this.toolStripButton1_Click );
+			// 
+			// SaveScan
+			// 
+			this.SaveScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.SaveScan.Image = ( (System.Drawing.Image)( resources.GetObject( "SaveScan.Image" ) ) );
+			this.SaveScan.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.SaveScan.Name = "SaveScan";
+			this.SaveScan.Size = new System.Drawing.Size( 23, 22 );
+			this.SaveScan.Text = "SaveScan";
+			this.SaveScan.Click += new System.EventHandler( this.SaveScan_Click );
+			// 
+			// dataGridView1
+			// 
+			this.dataGridView1.AllowUserToAddRows = false;
+			this.dataGridView1.AllowUserToDeleteRows = false;
+			this.dataGridView1.AllowUserToResizeRows = false;
+			this.dataGridView1.Anchor = ( (System.Windows.Forms.AnchorStyles)( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
+						| System.Windows.Forms.AnchorStyles.Left )
+						| System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+			this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
+			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
+			this.dataGridView1.Location = new System.Drawing.Point( 0, 49 );
+			this.dataGridView1.Name = "dataGridView1";
+			this.dataGridView1.ReadOnly = true;
+			this.dataGridView1.Size = new System.Drawing.Size( 414, 337 );
+			this.dataGridView1.TabIndex = 3;
+			// 
+			// FromIP
+			// 
+			this.FromIP.AllowInternalTab = false;
+			this.FromIP.AutoHeight = true;
+			this.FromIP.BackColor = System.Drawing.SystemColors.Window;
+			this.FromIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.FromIP.Cursor = System.Windows.Forms.Cursors.IBeam;
+			this.FromIP.Location = new System.Drawing.Point( 129, 20 );
+			this.FromIP.Margin = new System.Windows.Forms.Padding( 2 );
+			this.FromIP.MinimumSize = new System.Drawing.Size( 87, 20 );
+			this.FromIP.Name = "FromIP";
+			this.FromIP.ReadOnly = false;
+			this.FromIP.Size = new System.Drawing.Size( 100, 20 );
+			this.FromIP.TabIndex = 4;
+			this.FromIP.Text = "0.0.0.0";
+			this.FromIP.Click += new System.EventHandler( this.ipAddressControl1_Click );
+			// 
+			// ToIP
+			// 
+			this.ToIP.AllowInternalTab = false;
+			this.ToIP.AutoHeight = true;
+			this.ToIP.BackColor = System.Drawing.SystemColors.Window;
+			this.ToIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.ToIP.Cursor = System.Windows.Forms.Cursors.IBeam;
+			this.ToIP.Location = new System.Drawing.Point( 253, 20 );
+			this.ToIP.Margin = new System.Windows.Forms.Padding( 2 );
+			this.ToIP.MinimumSize = new System.Drawing.Size( 87, 20 );
+			this.ToIP.Name = "ToIP";
+			this.ToIP.ReadOnly = false;
+			this.ToIP.Size = new System.Drawing.Size( 112, 20 );
+			this.ToIP.TabIndex = 5;
+			this.ToIP.Text = "0.0.0.0";
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.label1.Location = new System.Drawing.Point( 63, 23 );
+			this.label1.Margin = new System.Windows.Forms.Padding( 2, 0, 2, 0 );
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size( 62, 13 );
+			this.label1.TabIndex = 6;
+			this.label1.Text = "Range from";
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.label2.Location = new System.Drawing.Point( 233, 23 );
+			this.label2.Margin = new System.Windows.Forms.Padding( 2, 0, 2, 0 );
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size( 16, 13 );
+			this.label2.TabIndex = 7;
+			this.label2.Text = "to";
+			// 
+			// ProgressScan
+			// 
+			this.ProgressScan.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.ProgressScan.Location = new System.Drawing.Point( 0, 384 );
+			this.ProgressScan.Margin = new System.Windows.Forms.Padding( 2 );
+			this.ProgressScan.Name = "ProgressScan";
+			this.ProgressScan.Size = new System.Drawing.Size( 414, 21 );
+			this.ProgressScan.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+			this.ProgressScan.TabIndex = 8;
+			// 
+			// timer1
+			// 
+			this.timer1.Tick += new System.EventHandler( this.timer1_Tick );
+			// 
+			// ScanButton
+			// 
+			this.ScanButton.BackgroundImage = global::GridMapper.Properties.Resources.Sans_titre;
+			this.ScanButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+			this.ScanButton.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.ScanButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.ScanButton.ForeColor = System.Drawing.SystemColors.Window;
+			this.ScanButton.Location = new System.Drawing.Point( 368, 15 );
+			this.ScanButton.Margin = new System.Windows.Forms.Padding( 0 );
+			this.ScanButton.Name = "ScanButton";
+			this.ScanButton.Size = new System.Drawing.Size( 44, 28 );
+			this.ScanButton.TabIndex = 9;
+			this.ScanButton.UseVisualStyleBackColor = true;
+			this.ScanButton.Click += new System.EventHandler( this.ScanButton_Click );
+			// 
+			// fileToolStripMenuItem
+			// 
+			this.fileToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.startToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.loadToolStripMenuItem,
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // startToolStripMenuItem
-            // 
-            this.startToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
-            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
-            this.startToolStripMenuItem.Text = "Start";
-            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
-            // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
-            this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
-            // loadToolStripMenuItem
-            // 
-            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
-            this.loadToolStripMenuItem.Text = "Load";
-            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // optionToolStripMenuItem
-            // 
-            this.optionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItem} );
+			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size( 37, 20 );
+			this.fileToolStripMenuItem.Text = "File";
+			// 
+			// startToolStripMenuItem
+			// 
+			this.startToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
+			this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+			this.startToolStripMenuItem.Size = new System.Drawing.Size( 100, 22 );
+			this.startToolStripMenuItem.Text = "Start";
+			this.startToolStripMenuItem.Click += new System.EventHandler( this.startToolStripMenuItem_Click );
+			// 
+			// saveToolStripMenuItem
+			// 
+			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size( 100, 22 );
+			this.saveToolStripMenuItem.Text = "Save";
+			this.saveToolStripMenuItem.Click += new System.EventHandler( this.saveToolStripMenuItem_Click );
+			// 
+			// loadToolStripMenuItem
+			// 
+			this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+			this.loadToolStripMenuItem.Size = new System.Drawing.Size( 100, 22 );
+			this.loadToolStripMenuItem.Text = "Load";
+			this.loadToolStripMenuItem.Click += new System.EventHandler( this.loadToolStripMenuItem_Click );
+			// 
+			// exitToolStripMenuItem
+			// 
+			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size( 100, 22 );
+			this.exitToolStripMenuItem.Text = "Exit";
+			this.exitToolStripMenuItem.Click += new System.EventHandler( this.exitToolStripMenuItem_Click );
+			// 
+			// optionToolStripMenuItem
+			// 
+			this.optionToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.pingToolStripMenuItem,
             this.aRPToolStripMenuItem,
             this.dNSToolStripMenuItem,
             this.portToolStripMenuItem,
             this.toolStripSeparator1,
-            this.advancedOptionToolStripMenuItem});
-            this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
-            this.optionToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
-            this.optionToolStripMenuItem.Text = "Option";
-            // 
-            // pingToolStripMenuItem
-            // 
-            this.pingToolStripMenuItem.Checked = true;
-            this.pingToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.pingToolStripMenuItem.Name = "pingToolStripMenuItem";
-            this.pingToolStripMenuItem.Size = new System.Drawing.Size(248, 24);
-            this.pingToolStripMenuItem.Text = "Ping (cannot be changed)";
-            // 
-            // aRPToolStripMenuItem
-            // 
-            this.aRPToolStripMenuItem.Checked = true;
-            this.aRPToolStripMenuItem.CheckOnClick = true;
-            this.aRPToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.aRPToolStripMenuItem.Name = "aRPToolStripMenuItem";
-            this.aRPToolStripMenuItem.Size = new System.Drawing.Size(248, 24);
-            this.aRPToolStripMenuItem.Text = "ARP";
-            // 
-            // dNSToolStripMenuItem
-            // 
-            this.dNSToolStripMenuItem.Checked = true;
-            this.dNSToolStripMenuItem.CheckOnClick = true;
-            this.dNSToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.dNSToolStripMenuItem.Name = "dNSToolStripMenuItem";
-            this.dNSToolStripMenuItem.Size = new System.Drawing.Size(248, 24);
-            this.dNSToolStripMenuItem.Text = "DNS";
-            // 
-            // portToolStripMenuItem
-            // 
-            this.portToolStripMenuItem.Checked = true;
-            this.portToolStripMenuItem.CheckOnClick = true;
-            this.portToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.portToolStripMenuItem.Name = "portToolStripMenuItem";
-            this.portToolStripMenuItem.Size = new System.Drawing.Size(248, 24);
-            this.portToolStripMenuItem.Text = "Port";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(245, 6);
-            // 
-            // advancedOptionToolStripMenuItem
-            // 
-            this.advancedOptionToolStripMenuItem.Name = "advancedOptionToolStripMenuItem";
-            this.advancedOptionToolStripMenuItem.Size = new System.Drawing.Size(248, 24);
-            this.advancedOptionToolStripMenuItem.Text = "Advanced options";
-            this.advancedOptionToolStripMenuItem.Click += new System.EventHandler(this.advancedOptionToolStripMenuItem_Click);
-            // 
-            // startToolStripMenuItem1
-            // 
-            this.startToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.advancedOptionToolStripMenuItem} );
+			this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
+			this.optionToolStripMenuItem.Size = new System.Drawing.Size( 56, 20 );
+			this.optionToolStripMenuItem.Text = "Option";
+			// 
+			// pingToolStripMenuItem
+			// 
+			this.pingToolStripMenuItem.Checked = true;
+			this.pingToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.pingToolStripMenuItem.Name = "pingToolStripMenuItem";
+			this.pingToolStripMenuItem.Size = new System.Drawing.Size( 211, 22 );
+			this.pingToolStripMenuItem.Text = "Ping (cannot be changed)";
+			this.pingToolStripMenuItem.Visible = false;
+			// 
+			// aRPToolStripMenuItem
+			// 
+			this.aRPToolStripMenuItem.Checked = true;
+			this.aRPToolStripMenuItem.CheckOnClick = true;
+			this.aRPToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.aRPToolStripMenuItem.Name = "aRPToolStripMenuItem";
+			this.aRPToolStripMenuItem.Size = new System.Drawing.Size( 211, 22 );
+			this.aRPToolStripMenuItem.Text = "ARP";
+			this.aRPToolStripMenuItem.Visible = false;
+			// 
+			// dNSToolStripMenuItem
+			// 
+			this.dNSToolStripMenuItem.Checked = true;
+			this.dNSToolStripMenuItem.CheckOnClick = true;
+			this.dNSToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.dNSToolStripMenuItem.Name = "dNSToolStripMenuItem";
+			this.dNSToolStripMenuItem.Size = new System.Drawing.Size( 211, 22 );
+			this.dNSToolStripMenuItem.Text = "DNS";
+			this.dNSToolStripMenuItem.Visible = false;
+			// 
+			// portToolStripMenuItem
+			// 
+			this.portToolStripMenuItem.Checked = true;
+			this.portToolStripMenuItem.CheckOnClick = true;
+			this.portToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.portToolStripMenuItem.Name = "portToolStripMenuItem";
+			this.portToolStripMenuItem.Size = new System.Drawing.Size( 211, 22 );
+			this.portToolStripMenuItem.Text = "Port";
+			this.portToolStripMenuItem.Visible = false;
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size( 208, 6 );
+			// 
+			// advancedOptionToolStripMenuItem
+			// 
+			this.advancedOptionToolStripMenuItem.Name = "advancedOptionToolStripMenuItem";
+			this.advancedOptionToolStripMenuItem.Size = new System.Drawing.Size( 211, 22 );
+			this.advancedOptionToolStripMenuItem.Text = "Advanced options";
+			this.advancedOptionToolStripMenuItem.Click += new System.EventHandler( this.advancedOptionToolStripMenuItem_Click );
+			// 
+			// startToolStripMenuItem1
+			// 
+			this.startToolStripMenuItem1.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.fastScanToolStripMenuItem,
             this.portScanToolStripMenuItem,
-            this.iPScanToolStripMenuItem});
-            this.startToolStripMenuItem1.Name = "startToolStripMenuItem1";
-            this.startToolStripMenuItem1.Size = new System.Drawing.Size(52, 24);
-            this.startToolStripMenuItem1.Text = "Start";
-            // 
-            // fastScanToolStripMenuItem
-            // 
-            this.fastScanToolStripMenuItem.Name = "fastScanToolStripMenuItem";
-            this.fastScanToolStripMenuItem.Size = new System.Drawing.Size(138, 24);
-            this.fastScanToolStripMenuItem.Text = "Fast scan";
-            this.fastScanToolStripMenuItem.Click += new System.EventHandler(this.fastScanToolStripMenuItem_Click_1);
-            // 
-            // portScanToolStripMenuItem
-            // 
-            this.portScanToolStripMenuItem.Name = "portScanToolStripMenuItem";
-            this.portScanToolStripMenuItem.Size = new System.Drawing.Size(138, 24);
-            this.portScanToolStripMenuItem.Text = "Port scan";
-            // 
-            // iPScanToolStripMenuItem
-            // 
-            this.iPScanToolStripMenuItem.Name = "iPScanToolStripMenuItem";
-            this.iPScanToolStripMenuItem.Size = new System.Drawing.Size(138, 24);
-            this.iPScanToolStripMenuItem.Text = "IP scan";
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.iPScanToolStripMenuItem} );
+			this.startToolStripMenuItem1.Name = "startToolStripMenuItem1";
+			this.startToolStripMenuItem1.Size = new System.Drawing.Size( 43, 20 );
+			this.startToolStripMenuItem1.Text = "Start";
+			// 
+			// fastScanToolStripMenuItem
+			// 
+			this.fastScanToolStripMenuItem.Name = "fastScanToolStripMenuItem";
+			this.fastScanToolStripMenuItem.Size = new System.Drawing.Size( 123, 22 );
+			this.fastScanToolStripMenuItem.Text = "Fast scan";
+			this.fastScanToolStripMenuItem.Click += new System.EventHandler( this.fastScanToolStripMenuItem_Click_1 );
+			// 
+			// portScanToolStripMenuItem
+			// 
+			this.portScanToolStripMenuItem.Name = "portScanToolStripMenuItem";
+			this.portScanToolStripMenuItem.Size = new System.Drawing.Size( 123, 22 );
+			this.portScanToolStripMenuItem.Text = "Port scan";
+			// 
+			// iPScanToolStripMenuItem
+			// 
+			this.iPScanToolStripMenuItem.Name = "iPScanToolStripMenuItem";
+			this.iPScanToolStripMenuItem.Size = new System.Drawing.Size( 123, 22 );
+			this.iPScanToolStripMenuItem.Text = "IP scan";
+			// 
+			// menuStrip1
+			// 
+			this.menuStrip1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.menuStrip1.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.optionToolStripMenuItem,
             this.startToolStripMenuItem1,
-            this.typeOfToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(552, 28);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // typeOfToolStripMenuItem
-            // 
-            this.typeOfToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.typeOfToolStripMenuItem} );
+			this.menuStrip1.Location = new System.Drawing.Point( 0, 0 );
+			this.menuStrip1.Name = "menuStrip1";
+			this.menuStrip1.Size = new System.Drawing.Size( 414, 24 );
+			this.menuStrip1.TabIndex = 1;
+			this.menuStrip1.Text = "menuStrip1";
+			// 
+			// typeOfToolStripMenuItem
+			// 
+			this.typeOfToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.rangeToolStripMenuItem,
             this.cRIDToolStripMenuItem,
-            this.stringToolStripMenuItem});
-            this.typeOfToolStripMenuItem.Name = "typeOfToolStripMenuItem";
-            this.typeOfToolStripMenuItem.Size = new System.Drawing.Size(71, 24);
-            this.typeOfToolStripMenuItem.Text = "Type of";
-            // 
-            // rangeToolStripMenuItem
-            // 
-            this.rangeToolStripMenuItem.Name = "rangeToolStripMenuItem";
-            this.rangeToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
-            this.rangeToolStripMenuItem.Text = "Range";
-            // 
-            // cRIDToolStripMenuItem
-            // 
-            this.cRIDToolStripMenuItem.Name = "cRIDToolStripMenuItem";
-            this.cRIDToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
-            this.cRIDToolStripMenuItem.Text = "CRID";
-            // 
-            // stringToolStripMenuItem
-            // 
-            this.stringToolStripMenuItem.Name = "stringToolStripMenuItem";
-            this.stringToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
-            this.stringToolStripMenuItem.Text = "String";
-            // 
-            // GridWindow
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(552, 498);
-            this.Controls.Add(this.ScanButton);
-            this.Controls.Add(this.ProgressScan);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.ToIP);
-            this.Controls.Add(this.FromIP);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.menuStrip1);
-            this.DoubleBuffered = true;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "GridWindow";
-            this.Text = "Grid Mapper";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            this.stringToolStripMenuItem} );
+			this.typeOfToolStripMenuItem.Name = "typeOfToolStripMenuItem";
+			this.typeOfToolStripMenuItem.Size = new System.Drawing.Size( 59, 20 );
+			this.typeOfToolStripMenuItem.Text = "Type of";
+			// 
+			// rangeToolStripMenuItem
+			// 
+			this.rangeToolStripMenuItem.Name = "rangeToolStripMenuItem";
+			this.rangeToolStripMenuItem.Size = new System.Drawing.Size( 107, 22 );
+			this.rangeToolStripMenuItem.Text = "Range";
+			// 
+			// cRIDToolStripMenuItem
+			// 
+			this.cRIDToolStripMenuItem.Name = "cRIDToolStripMenuItem";
+			this.cRIDToolStripMenuItem.Size = new System.Drawing.Size( 107, 22 );
+			this.cRIDToolStripMenuItem.Text = "CRID";
+			// 
+			// stringToolStripMenuItem
+			// 
+			this.stringToolStripMenuItem.Name = "stringToolStripMenuItem";
+			this.stringToolStripMenuItem.Size = new System.Drawing.Size( 107, 22 );
+			this.stringToolStripMenuItem.Text = "String";
+			// 
+			// GridWindow
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.SystemColors.Window;
+			this.ClientSize = new System.Drawing.Size( 414, 405 );
+			this.Controls.Add( this.ScanButton );
+			this.Controls.Add( this.ProgressScan );
+			this.Controls.Add( this.label2 );
+			this.Controls.Add( this.label1 );
+			this.Controls.Add( this.ToIP );
+			this.Controls.Add( this.FromIP );
+			this.Controls.Add( this.dataGridView1 );
+			this.Controls.Add( this.toolStrip1 );
+			this.Controls.Add( this.menuStrip1 );
+			this.DoubleBuffered = true;
+			this.Icon = ( (System.Drawing.Icon)( resources.GetObject( "$this.Icon" ) ) );
+			this.MainMenuStrip = this.menuStrip1;
+			this.Name = "GridWindow";
+			this.Text = "Grid Mapper";
+			this.Load += new System.EventHandler( this.Form1_Load );
+			this.toolStrip1.ResumeLayout( false );
+			this.toolStrip1.PerformLayout();
+			( (System.ComponentModel.ISupportInitialize)( this.dataGridView1 ) ).EndInit();
+			this.menuStrip1.ResumeLayout( false );
+			this.menuStrip1.PerformLayout();
+			this.ResumeLayout( false );
+			this.PerformLayout();
 
 		}
 
@@ -439,7 +442,7 @@ namespace GridMapper
         private System.Windows.Forms.ToolStripMenuItem typeOfToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rangeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cRIDToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stringToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem stringToolStripMenuItem;
 	}
 }
 
