@@ -142,6 +142,7 @@
     <Compile Include="NetworkRawSender\Ipv6Header.cs" />
     <Compile Include="NetworkRawSender\MulticastEndpoint.cs" />
     <Compile Include="NetworkRawSender\ProtocolHeader.cs" />
+    <Compile Include="NetworkRawSender\RawScanPort.cs" />
     <Compile Include="NetworkRawSender\RawSocketPing.cs" />
     <Compile Include="NetworkRawSender\SendRawPing.cs" />
     <Compile Include="NetworkRawSender\SockaddrConvert.cs" />

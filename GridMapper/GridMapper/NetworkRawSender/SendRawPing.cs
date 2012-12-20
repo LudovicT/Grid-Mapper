@@ -29,7 +29,7 @@ namespace GridMapper.NetworkRawSender
 		{
 
 			dataSize = 256;
-			ttlValue = 64;
+			ttlValue = 12;
 			protocolHeaderList = new ArrayList();
 
 			pingSocket = new Socket( AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.Icmp );
@@ -39,7 +39,7 @@ namespace GridMapper.NetworkRawSender
 			IPEndPoint localEndPoint = new IPEndPoint( IPAddress.Any, 0 );
 			pingSocket.Bind( localEndPoint );
 
-			receiveBuffer = new byte[200 + 28 + 8 + dataSize];
+			receiveBuffer = new byte[10 + 28 + 8 + dataSize];
 			pingPayload = new byte[dataSize];
 			for( int i = 0 ; i < pingPayload.Length ; i++ )
 			{
@@ -86,32 +86,19 @@ namespace GridMapper.NetworkRawSender
 
 				int bytesReceived = rawSock.pingSocket.EndReceiveFrom( ar, ref rawSock.castResponseEndPoint );
 
-				//Ipv4Header v4Header;
-				//IcmpHeader icmpv4Header;
-				//byte[] pktIcmp;
-				//int offset = 0;
-
-				//// Remember, raw IPv4 sockets will return the IPv4 header along with all
-				////    subsequent protocol headers
-				//v4Header = Ipv4Header.Create( rawSock.receiveBuffer, ref offset );
-				//pktIcmp = new byte[200 - offset];
-				//Array.Copy( rawSock.receiveBuffer, offset, pktIcmp, 0, pktIcmp.Length );
-				//icmpv4Header = IcmpHeader.Create( pktIcmp, ref offset );
-
-				if (i == 0 && ownIP == ( (IPEndPoint)rawSock.castResponseEndPoint ).Address )
-				{
-					i++;
+				//if (i == 0 && ownIP == ( (IPEndPoint)rawSock.castResponseEndPoint ).Address )
+				//{
+				//    i++;
+				//    SendPing( null, new SendPingEventArgs( ( (IPEndPoint)rawSock.castResponseEndPoint ).Address ) );
+				//    return;
+				//}
+				//if ( ownIP != ( (IPEndPoint)rawSock.castResponseEndPoint ).Address )
+				//{
 					SendPing( null, new SendPingEventArgs( ( (IPEndPoint)rawSock.castResponseEndPoint ).Address ) );
-					return;
-				}
-				if ( ownIP != ( (IPEndPoint)rawSock.castResponseEndPoint ).Address )
-				{
-					SendPing( null, new SendPingEventArgs( ( (IPEndPoint)rawSock.castResponseEndPoint ).Address ) );
-				}
+				//}
 			}
 			catch( Exception e )
 			{
-				//Console.WriteLine( e.Message );
 				return;
 			}
 		}

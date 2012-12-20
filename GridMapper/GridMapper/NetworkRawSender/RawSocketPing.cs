@@ -9,10 +9,8 @@ using System.Threading;
 
 namespace ConsoleApplication5
 {
-
 	class RawSocketPing
 	{
-
 		public Socket pingSocket;                    // Raw socket handle
 		public AddressFamily pingFamily;             // Indicates IPv4 or IPv6 ping
 		public int pingTtl;                                 // Time-to-live value to set on ping
@@ -144,19 +142,19 @@ namespace ConsoleApplication5
 			if( destEndPoint.AddressFamily == AddressFamily.InterNetwork )
 			{
 				// Create the raw socket
-				Console.WriteLine( "Creating raw socket using Socket()..." );
+				//Console.WriteLine( "Creating raw socket using Socket()..." );
 				pingSocket = new Socket( destEndPoint.AddressFamily, SocketType.Raw, ProtocolType.Icmp );
 				localEndPoint = new IPEndPoint( IPAddress.Any, 0 );
 
 				// Socket must be bound locally before socket options can be applied
-				Console.WriteLine( "Binding the socket using Bind()..." );
+				//Console.WriteLine( "Binding the socket using Bind()..." );
 				pingSocket.Bind( localEndPoint );
 
-				Console.WriteLine( "Using SetSocketOption()..." );
+				//Console.WriteLine( "Using SetSocketOption()..." );
 				pingSocket.SetSocketOption( SocketOptionLevel.IP, SocketOptionName.IpTimeToLive, pingTtl );
 
 				// Allocate the buffer used to receive the response
-				Console.WriteLine( "Allocating buffer for received response..." );
+				//Console.WriteLine( "Allocating buffer for received response..." );
 				receiveBuffer = new byte[Ipv4Header.Ipv4HeaderLength + IcmpHeader.IcmpHeaderLength + pingPayloadLength];
 				responseEndPoint = new IPEndPoint( IPAddress.Any, 0 );
 				castResponseEndPoint = (EndPoint)responseEndPoint;
@@ -196,8 +194,8 @@ namespace ConsoleApplication5
 		public void BuildPingPacket()
 		{
 			// Initialize the socket if it hasn't already been done
-			Console.WriteLine( "Building the ping packet..." );
-			Console.WriteLine( "Initializing the socket if not done yet..." );
+			//Console.WriteLine( "Building the ping packet..." );
+			//Console.WriteLine( "Initializing the socket if not done yet..." );
 
 			if( pingSocket == null )
 			{
@@ -205,13 +203,13 @@ namespace ConsoleApplication5
 			}
 
 			// Clear any existing headers in the list
-			Console.WriteLine( "Clearing any existing headers in the list using Clear()..." );
+			//Console.WriteLine( "Clearing any existing headers in the list using Clear()..." );
 			protocolHeaderList.Clear();
 
 			if( destEndPoint.AddressFamily == AddressFamily.InterNetwork )
 			{
 				// Create the ICMP header and initialize the members
-				Console.WriteLine( "Creating the ICMP header and initialize the members..." );
+				//Console.WriteLine( "Creating the ICMP header and initialize the members..." );
 				icmpHeader = new IcmpHeader();
 
 				icmpHeader.Id = pingId;
@@ -220,7 +218,7 @@ namespace ConsoleApplication5
 				icmpHeader.Code = IcmpHeader.EchoRequestCode;
 
 				// Build the data payload of the ICMP echo request
-				Console.WriteLine( "Building the data payload of the ICMP echo request..." );
+				//Console.WriteLine( "Building the data payload of the ICMP echo request..." );
 				pingPayload = new byte[pingPayloadLength];
 
 				for( int i = 0 ; i < pingPayload.Length ; i++ )
@@ -229,7 +227,7 @@ namespace ConsoleApplication5
 				}
 
 				// Add ICMP header to the list of headers
-				Console.WriteLine( "Adding ICMP header to the list of headers using Add()..." );
+				//Console.WriteLine( "Adding ICMP header to the list of headers using Add()..." );
 				protocolHeaderList.Add( icmpHeader );
 			}
 			else if( destEndPoint.AddressFamily == AddressFamily.InterNetworkV6 )
@@ -313,9 +311,9 @@ namespace ConsoleApplication5
 				//    set the done event
 				if( rawSock.pingSocket == null )
 				{
-					if( rawSock.pingOutstandingReceives == 0 )
-						rawSock.pingDoneEvent.Set();
-					return;
+				    if( rawSock.pingOutstandingReceives == 0 )
+				        rawSock.pingDoneEvent.Set();
+				    return;
 				}
 
 				// Complete the receive op by calling EndReceiveFrom. This will return the number
@@ -327,89 +325,87 @@ namespace ConsoleApplication5
 				elapsedTime = DateTime.Now - rawSock.pingSentTime;
 
 				rawSock.responseEndPoint = (IPEndPoint)rawSock.castResponseEndPoint;
-				//Socket.BeginReceiveFrom( rawSock.receiveBuffer, 0, rawSock.receiveBuffer.Length, SocketFlags.None, ref rawSock.castResponseEndPoint, rawSock.receiveCallback, rawSock );
-
 
 				// Here we unwrap the data received back into the respective protocol headers such
 				//    that we can find the ICMP ID in the ICMP or ICMPv6 packet to verify that
 				//    the echo response we received was really a response to our request.
 				if( rawSock.pingSocket.AddressFamily == AddressFamily.InterNetwork )
 				{
-					Ipv4Header v4Header;
-					IcmpHeader icmpv4Header;
-					byte[] pktIcmp;
-					int offset = 0;
+				    Ipv4Header v4Header;
+				    IcmpHeader icmpv4Header;
+				    byte[] pktIcmp;
+				    int offset = 0;
 
-					// Remember, raw IPv4 sockets will return the IPv4 header along with all
-					//    subsequent protocol headers
-					v4Header = Ipv4Header.Create( rawSock.receiveBuffer, ref offset );
-					pktIcmp = new byte[bytesReceived - offset];
-					Array.Copy( rawSock.receiveBuffer, offset, pktIcmp, 0, pktIcmp.Length );
-					icmpv4Header = IcmpHeader.Create( pktIcmp, ref offset );
+				    // Remember, raw IPv4 sockets will return the IPv4 header along with all
+				    //    subsequent protocol headers
+				    v4Header = Ipv4Header.Create( rawSock.receiveBuffer, ref offset );
+				    pktIcmp = new byte[bytesReceived - offset];
+				    Array.Copy( rawSock.receiveBuffer, offset, pktIcmp, 0, pktIcmp.Length );
+				    icmpv4Header = IcmpHeader.Create( pktIcmp, ref offset );
 
-					/*Console.WriteLine("Icmp.Id = {0}; Icmp.Sequence = {1}",
-						icmpv4Header.Id,
-						icmpv4Header.Sequence
-						);*/
+				    /*Console.WriteLine("Icmp.Id = {0}; Icmp.Sequence = {1}",
+				        icmpv4Header.Id,
+				        icmpv4Header.Sequence
+				        );*/
 
-					receivedId = icmpv4Header.Id;
+				    receivedId = icmpv4Header.Id;
 				}
 				else if( rawSock.pingSocket.AddressFamily == AddressFamily.InterNetworkV6 )
 				{
-					Icmpv6Header icmp6Header;
-					Icmpv6EchoRequest echoHeader;
-					byte[] pktEchoRequest;
-					int offset = 0;
+				    Icmpv6Header icmp6Header;
+				    Icmpv6EchoRequest echoHeader;
+				    byte[] pktEchoRequest;
+				    int offset = 0;
 
-					// For IPv6 raw sockets, the IPv6 header is never returned along with the
-					//    data received -- the received data always starts with the header
-					//    following the IPv6 header.
-					icmp6Header = Icmpv6Header.Create( rawSock.receiveBuffer, ref offset );
-					pktEchoRequest = new byte[bytesReceived - offset];
-					Array.Copy( rawSock.receiveBuffer, offset, pktEchoRequest, 0, pktEchoRequest.Length );
-					echoHeader = Icmpv6EchoRequest.Create( pktEchoRequest, ref offset );
+				    // For IPv6 raw sockets, the IPv6 header is never returned along with the
+				    //    data received -- the received data always starts with the header
+				    //    following the IPv6 header.
+				    icmp6Header = Icmpv6Header.Create( rawSock.receiveBuffer, ref offset );
+				    pktEchoRequest = new byte[bytesReceived - offset];
+				    Array.Copy( rawSock.receiveBuffer, offset, pktEchoRequest, 0, pktEchoRequest.Length );
+				    echoHeader = Icmpv6EchoRequest.Create( pktEchoRequest, ref offset );
 
-					/*Console.WriteLine("Icmpv6.Id = {0}; Icmp.Sequence = {1}",
-						echoHeader.Id,
-						echoHeader.Sequence
-						);*/
+				    /*Console.WriteLine("Icmpv6.Id = {0}; Icmp.Sequence = {1}",
+				        echoHeader.Id,
+				        echoHeader.Sequence
+				        );*/
 
-					receivedId = echoHeader.Id;
+				    receivedId = echoHeader.Id;
 				}
 
 				if( receivedId == rawSock.pingId )
 				{
-					string elapsedString;
+				    string elapsedString;
 
-					// Print out the usual statistics for ping
-					if( elapsedTime.Milliseconds < 1 )
-						elapsedString = "<1";
-					else
-						elapsedString = "=" + elapsedTime.Milliseconds.ToString();
-					//SendPing(null, new SendPingEventArgs(rawSock.responseEndPoint.Address) );
+				    // Print out the usual statistics for ping
+				    if( elapsedTime.Milliseconds < 1 )
+				        elapsedString = "<1";
+				    else
+				        elapsedString = "=" + elapsedTime.Milliseconds.ToString();
+
 					Console.WriteLine( "Reply from {0}: byte={1} time{2}ms TTL={3} ", rawSock.responseEndPoint.Address.ToString(), bytesReceived, elapsedString, rawSock.pingTtl );
 				}
 
 				// Post another async receive if the count indicates for us to do so.
 				if( rawSock.pingCount > 0 )
 				{
-					rawSock.pingSocket.BeginReceiveFrom( rawSock.receiveBuffer, 0, rawSock.receiveBuffer.Length, SocketFlags.None, ref rawSock.castResponseEndPoint, rawSock.receiveCallback, rawSock );
+				    rawSock.pingSocket.BeginReceiveFrom( rawSock.receiveBuffer, 0, rawSock.receiveBuffer.Length, SocketFlags.None, ref rawSock.castResponseEndPoint, rawSock.receiveCallback, rawSock );
 
-					// Keep track of outstanding async operations
-					Interlocked.Increment( ref rawSock.pingOutstandingReceives );
+				    // Keep track of outstanding async operations
+				    Interlocked.Increment( ref rawSock.pingOutstandingReceives );
 				}
 				else
 				{
-					// If we're done then set the done event
-					if( rawSock.pingOutstandingReceives == 0 )
-						rawSock.pingDoneEvent.Set();
+				    // If we're done then set the done event
+				    if( rawSock.pingOutstandingReceives == 0 )
+				        rawSock.pingDoneEvent.Set();
 				}
 				// If this is indeed the response to our echo request then signal the main thread
 				//    that we received the response so it can send additional echo requests if
 				//    necessary. This is done after another async ReceiveFrom is already posted.
 				if( receivedId == rawSock.pingId )
 				{
-					rawSock.pingReceiveEvent.Set();
+				    rawSock.pingReceiveEvent.Set();
 				}
 			}
 			catch( SocketException err )
@@ -434,7 +430,7 @@ namespace ConsoleApplication5
 				BuildPingPacket();
 			}
 
-			//Console.WriteLine( "Pinging {0} with {1} bytes of data ", destEndPoint.Address.ToString(), pingPayloadLength );
+			Console.WriteLine( "Pinging {0} with {1} bytes of data ", destEndPoint.Address.ToString(), pingPayloadLength );
 
 			try
 			{
@@ -496,75 +492,6 @@ namespace ConsoleApplication5
 			{
 				Console.WriteLine( "Socket error occurred: {0}", err.Message );
 				throw;
-			}
-		}
-
-		public static void SendPingStatic(IPAddress ipAddress)
-		{
-			try
-			{
-				int dataSize = 100, ttlValue = 128, sendCount = 1;
-				System.Diagnostics.Process proc = System.Diagnostics.Process.GetCurrentProcess();
-
-				RawSocketPing RawPingSocket = new RawSocketPing( AddressFamily.InterNetwork, ttlValue, dataSize, sendCount, (ushort)proc.Id );
-				RawPingSocket.PingAddress = ipAddress;
-
-				//Socket pingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.Icmp );
-				//IPEndPoint localEndPoint = new IPEndPoint( IPAddress.Any, 0 );
-				//pingSocket.Bind( localEndPoint );
-				//pingSocket.SetSocketOption( SocketOptionLevel.IP, SocketOptionName.IpTimeToLive, 64 );
-
-				RawPingSocket.InitializeSocket();
-				RawPingSocket.BuildPingPacket();
-
-				RawPingSocket.pingPacket = RawPingSocket.icmpHeader.BuildPacket( RawPingSocket.protocolHeaderList, RawPingSocket.pingPayload );
-				//byte[] pingPacket = { 8, 0, 16, 209, 25, 96, 0, 1 };
-				EndPoint castResponseEndPoint = new IPEndPoint( ipAddress, 0 );
-
-				RawPingSocket.pingSocket.BeginReceiveFrom( RawPingSocket.receiveBuffer, 0, RawPingSocket.receiveBuffer.Length, SocketFlags.None, ref RawPingSocket.castResponseEndPoint, rveCallback, RawPingSocket );
-				RawPingSocket.pingSocket.SendTo( RawPingSocket.pingPacket, castResponseEndPoint );
-			}
-			catch( Exception e )
-			{
-				Console.WriteLine( e.Message );
-			}
-			
-		}
-
-		public static void rveCallback( IAsyncResult ar )
-		{
-			try
-			{
-				RawSocketPing rawSock = (RawSocketPing)ar.AsyncState;
-
-				int bytesReceived = rawSock.pingSocket.EndReceiveFrom( ar, ref rawSock.castResponseEndPoint );
-
-				Ipv4Header v4Header;
-				IcmpHeader icmpv4Header;
-				byte[] pktIcmp;
-				int offset = 0;
-
-				// Remember, raw IPv4 sockets will return the IPv4 header along with all
-				//    subsequent protocol headers
-				v4Header = Ipv4Header.Create( rawSock.receiveBuffer, ref offset );
-				pktIcmp = new byte[200 - offset];
-				Array.Copy( rawSock.receiveBuffer, offset, pktIcmp, 0, pktIcmp.Length );
-				icmpv4Header = IcmpHeader.Create( pktIcmp, ref offset );
-
-				/*Console.WriteLine("Icmp.Id = {0}; Icmp.Sequence = {1}",
-					icmpv4Header.Id,
-					icmpv4Header.Sequence
-					);*/
-
-				//ushort receivedId = icmpv4Header.Id;
-				//if( receivedId == rawSock.pingId )
-				//{
-				//SendPing( null, new SendPingEventArgs( ((IPEndPoint)rawSock.castResponseEndPoint).Address ) );
-				//}
-			}
-			catch( Exception e )
-			{
-				Console.WriteLine( e.Message );
 			}
 		}
 	}

@@ -5,15 +5,15 @@ using System.Text;
 using NUnit.Framework;
 using System.Net.NetworkInformation;
 using System.Net;
-using GridMapper.NetworkModelObject;
+using GridMapper.NetworkRawSender;
 using System.Threading;
 using System.Reflection;
 
 namespace GridMapper.Test
 {
-	//[TestFixture]
-	//public class TestNetwork
-	//{
+	[TestFixture]
+	public class TestNetwork
+	{
 	//    [Test]
 	//    public void TestPingCollectionAdd()
 	//    {
@@ -49,5 +49,19 @@ namespace GridMapper.Test
 	//        Assert.That( Network.HostsEntries.Count >= 1 );
 	//        Network.HostsEntries.Clear();
 	//    }
-	//}
+
+		[Test]
+		public void TestScanPortWithConnect()
+		{
+			RawScanPort scanPort = new RawScanPort();
+
+			scanPort.ScanWithConnect( IPAddress.Parse( "192.168.1.1" ), 80 );
+			scanPort.ScanWithConnect( IPAddress.Parse( "192.168.1.1" ), 22 );
+			scanPort.ScanWithConnect( IPAddress.Parse( "192.168.1.1" ), 12345 );
+
+			for( int i = 0 ; i < 12000000 ; i++ )
+			{
+			}
+		}
+	}
 }
