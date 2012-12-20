@@ -31,16 +31,9 @@ namespace GridMapper
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( GridWindow ) );
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.LoadScan = new System.Windows.Forms.ToolStripButton();
-			this.SaveScan = new System.Windows.Forms.ToolStripButton();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
-			this.FromIP = new IPAddressControlLib.IPAddressControl();
-			this.ToIP = new IPAddressControlLib.IPAddressControl();
-			this.label1 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
 			this.ProgressScan = new System.Windows.Forms.ProgressBar();
 			this.timer1 = new System.Windows.Forms.Timer( this.components );
-			this.ScanButton = new System.Windows.Forms.Button();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,6 +55,10 @@ namespace GridMapper
 			this.rangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cRIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.stringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.ScanButton = new System.Windows.Forms.Button();
+			this.LoadScan = new System.Windows.Forms.ToolStripButton();
+			this.SaveScan = new System.Windows.Forms.ToolStripButton();
+			this.ipRangeUserControl1 = new GridMapper.IPRangeUserControl();
 			this.toolStrip1.SuspendLayout();
 			( (System.ComponentModel.ISupportInitialize)( this.dataGridView1 ) ).BeginInit();
 			this.menuStrip1.SuspendLayout();
@@ -79,26 +76,6 @@ namespace GridMapper
 			this.toolStrip1.Size = new System.Drawing.Size( 414, 25 );
 			this.toolStrip1.TabIndex = 2;
 			this.toolStrip1.Text = "toolStrip1";
-			// 
-			// LoadScan
-			// 
-			this.LoadScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.LoadScan.Image = ( (System.Drawing.Image)( resources.GetObject( "LoadScan.Image" ) ) );
-			this.LoadScan.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.LoadScan.Name = "LoadScan";
-			this.LoadScan.Size = new System.Drawing.Size( 23, 22 );
-			this.LoadScan.Text = "LoadScan";
-			this.LoadScan.Click += new System.EventHandler( this.toolStripButton1_Click );
-			// 
-			// SaveScan
-			// 
-			this.SaveScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.SaveScan.Image = ( (System.Drawing.Image)( resources.GetObject( "SaveScan.Image" ) ) );
-			this.SaveScan.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.SaveScan.Name = "SaveScan";
-			this.SaveScan.Size = new System.Drawing.Size( 23, 22 );
-			this.SaveScan.Text = "SaveScan";
-			this.SaveScan.Click += new System.EventHandler( this.SaveScan_Click );
 			// 
 			// dataGridView1
 			// 
@@ -118,62 +95,6 @@ namespace GridMapper
 			this.dataGridView1.Size = new System.Drawing.Size( 414, 337 );
 			this.dataGridView1.TabIndex = 3;
 			// 
-			// FromIP
-			// 
-			this.FromIP.AllowInternalTab = false;
-			this.FromIP.AutoHeight = true;
-			this.FromIP.BackColor = System.Drawing.SystemColors.Window;
-			this.FromIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.FromIP.Cursor = System.Windows.Forms.Cursors.IBeam;
-			this.FromIP.Location = new System.Drawing.Point( 129, 20 );
-			this.FromIP.Margin = new System.Windows.Forms.Padding( 2 );
-			this.FromIP.MinimumSize = new System.Drawing.Size( 87, 20 );
-			this.FromIP.Name = "FromIP";
-			this.FromIP.ReadOnly = false;
-			this.FromIP.Size = new System.Drawing.Size( 100, 20 );
-			this.FromIP.TabIndex = 4;
-			this.FromIP.Text = "0.0.0.0";
-			this.FromIP.Click += new System.EventHandler( this.ipAddressControl1_Click );
-			// 
-			// ToIP
-			// 
-			this.ToIP.AllowInternalTab = false;
-			this.ToIP.AutoHeight = true;
-			this.ToIP.BackColor = System.Drawing.SystemColors.Window;
-			this.ToIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.ToIP.Cursor = System.Windows.Forms.Cursors.IBeam;
-			this.ToIP.Location = new System.Drawing.Point( 253, 20 );
-			this.ToIP.Margin = new System.Windows.Forms.Padding( 2 );
-			this.ToIP.MinimumSize = new System.Drawing.Size( 87, 20 );
-			this.ToIP.Name = "ToIP";
-			this.ToIP.ReadOnly = false;
-			this.ToIP.Size = new System.Drawing.Size( 112, 20 );
-			this.ToIP.TabIndex = 5;
-			this.ToIP.Text = "0.0.0.0";
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.label1.Location = new System.Drawing.Point( 63, 23 );
-			this.label1.Margin = new System.Windows.Forms.Padding( 2, 0, 2, 0 );
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size( 62, 13 );
-			this.label1.TabIndex = 6;
-			this.label1.Text = "Range from";
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.label2.Location = new System.Drawing.Point( 233, 23 );
-			this.label2.Margin = new System.Windows.Forms.Padding( 2, 0, 2, 0 );
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size( 16, 13 );
-			this.label2.TabIndex = 7;
-			this.label2.Text = "to";
-			// 
 			// ProgressScan
 			// 
 			this.ProgressScan.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -187,21 +108,6 @@ namespace GridMapper
 			// timer1
 			// 
 			this.timer1.Tick += new System.EventHandler( this.timer1_Tick );
-			// 
-			// ScanButton
-			// 
-			this.ScanButton.BackgroundImage = global::GridMapper.Properties.Resources.Sans_titre;
-			this.ScanButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.ScanButton.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.ScanButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.ScanButton.ForeColor = System.Drawing.SystemColors.Window;
-			this.ScanButton.Location = new System.Drawing.Point( 368, 15 );
-			this.ScanButton.Margin = new System.Windows.Forms.Padding( 0 );
-			this.ScanButton.Name = "ScanButton";
-			this.ScanButton.Size = new System.Drawing.Size( 44, 28 );
-			this.ScanButton.TabIndex = 9;
-			this.ScanButton.UseVisualStyleBackColor = true;
-			this.ScanButton.Click += new System.EventHandler( this.ScanButton_Click );
 			// 
 			// fileToolStripMenuItem
 			// 
@@ -378,18 +284,58 @@ namespace GridMapper
 			this.stringToolStripMenuItem.Size = new System.Drawing.Size( 107, 22 );
 			this.stringToolStripMenuItem.Text = "String";
 			// 
+			// ScanButton
+			// 
+			this.ScanButton.BackgroundImage = global::GridMapper.Properties.Resources.Sans_titre;
+			this.ScanButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+			this.ScanButton.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.ScanButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.ScanButton.ForeColor = System.Drawing.SystemColors.Window;
+			this.ScanButton.Location = new System.Drawing.Point( 368, 15 );
+			this.ScanButton.Margin = new System.Windows.Forms.Padding( 0 );
+			this.ScanButton.Name = "ScanButton";
+			this.ScanButton.Size = new System.Drawing.Size( 44, 28 );
+			this.ScanButton.TabIndex = 9;
+			this.ScanButton.UseVisualStyleBackColor = true;
+			this.ScanButton.Click += new System.EventHandler( this.ScanButton_Click );
+			// 
+			// LoadScan
+			// 
+			this.LoadScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.LoadScan.Image = ( (System.Drawing.Image)( resources.GetObject( "LoadScan.Image" ) ) );
+			this.LoadScan.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.LoadScan.Name = "LoadScan";
+			this.LoadScan.Size = new System.Drawing.Size( 23, 22 );
+			this.LoadScan.Text = "LoadScan";
+			this.LoadScan.Click += new System.EventHandler( this.toolStripButton1_Click );
+			// 
+			// SaveScan
+			// 
+			this.SaveScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.SaveScan.Image = ( (System.Drawing.Image)( resources.GetObject( "SaveScan.Image" ) ) );
+			this.SaveScan.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.SaveScan.Name = "SaveScan";
+			this.SaveScan.Size = new System.Drawing.Size( 23, 22 );
+			this.SaveScan.Text = "SaveScan";
+			this.SaveScan.Click += new System.EventHandler( this.SaveScan_Click );
+			// 
+			// ipRangeUserControl1
+			// 
+			this.ipRangeUserControl1.BackColor = System.Drawing.Color.Transparent;
+			this.ipRangeUserControl1.Location = new System.Drawing.Point( 76, 22 );
+			this.ipRangeUserControl1.Name = "ipRangeUserControl1";
+			this.ipRangeUserControl1.Size = new System.Drawing.Size( 271, 27 );
+			this.ipRangeUserControl1.TabIndex = 10;
+			// 
 			// GridWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Window;
 			this.ClientSize = new System.Drawing.Size( 414, 405 );
+			this.Controls.Add( this.ipRangeUserControl1 );
 			this.Controls.Add( this.ScanButton );
 			this.Controls.Add( this.ProgressScan );
-			this.Controls.Add( this.label2 );
-			this.Controls.Add( this.label1 );
-			this.Controls.Add( this.ToIP );
-			this.Controls.Add( this.FromIP );
 			this.Controls.Add( this.dataGridView1 );
 			this.Controls.Add( this.toolStrip1 );
 			this.Controls.Add( this.menuStrip1 );
@@ -413,11 +359,7 @@ namespace GridMapper
 
         private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.ToolStripButton LoadScan;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private IPAddressControlLib.IPAddressControl FromIP;
-        private IPAddressControlLib.IPAddressControl ToIP;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ProgressBar ProgressScan;
         private System.Windows.Forms.ToolStripButton SaveScan;
         private System.Windows.Forms.Timer timer1;
@@ -443,6 +385,7 @@ namespace GridMapper
         private System.Windows.Forms.ToolStripMenuItem rangeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cRIDToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem stringToolStripMenuItem;
+		private IPRangeUserControl ipRangeUserControl1;
 	}
 }
 
