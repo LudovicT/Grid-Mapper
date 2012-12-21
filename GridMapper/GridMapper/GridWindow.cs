@@ -305,6 +305,17 @@ namespace GridMapper
 														dataGridView1[0, e.RowIndex2].Value.ToString() );
 				e.Handled = true;
 			}
+			if ( e.Column.Name == "HostName" )
+			{
+				System.Net.IPAddress tmp;
+				if ( System.Net.IPAddress.TryParse( e.CellValue1.ToString(), out tmp ) && System.Net.IPAddress.TryParse( e.CellValue2.ToString(), out tmp ) )
+				{
+					// Try to sort based on the cells in the current column.
+					e.SortResult = System.String.Compare( dataGridView1[0, e.RowIndex1].Value.ToString(),
+															dataGridView1[0, e.RowIndex2].Value.ToString() );
+					e.Handled = true;
+				}
+			}
 		}
 	}
 }
