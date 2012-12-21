@@ -35,7 +35,7 @@ namespace GridMapper
 		static extern uint GetWindowThreadProcessId( IntPtr hWnd, out int lpdwProcessId );
 
 		/// <summary>
-		/// Point d'entrée principal de l'application.
+		/// Application's main starting point
 		/// </summary>
 		[STAThread]
 		static void Main()

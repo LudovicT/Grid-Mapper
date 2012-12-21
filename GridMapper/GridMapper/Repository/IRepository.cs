@@ -13,7 +13,7 @@ namespace GridMapper.NetworkRepository
 	{
 		IDictionary<IPAddress, INetworkDictionaryItem> NetworkDictionaryItems { get; }
 
-		//a changer par des interface
+		//needs to be changed by interfaces
 		//public event RepositoryUpdatedEventHandler OnRepositoryUpdated;
 		//public delegate void RepositoryUpdatedEventHandler( object sender, RepositoryUpdatedEventArg e );
 
