@@ -34,7 +34,7 @@ namespace GridMapper
 			int EndIP = ( intIP & mask ) | ~mask;
 			List<uint> IPs = new List<uint>();
 
-			//avoid an infinite loop
+			//avoid/prevent an infinite loop
 			if ( StartIP < 0 )
 			{
 				var temp = EndIP;
