@@ -166,6 +166,7 @@
     <Compile Include="NetworkModelObject\INetwork\IPorts.cs" />
     <Compile Include="NetworkModelObject\INetwork\IServer.cs" />
     <Compile Include="NetworkModelObject\INetwork\ISwitch.cs" />
+    <Compile Include="NetworkUtilities\Arping.cs" />
     <Compile Include="NetworkUtilities\NetworkSender.cs" />
     <Compile Include="NetworkUtilities\ARPSender.cs" />
     <Compile Include="NetworkUtilities\IpRange.cs" />
@@ -215,7 +216,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="GridMapper_TemporaryKey.pfx" />
     <None Include="NetworkModelObject\INetwork\INetworkDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
