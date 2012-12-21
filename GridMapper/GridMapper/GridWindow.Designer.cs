@@ -31,6 +31,8 @@ namespace GridMapper
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( GridWindow ) );
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.LoadScan = new System.Windows.Forms.ToolStripButton();
+			this.SaveScan = new System.Windows.Forms.ToolStripButton();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
 			this.ProgressScan = new System.Windows.Forms.ProgressBar();
 			this.timer1 = new System.Windows.Forms.Timer( this.components );
@@ -56,9 +58,12 @@ namespace GridMapper
 			this.cRIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.stringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.ScanButton = new System.Windows.Forms.Button();
-			this.LoadScan = new System.Windows.Forms.ToolStripButton();
-			this.SaveScan = new System.Windows.Forms.ToolStripButton();
 			this.ipRangeUserControl1 = new GridMapper.IPRangeUserControl();
+			this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.IPAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.MacAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.HostName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Ports = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.toolStrip1.SuspendLayout();
 			( (System.ComponentModel.ISupportInitialize)( this.dataGridView1 ) ).BeginInit();
 			this.menuStrip1.SuspendLayout();
@@ -77,6 +82,26 @@ namespace GridMapper
 			this.toolStrip1.TabIndex = 2;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
+			// LoadScan
+			// 
+			this.LoadScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.LoadScan.Image = ( (System.Drawing.Image)( resources.GetObject( "LoadScan.Image" ) ) );
+			this.LoadScan.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.LoadScan.Name = "LoadScan";
+			this.LoadScan.Size = new System.Drawing.Size( 23, 22 );
+			this.LoadScan.Text = "LoadScan";
+			this.LoadScan.Click += new System.EventHandler( this.toolStripButton1_Click );
+			// 
+			// SaveScan
+			// 
+			this.SaveScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.SaveScan.Image = ( (System.Drawing.Image)( resources.GetObject( "SaveScan.Image" ) ) );
+			this.SaveScan.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.SaveScan.Name = "SaveScan";
+			this.SaveScan.Size = new System.Drawing.Size( 23, 22 );
+			this.SaveScan.Text = "SaveScan";
+			this.SaveScan.Click += new System.EventHandler( this.SaveScan_Click );
+			// 
 			// dataGridView1
 			// 
 			this.dataGridView1.AllowUserToAddRows = false;
@@ -88,12 +113,19 @@ namespace GridMapper
 			this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
 			this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dataGridView1.Columns.AddRange( new System.Windows.Forms.DataGridViewColumn[] {
+            this.Id,
+            this.IPAddress,
+            this.MacAddress,
+            this.HostName,
+            this.Ports} );
 			this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.dataGridView1.Location = new System.Drawing.Point( 0, 49 );
 			this.dataGridView1.Name = "dataGridView1";
 			this.dataGridView1.ReadOnly = true;
 			this.dataGridView1.Size = new System.Drawing.Size( 414, 337 );
 			this.dataGridView1.TabIndex = 3;
+			this.dataGridView1.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler( this.dataGridView1_SortCompare );
 			// 
 			// ProgressScan
 			// 
@@ -291,33 +323,13 @@ namespace GridMapper
 			this.ScanButton.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.ScanButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
 			this.ScanButton.ForeColor = System.Drawing.SystemColors.Window;
-			this.ScanButton.Location = new System.Drawing.Point( 368, 15 );
+			this.ScanButton.Location = new System.Drawing.Point( 367, 15 );
 			this.ScanButton.Margin = new System.Windows.Forms.Padding( 0 );
 			this.ScanButton.Name = "ScanButton";
-			this.ScanButton.Size = new System.Drawing.Size( 44, 28 );
+			this.ScanButton.Size = new System.Drawing.Size( 45, 34 );
 			this.ScanButton.TabIndex = 9;
 			this.ScanButton.UseVisualStyleBackColor = true;
 			this.ScanButton.Click += new System.EventHandler( this.ScanButton_Click );
-			// 
-			// LoadScan
-			// 
-			this.LoadScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.LoadScan.Image = ( (System.Drawing.Image)( resources.GetObject( "LoadScan.Image" ) ) );
-			this.LoadScan.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.LoadScan.Name = "LoadScan";
-			this.LoadScan.Size = new System.Drawing.Size( 23, 22 );
-			this.LoadScan.Text = "LoadScan";
-			this.LoadScan.Click += new System.EventHandler( this.toolStripButton1_Click );
-			// 
-			// SaveScan
-			// 
-			this.SaveScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.SaveScan.Image = ( (System.Drawing.Image)( resources.GetObject( "SaveScan.Image" ) ) );
-			this.SaveScan.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.SaveScan.Name = "SaveScan";
-			this.SaveScan.Size = new System.Drawing.Size( 23, 22 );
-			this.SaveScan.Text = "SaveScan";
-			this.SaveScan.Click += new System.EventHandler( this.SaveScan_Click );
 			// 
 			// ipRangeUserControl1
 			// 
@@ -326,6 +338,38 @@ namespace GridMapper
 			this.ipRangeUserControl1.Name = "ipRangeUserControl1";
 			this.ipRangeUserControl1.Size = new System.Drawing.Size( 271, 27 );
 			this.ipRangeUserControl1.TabIndex = 10;
+			// 
+			// Id
+			// 
+			this.Id.HeaderText = "Id";
+			this.Id.MinimumWidth = 2;
+			this.Id.Name = "Id";
+			this.Id.ReadOnly = true;
+			this.Id.Visible = false;
+			// 
+			// IPAddress
+			// 
+			this.IPAddress.HeaderText = "IP Address";
+			this.IPAddress.Name = "IPAddress";
+			this.IPAddress.ReadOnly = true;
+			// 
+			// MacAddress
+			// 
+			this.MacAddress.HeaderText = "Mac Address";
+			this.MacAddress.Name = "MacAddress";
+			this.MacAddress.ReadOnly = true;
+			// 
+			// HostName
+			// 
+			this.HostName.HeaderText = "Host Name";
+			this.HostName.Name = "HostName";
+			this.HostName.ReadOnly = true;
+			// 
+			// Ports
+			// 
+			this.Ports.HeaderText = "Ports";
+			this.Ports.Name = "Ports";
+			this.Ports.ReadOnly = true;
 			// 
 			// GridWindow
 			// 
@@ -386,6 +430,11 @@ namespace GridMapper
         private System.Windows.Forms.ToolStripMenuItem cRIDToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem stringToolStripMenuItem;
 		private IPRangeUserControl ipRangeUserControl1;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+		private System.Windows.Forms.DataGridViewTextBoxColumn IPAddress;
+		private System.Windows.Forms.DataGridViewTextBoxColumn MacAddress;
+		private System.Windows.Forms.DataGridViewTextBoxColumn HostName;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Ports;
 	}
 }
 

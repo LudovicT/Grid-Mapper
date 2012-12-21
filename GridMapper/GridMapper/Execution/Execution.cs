@@ -19,7 +19,6 @@ namespace GridMapper
 		IRepository _repository;
 		
 		public event EventHandler<TaskCompletedEventArgs> TaskCompleted;
-		public event EventHandler IsFinished;
 
 		#region IExecution Membres
 
@@ -92,18 +91,25 @@ namespace GridMapper
 									{
 										_repository.AddOrUpdate( ip, dns );
 									}
+									else
+									{
+										dns = new IPHostEntry(){HostName = ip.ToString()};
+										_repository.AddOrUpdate( ip, dns );
+									}
 									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
 								}
 
 								if ( Option.Port )
 								{
-									//ne gere pas l'option des port a scan
-									ushort portToTest = 80;
-									if ( portScanner.ScanPort( ip, portToTest ) )
+									foreach ( ushort portToTest in Option.PortToTest )
 									{
-										_repository.AddOrUpdate( ip, portToTest );
+										if ( portScanner.ScanPort( ip, portToTest ) )
+										{
+											_repository.AddOrUpdate( ip, portToTest );
+										}
 									}
 									TaskCompleted( this, new TaskCompletedEventArgs( 1 ) );
+									
 								}
 								//TaskCompleted( this, new Data());
 							}
