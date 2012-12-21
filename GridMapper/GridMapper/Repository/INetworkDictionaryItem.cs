@@ -11,7 +11,7 @@ namespace GridMapper.NetworkRepository
 	public interface INetworkDictionaryItem
 	{
 		IHost Host { get; }
-		IHostEntity HostEntity { get; } //test si il est possible de créer un hostentity
+		IHostEntity HostEntity { get; } //test to see if it is possible to create an Host Entitiy
 		PingReply PingReply { get; }
 		IPAddress IPAddress { get; }
 		PhysicalAddress MacAddress { get; }

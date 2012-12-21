@@ -170,7 +170,7 @@ namespace GridMapper
 		}
 
 		/// <summary>
-		/// Determines whether the specified argument is true.
+		/// Determines whether the specified argument is true or not.
 		/// </summary>
 		/// <param name="argument">The argument.</param>
 		/// <returns>

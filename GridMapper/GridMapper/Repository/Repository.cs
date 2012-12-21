@@ -155,7 +155,7 @@ namespace GridMapper.NetworkRepository
 			}
 		}
 
-		//version de merde
+		//shitty version...
 		public void XmlWriter(Stream stream)
 		{
 			XmlTextWriter myXmlTextWriter = new XmlTextWriter( stream, null );
