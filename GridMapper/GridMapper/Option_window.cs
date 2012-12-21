@@ -61,6 +61,7 @@ namespace GridMapper
 							    if ( ppr.Result != null )
 							    {
 									OptionUpdatedEventArgs args = new OptionUpdatedEventArgs( option_ARPing.Checked, option_ARP.Checked, option_DNS.Checked, option_port.Checked, timeout, tasks, ppr.Result );
+									OptionUpdated( this, args );
 							        this.Close();
 							    }
 							    else
