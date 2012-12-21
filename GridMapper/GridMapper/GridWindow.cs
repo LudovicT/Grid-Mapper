@@ -68,20 +68,6 @@ namespace GridMapper
 			dataGridView1.AutoGenerateColumns = false;
 			dataGridView1.AllowUserToAddRows = false;
 
-			dataGridView1.ColumnCount = 5;
-			dataGridView1.Columns[0].DataPropertyName = "Id";
-			dataGridView1.Columns[0].Name = "Id";
-			dataGridView1.Columns[0].Visible = false;
-			dataGridView1.Columns[1].DataPropertyName = "IPAddress";
-			dataGridView1.Columns[1].Name = "IPAddress";
-			dataGridView1.Columns[1].SortMode = DataGridViewColumnSortMode.Programmatic;
-			dataGridView1.Columns[2].DataPropertyName = "MacAddress";
-			dataGridView1.Columns[2].Name = "MacAddress";
-			dataGridView1.Columns[3].DataPropertyName = "HostName";
-			dataGridView1.Columns[3].Name = "HostName";
-			dataGridView1.Columns[4].DataPropertyName = "Ports";
-			dataGridView1.Columns[4].Name = "Ports";
-
 			//PingSender.PingCompleted += UpdateDataGridView;
 			//ARPSender.MacCompleted += UpdateDataGridView;
 			Repository.OnRepositoryUpdated += UpdateDataGridView;
@@ -101,10 +87,20 @@ namespace GridMapper
 			{
 				byte[] b = item.IPAddress.GetAddressBytes();
 				IPAddressV4 ip = new IPAddressV4();
-				ip.B0 = b[0];
-				ip.B1 = b[1];
-				ip.B2 = b[2];
-				ip.B3 = b[3];
+				if ( BitConverter.IsLittleEndian )
+				{
+					ip.B0 = b[3];
+					ip.B1 = b[2];
+					ip.B2 = b[1];
+					ip.B3 = b[0];
+				}
+				else
+				{
+					ip.B0 = b[0];
+					ip.B1 = b[1];
+					ip.B2 = b[2];
+					ip.B3 = b[3];
+				}
 				string portToString = "";
 				//pour l'affichage des virgule
 				if( item.Ports.Count > 0 )
@@ -299,5 +295,16 @@ namespace GridMapper
             _exe.StartScan();
             timer1.Start();
         }
+
+		private void dataGridView1_SortCompare( object sender, DataGridViewSortCompareEventArgs e )
+		{
+			if ( e.Column.Name == "IPAddress" )
+			{
+				// Try to sort based on the cells in the current column.
+				e.SortResult = System.String.Compare( dataGridView1[0, e.RowIndex1].Value.ToString(),
+														dataGridView1[0, e.RowIndex2].Value.ToString() );
+				e.Handled = true;
+			}
+		}
 	}
 }
