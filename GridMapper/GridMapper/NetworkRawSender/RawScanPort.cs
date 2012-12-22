@@ -23,33 +23,7 @@ namespace GridMapper.NetworkRawSender
 				_portScanSocket = new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
 				_portScanSocket.SetSocketOption( SocketOptionLevel.IP, SocketOptionName.IpTimeToLive, 16 );
 
-				//_portScanSocket.ExclusiveAddressUse = true;
-
-				//// The socket will linger for 10 seconds after  
-				//// Socket.Close is called.
-				//_portScanSocket.LingerState = new LingerOption( true, 10 );
-
-				//// Disable the Nagle Algorithm for this tcp socket.
-				//_portScanSocket.NoDelay = true;
-
-				//// Set the receive buffer size to 8k
-				//_portScanSocket.ReceiveBufferSize = 8192;
-
-				//// Set the timeout for synchronous receive methods to  
-				//// 1 second (1000 milliseconds.)
-				//_portScanSocket.ReceiveTimeout = 1000;
-
-				//// Set the send buffer size to 8k.
-				//_portScanSocket.SendBufferSize = 8192;
-
-				// Set the timeout for synchronous send methods 
-				// to 1 second (1000 milliseconds.)			
-				//_portScanSocket.SendTimeout = 1000;
-
-				//_portScanSocket.SetSocketOption( SocketOptionLevel.IP, SocketOptionName.DontRoute, true );
-
-				//_localEndPoint = new IPEndPoint( IPAddress.Parse("192.168.1.21"), 65000 );
-				//_portScanSocket.Bind( _localEndPoint );
+				_portScanSocket.DontFragment = true;
 			}
 			catch( Exception e )
 			{

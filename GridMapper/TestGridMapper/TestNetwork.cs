@@ -53,13 +53,14 @@ namespace GridMapper.Test
 		[Test]
 		public void TestScanPortWithConnect()
 		{
-			string ip = "10.8.110.230";
+			string ip = "192.168.1.27";
 			for( int i = 1 ; i < 65535 ; i++ )
 			{
 				RawScanPort scanPort = new RawScanPort();
 				scanPort.ScanWithConnect( IPAddress.Parse( ip ), i );
+				if( i % 20000 == 0)
+					Thread.Sleep( 300 );
 			}
-			Thread.Sleep( 10000 );
 		}
 	}
 }
