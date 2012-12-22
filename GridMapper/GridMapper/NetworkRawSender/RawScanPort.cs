@@ -72,18 +72,20 @@ namespace GridMapper.NetworkRawSender
 			}
 		}
 
-		public static void receiveConnect( IAsyncResult ar )
+		public void receiveConnect( IAsyncResult ar )
 		{
 			try
 			{
 				Socket ScanSocket = (Socket)ar.AsyncState;
 				ScanSocket.EndConnect( ar );
 				//ScanSocket.ScanCompleted( ScanSocket, new ScanCompletedEventArgs( ScanSocket._ipAddress, ScanSocket ) );
-				Console.WriteLine( "c'est true" );
+				Console.WriteLine( "c'est true " + _ipAddress + " " + _port );
+				_portScanSocket.Close();
 			}
 			catch( Exception e )
 			{
-				Console.WriteLine( e.Message );
+				_portScanSocket.Close();
+				//Console.WriteLine( e.Message );
 			}
 		}
 	}
