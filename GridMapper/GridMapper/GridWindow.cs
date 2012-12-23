@@ -81,12 +81,11 @@ namespace GridMapper
 
 		public void UpdateDataGridView2( object sender, RepositoryUpdatedEventArg e )
 		{
-			dataGridView1.DataSource = null;
-			dataGridView1.DataMember = null;
 			foreach( INetworkDictionaryItem item in e.ReadOnlyRepository )
 			{
 				byte[] b = item.IPAddress.GetAddressBytes();
 				IPAddressV4 ip = new IPAddressV4();
+				string intIP = string.Empty;
 				if ( BitConverter.IsLittleEndian )
 				{
 					ip.B0 = b[3];
@@ -101,7 +100,24 @@ namespace GridMapper
 					ip.B2 = b[2];
 					ip.B3 = b[3];
 				}
-				string portToString = "";
+				intIP = IPAddress.ToString();
+
+				string IPAddressToString = string.Empty;
+				IPAddressToString = item.IPAddress.ToString();
+
+				string macToString = string.Empty;
+				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
+				{
+					macToString = ToMac( item.MacAddress.ToString() );
+				}
+
+				string hostNameString = string.Empty;
+				if ( item.HostEntry != null )
+				{
+					hostNameString = item.HostEntry.HostName.ToString();
+				}
+
+				string portToString = string.Empty;
 				//pour l'affichage des virgule
 				if( item.Ports.Count > 0 )
 				{
@@ -110,25 +126,30 @@ namespace GridMapper
 						portToString += ", " + item.Ports[i].ToString();
 				}
 
-				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None && item.HostEntry != null )
+				bool found = false;
+				foreach(DataGridViewRow row in dataGridView1.Rows)
 				{
-                    string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), ToMac(item.MacAddress.ToString()), item.HostEntry.HostName.ToString(), portToString };
-					dataGridView1.Rows.Add( row );
+					if ( row.Cells[1].Value.ToString() == IPAddressToString )
+					{
+						found = true;
+						if ( row.Cells[2].Value.ToString() == string.Empty && macToString != string.Empty )
+						{
+							row.Cells[2].Value = macToString;
+						}
+						if ( row.Cells[3].Value.ToString() == string.Empty && hostNameString != string.Empty )
+						{
+							row.Cells[3].Value = hostNameString;
+						}
+						if ( row.Cells[4].Value.ToString() == string.Empty && portToString != string.Empty )
+						{
+							row.Cells[4].Value = portToString;
+						}
+						break;
+					}
 				}
-				else if( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
+				if ( !found )
 				{
-                    string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), ToMac(item.MacAddress.ToString()), "", portToString };
-					dataGridView1.Rows.Add( row );
-				}
-				else if( item.HostEntry != null )
-				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", item.HostEntry.HostName.ToString(), portToString };
-					dataGridView1.Rows.Add( row );
-				}
-				else
-				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", "", portToString };
-					dataGridView1.Rows.Add( row );
+					dataGridView1.Rows.Add( intIP, IPAddressToString, macToString, hostNameString, portToString);
 				}
 			}
 		}
