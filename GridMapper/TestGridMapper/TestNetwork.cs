@@ -8,6 +8,7 @@ using System.Net;
 using GridMapper.NetworkRawSender;
 using System.Threading;
 using System.Reflection;
+using System.Net.Sockets;
 
 namespace GridMapper.Test
 {
@@ -54,12 +55,22 @@ namespace GridMapper.Test
 		public void TestScanPortWithConnect()
 		{
 			string ip = "192.168.1.27";
-			for( int i = 1 ; i < 65535 ; i++ )
+			for ( int i = 1; i < 65535; i++ )
 			{
 				RawScanPort scanPort = new RawScanPort();
 				scanPort.ScanWithConnect( IPAddress.Parse( ip ), i );
-				if( i % 20000 == 0)
+				if ( i % 20000 == 0 )
 					Thread.Sleep( 300 );
+			}
+		}
+		[Test]
+		public void TestScanPortWithTcpClient()
+		{
+			IPAddress ip = IPAddress.Parse("192.168.1.27");
+			ThreadPool.SetMinThreads( 200, 200 );
+			for ( int i = 1; i < 65535; i++ )
+			{
+				TimeOutSocket.Connect( new IPEndPoint( ip, i ), 50 );
 			}
 		}
 	}

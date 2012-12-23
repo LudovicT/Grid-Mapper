@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace GridMapper.NetworkRawSender
 {
@@ -61,6 +62,41 @@ namespace GridMapper.NetworkRawSender
 				_portScanSocket.Close();
 				//Console.WriteLine( e.Message );
 			}
+		}
+	}
+	public class TimeOutSocket
+	{
+		public static void Connect( IPEndPoint remoteEndPoint, int timeoutMSec )
+		{
+			TcpClient tcpclient = new TcpClient();
+			tcpclient.NoDelay = false;
+			tcpclient.LingerState = new LingerOption(false, 0);
+
+			IAsyncResult asyncResult = tcpclient.BeginConnect( remoteEndPoint.Address, remoteEndPoint.Port, null, null );
+			Task.Factory.StartNew( () =>
+				{
+					if ( asyncResult.AsyncWaitHandle.WaitOne( timeoutMSec, false ) )
+					{
+						try
+						{
+							tcpclient.EndConnect( asyncResult );
+							Console.WriteLine( "c'est true " + remoteEndPoint.Address + " " + remoteEndPoint.Port );
+							tcpclient.Close();
+							return true;
+						}
+						catch
+						{
+							tcpclient.Close();
+							return false;
+						}
+					}
+					else
+					{
+						tcpclient.Close();
+						return false;
+					}
+				}
+			);
 		}
 	}
 
