@@ -101,7 +101,7 @@ namespace GridMapper
 
 								if ( Option.Port )
 								{
-									foreach ( ushort portToTest in Option.PortToTest )
+									foreach ( ushort portToTest in Option.PortToTest.Result )
 									{
 										if ( portScanner.ScanPort( ip, portToTest ) )
 										{

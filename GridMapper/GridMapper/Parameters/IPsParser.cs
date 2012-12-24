@@ -316,30 +316,35 @@ namespace GridMapper
 	{
 		static public IPParserResult TryParse( string rangeOfIP )
 		{
+			string errorMessage = null;
+			if ( rangeOfIP == string.Empty )
+			{
+				errorMessage = "No IP provided";
+				return new IPParserResult( errorMessage, null );
+			}
 			Parser parser = new Parser(rangeOfIP);
-			IPRangeList result = new IPRangeList();
+			ListOfRangeOfIntWithAutoCompression result = new ListOfRangeOfIntWithAutoCompression();
 			IPAddressV4 currentIP;
 			IPAddressV4 IPRange;
-			string errorMessage = null;
 			while ( parser.IsNotEndOfInput )
 			{
 				switch ( parser.NextToken( out currentIP, out IPRange ) )
 				{
 					case Token.New:
 					case Token.End:
-						result.Add( currentIP );
+						result.Add( currentIP.Address );
 						break;
 					case Token.Range:
 					case Token.CIDR:
-						result.Add( currentIP, IPRange );
+						result.Add( currentIP.Address, IPRange.Address );
 						break;
 					case Token.ExcludeIP:
 					case Token.ExcludeEnd:
-						result.Remove( currentIP );
+						result.Remove( currentIP.Address );
 						break;
 					case Token.ExcludeRange:
 					case Token.ExcludeCIDR:
-						result.Remove( currentIP, IPRange );
+						result.Remove( currentIP.Address, IPRange.Address );
 						break;
 					case Token.Unknown:
 					case Token.ExcludeUnknown:
@@ -390,9 +395,6 @@ namespace GridMapper
 						case '!':
 							Forward();
 							return Token.Exclude;
-						case ' ':
-							Forward();
-							return Token.WhiteSpace;
 						default:
 							return Token.Unknown;
 					}
@@ -642,10 +644,6 @@ namespace GridMapper
 
 			private bool MatchChar( char c )
 			{
-				if ( IsNotEndOfInput && Current == ' ' )
-				{
-					Forward();
-				}
 				if ( IsNotEndOfInput && Current == c )
 				{
 					Forward();
@@ -658,10 +656,6 @@ namespace GridMapper
 			{
 				b = 0;
 				string returnedByte = string.Empty;
-				if ( Current == ' ' )
-				{
-					Forward();
-				}
 				while (IsNotEndOfInput && Char.IsDigit( Current ))
 				{
 					returnedByte += Current;
@@ -683,10 +677,6 @@ namespace GridMapper
 			{
 				CIDR = 0;
 				string CIDRString = string.Empty;
-				if ( Current == ' ' )
-				{
-					Forward();
-				}
 				while ( IsNotEndOfInput && Char.IsDigit( Current ) )
 				{
 					CIDRString += Current;

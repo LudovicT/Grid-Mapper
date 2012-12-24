@@ -18,7 +18,7 @@ namespace GridMapper
 		int _maximumTasks;
 		IPParserResult _ipToTest;
 		int _pingTimeout;
-		List<ushort> _portToTest = new List<ushort>();
+		PortsParserResult _portToTest;
 
 		public Option()
 		{
@@ -26,9 +26,7 @@ namespace GridMapper
 			_maximumTasks = 50;
 			_ipToTest = null;
 			_pingTimeout = 1000;
-			_portToTest.Add( 22 );
-			_portToTest.Add( 80 );
-			_portToTest.Add( 443 );
+			_portToTest = PortsParser.Tryparse( "22,80,443" );
 		}
 
 		public bool CmdConsole
@@ -109,7 +107,7 @@ namespace GridMapper
             }
         }
 
-		public List<ushort> PortToTest
+		public PortsParserResult PortToTest
 		{
 			get
 			{

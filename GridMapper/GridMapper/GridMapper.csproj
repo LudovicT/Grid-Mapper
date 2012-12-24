@@ -180,6 +180,7 @@
       <DependentUpon>Option_window.cs</DependentUpon>
     </Compile>
     <Compile Include="Parameters\IPsParser.cs" />
+    <Compile Include="Parameters\ListOfRangeWithAutoCompression.cs" />
     <Compile Include="Parameters\PortsParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

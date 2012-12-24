@@ -8,7 +8,7 @@ namespace GridMapper
 {
 	public class PortsParserResult
 	{
-		internal PortsParserResult( string errorMessage, List<ushort> result )
+		internal PortsParserResult( string errorMessage, IEnumerable<int> result )
 		{
 			Debug.Assert( ( errorMessage == null ) == ( result != null ) );
 			ErrorMessage = errorMessage;
@@ -16,42 +16,62 @@ namespace GridMapper
 		}
 		public bool HasError { get { return ErrorMessage != null; } }
 		public string ErrorMessage { get; private set; }
-		public List<ushort> Result { get; private set; }
+		public IEnumerable<int> Result { get; private set; }
 	}
+
 	public static class PortsParser
 	{
-		public static PortsParserResult MainPortsParser( string PortsToParse )
-		{
-			List<ushort> PortsList = new List<ushort>();
-			string errorMessage = null;
-			Parser parser = new Parser( PortsToParse );
-			ushort currentPort;
-
-			if ( PortsToParse == string.Empty )
-				errorMessage = "No ports provided";
-			else
-			{
-				while ( parser.NextToken() != Token.End )
-				{
-					switch ( parser.NextToken( out currentPort ) )
-					{
-						case Token.New:
-						case Token.End:
-							PortsList.Add( currentPort );
-							break;
-						case Token.Unknown:
-							errorMessage = "Invalid format for ports arguments";
-							return new PortsParserResult( errorMessage, null );
-					}
-				}
-			}
-			return new PortsParserResult( errorMessage, PortsList );
-		}
 		public enum Token
 		{
 			Unknown,
+			ExcludeUnknown,
 			New,
+			Range,
 			End,
+			Exclude,
+			ExcludePort,
+			ExcludeRange,
+			ExcludeEnd,
+		}
+
+		public static PortsParserResult Tryparse( string PortsToParse )
+		{
+			string errorMessage = null;
+			if ( PortsToParse == string.Empty )
+			{
+				errorMessage = "No ports provided";
+				return new PortsParserResult( errorMessage, null );
+			}
+			ListOfRangeOfIntWithAutoCompression PortsList = new ListOfRangeOfIntWithAutoCompression();
+			Parser parser = new Parser( PortsToParse );
+			ushort port1;
+			ushort port2;
+
+			while ( parser.IsNotEndOfInput )
+			{
+				switch ( parser.NextToken( out port1, out port2 ) )
+				{
+					case Token.New:
+					case Token.End:
+						PortsList.Add( port1 );
+						break;
+					case Token.Range:
+						PortsList.Add( port1, port2 );
+						break;
+					case Token.ExcludePort:
+					case Token.ExcludeEnd:
+						PortsList.Remove( port1 );
+						break;
+					case Token.ExcludeRange:
+						PortsList.Remove( port1, port2 );
+						break;
+					case Token.Unknown:
+					case Token.ExcludeUnknown:
+						errorMessage = "Invalid format for IP Arguments";
+						return new PortsParserResult( errorMessage, null );
+				}
+			}
+			return new PortsParserResult( errorMessage, PortsList );
 		}
 
 		class Parser
@@ -65,17 +85,32 @@ namespace GridMapper
 				_pos = 0;
 			}
 
+			char Current { get { return _s[_pos]; } }
+
+			bool Forward()
+			{
+				return ++_pos < _s.Length;
+			}
+
+			bool IsEndOfInput { get { return _pos >= _s.Length; } }
+
+			public bool IsNotEndOfInput { get { return !IsEndOfInput; } }
+
 			public Token NextToken()
 			{
-				if ( !IsEndOfInput )
+				if ( IsNotEndOfInput )
 				{
 					switch ( Current) 
 					{
-						case ',' :
-							Next();
-							if ( !( Char.IsDigit( Current ) ) ) // return error for any spaces, commas and such that should not be present
-								return Token.Unknown; 
+						case ',':
+							Forward();
 							return Token.New;
+						case '-':
+							Forward();
+							return Token.Range;
+						case '!':
+							Forward();
+							return Token.Exclude;
 						default :
 							return Token.Unknown;
 					}
@@ -83,88 +118,125 @@ namespace GridMapper
 				return Token.End;
 			}
 
-			public Token NextToken(out ushort us1)
+			public Token NextToken( out ushort port1, out ushort port2 )
 			{
-				us1 = 0;
-				if ( !IsEndOfInput )
+				port2 = 0;
+				port1 = 0;
+				Token token;
+				if ( IsNotEndOfInput )
 				{
-					if ( IsPort( out us1 ) )
+					if ( Current != '!' )
 					{
-						switch ( NextToken() )
+						if ( IsPort( out port1 ) )
 						{
-							case Token.New:
-								return Token.New;
-							case Token.End:
-								return Token.End;
-							default:
-								return Token.Unknown;
+							switch ( NextToken() )
+							{
+								case Token.New:
+									return Token.New;
+								case Token.Range:
+									if ( IsPort( out port2 ) )
+									{
+										token = NextToken();
+										if ( token == Token.New || token == Token.End )
+										{
+											return Token.Range;
+										}
+										else
+										{
+											return Token.Unknown;
+										}
+									}
+									return Token.Unknown;
+								case Token.End:
+									return Token.End;
+								default:
+									return Token.Unknown;
+							}
+						}
+						else
+						{
+							return Token.Unknown;
 						}
 					}
-					else if ( us1 <= 0 || us1 > 65535 )
-						return Token.Unknown;
-					else
+					else if ( Current == '!' )
 					{
 						switch ( NextToken() )
 						{
+							case Token.Exclude:
+								if ( IsPort( out port1 ) )
+								{
+
+									switch ( NextToken() )
+									{
+										case Token.New:
+											return Token.ExcludePort;
+										case Token.Range:
+											if ( IsPort( out port2 ) )
+											{
+												token = NextToken();
+												if ( token == Token.New || token == Token.End )
+												{
+													return Token.ExcludeRange;
+												}
+												else
+												{
+													return Token.ExcludeUnknown;
+												}
+											}
+											break;
+										case Token.End:
+											return Token.ExcludeEnd;
+										default:
+											return Token.ExcludeUnknown;
+									}
+								}
+								else
+								{
+									return Token.End;
+								}
+								return Token.ExcludeUnknown;
 							case Token.End:
 								return Token.End;
 							default:
-								return Token.Unknown;
+								return Token.ExcludeUnknown;
 						}
 					}
 				}
 				return Token.End;
 			}
 
-			char Current { get { return _s[ _pos ]; } }
-
-			bool Next()
-			{
-				return ++_pos < _s.Length;
-			}
-
-			bool IsEndOfInput { get { return _pos >= _s.Length; } }
-
 			private bool MatchChar( char c )
 			{
-				if ( !IsEndOfInput && Current == ' ' )
+				if ( IsNotEndOfInput && Current == c )
 				{
-					Next();
-				}
-				if ( !IsEndOfInput && Current == c )
-				{
-					Next();
+					Forward();
 					return true;
 				}
 				return false;
 			}
 
-			public bool IsPort( out ushort us1 )
+			public bool IsPort( out ushort port )
 			{
-				us1 = 0;
-				return ( IsUShort( out us1 ) );
-			}
-
-			public bool IsUShort( out ushort us1 )
-			{
-				us1 = 0;
-				string returnedUShort = String.Empty;
-				if ( Current == ' ' )
+				port = 0;
+				string returnedport = String.Empty;
+				while ( IsNotEndOfInput && Char.IsDigit( Current ) )
 				{
-					Next();
+					returnedport += Current;
+					Forward();
 				}
-				while ( !IsEndOfInput && Char.IsDigit( Current ) )
+				if ( returnedport != String.Empty )
 				{
-					returnedUShort += Current;
-					Next();
-				}
-				if ( returnedUShort != String.Empty )
-				{
-					if ( ushort.TryParse( returnedUShort, out us1 ) )
-						if ( us1 == 0 )
+					if ( ushort.TryParse( returnedport, out port ) )
+					{
+						if ( port == 0 )
+						{
 							return false;
+						}
 						else
+						{
 							return true;
+						}
+					}
 					return false;
 				}
 				return false;

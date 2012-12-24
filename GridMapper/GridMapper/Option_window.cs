@@ -26,7 +26,7 @@ namespace GridMapper
 			textBox2.Text = opt.MaximumTasks.ToString();
 
 			string ports = string.Empty;
-			foreach ( ushort port in opt.PortToTest )
+			foreach ( ushort port in opt.PortToTest.Result )
 			{
 				if ( ports != String.Empty )
 				{
@@ -57,10 +57,10 @@ namespace GridMapper
 						{
 							if ( option_port.Checked == true )
 							{
-							    PortsParserResult ppr = PortsParser.MainPortsParser( textBox3.Text );
+							    PortsParserResult ppr = PortsParser.Tryparse( textBox3.Text );
 							    if ( ppr.Result != null )
 							    {
-									OptionUpdatedEventArgs args = new OptionUpdatedEventArgs( option_ARPing.Checked, option_ARP.Checked, option_DNS.Checked, option_port.Checked, timeout, tasks, ppr.Result );
+									OptionUpdatedEventArgs args = new OptionUpdatedEventArgs( option_ARPing.Checked, option_ARP.Checked, option_DNS.Checked, option_port.Checked, timeout, tasks, ppr );
 									OptionUpdated( this, args );
 							        this.Close();
 							    }
@@ -109,7 +109,7 @@ namespace GridMapper
     }
 		public class OptionUpdatedEventArgs : EventArgs
 		{
-			public OptionUpdatedEventArgs( bool arping, bool arp, bool dns, bool port, int timeout, int tasks, List<ushort> ports)
+			public OptionUpdatedEventArgs( bool arping, bool arp, bool dns, bool port, int timeout, int tasks, PortsParserResult ports )
 			{
 				Arping = arping; ;
 				Arp = arp;
@@ -126,6 +126,6 @@ namespace GridMapper
 			public bool Port { get; private set; }
 			public int Timeout { get; private set; }
 			public int Tasks { get; private set; }
-			public List<ushort> Ports { get; private set; }
+			public PortsParserResult Ports { get; private set; }
 		}
 }
