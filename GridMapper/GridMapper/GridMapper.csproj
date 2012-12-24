@@ -166,6 +166,7 @@
     <Compile Include="NetworkModelObject\INetwork\IPorts.cs" />
     <Compile Include="NetworkModelObject\INetwork\IServer.cs" />
     <Compile Include="NetworkModelObject\INetwork\ISwitch.cs" />
+    <Compile Include="NetworkUtilities\Arping.cs" />
     <Compile Include="NetworkUtilities\NetworkSender.cs" />
     <Compile Include="NetworkUtilities\ARPSender.cs" />
     <Compile Include="NetworkUtilities\IpRange.cs" />

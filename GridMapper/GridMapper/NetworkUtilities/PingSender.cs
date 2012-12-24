@@ -40,6 +40,14 @@ namespace GridMapper
 			}
 			return null;
 		}
+		public void AsyncPing( IPAddress ipAddress )
+		{
+			AsyncPing( ipAddress, _timeout );
+		}
+		public void AsyncPing( IPAddress ipAddress, int timeout )
+		{
+			new Ping().SendAsync( ipAddress, timeout, null );
+		}
 	}
 
 	public class PingCompletedEventArgs : EventArgs

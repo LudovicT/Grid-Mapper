@@ -46,7 +46,7 @@ namespace GridMapper
 					ARPSender arpSender = new ARPSender();
 					ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
 					PortScanner portScanner = new PortScanner();
-					Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
+					Parallel.ForEach<int>( Option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
 						{
 							IPAddress ip = IPAddress.Parse( ((uint)ipInt).ToString() );
 							PingReply pingReply = null;
