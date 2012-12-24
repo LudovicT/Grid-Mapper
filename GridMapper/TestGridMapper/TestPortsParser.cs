@@ -16,6 +16,21 @@ namespace GridMapper.Test
 			TryPortsParser( "32,33,34,76,999,65365" );
 		}
 		[Test]
+		public void StandardInputNoExclude()
+		{
+			TryPortsParser( "32,33,34,76,80-443" );
+		}
+		[Test]
+		public void StandardInputNoRange()
+		{
+			TryPortsParser( "32,33,34,76,!33,!34" );
+		}
+		[Test]
+		public void StandardInput()
+		{
+			TryPortsParser( "32-38,80,443,!33-36,!37" );
+		}
+		[Test]
 		public void MoreThanOneComma()
 		{
 			TryPortsParser( "32,33,,,,55" );

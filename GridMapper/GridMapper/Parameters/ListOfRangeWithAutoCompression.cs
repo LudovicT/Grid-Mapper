@@ -23,6 +23,7 @@ namespace GridMapper
 
 		public void Add( int valueToAdd )
 		{
+			bool added = false;
 			if ( storage.Count > 0 )
 			{
 				int count;
@@ -37,16 +38,21 @@ namespace GridMapper
 						{
 							Remove( RangeOfInt.From, RangeOfInt.To );
 							Add( valueToAdd, RangeOfInt.To );
+							added = true;
 						}
 						if ( IsNextOfTo( valueToAdd, RangeOfInt.From, RangeOfInt.To ) || IsNextOfTo( valueToAdd, RangeOfInt.To ) )
 						{
 							Remove( RangeOfInt.From, RangeOfInt.To );
 							Add( RangeOfInt.From, valueToAdd );
+							added = true;
 						}
 					}
 				} while ( storage.Count != count );
 			}
-			storage.Add( new Item( valueToAdd, valueToAdd ) );
+			if ( !added )
+			{
+				storage.Add( new Item( valueToAdd, valueToAdd ) );
+			}
 			storage.Sort( ( Item a, Item b ) => a.From.CompareTo( b.From ) );
 		}
 
@@ -133,10 +139,18 @@ namespace GridMapper
 						{
 							Remove( RangeOfInt.From, RangeOfInt.To );
 							//check if the range is not a single Int
-							if ( RangeOfInt.From != RangeOfInt.To )
+							if ( RangeOfInt.From != RangeOfInt.To && valueToAdd != RangeOfInt.From && valueToAdd != RangeOfInt.To )
 							{
 								Add( RangeOfInt.From, tmpFrom );
 								Add( tmpTo, RangeOfInt.To );
+							}
+							if ( RangeOfInt.From != RangeOfInt.To && valueToAdd == RangeOfInt.From )
+							{
+								Add( tmpTo, RangeOfInt.To );
+							}
+							if ( RangeOfInt.From != RangeOfInt.To && valueToAdd == RangeOfInt.To)
+							{
+								Add( RangeOfInt.From, tmpFrom );
 							}
 						}
 					}
