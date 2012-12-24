@@ -47,7 +47,7 @@
 			// 
 			this.option_cancel.Anchor = ( (System.Windows.Forms.AnchorStyles)( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.option_cancel.Location = new System.Drawing.Point( 128, 203 );
-			this.option_cancel.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.option_cancel.Margin = new System.Windows.Forms.Padding( 2 );
 			this.option_cancel.Name = "option_cancel";
 			this.option_cancel.Size = new System.Drawing.Size( 56, 19 );
 			this.option_cancel.TabIndex = 0;
@@ -59,7 +59,7 @@
 			// 
 			this.option_accept.Anchor = ( (System.Windows.Forms.AnchorStyles)( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.option_accept.Location = new System.Drawing.Point( 56, 203 );
-			this.option_accept.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.option_accept.Margin = new System.Windows.Forms.Padding( 2 );
 			this.option_accept.Name = "option_accept";
 			this.option_accept.Size = new System.Drawing.Size( 56, 19 );
 			this.option_accept.TabIndex = 1;
@@ -76,14 +76,13 @@
 			this.option_ping.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
 			this.option_ping.Checked = true;
 			this.option_ping.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.option_ping.Enabled = false;
-			this.option_ping.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.option_ping.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.option_ping.Location = new System.Drawing.Point( 9, 28 );
-			this.option_ping.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.option_ping.Margin = new System.Windows.Forms.Padding( 2 );
 			this.option_ping.Name = "option_ping";
-			this.option_ping.Size = new System.Drawing.Size( 149, 17 );
+			this.option_ping.Size = new System.Drawing.Size( 47, 17 );
 			this.option_ping.TabIndex = 2;
-			this.option_ping.Text = "Ping (cannot be changed)";
+			this.option_ping.Text = "Ping";
 			this.option_ping.UseVisualStyleBackColor = true;
 			// 
 			// option_ARPing
@@ -94,7 +93,7 @@
 			this.option_ARPing.AutoSize = true;
 			this.option_ARPing.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
 			this.option_ARPing.Location = new System.Drawing.Point( 9, 50 );
-			this.option_ARPing.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.option_ARPing.Margin = new System.Windows.Forms.Padding( 2 );
 			this.option_ARPing.Name = "option_ARPing";
 			this.option_ARPing.Size = new System.Drawing.Size( 71, 17 );
 			this.option_ARPing.TabIndex = 3;
@@ -110,7 +109,7 @@
 			this.option_DNS.Checked = true;
 			this.option_DNS.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.option_DNS.Location = new System.Drawing.Point( 9, 92 );
-			this.option_DNS.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.option_DNS.Margin = new System.Windows.Forms.Padding( 2 );
 			this.option_DNS.Name = "option_DNS";
 			this.option_DNS.Size = new System.Drawing.Size( 49, 17 );
 			this.option_DNS.TabIndex = 4;
@@ -124,7 +123,7 @@
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.option_port.AutoSize = true;
 			this.option_port.Location = new System.Drawing.Point( 9, 113 );
-			this.option_port.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.option_port.Margin = new System.Windows.Forms.Padding( 2 );
 			this.option_port.Name = "option_port";
 			this.option_port.Size = new System.Drawing.Size( 50, 17 );
 			this.option_port.TabIndex = 5;
@@ -138,7 +137,7 @@
 						| System.Windows.Forms.AnchorStyles.Left )
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.textBox1.Location = new System.Drawing.Point( 103, 139 );
-			this.textBox1.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.textBox1.Margin = new System.Windows.Forms.Padding( 2 );
 			this.textBox1.Name = "textBox1";
 			this.textBox1.Size = new System.Drawing.Size( 80, 20 );
 			this.textBox1.TabIndex = 6;
@@ -149,7 +148,7 @@
 						| System.Windows.Forms.AnchorStyles.Left )
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.textBox2.Location = new System.Drawing.Point( 103, 162 );
-			this.textBox2.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.textBox2.Margin = new System.Windows.Forms.Padding( 2 );
 			this.textBox2.Name = "textBox2";
 			this.textBox2.Size = new System.Drawing.Size( 80, 20 );
 			this.textBox2.TabIndex = 7;
@@ -186,7 +185,7 @@
 						| System.Windows.Forms.AnchorStyles.Left )
 						| System.Windows.Forms.AnchorStyles.Right ) ) );
 			this.textBox3.Location = new System.Drawing.Point( 103, 113 );
-			this.textBox3.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.textBox3.Margin = new System.Windows.Forms.Padding( 2 );
 			this.textBox3.Name = "textBox3";
 			this.textBox3.Size = new System.Drawing.Size( 80, 20 );
 			this.textBox3.TabIndex = 10;
@@ -215,7 +214,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Window;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.ClientSize = new System.Drawing.Size( 194, 232 );
+			this.ClientSize = new System.Drawing.Size( 194, 254 );
 			this.ControlBox = false;
 			this.Controls.Add( this.option_ARP );
 			this.Controls.Add( this.textBox3 );
@@ -232,7 +231,7 @@
 			this.Cursor = System.Windows.Forms.Cursors.Default;
 			this.DoubleBuffered = true;
 			this.Icon = ( (System.Drawing.Icon)( resources.GetObject( "$this.Icon" ) ) );
-			this.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.Margin = new System.Windows.Forms.Padding( 2 );
 			this.MinimumSize = new System.Drawing.Size( 210, 270 );
 			this.Name = "Option_window";
 			this.ShowIcon = false;
