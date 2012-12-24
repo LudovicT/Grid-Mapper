@@ -100,7 +100,7 @@ namespace GridMapper
 					ip.B2 = b[2];
 					ip.B3 = b[3];
 				}
-				intIP = IPAddress.ToString();
+				intIP = ((uint)ip.Address).ToString(); ;
 
 				string IPAddressToString = string.Empty;
 				IPAddressToString = item.IPAddress.ToString();
@@ -132,6 +132,10 @@ namespace GridMapper
 					if ( row.Cells[1].Value.ToString() == IPAddressToString )
 					{
 						found = true;
+						if ( row.Cells[0].Value.ToString() == string.Empty && intIP != string.Empty )
+						{
+							row.Cells[0].Value = intIP;
+						}
 						if ( row.Cells[2].Value.ToString() == string.Empty && macToString != string.Empty )
 						{
 							row.Cells[2].Value = macToString;
