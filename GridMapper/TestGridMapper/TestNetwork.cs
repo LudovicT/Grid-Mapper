@@ -5,10 +5,10 @@ using System.Text;
 using NUnit.Framework;
 using System.Net.NetworkInformation;
 using System.Net;
-using GridMapper.NetworkRawSender;
 using System.Threading;
 using System.Reflection;
 using System.Net.Sockets;
+using GridMapper.NetworkRawSender;
 
 namespace GridMapper.Test
 {
@@ -51,6 +51,14 @@ namespace GridMapper.Test
 	//        Network.HostsEntries.Clear();
 	//    }
 
+		[Test]
+		public void SendArpingTest()
+		{
+			for ( int i = 0; i < 20; i++ )
+			{
+				new SendArping().Arping( IPAddress.Parse( "192.168.1.1" ) );
+			}
+		}
 		[Test]
 		public void TestScanPortWithConnect()
 		{

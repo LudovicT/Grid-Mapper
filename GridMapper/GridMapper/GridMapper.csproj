@@ -89,11 +89,13 @@
     <ApplicationIcon>Logo_GridMapper.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gallio, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
     <Reference Include="IPAddressControlLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=55e96405d8fd6d61, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>resx\IPAddressControlLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MbUnit, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -144,6 +146,7 @@
     <Compile Include="NetworkRawSender\ProtocolHeader.cs" />
     <Compile Include="NetworkRawSender\RawScanPort.cs" />
     <Compile Include="NetworkRawSender\RawSocketPing.cs" />
+    <Compile Include="NetworkRawSender\SendArping.cs" />
     <Compile Include="NetworkRawSender\SendRawPing.cs" />
     <Compile Include="NetworkRawSender\SockaddrConvert.cs" />
     <Compile Include="NetworkRawSender\UdpHeader.cs" />
