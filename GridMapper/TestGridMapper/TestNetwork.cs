@@ -53,75 +53,67 @@ namespace GridMapper.Test
 	//    }
 
 		[Test]
-		public void SendArpingTest()
-		{
-			for ( int i = 1; i < 255; i++ )
-			{
-				new SendArping().Arping( IPAddress.Parse( "192.168.1."+i.ToString() ) );
-			}
-		}
-		[Test]
 		public void GetInterfaces()
 		{
-			winpcap.interfaces();
+			arp.interfaces();
 		}
 		[Test]
 		public void Arp24()
 		{
-			winpcap wpcap = new winpcap();
+			arp wpcap = new arp();
 			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/24" ) );
 		}
 		[Test]
 		public void Arp20()
 		{
-			winpcap wpcap = new winpcap();
+			arp wpcap = new arp();
 			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/20" ) );
 		}
 		[Test]
 		public void Arp16()
 		{
-			winpcap wpcap = new winpcap();
+			arp wpcap = new arp();
 			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/16" ) );
 		}
 		[Test]
 		public void Arp12()
 		{
-			winpcap wpcap = new winpcap();
+			arp wpcap = new arp();
 			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/12" ) );
 		}
 		[Test]
 		public void Arp8()
 		{
-			winpcap wpcap = new winpcap();
+			arp wpcap = new arp();
 			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/8" ) );
 		}
 		[Test]
 		public void ReceiveARP()
 		{
-			winpcap wpcap = new winpcap();
+			arp wpcap = new arp();
 			wpcap.receiveARP();
 		}
-		[Test]
-		public void TestScanPortWithConnect()
-		{
-			string ip = "192.168.1.27";
-			for ( int i = 1; i < 65535; i++ )
-			{
-				RawScanPort scanPort = new RawScanPort();
-				scanPort.ScanWithConnect( IPAddress.Parse( ip ), i );
-				if ( i % 20000 == 0 )
-					Thread.Sleep( 300 );
-			}
-		}
-		[Test]
-		public void TestScanPortWithTcpClient()
-		{
-			IPAddress ip = IPAddress.Parse("192.168.1.27");
-			ThreadPool.SetMinThreads( 200, 200 );
-			for ( int i = 1; i < 65535; i++ )
-			{
-				TimeOutSocket.Connect( new IPEndPoint( ip, i ), 50 );
-			}
-		}
+		//[Test]
+		//public void TestScanPortWithConnect()
+		//{
+		//    string ip = "192.168.1.27";
+		//    for ( int i = 1; i < 65535; i++ )
+		//    {
+		//        RawScanPort scanPort = new RawScanPort();
+		//        scanPort.ScanWithConnect( IPAddress.Parse( ip ), i );
+		//        if ( i % 20000 == 0 )
+		//            Thread.Sleep( 300 );
+		//    }
+		//}
+		//[Test]
+		//public void TestScanPortWithTcpClient()
+		//{
+		//    IPAddress ip = IPAddress.Parse("192.168.1.27");
+		//    ThreadPool.SetMinThreads( 200, 200 );
+		//    for ( int i = 1; i < 65535; i++ )
+		//    {
+		//        TimeOutSocket.Connect( new IPEndPoint( ip, i ), 50 );
+		//    }
+		//}
 	}
 }

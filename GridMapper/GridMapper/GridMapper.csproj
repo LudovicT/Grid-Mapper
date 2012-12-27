@@ -190,6 +190,7 @@
     <Compile Include="Repository\Repository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NetworkUtilities\Arping.cs" />
     <Compile Include="Struct\IPAddressV4.cs" />
     <EmbeddedResource Include="GridWindow.resx">
       <DependentUpon>GridWindow.cs</DependentUpon>
