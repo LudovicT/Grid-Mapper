@@ -96,6 +96,18 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MbUnit, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
+    <Reference Include="PcapDotNet.Base">
+      <HintPath>3rdPartyLibs\PcapDotNet\PcapDotNet.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Core">
+      <HintPath>3rdPartyLibs\PcapDotNet\PcapDotNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Core.Extensions">
+      <HintPath>3rdPartyLibs\PcapDotNet\PcapDotNet.Core.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Packets">
+      <HintPath>3rdPartyLibs\PcapDotNet\PcapDotNet.Packets.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -212,6 +224,9 @@
     <Content Include="Logo_GridMapper.ico" />
     <None Include="Resources\Sans titre.png" />
     <None Include="resx\Logo_GridMapper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="3rdPartyLibs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

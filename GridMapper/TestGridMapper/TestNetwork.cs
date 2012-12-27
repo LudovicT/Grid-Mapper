@@ -9,6 +9,7 @@ using System.Threading;
 using System.Reflection;
 using System.Net.Sockets;
 using GridMapper.NetworkRawSender;
+using System.Threading.Tasks;
 
 namespace GridMapper.Test
 {
@@ -54,10 +55,51 @@ namespace GridMapper.Test
 		[Test]
 		public void SendArpingTest()
 		{
-			for ( int i = 0; i < 20; i++ )
+			for ( int i = 1; i < 255; i++ )
 			{
-				new SendArping().Arping( IPAddress.Parse( "192.168.1.1" ) );
+				new SendArping().Arping( IPAddress.Parse( "192.168.1."+i.ToString() ) );
 			}
+		}
+		[Test]
+		public void GetInterfaces()
+		{
+			winpcap.interfaces();
+		}
+		[Test]
+		public void Arp24()
+		{
+			winpcap wpcap = new winpcap();
+			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/24" ) );
+		}
+		[Test]
+		public void Arp20()
+		{
+			winpcap wpcap = new winpcap();
+			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/20" ) );
+		}
+		[Test]
+		public void Arp16()
+		{
+			winpcap wpcap = new winpcap();
+			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/16" ) );
+		}
+		[Test]
+		public void Arp12()
+		{
+			winpcap wpcap = new winpcap();
+			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/12" ) );
+		}
+		[Test]
+		public void Arp8()
+		{
+			winpcap wpcap = new winpcap();
+			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/8" ) );
+		}
+		[Test]
+		public void ReceiveARP()
+		{
+			winpcap wpcap = new winpcap();
+			wpcap.receiveARP();
 		}
 		[Test]
 		public void TestScanPortWithConnect()

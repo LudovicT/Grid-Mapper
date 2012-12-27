@@ -271,24 +271,12 @@ namespace GridMapper
         }
 
         static string ToMac(string ToTransform)
-        {
-            string Transform = string.Empty;
-            string Substring = string.Empty;
-            int i = 0;
-            int j = 0;
-
-            while (i < ToTransform.Length / 2)
-            {
-                Substring = ToTransform.Substring(j, 2);
-                Transform += Substring;
-                ++i;
-                j = j + 2;
-                if (i <= 5)
-                {
-                    Transform += ":";
-                }
-            }
-            return Transform;
+		{
+			ToTransform = ToTransform.ToUpperInvariant();
+			var list = Enumerable
+				.Range( 0, ToTransform.Length / 2 )
+				.Select( i => ToTransform.Substring( i * 2, 2 ) );
+			return string.Join( ":", list );
         }
 
         private void ScanButton_Click(object sender, EventArgs e)
