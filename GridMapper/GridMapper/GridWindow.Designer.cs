@@ -71,7 +71,7 @@ namespace GridMapper
             // 
             // toolStrip1
             // 
-            this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toolStrip1.BackColor = System.Drawing.SystemColors.Window;
             this.toolStrip1.CanOverflow = false;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.LoadScan,
@@ -357,7 +357,7 @@ namespace GridMapper
             this.ScanButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ScanButton.ForeColor = System.Drawing.SystemColors.Window;
             this.ScanButton.Image = global::GridMapper.Properties.Resources.Sans_titre;
-            this.ScanButton.Location = new System.Drawing.Point(467, 22);
+            this.ScanButton.Location = new System.Drawing.Point(435, 18);
             this.ScanButton.Margin = new System.Windows.Forms.Padding(0);
             this.ScanButton.Name = "ScanButton";
             this.ScanButton.Size = new System.Drawing.Size(38, 38);
@@ -368,7 +368,7 @@ namespace GridMapper
             // ipRangeUserControl1
             // 
             this.ipRangeUserControl1.BackColor = System.Drawing.Color.Transparent;
-            this.ipRangeUserControl1.Location = new System.Drawing.Point(101, 27);
+            this.ipRangeUserControl1.Location = new System.Drawing.Point(69, 22);
             this.ipRangeUserControl1.Margin = new System.Windows.Forms.Padding(5);
             this.ipRangeUserControl1.Name = "ipRangeUserControl1";
             this.ipRangeUserControl1.Size = new System.Drawing.Size(361, 33);

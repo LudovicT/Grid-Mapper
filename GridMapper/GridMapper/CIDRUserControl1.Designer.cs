@@ -36,7 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.Name = "CIDRUserControl1";
-            this.Size = new System.Drawing.Size(364, 34);
+            this.Size = new System.Drawing.Size(365, 34);
             this.ResumeLayout(false);
 
         }
