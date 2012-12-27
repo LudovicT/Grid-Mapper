@@ -18,33 +18,25 @@ namespace GridMapper.NetworkRawSender
 		Socket pingSocket;
 		byte[] receiveBuffer;
 		byte[] pingPayload;
-		IcmpHeader icmpHeader; //a la mano mon reuff !
+		IcmpHeader icmpHeader;
 		byte[] pingPacket;
 		EndPoint castResponseEndPoint;
 		ArrayList protocolHeaderList;
 
 		public static event EventHandler<SendPingEventArgs> SendPing;
 
+		//ToDo faire l'ipv6 (dans loooongtemps)
 		public SendRawPing()
 		{
-
 			dataSize = 256;
 			ttlValue = 12;
 			protocolHeaderList = new ArrayList();
 
 			pingSocket = new Socket( AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.Icmp );
-
 			pingSocket.SetSocketOption( SocketOptionLevel.IP, SocketOptionName.IpTimeToLive, ttlValue );
 
 			IPEndPoint localEndPoint = new IPEndPoint( IPAddress.Any, 0 );
 			pingSocket.Bind( localEndPoint );
-
-			receiveBuffer = new byte[10 + 28 + 8 + dataSize];
-			pingPayload = new byte[dataSize];
-			for( int i = 0 ; i < pingPayload.Length ; i++ )
-			{
-				pingPayload[i] = (byte)'e';
-			}
 
 			icmpHeader = new IcmpHeader();
 
@@ -55,9 +47,15 @@ namespace GridMapper.NetworkRawSender
 
 			protocolHeaderList.Add( icmpHeader );
 
+			pingPayload = new byte[dataSize];
+			for( int i = 0 ; i < pingPayload.Length ; i++ )
+			{
+				pingPayload[i] = (byte)'e';
+			}
+
 			pingPacket = icmpHeader.BuildPacket( protocolHeaderList, pingPayload );
 
-			
+			receiveBuffer = new byte[pingPacket.Length];
 		}
 
 		public void Send(IPAddress ipAddress)
@@ -66,7 +64,6 @@ namespace GridMapper.NetworkRawSender
 
 			pingSocket.BeginReceiveFrom( receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref castResponseEndPoint, rveCallback, this );
 			pingSocket.BeginSendTo( pingPacket, 0, pingPacket.Length, SocketFlags.None, castResponseEndPoint, sendCallback, this );
-			//Thread.Sleep( 5 );
 		}
 
 		private void sendCallback( IAsyncResult ar )
@@ -74,9 +71,8 @@ namespace GridMapper.NetworkRawSender
 			pingSocket.EndSendTo( ar );
 		}
 
-
-		static readonly IPAddress ownIP = Dns.GetHostEntry( Dns.GetHostName() ).AddressList[0];
-		static volatile int i = 0; 
+		//static readonly IPAddress ownIP = Dns.GetHostEntry( Dns.GetHostName() ).AddressList[0];
+		//static volatile int i = 0; 
 
 		public static void rveCallback( IAsyncResult ar )
 		{
@@ -103,6 +99,7 @@ namespace GridMapper.NetworkRawSender
 			}
 		}
 	}
+
 	public class SendPingEventArgs : EventArgs
 	{
 		public SendPingEventArgs( IPAddress ipAddress )
