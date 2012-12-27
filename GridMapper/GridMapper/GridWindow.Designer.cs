@@ -71,14 +71,17 @@ namespace GridMapper
             // 
             // toolStrip1
             // 
-            this.toolStrip1.BackColor = System.Drawing.SystemColors.Window;
+            this.toolStrip1.BackColor = System.Drawing.Color.Transparent;
             this.toolStrip1.CanOverflow = false;
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.LoadScan,
             this.SaveScan});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 28);
+            this.toolStrip1.Location = new System.Drawing.Point(18, 31);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(552, 25);
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip1.Size = new System.Drawing.Size(49, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -189,28 +192,28 @@ namespace GridMapper
             // 
             this.startToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -309,7 +312,7 @@ namespace GridMapper
             // 
             // menuStrip1
             // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.optionToolStripMenuItem,
@@ -357,10 +360,10 @@ namespace GridMapper
             this.ScanButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ScanButton.ForeColor = System.Drawing.SystemColors.Window;
             this.ScanButton.Image = global::GridMapper.Properties.Resources.Sans_titre;
-            this.ScanButton.Location = new System.Drawing.Point(435, 18);
+            this.ScanButton.Location = new System.Drawing.Point(436, 21);
             this.ScanButton.Margin = new System.Windows.Forms.Padding(0);
             this.ScanButton.Name = "ScanButton";
-            this.ScanButton.Size = new System.Drawing.Size(38, 38);
+            this.ScanButton.Size = new System.Drawing.Size(35, 35);
             this.ScanButton.TabIndex = 9;
             this.ScanButton.UseVisualStyleBackColor = true;
             this.ScanButton.Click += new System.EventHandler(this.ScanButton_Click);
@@ -368,10 +371,10 @@ namespace GridMapper
             // ipRangeUserControl1
             // 
             this.ipRangeUserControl1.BackColor = System.Drawing.Color.Transparent;
-            this.ipRangeUserControl1.Location = new System.Drawing.Point(69, 22);
+            this.ipRangeUserControl1.Location = new System.Drawing.Point(72, 28);
             this.ipRangeUserControl1.Margin = new System.Windows.Forms.Padding(5);
             this.ipRangeUserControl1.Name = "ipRangeUserControl1";
-            this.ipRangeUserControl1.Size = new System.Drawing.Size(361, 33);
+            this.ipRangeUserControl1.Size = new System.Drawing.Size(359, 28);
             this.ipRangeUserControl1.TabIndex = 10;
             // 
             // GridWindow
