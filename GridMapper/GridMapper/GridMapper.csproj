@@ -193,7 +193,22 @@
     <Compile Include="Repository\Repository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="StringUserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StringUserControl1.Designer.cs">
+      <DependentUpon>StringUserControl1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Struct\IPAddressV4.cs" />
+    <Compile Include="CIDRUserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CIDRUserControl1.Designer.cs">
+      <DependentUpon>CIDRUserControl1.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="CIDRUserControl1.resx">
+      <DependentUpon>CIDRUserControl1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GridWindow.resx">
       <DependentUpon>GridWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -216,6 +231,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="StringUserControl1.resx">
+      <DependentUpon>StringUserControl1.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="NetworkModelObject\INetwork\INetworkDiagram.cd" />
     <None Include="Properties\Settings.settings">
