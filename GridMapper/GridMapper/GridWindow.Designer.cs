@@ -121,7 +121,7 @@ namespace GridMapper
             this.Ports});
             this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.dataGridView1.Location = new System.Drawing.Point(0, 60);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(552, 415);
@@ -335,32 +335,32 @@ namespace GridMapper
             // rangeToolStripMenuItem
             // 
             this.rangeToolStripMenuItem.Name = "rangeToolStripMenuItem";
-            this.rangeToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.rangeToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
             this.rangeToolStripMenuItem.Text = "Range";
             // 
             // cRIDToolStripMenuItem
             // 
             this.cRIDToolStripMenuItem.Name = "cRIDToolStripMenuItem";
-            this.cRIDToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.cRIDToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
             this.cRIDToolStripMenuItem.Text = "CIDR";
             // 
             // stringToolStripMenuItem
             // 
             this.stringToolStripMenuItem.Name = "stringToolStripMenuItem";
-            this.stringToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.stringToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
             this.stringToolStripMenuItem.Text = "String";
             // 
             // ScanButton
             // 
-            this.ScanButton.BackgroundImage = global::GridMapper.Properties.Resources.Sans_titre;
             this.ScanButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ScanButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ScanButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ScanButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ScanButton.ForeColor = System.Drawing.SystemColors.Window;
-            this.ScanButton.Location = new System.Drawing.Point(489, 18);
+            this.ScanButton.Image = global::GridMapper.Properties.Resources.Sans_titre;
+            this.ScanButton.Location = new System.Drawing.Point(467, 22);
             this.ScanButton.Margin = new System.Windows.Forms.Padding(0);
             this.ScanButton.Name = "ScanButton";
-            this.ScanButton.Size = new System.Drawing.Size(60, 42);
+            this.ScanButton.Size = new System.Drawing.Size(38, 38);
             this.ScanButton.TabIndex = 9;
             this.ScanButton.UseVisualStyleBackColor = true;
             this.ScanButton.Click += new System.EventHandler(this.ScanButton_Click);
@@ -369,7 +369,7 @@ namespace GridMapper
             // 
             this.ipRangeUserControl1.BackColor = System.Drawing.Color.Transparent;
             this.ipRangeUserControl1.Location = new System.Drawing.Point(101, 27);
-            this.ipRangeUserControl1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.ipRangeUserControl1.Margin = new System.Windows.Forms.Padding(5);
             this.ipRangeUserControl1.Name = "ipRangeUserControl1";
             this.ipRangeUserControl1.Size = new System.Drawing.Size(361, 33);
             this.ipRangeUserControl1.TabIndex = 10;
@@ -389,7 +389,7 @@ namespace GridMapper
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "GridWindow";
             this.Text = "Grid Mapper";
             this.Load += new System.EventHandler(this.Form1_Load);
