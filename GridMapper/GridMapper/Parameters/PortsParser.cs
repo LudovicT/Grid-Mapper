@@ -15,7 +15,7 @@ namespace GridMapper
 	public class PortsParserResult
 	{
 		/// <summary>
-		/// This class will call the parser to parse the ports and will return the list of ports to be scanned 
+		/// This class calls the parser to parse the ports and returns the list of ports to be scanned 
 		/// or an error with a message if it did not work.
 		/// <param name="PortsToParse">The list of ports to be parsed.</param>
 		/// <param name="errorMessage"> This message is set and returned when something went wrong while parsing the ports</param>
@@ -277,5 +277,5 @@ namespace GridMapper
 
 		}
 	}
-	#endregion //PortsParser
+	#endregion // PortsParser
 }
