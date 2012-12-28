@@ -67,7 +67,7 @@ namespace GridMapper
 						break;
 					case Token.Unknown:
 					case Token.ExcludeUnknown:
-						errorMessage = "Invalid format for IP Arguments";
+						errorMessage = "Invalid format for ports Arguments";
 						return new PortsParserResult( errorMessage, null );
 				}
 			}
