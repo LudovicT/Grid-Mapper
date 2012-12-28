@@ -64,6 +64,7 @@ namespace GridMapper.NetworkUtilities
 					Console.WriteLine( " (No description available)" );
 			}
 		}
+
 		/// <summary>
 		/// This function build an ARP over Ethernet packet.
 		/// </summary>

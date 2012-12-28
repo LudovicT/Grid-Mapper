@@ -165,8 +165,9 @@
     <Compile Include="NetworkRawSender\WinsockIoctl.cs" />
     <Compile Include="NetworkUtilities\ARPSender.cs" />
     <Compile Include="NetworkUtilities\IpRange.cs" />
-    <Compile Include="NetworkUtilities\PacketReceiver.cs" />
-    <Compile Include="NetworkUtilities\PacketSender.cs" />
+    <Compile Include="NetworkUtilities\OwnPacketBuilder.cs" />
+    <Compile Include="NetworkUtilities\OwnPacketReceiver.cs" />
+    <Compile Include="NetworkUtilities\OwnPacketSender.cs" />
     <Compile Include="NetworkUtilities\PingSender.cs" />
     <Compile Include="NetworkUtilities\PortScanner.cs" />
     <Compile Include="NetworkUtilities\PortScannerBis.cs" />

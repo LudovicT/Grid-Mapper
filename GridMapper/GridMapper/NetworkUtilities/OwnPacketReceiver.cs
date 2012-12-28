@@ -9,12 +9,12 @@ using PcapDotNet.Packets.Arp;
 
 namespace GridMapper.NetworkUtilities
 {
-	public class PacketReceiver
+	public class OwnPacketReceiver
 	{
 
 		PacketDevice selectedDevice;
 
-		public PacketReceiver()
+		public OwnPacketReceiver()
 		{
 			IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
 

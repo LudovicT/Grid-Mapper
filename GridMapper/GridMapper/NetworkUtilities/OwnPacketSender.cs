@@ -7,13 +7,13 @@ using PcapDotNet.Packets;
 
 namespace GridMapper.NetworkUtilities
 {
-	public class PacketSender
+	public class OwnPacketSender
 	{
 
 		PacketDevice selectedDevice;
 		PacketCommunicator outputCommunicator;
 
-		public PacketSender()
+		public OwnPacketSender()
 		{
 			IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
 
