@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Net.Sockets;
 using GridMapper.NetworkRawSender;
 using System.Threading.Tasks;
+using GridMapper.NetworkUtilities;
 
 namespace GridMapper.Test
 {
@@ -93,18 +94,36 @@ namespace GridMapper.Test
 			arp wpcap = new arp();
 			wpcap.receiveARP();
 		}
-		//[Test]
-		//public void TestScanPortWithConnect()
-		//{
-		//    string ip = "192.168.1.27";
-		//    for ( int i = 1; i < 65535; i++ )
-		//    {
-		//        RawScanPort scanPort = new RawScanPort();
-		//        scanPort.ScanWithConnect( IPAddress.Parse( ip ), i );
-		//        if ( i % 20000 == 0 )
-		//            Thread.Sleep( 300 );
-		//    }
-		//}
+		[Test]
+		public void TestScanPortWithConnect()
+		{
+			string ip = "192.168.1.27";
+			for( int i = 1 ; i < 65535 ; i++ )
+			{
+				RawScanPort scanPort = new RawScanPort();
+				scanPort.ScanWithConnect( IPAddress.Parse( ip ), i );
+				//if( i % 20000 == 0 )
+				//    Thread.Sleep( 300 );
+			}
+		}
+		[Test]
+		public void TestScanPortWithPcap()
+		{
+			string ip = "192.168.1.27";
+			string mac = "00113202ce22";
+			PortScannerBis portScanner = new PortScannerBis();
+			for( int i = 1 ; i < 65535 ; i++ )
+			{
+				portScanner.tryScanPort( ip, mac, i );
+			}
+		}
+		[Test]
+		public void ReceiveScanPort()
+		{
+			PortScannerBis portScanner = new PortScannerBis();
+			portScanner.receivePortPacketScanner();
+		}
+
 		//[Test]
 		//public void TestScanPortWithTcpClient()
 		//{

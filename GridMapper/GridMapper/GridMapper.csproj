@@ -163,11 +163,11 @@
     <Compile Include="NetworkRawSender\SockaddrConvert.cs" />
     <Compile Include="NetworkRawSender\UdpHeader.cs" />
     <Compile Include="NetworkRawSender\WinsockIoctl.cs" />
-    <Compile Include="NetworkUtilities\NetworkSender.cs" />
     <Compile Include="NetworkUtilities\ARPSender.cs" />
     <Compile Include="NetworkUtilities\IpRange.cs" />
     <Compile Include="NetworkUtilities\PingSender.cs" />
     <Compile Include="NetworkUtilities\PortScanner.cs" />
+    <Compile Include="NetworkUtilities\PortScannerBis.cs" />
     <Compile Include="NetworkUtilities\ReverseDnsResolver.cs" />
     <Compile Include="NetworkUtilities\WMI.cs" />
     <Compile Include="Option_window.cs">
