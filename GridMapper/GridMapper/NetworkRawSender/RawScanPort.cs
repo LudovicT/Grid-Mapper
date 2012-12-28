@@ -64,6 +64,7 @@ namespace GridMapper.NetworkRawSender
 			}
 		}
 	}
+
 	public class TimeOutSocket
 	{
 		public static void Connect( IPEndPoint remoteEndPoint, int timeoutMSec )
