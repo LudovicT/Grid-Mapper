@@ -6,8 +6,24 @@ using System.Diagnostics;
 
 namespace GridMapper
 {
+	#region PortsParser
+
+	/// <summary>
+	/// PortsParserResult class
+	/// </summary>
+	/// 
 	public class PortsParserResult
 	{
+		/// <summary>
+		/// This class will call the parser to parse the ports and will return the list of ports to be scanned 
+		/// or an error with a message if it did not work.
+		/// <param name="PortsToParse">The list of ports to be scanned.</param>
+		/// <param name="errorMessage"> This message is set and returned when something went wrong while parsing the ports</param>
+		/// <param name="result"> This is where the ports to be scanned are stored.</param>
+		/// <returns>
+		/// <c>IEnumerable<int>Result</c>
+		/// </returns>
+		/// </summary>
 		internal PortsParserResult( string errorMessage, IEnumerable<int> result )
 		{
 			Debug.Assert( ( errorMessage == null ) == ( result != null ) );
@@ -18,7 +34,14 @@ namespace GridMapper
 		public string ErrorMessage { get; private set; }
 		public IEnumerable<int> Result { get; private set; }
 	}
-
+	/// <summary>
+	/// This class is the parser for the ports arguments.
+	/// This parser will retrieve all the ports to be scanned.
+	/// It includes features such as 
+	/// simple parsing (single ports), 
+	/// range (from -> to) 
+	/// and exclusion (single and range)
+	/// </summary>
 	public static class PortsParser
 	{
 		public enum Token
@@ -244,4 +267,5 @@ namespace GridMapper
 
 		}
 	}
+	#endregion //PortsParser
 }
