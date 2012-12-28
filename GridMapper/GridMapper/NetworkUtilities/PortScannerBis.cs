@@ -82,7 +82,7 @@ namespace GridMapper.NetworkUtilities
 								CurrentDestination = new IpV4Address( ipAddress ),
 								Fragmentation = IpV4Fragmentation.None,
 								HeaderChecksum = null, // Will be filled automatically.
-								Identification = 123,
+								Identification = 0,
 								Options = IpV4Options.None,
 								Protocol = null, // Will be filled automatically.
 								Ttl = 100,
@@ -91,20 +91,19 @@ namespace GridMapper.NetworkUtilities
 
 			tcpLayer = new TcpLayer
 							{
-								SourcePort = 6666,
+								SourcePort = 62000,
 								DestinationPort = (ushort)portToScan,
 								Checksum = null, // Will be filled automatically.
 								SequenceNumber = 100,
-								AcknowledgmentNumber = 50,
+								AcknowledgmentNumber = 0,
 								ControlBits = TcpControlBits.Synchronize,
-								Window = 100,
+								Window = 8192,
 								UrgentPointer = 0,
-								Options = TcpOptions.None,
+								Options = new TcpOptions(new TcpOptionMaximumSegmentSize(1460),TcpOption.Nop, new TcpOptionWindowScale(2),new TcpOptionSelectiveAcknowledgmentPermitted(), new TcpOptionTimestamp((uint)DateTime.Now.Ticks,0)),
 							};
-
 			payloadLayer = new PayloadLayer
 			{
-				Data = new Datagram( Encoding.ASCII.GetBytes( "hello world" ) ),
+				Data = new Datagram( Encoding.ASCII.GetBytes( "test" ) ),
 			};
 
 			
@@ -162,7 +161,7 @@ namespace GridMapper.NetworkUtilities
 						try
 						{
 							PacketCommunicatorReceiveResult result = communicator.ReceivePacket( out packet );
-							if( packet != null && packet.Ethernet.IpV4 != null && packet.Ethernet.IpV4.Tcp != null && packet.Ethernet.IpV4.Tcp.IsAcknowledgment && packet.Ethernet.IpV4.Tcp.IsSynchronize && packet.Ethernet.IpV4.Tcp.DestinationPort == 6666 )
+							if( packet != null && packet.Ethernet.IpV4 != null && packet.Ethernet.IpV4.Tcp != null && packet.Ethernet.IpV4.Tcp.IsAcknowledgment && packet.Ethernet.IpV4.Tcp.IsSynchronize && packet.Ethernet.IpV4.Tcp.DestinationPort == 62000 )
 							{
 								switch( result )
 								{
@@ -210,6 +209,10 @@ namespace GridMapper.NetworkUtilities
 		public void tryScanPort(string ipAddress, string macAddress, int portToScan)
 		{
 				outputCommunicator.SendPacket( BuildTcpPacket( ipAddress,  macAddress,  portToScan ) );
+				if ( portToScan % 10 == 0 )
+				{
+					Thread.Sleep( 1 );
+				}
 				//Thread.SpinWait( 10000 );//divise par 3 ou 4 le débit
 
 			//uint i = 0;
