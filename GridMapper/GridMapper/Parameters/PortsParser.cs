@@ -17,7 +17,7 @@ namespace GridMapper
 		/// <summary>
 		/// This class will call the parser to parse the ports and will return the list of ports to be scanned 
 		/// or an error with a message if it did not work.
-		/// <param name="PortsToParse">The list of ports to be scanned.</param>
+		/// <param name="PortsToParse">The list of ports to be parsed.</param>
 		/// <param name="errorMessage"> This message is set and returned when something went wrong while parsing the ports</param>
 		/// <param name="result"> This is where the ports to be scanned are stored.</param>
 		/// <returns>
@@ -44,17 +44,18 @@ namespace GridMapper
 	/// </summary>
 	public static class PortsParser
 	{
+		// These tokens are to identify specific type of ports.
 		public enum Token
 		{
-			Unknown,
+			Unknown,		//when an invalid port is being parsed
 			ExcludeUnknown,
-			New,
-			Range,
-			End,
-			Exclude,
-			ExcludePort,
-			ExcludeRange,
-			ExcludeEnd,
+			New,			// when a new port is to be parsed
+			Range,			// when a range of ports is to be generated
+			End,			// when the parsed reached end of the ports to be parsed
+			Exclude,		// when an exclusion is to be applied
+			ExcludePort,	// when a single port is to be excluded from the final list
+			ExcludeRange,	// when a range of ports is to be excluded from the final list. NB: the range will be generated as well
+			ExcludeEnd,		// when the parsed reached end of the ports to be parsed but in a case of exclusion
 		}
 
 		public static PortsParserResult Tryparse( string PortsToParse )
@@ -108,17 +109,22 @@ namespace GridMapper
 				_pos = 0;
 			}
 
+			// this method is used to read the string character by character
 			char Current { get { return _s[_pos]; } }
 
+			// this method is used to move toward the next character
 			bool Forward()
 			{
 				return ++_pos < _s.Length;
 			}
 
+			// this method is used to check if the parser has reached end of input
 			bool IsEndOfInput { get { return _pos >= _s.Length; } }
 
+			// this method is used to check if the parser has not reached end of input
 			public bool IsNotEndOfInput { get { return !IsEndOfInput; } }
 
+			// this method is used to find out which token is to be applied considering the character the parser is analyzing.
 			public Token NextToken()
 			{
 				if ( IsNotEndOfInput )
@@ -127,20 +133,20 @@ namespace GridMapper
 					{
 						case ',':
 							Forward();
-							return Token.New;
+							return Token.New; // Here, a new port is to be parsed
 						case '-':
 							Forward();
-							return Token.Range;
+							return Token.Range; // Here, a range of port is to be generated
 						case '!':
 							Forward();
-							return Token.Exclude;
+							return Token.Exclude; // Here, an exclusion is to be applied
 						default :
-							return Token.Unknown;
+							return Token.Unknown; // When none of the above is possible. In this case, the parser will stop and return an error
 					}
 				}
 				return Token.End;
 			}
-
+			// this method is basically used to find what token is to be returned when considering two newly parsed ports .
 			public Token NextToken( out ushort port1, out ushort port2 )
 			{
 				port2 = 0;
@@ -228,6 +234,8 @@ namespace GridMapper
 				return Token.End;
 			}
 
+			// this method is used to check if character in parameter is the one the parser is currently reading.
+			// if it matches, the parser moves toward the next character in the input
 			private bool MatchChar( char c )
 			{
 				if ( IsNotEndOfInput && Current == c )
@@ -238,6 +246,8 @@ namespace GridMapper
 				return false;
 			}
 
+			// this method is used to check if the parser retrieve a value that is a valid port.
+			// if the value is a valid port, the port is returned to be added in the list
 			public bool IsPort( out ushort port )
 			{
 				port = 0;
