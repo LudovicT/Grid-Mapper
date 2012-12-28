@@ -14,26 +14,27 @@ namespace GridMapper.NetworkUtilities
 {
 	public class OwnPacketBuilder
 	{
-		byte[] OwnIpAddress;
-		PhysicalAddress OwnMacAddress;
+		byte[] _ownIpAddress;
+		PhysicalAddress _ownMacAddress;
+		ushort _portToScan
 
 		public OwnPacketBuilder()
 		{
-			getLocalMacAndIP( out OwnIpAddress, out OwnMacAddress );
+			getLocalMacAndIP( out _ownIpAddress, out _ownMacAddress );
 		}
 
 		public Packet BuildTcpPacket( string ipAddress, string macAddress, int portToScan )
 		{
 			EthernetLayer ethernetLayer = new EthernetLayer
 			{
-				Source = new MacAddress( ToMac( OwnMacAddress.ToString() ) ),
+				Source = new MacAddress( ToMac( _ownMacAddress.ToString() ) ),
 				Destination = new MacAddress( ToMac( macAddress.ToString() ) ),
 				EtherType = EthernetType.None, // Will be filled automatically.
 			};
 
 			IpV4Layer ipV4Layer = new IpV4Layer
 			{
-				Source = new IpV4Address( new IPAddress( OwnIpAddress ).ToString() ),
+				Source = new IpV4Address( new IPAddress( _ownIpAddress ).ToString() ),
 				CurrentDestination = new IpV4Address( ipAddress ),
 				Fragmentation = IpV4Fragmentation.None,
 				HeaderChecksum = null, // Will be filled automatically.
@@ -75,7 +76,7 @@ namespace GridMapper.NetworkUtilities
 		{
 			EthernetLayer ethernetLayer = new EthernetLayer
 				{
-					Source = new MacAddress( ToMac( OwnMacAddress.ToString() ) ),
+					Source = new MacAddress( ToMac( _ownMacAddress.ToString() ) ),
 					Destination = new MacAddress( "FF:FF:FF:FF:FF:FF" ),
 					EtherType = EthernetType.None, // Will be filled automatically.
 				};
@@ -83,8 +84,8 @@ namespace GridMapper.NetworkUtilities
 				{
 					ProtocolType = EthernetType.IpV4,
 					Operation = ArpOperation.Request,
-					SenderHardwareAddress = Array.AsReadOnly( OwnMacAddress.GetAddressBytes().ToArray() ), // 03:03:03:03:03:03.
-					SenderProtocolAddress = Array.AsReadOnly( OwnIpAddress ), // 1.2.3.4.
+					SenderHardwareAddress = Array.AsReadOnly( _ownMacAddress.GetAddressBytes().ToArray() ), // 03:03:03:03:03:03.
+					SenderProtocolAddress = Array.AsReadOnly( _ownIpAddress ), // 1.2.3.4.
 					TargetHardwareAddress = Array.AsReadOnly( new byte[] { 0, 0, 0, 0, 0, 0 } ), // 00:00:00:00:00:00.
 				};
 

@@ -6,6 +6,7 @@ using PcapDotNet.Core;
 using PcapDotNet.Packets;
 using PcapDotNet.Packets.Ethernet;
 using PcapDotNet.Packets.Arp;
+using PcapDotNet.Packets.Transport;
 
 namespace GridMapper.NetworkUtilities
 {
@@ -39,7 +40,9 @@ namespace GridMapper.NetworkUtilities
 				do
 				{
 					PacketCommunicatorReceiveResult result = communicator.ReceivePacket( out packet );
-					if( packet != null && packet.Ethernet.EtherType == EthernetType.Arp && packet.Ethernet.Arp.Operation == ArpOperation.Reply )
+					if( packet != null && 
+						packet.Ethernet.EtherType == EthernetType.Arp && 
+						packet.Ethernet.Arp.Operation == ArpOperation.Reply )
 					{
 						switch( result )
 						{
@@ -54,9 +57,13 @@ namespace GridMapper.NetworkUtilities
 								throw new InvalidOperationException( "The result " + result + " should never be reached here" );
 						}
 					}
-					try
-					{
-						if( packet != null && packet.Ethernet.IpV4 != null && packet.Ethernet.IpV4.Tcp != null && (packet.Ethernet.IpV4.Tcp.IsAcknowledgment && packet.Ethernet.IpV4.Tcp.IsSynchronize && packet.Ethernet.IpV4.Tcp.DestinationPort == 6666) )
+					if( packet != null &&
+						packet.Ethernet.IpV4 != null &&
+						packet.Ethernet.IpV4.Tcp != null &&
+						packet.Ethernet.IpV4.Tcp.IsValid &&
+						packet.Ethernet.IpV4.Tcp.IsSynchronize &&
+						packet.Ethernet.IpV4.Tcp.IsAcknowledgment &&
+						packet.Ethernet.IpV4.Tcp.DestinationPort == 62000 )
 						{
 							switch( result )
 							{
@@ -64,20 +71,13 @@ namespace GridMapper.NetworkUtilities
 									// Timeout elapsed
 									continue;
 								case PacketCommunicatorReceiveResult.Ok:
-									//Console.Write( "ip = " + packet.Ethernet.IpV4.Source.ToString() + " Port = " + packet.Ethernet.IpV4.Tcp.SourcePort.ToString() + " portDest : " + packet.Ethernet.IpV4.Tcp.DestinationPort.ToString() );
+									Console.Write( "ip = " + packet.Ethernet.IpV4.Source.ToString() + " Port = " + packet.Ethernet.IpV4.Tcp.SourcePort.ToString() + " portDest : " + packet.Ethernet.IpV4.Tcp.DestinationPort.ToString() );
 									Console.WriteLine();
 									break;
 								default:
 									throw new InvalidOperationException( "The result " + result + " should never be reached here" );
 							}
 						}
-					}
-					catch( Exception e )
-					{
-					}
-
-
-
 				} while( true );
 			}
 		}
