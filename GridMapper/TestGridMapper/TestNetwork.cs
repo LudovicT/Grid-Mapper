@@ -118,6 +118,12 @@ namespace GridMapper.Test
 			}
 		}
 		[Test]
+		public void StartReceive()
+		{
+			OwnPacketReceiver ownPacketReceiver = new OwnPacketReceiver();
+			ownPacketReceiver.StartReceive();
+		}
+		[Test]
 		public void ReceiveScanPort()
 		{
 			PortScannerBis portScanner = new PortScannerBis();

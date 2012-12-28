@@ -28,8 +28,9 @@ namespace GridMapper.NetworkUtilities
 
 		public void StartReceive()
 		{
-			using( PacketCommunicator communicator = selectedDevice.Open( 42, PacketDeviceOpenAttributes.MaximumResponsiveness, 500 ) )
+			using( PacketCommunicator communicator = selectedDevice.Open( 65536, PacketDeviceOpenAttributes.MaximumResponsiveness, 500 ) )
 			{
+				Console.WriteLine( "Listening on " + selectedDevice.Description + "..." );
 				// Retrieve the packets
 				int nbPackets;
 				//communicator.ReceivePackets(0, PacketHandler );
@@ -38,21 +39,6 @@ namespace GridMapper.NetworkUtilities
 				do
 				{
 					PacketCommunicatorReceiveResult result = communicator.ReceivePacket( out packet );
-					if( packet != null && packet.Ethernet.IpV4 != null && packet.Ethernet.IpV4.Tcp != null && packet.Ethernet.IpV4.Tcp.IsAcknowledgment && packet.Ethernet.IpV4.Tcp.IsSynchronize && packet.Ethernet.IpV4.Tcp.DestinationPort == 6666 )
-					{
-						switch( result )
-						{
-							case PacketCommunicatorReceiveResult.Timeout:
-								// Timeout elapsed
-								continue;
-							case PacketCommunicatorReceiveResult.Ok:
-								Console.Write( "ip = " + packet.Ethernet.IpV4.Source.ToString() + " Port = " + packet.Ethernet.IpV4.Tcp.SourcePort.ToString() + " portDest : " + packet.Ethernet.IpV4.Tcp.DestinationPort.ToString() );
-								Console.WriteLine();
-								break;
-							default:
-								throw new InvalidOperationException( "The result " + result + " should never be reached here" );
-						}
-					}
 					if( packet != null && packet.Ethernet.EtherType == EthernetType.Arp && packet.Ethernet.Arp.Operation == ArpOperation.Reply )
 					{
 						switch( result )
@@ -68,6 +54,30 @@ namespace GridMapper.NetworkUtilities
 								throw new InvalidOperationException( "The result " + result + " should never be reached here" );
 						}
 					}
+					try
+					{
+						if( packet != null && packet.Ethernet.IpV4 != null && packet.Ethernet.IpV4.Tcp != null && (packet.Ethernet.IpV4.Tcp.IsAcknowledgment && packet.Ethernet.IpV4.Tcp.IsSynchronize && packet.Ethernet.IpV4.Tcp.DestinationPort == 6666) )
+						{
+							switch( result )
+							{
+								case PacketCommunicatorReceiveResult.Timeout:
+									// Timeout elapsed
+									continue;
+								case PacketCommunicatorReceiveResult.Ok:
+									//Console.Write( "ip = " + packet.Ethernet.IpV4.Source.ToString() + " Port = " + packet.Ethernet.IpV4.Tcp.SourcePort.ToString() + " portDest : " + packet.Ethernet.IpV4.Tcp.DestinationPort.ToString() );
+									Console.WriteLine();
+									break;
+								default:
+									throw new InvalidOperationException( "The result " + result + " should never be reached here" );
+							}
+						}
+					}
+					catch( Exception e )
+					{
+					}
+
+
+
 				} while( true );
 			}
 		}
