@@ -210,7 +210,7 @@ namespace GridMapper.NetworkUtilities
 		public void tryScanPort(string ipAddress, string macAddress, int portToScan)
 		{
 				outputCommunicator.SendPacket( BuildTcpPacket( ipAddress,  macAddress,  portToScan ) );
-				if ( portToScan % 10 == 0 )
+				if ( portToScan % 5 == 0 )
 				{
 					Thread.Sleep( 1 );
 				}

@@ -7,17 +7,51 @@ using PcapDotNet.Packets;
 using PcapDotNet.Packets.Ethernet;
 using PcapDotNet.Packets.Arp;
 using PcapDotNet.Packets.Transport;
+using System.Net.NetworkInformation;
+using System.Net;
 
 namespace GridMapper.NetworkUtilities
 {
+	public enum PacketType
+	{
+		Unknown,
+		ARP,
+		TCP,
+	}
 	public class OwnPacketReceiver
 	{
 
 		PacketDevice selectedDevice;
+		string _filter = string.Empty;
 
-		public OwnPacketReceiver()
+		public OwnPacketReceiver( bool arp = true, bool tcp = true, ushort tcpPort = 62000, bool udp = false, ushort udpPort = 62001)
 		{
 			IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
+
+			if ( arp || tcp )
+			{
+				PhysicalAddress mac;
+				Byte[] ip;
+				GetLocalInformation.LocalMacAndIPAddress( out ip, out mac );
+				string macPart1 = mac.ToString().Substring( 0, 4 ).ToUpper();
+				string macPart2 = mac.ToString().Substring( 4, 4 ).ToUpper();
+				string macPart3 = mac.ToString().Substring( 8, 4 ).ToUpper();
+				if ( arp )
+				{
+					// arp is not comming from us
+					_filter += "(arp && arp[8:2] != 0x" + macPart1 + " && arp[10:2] != 0x" + macPart2 + " && arp[12:2] != 0x" + macPart3 + ")";
+					if ( tcp )
+					{
+						_filter += " || (tcp[tcpflags] & (tcp-ack) != 0 and tcp dst port " + tcpPort.ToString()
+							+ " and not src " + new IPAddress( ip ).ToString() + ")";
+					}
+				}
+				else if ( tcp )
+				{
+					_filter += "(tcp[tcpflags] & (tcp-ack) != 0 and tcp dst port " + tcpPort.ToString()
+						+ " and not src " + new IPAddress( ip ).ToString() + ")";
+				}
+			}
 
 			if ( allDevices.Count == 0 )
 			{
@@ -33,9 +67,7 @@ namespace GridMapper.NetworkUtilities
 			{
 				Console.WriteLine( "Listening on " + selectedDevice.Description + "..." );
 				// Retrieve the packets
-				int nbPackets;
-				//communicator.ReceivePackets(0, PacketHandler );
-
+				communicator.SetFilter( _filter );
 				Packet packet;
 				do
 				{

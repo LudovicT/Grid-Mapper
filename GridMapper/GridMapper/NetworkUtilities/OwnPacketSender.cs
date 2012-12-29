@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using PcapDotNet.Core;
 using PcapDotNet.Packets;
+using System.Threading;
 
 namespace GridMapper.NetworkUtilities
 {
@@ -30,6 +31,7 @@ namespace GridMapper.NetworkUtilities
 		public void tryScanPort( Packet packetToSend )
 		{
 			outputCommunicator.SendPacket( packetToSend );
+			Thread.Sleep( 1 );
 		}
 	}
 }

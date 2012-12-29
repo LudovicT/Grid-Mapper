@@ -111,10 +111,12 @@ namespace GridMapper.Test
 		{
 			string ip = "192.168.1.27";
 			string mac = "00113202ce22";
-			PortScannerBis portScanner = new PortScannerBis();
-			for( int i = 1 ; i < 65535 ; i++ )
+			//PortScannerBis portScanner = new PortScannerBis();
+			OwnPacketSender Sender = new OwnPacketSender();
+			OwnPacketBuilder TCPPacket = new OwnPacketBuilder(PacketType.TCP);
+			for( int i = 1 ; i <= 65535 ; i++ )
 			{
-				portScanner.tryScanPort( ip, mac, i );
+				Sender.tryScanPort( TCPPacket.BuildTcpPacket(ip,mac,i) );
 			}
 		}
 		[Test]
@@ -122,12 +124,6 @@ namespace GridMapper.Test
 		{
 			OwnPacketReceiver ownPacketReceiver = new OwnPacketReceiver();
 			ownPacketReceiver.StartReceive();
-		}
-		[Test]
-		public void ReceiveScanPort()
-		{
-			PortScannerBis portScanner = new PortScannerBis();
-			portScanner.receivePortPacketScanner();
 		}
 
 		//[Test]

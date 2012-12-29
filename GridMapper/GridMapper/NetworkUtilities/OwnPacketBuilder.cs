@@ -16,26 +16,54 @@ namespace GridMapper.NetworkUtilities
 	{
 		byte[] _ownIpAddress;
 		PhysicalAddress _ownMacAddress;
-		ushort _portToScan
+		EthernetLayer ethernetLayer;
+		IpV4Layer ipV4Layer;
+		TcpLayer tcpLayer;
+		ArpLayer arpLayer;
 
-		public OwnPacketBuilder()
+		public OwnPacketBuilder(PacketType packetType)
 		{
-			getLocalMacAndIP( out _ownIpAddress, out _ownMacAddress );
+			GetLocalInformation.LocalMacAndIPAddress( out _ownIpAddress, out _ownMacAddress );
+			ethernetLayer = null;
+			ipV4Layer = null;
+			tcpLayer = null;
+			arpLayer = null;
+			switch(packetType)
+			{
+				case PacketType.ARP :
+					BuildingArpPacket();
+					break;
+				case PacketType.TCP :
+					BuildingTcpPacket();
+					break;
+				case PacketType.Unknown :
+					break;
+				default :
+					break;
+			}
 		}
 
 		public Packet BuildTcpPacket( string ipAddress, string macAddress, int portToScan )
 		{
-			EthernetLayer ethernetLayer = new EthernetLayer
+			ethernetLayer.Destination = new MacAddress( ToMac( macAddress.ToString() ) );
+			ipV4Layer.CurrentDestination = new IpV4Address( ipAddress );
+			tcpLayer.DestinationPort = (ushort)portToScan;
+
+			PacketBuilder builder = new PacketBuilder( ethernetLayer, ipV4Layer, tcpLayer );
+
+			return builder.Build( DateTime.Now );
+		}
+
+		void BuildingTcpPacket()
+		{
+			ethernetLayer = new EthernetLayer
 			{
 				Source = new MacAddress( ToMac( _ownMacAddress.ToString() ) ),
-				Destination = new MacAddress( ToMac( macAddress.ToString() ) ),
 				EtherType = EthernetType.None, // Will be filled automatically.
 			};
-
-			IpV4Layer ipV4Layer = new IpV4Layer
+			ipV4Layer = new IpV4Layer
 			{
 				Source = new IpV4Address( new IPAddress( _ownIpAddress ).ToString() ),
-				CurrentDestination = new IpV4Address( ipAddress ),
 				Fragmentation = IpV4Fragmentation.None,
 				HeaderChecksum = null, // Will be filled automatically.
 				Identification = 0,
@@ -44,11 +72,9 @@ namespace GridMapper.NetworkUtilities
 				Ttl = 100,
 				TypeOfService = 0,
 			};
-
-			TcpLayer tcpLayer = new TcpLayer
+			tcpLayer = new TcpLayer
 			{
 				SourcePort = 62000,
-				DestinationPort = (ushort)portToScan,
 				Checksum = null, // Will be filled automatically.
 				SequenceNumber = 100,
 				AcknowledgmentNumber = 0,
@@ -57,16 +83,7 @@ namespace GridMapper.NetworkUtilities
 				UrgentPointer = 0,
 				Options = new TcpOptions( new TcpOptionMaximumSegmentSize( 1460 ), TcpOption.Nop, new TcpOptionWindowScale( 2 ), new TcpOptionSelectiveAcknowledgmentPermitted(), new TcpOptionTimestamp( (uint)DateTime.Now.Ticks, 0 ) ),
 			};
-			PayloadLayer payloadLayer = new PayloadLayer
-			{
-				Data = new Datagram( Encoding.ASCII.GetBytes( "test" ) ),
-			};
 
-
-
-			PacketBuilder builder = new PacketBuilder( ethernetLayer, ipV4Layer, tcpLayer, payloadLayer );
-
-			return builder.Build( DateTime.Now );
 		}
 
 		/// <summary>
@@ -74,13 +91,26 @@ namespace GridMapper.NetworkUtilities
 		/// </summary>
 		public Packet BuildArpPacket( byte[] destIP )
 		{
-			EthernetLayer ethernetLayer = new EthernetLayer
+			if ( ethernetLayer != null && arpLayer != null )
+			{
+				throw new InvalidOperationException( "Trying to build an ARP packet while BuildingArpPacket() wasn't invoked first." );
+			}
+			arpLayer.TargetProtocolAddress = Array.AsReadOnly( destIP );
+
+			PacketBuilder builder = new PacketBuilder( ethernetLayer, arpLayer );
+
+			return builder.Build( DateTime.Now );			
+		}
+
+		void BuildingArpPacket()
+		{
+			ethernetLayer = new EthernetLayer
 				{
 					Source = new MacAddress( ToMac( _ownMacAddress.ToString() ) ),
 					Destination = new MacAddress( "FF:FF:FF:FF:FF:FF" ),
 					EtherType = EthernetType.None, // Will be filled automatically.
 				};
-			ArpLayer arpLayer = new ArpLayer
+			arpLayer = new ArpLayer
 				{
 					ProtocolType = EthernetType.IpV4,
 					Operation = ArpOperation.Request,
@@ -89,11 +119,6 @@ namespace GridMapper.NetworkUtilities
 					TargetHardwareAddress = Array.AsReadOnly( new byte[] { 0, 0, 0, 0, 0, 0 } ), // 00:00:00:00:00:00.
 				};
 
-			arpLayer.TargetProtocolAddress = Array.AsReadOnly( destIP );
-
-			PacketBuilder builder = new PacketBuilder( ethernetLayer, arpLayer );
-
-			return builder.Build( DateTime.Now );
 		}
 
 		static string ToMac( string ToTransform )
@@ -103,34 +128,6 @@ namespace GridMapper.NetworkUtilities
 				.Range( 0, ToTransform.Length / 2 )
 				.Select( i => ToTransform.Substring( i * 2, 2 ) );
 			return string.Join( ":", list );
-		}
-
-		static void getLocalMacAndIP( out byte[] ip, out PhysicalAddress mac )
-		{
-			ip = new byte[4];
-			mac = PhysicalAddress.None;
-			//get the interface
-			NetworkInterface TrueNic = null;
-			foreach( NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces() )
-			{
-				if( nic.OperationalStatus == OperationalStatus.Up )
-				{
-					TrueNic = nic;
-					break;
-				}
-			}
-
-			//get the interface ipv4
-			foreach( IPAddress ips in Dns.GetHostEntry( Environment.MachineName ).AddressList )
-			{
-				if( ips.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork )
-				{
-					ip = ips.GetAddressBytes();
-					break;
-				}
-			}
-			//get the interface mac
-			mac = PhysicalAddress.Parse( TrueNic.GetPhysicalAddress().ToString() );
 		}
 	}
 }
