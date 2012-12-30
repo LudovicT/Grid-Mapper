@@ -28,7 +28,7 @@ namespace GridMapper.NetworkUtilities
 			outputCommunicator = selectedDevice.Open( 100, PacketDeviceOpenAttributes.Promiscuous, 1000 );
 		}
 
-		public void tryScanPort( Packet packetToSend )
+		public void trySend( Packet packetToSend )
 		{
 			outputCommunicator.SendPacket( packetToSend );
 			Thread.Sleep( 1 );

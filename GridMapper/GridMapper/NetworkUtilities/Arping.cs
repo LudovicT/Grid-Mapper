@@ -11,6 +11,7 @@ using PcapDotNet.Packets.Ethernet;
 using PcapDotNet.Packets.Arp;
 using System.Diagnostics;
 using System.Threading;
+using System.Collections;
 
 namespace GridMapper.NetworkRawSender
 {
@@ -175,10 +176,10 @@ namespace GridMapper.NetworkRawSender
 			return new string( c );
 		}
 
-		public void tryARP(IPParserResult ipRange)
+		public void tryARP(IEnumerable ipRange)
 		{
 
-			foreach ( int destIPint in ipRange.Result )
+			foreach ( int destIPint in ipRange )
 			{
 				outputCommunicator.SendPacket( BuildArpPacket( IPAddress.Parse( ( (uint)destIPint ).ToString() ).GetAddressBytes() ) );
 				Thread.SpinWait( 10000 );//divise par 3 ou 4 le débit

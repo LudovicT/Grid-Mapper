@@ -9,6 +9,7 @@ using PcapDotNet.Packets.Arp;
 using PcapDotNet.Packets.Transport;
 using System.Net.NetworkInformation;
 using System.Net;
+using System.Threading;
 
 namespace GridMapper.NetworkUtilities
 {
@@ -18,15 +19,21 @@ namespace GridMapper.NetworkUtilities
 		ARP,
 		TCP,
 	}
+
 	public class OwnPacketReceiver
 	{
 
 		PacketDevice selectedDevice;
 		string _filter = string.Empty;
+		bool _isStart;
+		Thread _threadForReceive;
+
+		public event EventHandler<ArpingReceivedEventArgs> ArpingReceived;
 
 		public OwnPacketReceiver( bool arp = true, bool tcp = true, ushort tcpPort = 62000, bool udp = false, ushort udpPort = 62001)
 		{
 			IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
+			_isStart = true;
 
 			if ( arp || tcp )
 			{
@@ -63,6 +70,12 @@ namespace GridMapper.NetworkUtilities
 
 		public void StartReceive()
 		{
+			_threadForReceive = new Thread( Receive );
+			_threadForReceive.Start();
+		}
+
+		private void Receive()
+		{
 			using( PacketCommunicator communicator = selectedDevice.Open( 65536, PacketDeviceOpenAttributes.MaximumResponsiveness, 500 ) )
 			{
 				Console.WriteLine( "Listening on " + selectedDevice.Description + "..." );
@@ -72,8 +85,8 @@ namespace GridMapper.NetworkUtilities
 				do
 				{
 					PacketCommunicatorReceiveResult result = communicator.ReceivePacket( out packet );
-					if( packet != null && 
-						packet.Ethernet.EtherType == EthernetType.Arp && 
+					if( packet != null &&
+						packet.Ethernet.EtherType == EthernetType.Arp &&
 						packet.Ethernet.Arp.Operation == ArpOperation.Reply )
 					{
 						switch( result )
@@ -82,6 +95,7 @@ namespace GridMapper.NetworkUtilities
 								// Timeout elapsed
 								continue;
 							case PacketCommunicatorReceiveResult.Ok:
+								ArpingReceived( this, new ArpingReceivedEventArgs( packet.Ethernet.Arp.SenderProtocolIpV4Address.ToString(), ByteArrayToHexViaByteManipulation( packet.Ethernet.Arp.SenderHardwareAddress.ToArray() ) ) );
 								Console.Write( "ip = " + packet.Ethernet.Arp.SenderProtocolIpV4Address.ToString() + " mac = " + ByteArrayToHexViaByteManipulation( packet.Ethernet.Arp.SenderHardwareAddress.ToArray() ) );
 								Console.WriteLine();
 								break;
@@ -96,22 +110,28 @@ namespace GridMapper.NetworkUtilities
 						packet.Ethernet.IpV4.Tcp.IsSynchronize &&
 						packet.Ethernet.IpV4.Tcp.IsAcknowledgment &&
 						packet.Ethernet.IpV4.Tcp.DestinationPort == 62000 )
+					{
+						switch( result )
 						{
-							switch( result )
-							{
-								case PacketCommunicatorReceiveResult.Timeout:
-									// Timeout elapsed
-									continue;
-								case PacketCommunicatorReceiveResult.Ok:
-									Console.Write( "ip = " + packet.Ethernet.IpV4.Source.ToString() + " Port = " + packet.Ethernet.IpV4.Tcp.SourcePort.ToString() + " portDest : " + packet.Ethernet.IpV4.Tcp.DestinationPort.ToString() );
-									Console.WriteLine();
-									break;
-								default:
-									throw new InvalidOperationException( "The result " + result + " should never be reached here" );
-							}
+							case PacketCommunicatorReceiveResult.Timeout:
+								// Timeout elapsed
+								continue;
+							case PacketCommunicatorReceiveResult.Ok:
+								Console.Write( "ip = " + packet.Ethernet.IpV4.Source.ToString() + " Port = " + packet.Ethernet.IpV4.Tcp.SourcePort.ToString() + " portDest : " + packet.Ethernet.IpV4.Tcp.DestinationPort.ToString() );
+								Console.WriteLine();
+								break;
+							default:
+								throw new InvalidOperationException( "The result " + result + " should never be reached here" );
 						}
-				} while( true );
+					}
+				} while( _isStart );
 			}
+		}
+
+		public void EndReceive()
+		{
+			_isStart = false;
+			_threadForReceive.Abort();
 		}
 
 		private string ByteArrayToHexViaByteManipulation( byte[] bytes )
@@ -127,5 +147,17 @@ namespace GridMapper.NetworkUtilities
 			}
 			return new string( c );
 		}
+	}
+
+	public class ArpingReceivedEventArgs : EventArgs
+	{
+		public ArpingReceivedEventArgs( string ipAddress, string macAddress)
+		{
+			IpAddress = ipAddress;
+			MacAddress = macAddress;
+		}
+
+		public string IpAddress { get; private set; }
+		public string MacAddress { get; private set; }
 	}
 }

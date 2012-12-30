@@ -62,31 +62,31 @@ namespace GridMapper.Test
 		public void Arp24()
 		{
 			arp wpcap = new arp();
-			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/24" ) );
+			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/24" ).Result );
 		}
 		[Test]
 		public void Arp20()
 		{
 			arp wpcap = new arp();
-			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/20" ) );
+			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/20" ).Result );
 		}
 		[Test]
 		public void Arp16()
 		{
 			arp wpcap = new arp();
-			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/16" ) );
+			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/16" ).Result );
 		}
 		[Test]
 		public void Arp12()
 		{
 			arp wpcap = new arp();
-			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/12" ) );
+			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/12" ).Result );
 		}
 		[Test]
 		public void Arp8()
 		{
 			arp wpcap = new arp();
-			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/8" ) );
+			wpcap.tryARP( IPParser.TryParse( "192.168.1.0/8" ).Result );
 		}
 		[Test]
 		public void ReceiveARP()
@@ -116,7 +116,7 @@ namespace GridMapper.Test
 			OwnPacketBuilder TCPPacket = new OwnPacketBuilder(PacketType.TCP);
 			for( int i = 1 ; i <= 65535 ; i++ )
 			{
-				Sender.tryScanPort( TCPPacket.BuildTcpPacket(ip,mac,i) );
+				Sender.trySend( TCPPacket.BuildTcpPacket(ip,mac,i) );
 			}
 		}
 		[Test]

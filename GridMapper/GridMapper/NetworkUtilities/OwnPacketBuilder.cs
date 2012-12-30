@@ -91,7 +91,7 @@ namespace GridMapper.NetworkUtilities
 		/// </summary>
 		public Packet BuildArpPacket( byte[] destIP )
 		{
-			if ( ethernetLayer != null && arpLayer != null )
+			if ( ethernetLayer == null && arpLayer == null )
 			{
 				throw new InvalidOperationException( "Trying to build an ARP packet while BuildingArpPacket() wasn't invoked first." );
 			}

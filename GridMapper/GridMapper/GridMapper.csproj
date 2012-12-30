@@ -123,8 +123,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Console\Messages.cs" />
-    <Compile Include="Execution\Execution.cs" />
     <Compile Include="Execution\IExecution.cs" />
+    <Compile Include="Execution\NewExecution.cs" />
     <Compile Include="GridWindow.cs">
       <SubType>Form</SubType>
     </Compile>

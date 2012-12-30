@@ -17,7 +17,7 @@ namespace GridMapper
 	public partial class GridWindow : Form
 	{
 		Option _startUpOption;
-		Execution _exe;
+		NewExecution _exe;
         int OperationLeft = 0;
 
 		// définition du delegate qui sera utilisé pour traiter les events
@@ -27,7 +27,7 @@ namespace GridMapper
 		public GridWindow(Option StartUpOptions)
 		{
 			_startUpOption = StartUpOptions;
-			_exe = new Execution( StartUpOptions );
+			_exe = new NewExecution( StartUpOptions );
 			_exe.TaskCompleted += ProgressChanged;
 			InitializeComponent();
 			InitializeDataGridView();
