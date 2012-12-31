@@ -70,6 +70,7 @@ namespace GridMapper.NetworkUtilities
 
 		public void StartReceive()
 		{
+			_isStart = true;
 			_threadForReceive = new Thread( Receive );
 			_threadForReceive.Start();
 		}

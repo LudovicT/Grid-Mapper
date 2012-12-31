@@ -18,8 +18,10 @@ namespace GridMapper
 		Option _option;
 		IRepository _repository;
 		OwnPacketReceiver _ownPacketReceiver;
-		OwnPacketBuilder _ownPacketBuilder;
+		OwnPacketBuilder _ownPacketBuilderForArping;
+		OwnPacketBuilder _ownPacketBuilderForScanPort;
 		OwnPacketSender _ownPacketSender;
+		ReverseDnsResolver _reverseDnsResolver;
 
 		public event EventHandler<TaskCompletedEventArgs> TaskCompleted;
 		public event EventHandler IsFinished;
@@ -52,16 +54,27 @@ namespace GridMapper
 
 			Task task1 = Task.Factory.StartNew( () =>
 			{
-				_ownPacketBuilder = new OwnPacketBuilder( PacketType.ARP );
+				_ownPacketBuilderForArping = new OwnPacketBuilder( PacketType.ARP );
+				_ownPacketBuilderForScanPort = new OwnPacketBuilder( PacketType.TCP );
 				//arp wpcap = new arp();
 				//wpcap.tryARP( _option.IpToTest.Result );
 				foreach( int ipInt in _option.IpToTest.Result )
 				{
-					_ownPacketSender.trySend( _ownPacketBuilder.BuildArpPacket( IPAddress.Parse( ((uint)ipInt).ToString() ).GetAddressBytes() ) );
+					_ownPacketSender.trySend( _ownPacketBuilderForArping.BuildArpPacket( IPAddress.Parse( ((uint)ipInt).ToString() ).GetAddressBytes() ) );
 				}
-				Thread.Sleep( 5000 );
+				Thread.Sleep( 30000 );
 				_ownPacketReceiver.EndReceive();
 			} );
+		}
+
+		private void AddArpingInRepositoryAndContinueWithRequest( object sender, ArpingReceivedEventArgs e )
+		{
+			IPAddress datIP = IPAddress.Parse( e.IpAddress );
+			_repository.AddOrUpdate( datIP, PhysicalAddress.Parse( e.MacAddress ) );
+			_repository.AddOrUpdate( datIP, _reverseDnsResolver.GetHostName( datIP ) );
+			if( _option.Port )
+				foreach( ushort portNumber in _option.PortToTest )
+					_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
 		}
 
 		public int Progress()
@@ -84,12 +97,9 @@ namespace GridMapper
 			_option = startupOptions;
 			_ownPacketReceiver = new OwnPacketReceiver();
 			_ownPacketSender = new OwnPacketSender();
-			_ownPacketReceiver.ArpingReceived += AddArpingInRepository;
-		}
+			_reverseDnsResolver = new ReverseDnsResolver();
 
-		private void AddArpingInRepository( object sender, ArpingReceivedEventArgs e )
-		{
-			_repository.AddOrUpdate( IPAddress.Parse( e.IpAddress ), PhysicalAddress.Parse( e.MacAddress ) );
+			_ownPacketReceiver.ArpingReceived += AddArpingInRepositoryAndContinueWithRequest;
 		}
 
 		public void optionsModified( OptionUpdatedEventArgs e )

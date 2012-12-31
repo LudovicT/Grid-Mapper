@@ -43,11 +43,11 @@ namespace GridMapper.NetworkUtilities
 			}
 		}
 
-		public Packet BuildTcpPacket( string ipAddress, string macAddress, int portToScan )
+		public Packet BuildTcpPacket( string ipAddress, string macAddress, ushort portToScan )
 		{
 			ethernetLayer.Destination = new MacAddress( ToMac( macAddress.ToString() ) );
 			ipV4Layer.CurrentDestination = new IpV4Address( ipAddress );
-			tcpLayer.DestinationPort = (ushort)portToScan;
+			tcpLayer.DestinationPort = portToScan;
 
 			PacketBuilder builder = new PacketBuilder( ethernetLayer, ipV4Layer, tcpLayer );
 
