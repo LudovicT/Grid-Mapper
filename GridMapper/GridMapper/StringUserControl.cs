@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace GridMapper
 {
-    public partial class StringUserControl1 : UserControl
+    public partial class StringUserControl : UserControl
     {
-        public StringUserControl1()
+        public StringUserControl()
         {
             InitializeComponent();
         }

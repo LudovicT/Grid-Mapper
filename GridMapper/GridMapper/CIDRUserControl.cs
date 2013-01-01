@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace GridMapper
 {
-    public partial class CIDRUserControl1 : UserControl
+    public partial class CIDRUserControl : UserControl
     {
-        public CIDRUserControl1()
+        public CIDRUserControl()
         {
             InitializeComponent();
         }

@@ -1,6 +1,6 @@
 ﻿namespace GridMapper
 {
-    partial class StringUserControl1
+    partial class StringUserControl
     {
         /// <summary> 
         /// Variable nécessaire au concepteur.
@@ -28,31 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.SuspendLayout();
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(3, 9);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(357, 22);
-            this.textBox1.TabIndex = 0;
-            // 
-            // StringUserControl1
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Window;
-            this.Controls.Add(this.textBox1);
-            this.Name = "StringUserControl1";
-            this.Size = new System.Drawing.Size(364, 40);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+			this.StringInput = new System.Windows.Forms.TextBox();
+			this.SuspendLayout();
+			// 
+			// StringInput
+			// 
+			this.StringInput.Location = new System.Drawing.Point( 2, 2 );
+			this.StringInput.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.StringInput.Name = "StringInput";
+			this.StringInput.Size = new System.Drawing.Size( 265, 20 );
+			this.StringInput.TabIndex = 0;
+			// 
+			// StringUserControl1
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.SystemColors.Window;
+			this.Controls.Add( this.StringInput );
+			this.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.Name = "StringUserControl1";
+			this.Size = new System.Drawing.Size( 270, 25 );
+			this.ResumeLayout( false );
+			this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox StringInput;
     }
 }

@@ -30,6 +30,7 @@ namespace GridMapper
 			_exe = new Execution( StartUpOptions );
 			_exe.TaskCompleted += ProgressChanged;
 			InitializeComponent();
+			InitializeComboBox();
 			InitializeDataGridView();
 		}
 
@@ -58,6 +59,11 @@ namespace GridMapper
 				}
 				else throw new ConstraintException( " wrong number of operation " );
 			}
+		}
+
+		void InitializeComboBox()
+		{
+			comboBox1.SelectedIndex = 0;
 		}
 
 		void InitializeDataGridView()
@@ -342,5 +348,43 @@ namespace GridMapper
 				}
 			}
 		}
+
+		private void comboBox1_SelectedIndexChanged( object sender, EventArgs e )
+		{
+			ComboBox cmb = (ComboBox)sender;
+			int selectedIndex = cmb.SelectedIndex;
+			switch ( selectedIndex )
+			{
+					//IPRange
+				case 0 :
+					if ( panel1.Controls.Count > 0)
+					{
+						panel1.Controls.RemoveAt( 0 );
+					}
+					panel1.Controls.Add(new IPRangeUserControl());
+					break;
+
+					//CIDR
+				case 1:
+					if ( panel1.Controls.Count > 0 )
+					{
+						panel1.Controls.RemoveAt( 0 );
+					}
+					panel1.Controls.Add(new CIDRUserControl());
+					break;
+
+					//Manual
+				case 2:
+					if ( panel1.Controls.Count > 0 )
+					{
+						panel1.Controls.RemoveAt( 0 );
+					}
+					panel1.Controls.Add(new StringUserControl());
+					break;
+				default :
+					throw new InvalidOperationException( "Invalid mode for the input" );
+			}
+		}
+
 	}
 }
