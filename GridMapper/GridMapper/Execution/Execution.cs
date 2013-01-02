@@ -46,6 +46,7 @@ namespace GridMapper
 				{
 					_ownPacketSender.trySend( _ownPacketBuilderForArping.BuildArpPacket( IPAddress.Parse( ((uint)ipInt).ToString() ).GetAddressBytes() ) );
 				}
+				_ownPacketReceiver.TimerToCallEndReceive();
 			} );
 		}
 

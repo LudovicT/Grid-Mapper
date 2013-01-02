@@ -80,7 +80,6 @@ namespace GridMapper.NetworkUtilities
 			_isActive = true;
 			_threadForReceive = new Thread( Receive );
 			_threadForReceive.Start();
-			TimerForCallEndReceive();
 		}
 
 		private void Receive()
@@ -146,7 +145,7 @@ namespace GridMapper.NetworkUtilities
 			_threadForReceive.Abort();
 		}
 
-		private void TimerForCallEndReceive()
+		public void TimerToCallEndReceive()
 		{
 			timer.Interval = 10000;
 			timer.Enabled = true;
