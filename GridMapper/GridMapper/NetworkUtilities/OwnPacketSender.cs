@@ -15,8 +15,10 @@ namespace GridMapper.NetworkUtilities
 		PacketCommunicator outputCommunicator;
 		int _numPackets;
 		PacketSendBuffer _sendBuffer;
+		readonly int _nbPacketToSend;
+		readonly int _waitTime;
 
-		public OwnPacketSender()
+		public OwnPacketSender(int nbPacketToSend = 10, int waitTime = 1)
 		{
 			IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
 
@@ -29,25 +31,36 @@ namespace GridMapper.NetworkUtilities
 
 			outputCommunicator = selectedDevice.Open( 100, PacketDeviceOpenAttributes.Promiscuous, 1000 );
 
-			_sendBuffer = new PacketSendBuffer( (uint)5 );
+			_nbPacketToSend = nbPacketToSend;
+			_waitTime = waitTime;
+			if ( _nbPacketToSend > 0 )
+			{
+				_sendBuffer = new PacketSendBuffer( (uint)( _nbPacketToSend * 100 ) );
+			}
 		}
+
 
 		public void trySend( Packet packetToSend )
 		{
-			outputCommunicator.SendPacket( packetToSend );
-			Thread.Sleep( 1 );
+			if ( _waitTime <= 0 || _nbPacketToSend <= 0 && _waitTime > 0 )
+			{
+				outputCommunicator.SendPacket( packetToSend );
+			}
+			else if ( _nbPacketToSend > 0 && _waitTime > 0 )
+			{
+				_sendBuffer.Enqueue( packetToSend );
+				++_numPackets;
+				if ( _numPackets == _nbPacketToSend )
+				{
+					SendBuffer();
+					Thread.Sleep(_waitTime);
+				}
+			}
 
-				//// Fill the buffer with the packets from the file
-				//int numPackets = 0;
-				//Packet packet;
-				
-				//    _sendBuffer.Enqueue( packetToSend );
-				//    ++_numPackets;
 		}
 		private void SendBuffer()
 		{
-				outputCommunicator.Transmit( _sendBuffer, false );
-
+			outputCommunicator.Transmit( _sendBuffer, false );
 		}
 	}
 }
