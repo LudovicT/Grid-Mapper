@@ -13,7 +13,6 @@ namespace GridMapper.NetworkUtilities
 
 		PacketDevice selectedDevice;
 		PacketCommunicator outputCommunicator;
-		int _numPackets;
 		PacketSendBuffer _sendBuffer;
 		readonly int _nbPacketToSend;
 		readonly int _waitTime;
@@ -49,11 +48,11 @@ namespace GridMapper.NetworkUtilities
 			else if ( _nbPacketToSend > 0 && _waitTime > 0 )
 			{
 				_sendBuffer.Enqueue( packetToSend );
-				++_numPackets;
-				if ( _numPackets == _nbPacketToSend )
+				if ( _sendBuffer.Length == _nbPacketToSend )
 				{
 					SendBuffer();
 					Thread.Sleep(_waitTime);
+					_sendBuffer = new PacketSendBuffer( (uint)( _nbPacketToSend * 100 ) );
 				}
 			}
 

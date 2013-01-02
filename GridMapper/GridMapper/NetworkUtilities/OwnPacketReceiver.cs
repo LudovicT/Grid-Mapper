@@ -39,7 +39,7 @@ namespace GridMapper.NetworkUtilities
 			IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
 			_isStart = true;
 			_isActive = true;
-			_tcpPort = 62000;
+			_tcpPort = tcpPort;
 
 			if ( arp || tcp )
 			{
@@ -86,7 +86,7 @@ namespace GridMapper.NetworkUtilities
 		{
 			using( PacketCommunicator communicator = selectedDevice.Open( 65536, PacketDeviceOpenAttributes.MaximumResponsiveness, 500 ) )
 			{
-				Console.WriteLine( "Listening on " + selectedDevice.Description + "..." );
+				//Console.WriteLine( "Listening on " + selectedDevice.Description + "..." );
 				// Retrieve the packets
 				communicator.SetFilter( _filter );
 				Packet packet;
@@ -105,8 +105,8 @@ namespace GridMapper.NetworkUtilities
 							case PacketCommunicatorReceiveResult.Ok:
 								ArpingReceived( this, new ArpingReceivedEventArgs( packet.Ethernet.Arp.SenderProtocolIpV4Address.ToString(), ByteArrayToHexViaByteManipulation( packet.Ethernet.Arp.SenderHardwareAddress.ToArray() ) ) );
 								_isActive = true;
-								Console.Write( "ip = " + packet.Ethernet.Arp.SenderProtocolIpV4Address.ToString() + " mac = " + ByteArrayToHexViaByteManipulation( packet.Ethernet.Arp.SenderHardwareAddress.ToArray() ) );
-								Console.WriteLine();
+								//Console.Write( "ip = " + packet.Ethernet.Arp.SenderProtocolIpV4Address.ToString() + " mac = " + ByteArrayToHexViaByteManipulation( packet.Ethernet.Arp.SenderHardwareAddress.ToArray() ) );
+								//Console.WriteLine();
 								break;
 							default:
 								throw new InvalidOperationException( "The result " + result + " should never be reached here" );
@@ -128,8 +128,8 @@ namespace GridMapper.NetworkUtilities
 							case PacketCommunicatorReceiveResult.Ok:
 								PortReceived( this, new PortReceivedEventArgs( packet.Ethernet.IpV4.Source.ToString(), packet.Ethernet.IpV4.Tcp.SourcePort ) );
 								_isActive = true;
-								Console.Write( "ip = " + packet.Ethernet.IpV4.Source.ToString() + " Port = " + packet.Ethernet.IpV4.Tcp.SourcePort.ToString() + " portDest : " + packet.Ethernet.IpV4.Tcp.DestinationPort.ToString() );
-								Console.WriteLine();
+								//Console.Write( "ip = " + packet.Ethernet.IpV4.Source.ToString() + " Port = " + packet.Ethernet.IpV4.Tcp.SourcePort.ToString() + " portDest : " + packet.Ethernet.IpV4.Tcp.DestinationPort.ToString() );
+								//Console.WriteLine();
 								break;
 							default:
 								throw new InvalidOperationException( "The result " + result + " should never be reached here" );
@@ -142,7 +142,6 @@ namespace GridMapper.NetworkUtilities
 		public void EndReceive()
 		{
 			_isStart = false;
-			_threadForReceive.Abort();
 		}
 
 		public void TimerToCallEndReceive()
