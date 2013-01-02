@@ -9,6 +9,7 @@ using PcapDotNet.Packets.Transport;
 using PcapDotNet.Packets.IpV4;
 using PcapDotNet.Packets.Ethernet;
 using PcapDotNet.Packets.Arp;
+using PcapDotNet.Packets.Icmp;
 
 namespace GridMapper.NetworkUtilities
 {
@@ -119,6 +120,46 @@ namespace GridMapper.NetworkUtilities
 					TargetHardwareAddress = Array.AsReadOnly( new byte[] { 0, 0, 0, 0, 0, 0 } ), // 00:00:00:00:00:00.
 				};
 
+		}
+
+		/// <summary>
+		/// This function build an ICMP over IPv4 over Ethernet packet.
+		/// </summary>
+		public static Packet BuildIcmpPacket()
+		{
+			EthernetLayer ethernetLayer =
+				new EthernetLayer
+				{
+					Source = new MacAddress( "01:01:01:01:01:01" ),
+					Destination = new MacAddress( "02:02:02:02:02:02" ),
+					EtherType = EthernetType.None, // Will be filled automatically.
+				};
+
+			IpV4Layer ipV4Layer =
+				new IpV4Layer
+				{
+					Source = new IpV4Address( "1.2.3.4" ),
+					CurrentDestination = new IpV4Address( "11.22.33.44" ),
+					Fragmentation = IpV4Fragmentation.None,
+					HeaderChecksum = null, // Will be filled automatically.
+					Identification = 123,
+					Options = IpV4Options.None,
+					Protocol = null, // Will be filled automatically.
+					Ttl = 100,
+					TypeOfService = 0,
+				};
+
+			IcmpEchoLayer icmpLayer =
+				new IcmpEchoLayer
+				{
+					Checksum = null, // Will be filled automatically.
+					Identifier = 456,
+					SequenceNumber = 800,
+				};
+
+			PacketBuilder builder = new PacketBuilder( ethernetLayer, ipV4Layer, icmpLayer );
+
+			return builder.Build( DateTime.Now );
 		}
 
 		static string ToMac( string ToTransform )
