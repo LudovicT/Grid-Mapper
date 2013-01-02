@@ -90,7 +90,11 @@ namespace GridMapper.NetworkRepository
 		public void AddOrUpdate( IPAddress ipAddress, IPHostEntry hostEntry )
 		{
 			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
-			if( hostEntry == null ) throw new ArgumentNullException( "hostEntry" );
+			if ( hostEntry == null )
+			{
+				hostEntry = new IPHostEntry();
+				hostEntry.HostName = ipAddress.ToString();
+			}
 
 			if( _networkDictionaryItems.ContainsKey( ipAddress ) )
 			{
