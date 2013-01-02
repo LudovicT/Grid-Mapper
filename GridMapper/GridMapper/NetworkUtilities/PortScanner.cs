@@ -10,17 +10,17 @@ using System.Net.Sockets;
 
 namespace GridMapper
 {
-    public class PortScanner
-    {
+	public class PortScannerWithConnect
+	{
 		public event EventHandler<PortScanCompletedEventArgs> PortScanCompleted;
 
-		public bool ScanPort( IPAddress IPAddr, int PortToScan )
-        {
+		public bool ScanPortWithConnect( IPAddress IPAddr, int PortToScan )
+		{
 			Socket s = new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
 			try
 			{
-				s.Connect(IPAddr, PortToScan);
-				if ( s.Connected == true ) // Port is in use and connection is successful
+				s.Connect( IPAddr, PortToScan );
+				if( s.Connected == true ) // Port is in use and connection is successful
 				{
 					//Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " OPEN");
 					//PortScanCompleted( this,  new PortScanCompletedEventArgs( IPAddr, port ) );
@@ -28,9 +28,9 @@ namespace GridMapper
 					return true;
 				}
 			}
-			catch ( SocketException ex )
+			catch( SocketException ex )
 			{
-				if ( ex.ErrorCode == 10061 )  // Port is unused and could not establish connection
+				if( ex.ErrorCode == 10061 )  // Port is unused and could not establish connection
 				{
 					//Console.WriteLine(IPAddr.ToString() + ":" + PortToScan.ToString() + " CLOSE");
 					s.Close();
@@ -38,7 +38,7 @@ namespace GridMapper
 				}
 			}
 			return false;
-        }
+		}
 
 		public class PortScanCompletedEventArgs : EventArgs
 		{

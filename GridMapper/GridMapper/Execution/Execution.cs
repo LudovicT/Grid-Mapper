@@ -10,16 +10,21 @@ using GridMapper.NetworkRepository;
 using System.Net.NetworkInformation;
 using System.ComponentModel;
 using System.IO;
-using ConsoleApplication5;
 using GridMapper.NetworkRawSender;
+using GridMapper.NetworkUtilities;
 
 namespace GridMapper
 {
-	class Execution : IExecution
+	class NewExecution : IExecution
 	{
 		Option _option;
 		IRepository _repository;
-		
+		OwnPacketReceiver _ownPacketReceiver;
+		OwnPacketBuilder _ownPacketBuilderForArping;
+		OwnPacketBuilder _ownPacketBuilderForScanPort;
+		OwnPacketSender _ownPacketSender;
+		ReverseDnsResolver _reverseDnsResolver;
+
 		public event EventHandler<TaskCompletedEventArgs> TaskCompleted;
 		public event EventHandler IsFinished;
 
@@ -29,14 +34,8 @@ namespace GridMapper
 
 		public IRepository Repository { get { return _repository; } }
 
-		public void Repo( object sender, SendPingEventArgs e )
+		private void SetThread()
 		{
-			_repository.AddOrUpdate( e.IpAddress );
-		}
-
-		public void StartScan()
-		{
-			_repository = new Repository();
 			int minWORK;
 			int minIOC;
 			int maxWORK;
@@ -47,85 +46,65 @@ namespace GridMapper
 			{
 				ThreadPool.GetMinThreads( out minWORK, out minIOC );
 			}
+		}
+
+		public void StartScan()
+		{
+			SetThread();
+			_repository = new Repository();
+			_ownPacketReceiver.StartReceive();
 
 			Task task1 = Task.Factory.StartNew( () =>
+			{
+				_ownPacketBuilderForArping = new OwnPacketBuilder( PacketType.ARP );
+				_ownPacketBuilderForScanPort = new OwnPacketBuilder( PacketType.TCP );
+				//arp wpcap = new arp();
+				//wpcap.tryARP( _option.IpToTest.Result );
+				foreach( int ipInt in _option.IpToTest.Result )
 				{
-					PingSender pingSender = new PingSender( Option );
-					ARPSender arpSender = new ARPSender();
-					ReverseDnsResolver dnsResolver = new ReverseDnsResolver();
-					PortScanner portScanner = new PortScanner();
-
-					SendRawPing.SendPing += Repo;
-
-					SendRawPing pingSocket = new SendRawPing();
-
-					//Parallel.ForEach<int>( _option.IpToTest.Result, new ParallelOptions { MaxDegreeOfParallelism = 200 }, ipInt =>
-					//    {
-							foreach(int ipInt in _option.IpToTest.Result)
-							{
-							IPAddress ip = IPAddress.Parse( ( (uint)ipInt ).ToString() );
-							pingSocket.Send( ip );
-
-
-							//PingReply pingReply = null;
-							//PhysicalAddress mac = null;
-							//if ( Option.Ping )
-							//{
-							//    pingReply = pingSender.Ping( ip );
-							//}
-							//if ( Option.Arp )
-							//{
-							//    Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew( () =>
-							//    arpSender.GetMac( ip ) );
-							//    mac = task.Result;
-							//}
-							//if ( pingReply != null || ( mac != null && mac != PhysicalAddress.None ) )
-							//{
-							//    if ( pingReply != null )
-							//    {
-							//        _repository.AddOrUpdate( ip, pingReply );
-							//        Task<PhysicalAddress> task = Task<PhysicalAddress>.Factory.StartNew(() =>
-							//        arpSender.GetMac( ip ));
-							//        mac = task.Result;
-							//    }
-							//    if ( mac != null && mac != PhysicalAddress.None)
-							//    {
-							//        _repository.AddOrUpdate( ip, mac );
-							//    }
-							//    if ( Option.Arp )
-							//    {
-							//{
-							//}
-						}
-				} ).ContinueWith( (a) =>
-					{
-						//_repository.EndThreads();
-						//IsFinished( this, null );
-						//TaskCompleted( this, null );
-					} );
+					_ownPacketSender.trySend( _ownPacketBuilderForArping.BuildArpPacket( IPAddress.Parse( ((uint)ipInt).ToString() ).GetAddressBytes() ) );
+				}
+				Thread.Sleep( 30000 );
+				_ownPacketReceiver.EndReceive();
+			} );
 		}
 
-        public int Progress()
-        {
-            int taskToDoPerIp = 3;
-            //total of IP tested
-            int IpTotal = 0;
-           int restToDo = ( IpTotal * taskToDoPerIp ) / ( IpTotal * taskToDoPerIp );
-            return restToDo;
-        }
+		private void AddArpingInRepositoryAndContinueWithRequest( object sender, ArpingReceivedEventArgs e )
+		{
+			IPAddress datIP = IPAddress.Parse( e.IpAddress );
+			_repository.AddOrUpdate( datIP, PhysicalAddress.Parse( e.MacAddress ) );
+			_repository.AddOrUpdate( datIP, _reverseDnsResolver.GetHostName( datIP ) );
+			if( _option.Port )
+				foreach( ushort portNumber in _option.PortToTest )
+					_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
+		}
+
+		public int Progress()
+		{
+			int taskToDoPerIp = 3;
+			//total of IP tested
+			int IpTotal = 0;
+			int restToDo = (IpTotal * taskToDoPerIp) / (IpTotal * taskToDoPerIp);
+			return restToDo;
+		}
 		#endregion
 
-		public void SaveRepoXml(Stream stream)
+		public void SaveRepoXml( Stream stream )
 		{
-			_repository.XmlWriter(stream);
+			_repository.XmlWriter( stream );
 		}
 
-		public Execution( Option startupOptions )
+		public NewExecution( Option startupOptions )
 		{
 			_option = startupOptions;
+			_ownPacketReceiver = new OwnPacketReceiver();
+			_ownPacketSender = new OwnPacketSender();
+			_reverseDnsResolver = new ReverseDnsResolver();
+
+			_ownPacketReceiver.ArpingReceived += AddArpingInRepositoryAndContinueWithRequest;
 		}
 
-		public void optionsModified(OptionUpdatedEventArgs e)
+		public void optionsModified( OptionUpdatedEventArgs e )
 		{
 			_option.Arp = e.Arp;
 			_option.Dns = e.Dns;

@@ -155,7 +155,7 @@ namespace GridMapper.Test
 			{
 				inc.Add(i);
 			}
-			Parallel.ForEach<int>(inc,new ParallelOptions { MaxDegreeOfParallelism = 200 }, i => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), i));
+			Parallel.ForEach<int>( inc, new ParallelOptions { MaxDegreeOfParallelism = 200 }, i => new PortScannerWithConnect().ScanPortWithConnect( IPAddress.Parse( "127.0.0.1" ), i ) );
 			Console.WriteLine( "ok" );
         }
 
@@ -180,7 +180,7 @@ namespace GridMapper.Test
 			for ( int i = 0; i < taskCount; i++ )
 			{
 				int temp = i;
-				tasks.Add( Task.Factory.StartNew( () => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), temp ) ) );
+				tasks.Add( Task.Factory.StartNew( () => new PortScannerWithConnect().ScanPortWithConnect( IPAddress.Parse( "127.0.0.1" ), temp ) ) );
 			}
 			Task.WaitAll( tasks.ToArray() );
 		}
@@ -206,7 +206,7 @@ namespace GridMapper.Test
 			for ( int i = 0; i < taskCount; i++ )
 			{
 				int temp = i;
-				tasks.Add( () => new PortScanner().ScanPort( IPAddress.Parse( "127.0.0.1" ), temp ) );
+				tasks.Add( () => new PortScannerWithConnect().ScanPortWithConnect( IPAddress.Parse( "127.0.0.1" ), temp ) );
 			}
 			Task task = Task.Factory.StartNew( () => tasks.AsParallel().WithDegreeOfParallelism( 50 ).ForAll(t => t.Invoke()) );
 			task.Wait();

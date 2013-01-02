@@ -123,8 +123,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Console\Messages.cs" />
+    <Compile Include="Execution\Execution.cs" />
     <Compile Include="Execution\IExecution.cs" />
-    <Compile Include="Execution\NewExecution.cs" />
     <Compile Include="GridWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,21 +148,6 @@
     <Compile Include="NetworkModelObject\INetwork\IPorts.cs" />
     <Compile Include="NetworkModelObject\INetwork\IServer.cs" />
     <Compile Include="NetworkModelObject\INetwork\ISwitch.cs" />
-    <Compile Include="NetworkRawSender\IcmpHeader.cs" />
-    <Compile Include="NetworkRawSender\Icmpv6Header.cs" />
-    <Compile Include="NetworkRawSender\IgmpHeader.cs" />
-    <Compile Include="NetworkRawSender\Ipv4Header.cs" />
-    <Compile Include="NetworkRawSender\Ipv6FragmentHeader.cs" />
-    <Compile Include="NetworkRawSender\Ipv6Header.cs" />
-    <Compile Include="NetworkRawSender\MulticastEndpoint.cs" />
-    <Compile Include="NetworkRawSender\ProtocolHeader.cs" />
-    <Compile Include="NetworkRawSender\RawScanPort.cs" />
-    <Compile Include="NetworkRawSender\RawSocketPing.cs" />
-    <Compile Include="NetworkRawSender\SendArping.cs" />
-    <Compile Include="NetworkRawSender\SendRawPing.cs" />
-    <Compile Include="NetworkRawSender\SockaddrConvert.cs" />
-    <Compile Include="NetworkRawSender\UdpHeader.cs" />
-    <Compile Include="NetworkRawSender\WinsockIoctl.cs" />
     <Compile Include="NetworkUtilities\ARPSender.cs" />
     <Compile Include="NetworkUtilities\GetLocalMacAndIPAddress.cs" />
     <Compile Include="NetworkUtilities\IpRange.cs" />
@@ -171,7 +156,6 @@
     <Compile Include="NetworkUtilities\OwnPacketSender.cs" />
     <Compile Include="NetworkUtilities\PingSender.cs" />
     <Compile Include="NetworkUtilities\PortScanner.cs" />
-    <Compile Include="NetworkUtilities\PortScannerBis.cs" />
     <Compile Include="NetworkUtilities\ReverseDnsResolver.cs" />
     <Compile Include="NetworkUtilities\WMI.cs" />
     <Compile Include="Option_window.cs">
