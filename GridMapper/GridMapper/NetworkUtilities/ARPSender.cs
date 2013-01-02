@@ -18,7 +18,7 @@ namespace GridMapper
 		static extern int SendARP( int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen );
 
 		/// <summary>
-		/// Get the MAC addresse from any given Ip which is reachable
+		/// Get the MAC address from any given Ip which is reachable
 		/// </summary>
 		/// <param name="dst">The ip which we would like to get the MAC address</param>
 		/// <returns>The MAC address</returns>

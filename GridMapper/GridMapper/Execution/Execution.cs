@@ -26,7 +26,6 @@ namespace GridMapper
 		ReverseDnsResolver _reverseDnsResolver;
 
 		public event EventHandler<TaskCompletedEventArgs> TaskCompleted;
-		public event EventHandler IsFinished;
 
 		#region IExecution Membres
 
@@ -67,6 +66,7 @@ namespace GridMapper
 				Thread.Sleep( 30000 );
 				_ownPacketReceiver.EndReceive();
 			} );
+
 		}
 
 		private void AddArpingInRepositoryAndContinueWithRequest( object sender, ArpingReceivedEventArgs e )
@@ -77,6 +77,7 @@ namespace GridMapper
 			if( _option.Port )
 				foreach( ushort portNumber in _option.PortToTest )
 					_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
+									
 		}
 
 		public int Progress()
@@ -106,6 +107,7 @@ namespace GridMapper
 
 		public void optionsModified( OptionUpdatedEventArgs e )
 		{
+			_option.Arping = e.Arping;
 			_option.Arp = e.Arp;
 			_option.Dns = e.Dns;
 			_option.Port = e.Port;

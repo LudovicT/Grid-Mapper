@@ -14,6 +14,22 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\Users\utilisateur\Desktop\prod\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -88,6 +104,18 @@
   <PropertyGroup>
     <ApplicationIcon>Logo_GridMapper.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>42A9AA3D82E0DB7603EFF1682FDD4276EB46A6BC</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>GridMapper_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Gallio, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
     <Reference Include="IPAddressControlLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=55e96405d8fd6d61, processorArchitecture=MSIL">
@@ -110,14 +138,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Management.Instrumentation" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -130,6 +156,12 @@
     </Compile>
     <Compile Include="GridWindow.Designer.cs">
       <DependentUpon>GridWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IPRangeUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IPRangeUserControl.Designer.cs">
+      <DependentUpon>IPRangeUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="NetworkModelObject\ClassNetwork\Host.cs" />
     <Compile Include="NetworkModelObject\ClassNetwork\HostEntity.cs" />
@@ -148,6 +180,7 @@
     <Compile Include="NetworkModelObject\INetwork\IPorts.cs" />
     <Compile Include="NetworkModelObject\INetwork\IServer.cs" />
     <Compile Include="NetworkModelObject\INetwork\ISwitch.cs" />
+    <Compile Include="NetworkUtilities\Arping.cs" />
     <Compile Include="NetworkUtilities\ARPSender.cs" />
     <Compile Include="NetworkUtilities\GetLocalMacAndIPAddress.cs" />
     <Compile Include="NetworkUtilities\IpRange.cs" />
@@ -165,6 +198,7 @@
       <DependentUpon>Option_window.cs</DependentUpon>
     </Compile>
     <Compile Include="Parameters\IPsParser.cs" />
+    <Compile Include="Parameters\ListOfRangeWithAutoCompression.cs" />
     <Compile Include="Parameters\PortsParser.cs" />
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
@@ -179,13 +213,33 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NetworkUtilities\Arping.cs" />
+    <Compile Include="StringUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StringUserControl.Designer.cs">
+      <DependentUpon>StringUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Struct\IPAddressV4.cs" />
+    <Compile Include="CIDRUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CIDRUserControl.Designer.cs">
+      <DependentUpon>CIDRUserControl.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="CIDRUserControl.resx">
+      <DependentUpon>CIDRUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GridWindow.resx">
       <DependentUpon>GridWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="IPRangeUserControl.resx">
+      <DependentUpon>IPRangeUserControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Option_window.resx">
       <DependentUpon>Option_window.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -197,6 +251,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="StringUserControl.resx">
+      <DependentUpon>StringUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="NetworkModelObject\INetwork\INetworkDiagram.cd" />
     <None Include="Properties\Settings.settings">
@@ -216,6 +273,28 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="3rdPartyLibs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 et x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

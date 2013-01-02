@@ -12,7 +12,7 @@ namespace GridMapper.NetworkRepository
 	{
 		/* 
 		 * ToDo 
-		 * gestion du wmi
+		 * WMI's management
 		 */
 		IHost _host;
 		IHostEntity _hostEntity;
@@ -24,7 +24,7 @@ namespace GridMapper.NetworkRepository
 		IOS _os;
 
 		public IHost Host { get { return _host; } }
-		public IHostEntity HostEntity { get { return _hostEntity; } } //test si il est possible de créer un hostentity
+		public IHostEntity HostEntity { get { return _hostEntity; } } //test to see if it is possible to create an Host Entitiy
 		public PingReply PingReply { get { return _pingReply; } }
 		public IPAddress IPAddress { get { return _ipAddress; } }
 		public PhysicalAddress MacAddress { get { return _macAddress; } }

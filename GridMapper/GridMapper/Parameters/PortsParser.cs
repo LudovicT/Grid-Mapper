@@ -6,9 +6,25 @@ using System.Diagnostics;
 
 namespace GridMapper
 {
+	#region PortsParser
+
+	/// <summary>
+	/// PortsParserResult class
+	/// </summary>
+	/// 
 	public class PortsParserResult
 	{
-		internal PortsParserResult( string errorMessage, List<ushort> result )
+		/// <summary>
+		/// This class calls the parser to parse the ports and returns the list of ports to be scanned 
+		/// or an error with a message if it did not work.
+		/// <param name="PortsToParse">The list of ports to be parsed.</param>
+		/// <param name="errorMessage"> This message is set and returned when something went wrong while parsing the ports</param>
+		/// <param name="result"> This is where the ports to be scanned are stored.</param>
+		/// <returns>
+		/// <c>IEnumerable<int>Result</c>
+		/// </returns>
+		/// </summary>
+		internal PortsParserResult( string errorMessage, IEnumerable<int> result )
 		{
 			Debug.Assert( ( errorMessage == null ) == ( result != null ) );
 			ErrorMessage = errorMessage;
@@ -16,42 +32,70 @@ namespace GridMapper
 		}
 		public bool HasError { get { return ErrorMessage != null; } }
 		public string ErrorMessage { get; private set; }
-		public List<ushort> Result { get; private set; }
+		public IEnumerable<int> Result { get; private set; }
 	}
+	/// <summary>
+	/// This class is the parser for the ports arguments.
+	/// This parser will retrieve all the ports to be scanned.
+	/// It includes features such as 
+	/// simple parsing (single ports), 
+	/// range (from -> to) 
+	/// and exclusion (single and range)
+	/// </summary>
 	public static class PortsParser
 	{
-		public static PortsParserResult MainPortsParser( string PortsToParse )
+		// These tokens are to identify specific type of ports.
+		public enum Token
 		{
-			List<ushort> PortsList = new List<ushort>();
-			string errorMessage = null;
-			Parser parser = new Parser( PortsToParse );
-			ushort currentPort;
+			Unknown,		//when an invalid port is being parsed
+			ExcludeUnknown,
+			New,			// when a new port is to be parsed
+			Range,			// when a range of ports is to be generated
+			End,			// when the parsed reached end of the ports to be parsed
+			Exclude,		// when an exclusion is to be applied
+			ExcludePort,	// when a single port is to be excluded from the final list
+			ExcludeRange,	// when a range of ports is to be excluded from the final list. NB: the range will be generated as well
+			ExcludeEnd,		// when the parsed reached end of the ports to be parsed but in a case of exclusion
+		}
 
+		public static PortsParserResult Tryparse( string PortsToParse )
+		{
+			string errorMessage = null;
 			if ( PortsToParse == string.Empty )
-				errorMessage = "No ports provided";
-			else
 			{
-				while ( parser.NextToken() != Token.End )
+				errorMessage = "No ports provided";
+				return new PortsParserResult( errorMessage, null );
+			}
+			ListOfRangeOfIntWithAutoCompression PortsList = new ListOfRangeOfIntWithAutoCompression();
+			Parser parser = new Parser( PortsToParse );
+			ushort port1;
+			ushort port2;
+
+			while ( parser.IsNotEndOfInput )
+			{
+				switch ( parser.NextToken( out port1, out port2 ) )
 				{
-					switch ( parser.NextToken( out currentPort ) )
-					{
-						case Token.New:
-						case Token.End:
-							PortsList.Add( currentPort );
-							break;
-						case Token.Unknown:
-							errorMessage = "Invalid format for ports arguments";
-							return new PortsParserResult( errorMessage, null );
-					}
+					case Token.New:
+					case Token.End:
+						PortsList.Add( port1 );
+						break;
+					case Token.Range:
+						PortsList.Add( port1, port2 );
+						break;
+					case Token.ExcludePort:
+					case Token.ExcludeEnd:
+						PortsList.Remove( port1 );
+						break;
+					case Token.ExcludeRange:
+						PortsList.Remove( port1, port2 );
+						break;
+					case Token.Unknown:
+					case Token.ExcludeUnknown:
+						errorMessage = "Invalid format for ports Arguments";
+						return new PortsParserResult( errorMessage, null );
 				}
 			}
 			return new PortsParserResult( errorMessage, PortsList );
-		}
-		public enum Token
-		{
-			Unknown,
-			New,
-			End,
 		}
 
 		class Parser
@@ -65,106 +109,167 @@ namespace GridMapper
 				_pos = 0;
 			}
 
-			public Token NextToken()
-			{
-				if ( !IsEndOfInput )
-				{
-					switch ( Current) 
-					{
-						case ',' :
-							Next();
-							if ( !( Char.IsDigit( Current ) ) ) // return error for any spaces, commas and such that should not be present
-								return Token.Unknown; 
-							return Token.New;
-						default :
-							return Token.Unknown;
-					}
-				}
-				return Token.End;
-			}
+			// this method is used to read the string character by character
+			char Current { get { return _s[_pos]; } }
 
-			public Token NextToken(out ushort us1)
-			{
-				us1 = 0;
-				if ( !IsEndOfInput )
-				{
-					if ( IsPort( out us1 ) )
-					{
-						switch ( NextToken() )
-						{
-							case Token.New:
-								return Token.New;
-							case Token.End:
-								return Token.End;
-							default:
-								return Token.Unknown;
-						}
-					}
-					else if ( us1 <= 0 || us1 > 65535 )
-						return Token.Unknown;
-					else
-					{
-						switch ( NextToken() )
-						{
-							case Token.End:
-								return Token.End;
-							default:
-								return Token.Unknown;
-						}
-					}
-				}
-				return Token.End;
-			}
-
-			char Current { get { return _s[ _pos ]; } }
-
-			bool Next()
+			// this method is used to move toward the next character
+			bool Forward()
 			{
 				return ++_pos < _s.Length;
 			}
 
+			// this method is used to check if the parser has reached end of input
 			bool IsEndOfInput { get { return _pos >= _s.Length; } }
 
+			// this method is used to check if the parser has not reached end of input
+			public bool IsNotEndOfInput { get { return !IsEndOfInput; } }
+
+			// this method is used to find out which token is to be applied considering the character the parser is analyzing.
+			public Token NextToken()
+			{
+				if ( IsNotEndOfInput )
+				{
+					switch ( Current) 
+					{
+						case ',':
+							Forward();
+							return Token.New; // Here, a new port is to be parsed
+						case '-':
+							Forward();
+							return Token.Range; // Here, a range of port is to be generated
+						case '!':
+							Forward();
+							return Token.Exclude; // Here, an exclusion is to be applied
+						default :
+							return Token.Unknown; // When none of the above is possible. In this case, the parser will stop and return an error
+					}
+				}
+				return Token.End;
+			}
+			// this method is basically used to find what token is to be returned when considering two newly parsed ports .
+			public Token NextToken( out ushort port1, out ushort port2 )
+			{
+				port2 = 0;
+				port1 = 0;
+				Token token;
+				if ( IsNotEndOfInput )
+				{
+					if ( Current != '!' )
+					{
+						if ( IsPort( out port1 ) )
+						{
+							switch ( NextToken() )
+							{
+								case Token.New:
+									return Token.New;
+								case Token.Range:
+									if ( IsPort( out port2 ) )
+									{
+										token = NextToken();
+										if ( token == Token.New || token == Token.End )
+										{
+											return Token.Range;
+										}
+										else
+										{
+											return Token.Unknown;
+										}
+									}
+									return Token.Unknown;
+								case Token.End:
+									return Token.End;
+								default:
+									return Token.Unknown;
+							}
+						}
+						else
+						{
+							return Token.Unknown;
+						}
+					}
+					else if ( Current == '!' )
+					{
+						switch ( NextToken() )
+						{
+							case Token.Exclude:
+								if ( IsPort( out port1 ) )
+								{
+
+									switch ( NextToken() )
+									{
+										case Token.New:
+											return Token.ExcludePort;
+										case Token.Range:
+											if ( IsPort( out port2 ) )
+											{
+												token = NextToken();
+												if ( token == Token.New || token == Token.End )
+												{
+													return Token.ExcludeRange;
+												}
+												else
+												{
+													return Token.ExcludeUnknown;
+												}
+											}
+											break;
+										case Token.End:
+											return Token.ExcludeEnd;
+										default:
+											return Token.ExcludeUnknown;
+									}
+								}
+								else
+								{
+									return Token.End;
+								}
+								return Token.ExcludeUnknown;
+							case Token.End:
+								return Token.End;
+							default:
+								return Token.ExcludeUnknown;
+						}
+					}
+				}
+				return Token.End;
+			}
+
+			// this method is used to check if character in parameter is the one the parser is currently reading.
+			// if it matches, the parser moves toward the next character in the input
 			private bool MatchChar( char c )
 			{
-				if ( !IsEndOfInput && Current == ' ' )
+				if ( IsNotEndOfInput && Current == c )
 				{
-					Next();
-				}
-				if ( !IsEndOfInput && Current == c )
-				{
-					Next();
+					Forward();
 					return true;
 				}
 				return false;
 			}
 
-			public bool IsPort( out ushort us1 )
+			// this method is used to check if the parser retrieve a value that is a valid port.
+			// if the value is a valid port, the port is returned to be added in the list
+			public bool IsPort( out ushort port )
 			{
-				us1 = 0;
-				return ( IsUShort( out us1 ) );
-			}
-
-			public bool IsUShort( out ushort us1 )
-			{
-				us1 = 0;
-				string returnedUShort = String.Empty;
-				if ( Current == ' ' )
+				port = 0;
+				string returnedport = String.Empty;
+				while ( IsNotEndOfInput && Char.IsDigit( Current ) )
 				{
-					Next();
+					returnedport += Current;
+					Forward();
 				}
-				while ( !IsEndOfInput && Char.IsDigit( Current ) )
+				if ( returnedport != String.Empty )
 				{
-					returnedUShort += Current;
-					Next();
-				}
-				if ( returnedUShort != String.Empty )
-				{
-					if ( ushort.TryParse( returnedUShort, out us1 ) )
-						if ( us1 == 0 )
+					if ( ushort.TryParse( returnedport, out port ) )
+					{
+						if ( port == 0 )
+						{
 							return false;
+						}
 						else
+						{
 							return true;
+						}
+					}
 					return false;
 				}
 				return false;
@@ -172,4 +277,5 @@ namespace GridMapper
 
 		}
 	}
+	#endregion // PortsParser
 }

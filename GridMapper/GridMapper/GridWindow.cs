@@ -30,6 +30,7 @@ namespace GridMapper
 			_exe = new NewExecution( StartUpOptions );
 			_exe.TaskCompleted += ProgressChanged;
 			InitializeComponent();
+			InitializeComboBox();
 			InitializeDataGridView();
 		}
 
@@ -60,6 +61,11 @@ namespace GridMapper
 			}
 		}
 
+		void InitializeComboBox()
+		{
+			comboBox1.SelectedIndex = 0;
+		}
+
 		void InitializeDataGridView()
 		{
 			dataGridView1.AllowUserToResizeColumns = false;
@@ -67,20 +73,6 @@ namespace GridMapper
 			dataGridView1.RowHeadersVisible = false;
 			dataGridView1.AutoGenerateColumns = false;
 			dataGridView1.AllowUserToAddRows = false;
-
-			dataGridView1.ColumnCount = 5;
-			dataGridView1.Columns[0].DataPropertyName = "Id";
-			dataGridView1.Columns[0].Name = "Id";
-			dataGridView1.Columns[0].Visible = false;
-			dataGridView1.Columns[1].DataPropertyName = "IPAddress";
-			dataGridView1.Columns[1].Name = "IPAddress";
-			dataGridView1.Columns[1].SortMode = DataGridViewColumnSortMode.Programmatic;
-			dataGridView1.Columns[2].DataPropertyName = "MacAddress";
-			dataGridView1.Columns[2].Name = "MacAddress";
-			dataGridView1.Columns[3].DataPropertyName = "HostName";
-			dataGridView1.Columns[3].Name = "HostName";
-			dataGridView1.Columns[4].DataPropertyName = "Ports";
-			dataGridView1.Columns[4].Name = "Ports";
 
 			//PingSender.PingCompleted += UpdateDataGridView;
 			//ARPSender.MacCompleted += UpdateDataGridView;
@@ -95,17 +87,43 @@ namespace GridMapper
 
 		public void UpdateDataGridView2( object sender, RepositoryUpdatedEventArg e )
 		{
-			dataGridView1.DataSource = null;
-			dataGridView1.DataMember = null;
 			foreach( INetworkDictionaryItem item in e.ReadOnlyRepository )
 			{
 				byte[] b = item.IPAddress.GetAddressBytes();
 				IPAddressV4 ip = new IPAddressV4();
-				ip.B0 = b[0];
-				ip.B1 = b[1];
-				ip.B2 = b[2];
-				ip.B3 = b[3];
-				string portToString = "";
+				string intIP = string.Empty;
+				if ( BitConverter.IsLittleEndian )
+				{
+					ip.B0 = b[3];
+					ip.B1 = b[2];
+					ip.B2 = b[1];
+					ip.B3 = b[0];
+				}
+				else
+				{
+					ip.B0 = b[0];
+					ip.B1 = b[1];
+					ip.B2 = b[2];
+					ip.B3 = b[3];
+				}
+				intIP = ((uint)ip.Address).ToString(); ;
+
+				string IPAddressToString = string.Empty;
+				IPAddressToString = item.IPAddress.ToString();
+
+				string macToString = string.Empty;
+				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
+				{
+					macToString = ToMac( item.MacAddress.ToString() );
+				}
+
+				string hostNameString = string.Empty;
+				if ( item.HostEntry != null )
+				{
+					hostNameString = item.HostEntry.HostName.ToString();
+				}
+
+				string portToString = string.Empty;
 				//pour l'affichage des virgule
 				if( item.Ports.Count > 0 )
 				{
@@ -114,25 +132,34 @@ namespace GridMapper
 						portToString += ", " + item.Ports[i].ToString();
 				}
 
-				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None && item.HostEntry != null )
+				bool found = false;
+				foreach(DataGridViewRow row in dataGridView1.Rows)
 				{
-                    string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), ToMac(item.MacAddress.ToString()), item.HostEntry.HostName.ToString(), portToString };
-					dataGridView1.Rows.Add( row );
+					if ( row.Cells[1].Value.ToString() == IPAddressToString )
+					{
+						found = true;
+						if ( row.Cells[0].Value.ToString() == string.Empty && intIP != string.Empty )
+						{
+							row.Cells[0].Value = intIP;
+						}
+						if ( row.Cells[2].Value.ToString() == string.Empty && macToString != string.Empty )
+						{
+							row.Cells[2].Value = macToString;
+						}
+						if ( row.Cells[3].Value.ToString() == string.Empty && hostNameString != string.Empty )
+						{
+							row.Cells[3].Value = hostNameString;
+						}
+						if ( row.Cells[4].Value.ToString() == string.Empty && portToString != string.Empty )
+						{
+							row.Cells[4].Value = portToString;
+						}
+						break;
+					}
 				}
-				else if( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
+				if ( !found )
 				{
-                    string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), ToMac(item.MacAddress.ToString()), "", portToString };
-					dataGridView1.Rows.Add( row );
-				}
-				else if( item.HostEntry != null )
-				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", item.HostEntry.HostName.ToString(), portToString };
-					dataGridView1.Rows.Add( row );
-				}
-				else
-				{
-					string[] row = { ip.Address.ToString(), item.IPAddress.ToString(), "", "", portToString };
-					dataGridView1.Rows.Add( row );
+					dataGridView1.Rows.Add( intIP, IPAddressToString, macToString, hostNameString, portToString);
 				}
 			}
 		}
@@ -287,5 +314,65 @@ namespace GridMapper
             _exe.StartScan();
             timer1.Start();
         }
+
+		private void dataGridView1_SortCompare( object sender, DataGridViewSortCompareEventArgs e )
+		{
+			if ( e.Column.Name == "IPAddress" )
+			{
+				// Try to sort based on the cells in the current column.
+				e.SortResult = System.String.Compare( dataGridView1[0, e.RowIndex1].Value.ToString(),
+														dataGridView1[0, e.RowIndex2].Value.ToString() );
+				e.Handled = true;
+			}
+			if ( e.Column.Name == "HostName" )
+			{
+				System.Net.IPAddress tmp;
+				if ( System.Net.IPAddress.TryParse( e.CellValue1.ToString(), out tmp ) && System.Net.IPAddress.TryParse( e.CellValue2.ToString(), out tmp ) )
+				{
+					// Try to sort based on the cells in the current column.
+					e.SortResult = System.String.Compare( dataGridView1[0, e.RowIndex1].Value.ToString(),
+															dataGridView1[0, e.RowIndex2].Value.ToString() );
+					e.Handled = true;
+				}
+			}
+		}
+
+		private void comboBox1_SelectedIndexChanged( object sender, EventArgs e )
+		{
+			ComboBox cmb = (ComboBox)sender;
+			int selectedIndex = cmb.SelectedIndex;
+			switch ( selectedIndex )
+			{
+					//IPRange
+				case 0 :
+					if ( panel1.Controls.Count > 0)
+					{
+						panel1.Controls.RemoveAt( 0 );
+					}
+					panel1.Controls.Add(new IPRangeUserControl());
+					break;
+
+					//CIDR
+				case 1:
+					if ( panel1.Controls.Count > 0 )
+					{
+						panel1.Controls.RemoveAt( 0 );
+					}
+					panel1.Controls.Add(new CIDRUserControl());
+					break;
+
+					//Manual
+				case 2:
+					if ( panel1.Controls.Count > 0 )
+					{
+						panel1.Controls.RemoveAt( 0 );
+					}
+					panel1.Controls.Add(new StringUserControl());
+					break;
+				default :
+					throw new InvalidOperationException( "Invalid mode for the input" );
+			}
+		}
+
 	}
 }
