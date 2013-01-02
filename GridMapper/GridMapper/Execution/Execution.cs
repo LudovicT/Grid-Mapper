@@ -33,23 +33,8 @@ namespace GridMapper
 
 		public IRepository Repository { get { return _repository; } }
 
-		private void SetThread()
-		{
-			int minWORK;
-			int minIOC;
-			int maxWORK;
-			int maxIOC;
-			ThreadPool.GetMinThreads( out minWORK, out minIOC );
-			ThreadPool.GetMaxThreads( out maxWORK, out maxIOC );
-			if( ThreadPool.SetMinThreads( 4, 4 ) )
-			{
-				ThreadPool.GetMinThreads( out minWORK, out minIOC );
-			}
-		}
-
 		public void StartScan()
 		{
-			SetThread();
 			_repository = new Repository();
 			_ownPacketReceiver.StartReceive();
 
@@ -57,16 +42,11 @@ namespace GridMapper
 			{
 				_ownPacketBuilderForArping = new OwnPacketBuilder( PacketType.ARP );
 				_ownPacketBuilderForScanPort = new OwnPacketBuilder( PacketType.TCP );
-				//arp wpcap = new arp();
-				//wpcap.tryARP( _option.IpToTest.Result );
 				foreach( int ipInt in _option.IpToTest.Result )
 				{
 					_ownPacketSender.trySend( _ownPacketBuilderForArping.BuildArpPacket( IPAddress.Parse( ((uint)ipInt).ToString() ).GetAddressBytes() ) );
 				}
-				Thread.Sleep( 30000 );
-				_ownPacketReceiver.EndReceive();
 			} );
-
 		}
 
 		private void AddArpingInRepositoryAndContinueWithRequest( object sender, ArpingReceivedEventArgs e )
@@ -75,9 +55,17 @@ namespace GridMapper
 			_repository.AddOrUpdate( datIP, PhysicalAddress.Parse( e.MacAddress ) );
 			_repository.AddOrUpdate( datIP, _reverseDnsResolver.GetHostName( datIP ) );
 			if( _option.Port )
+			{
 				foreach( ushort portNumber in _option.PortToTest.Result )
+				{
 					_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
-									
+				}
+			}
+		}
+
+		private void AddPortNumberInRepository( object sender, PortReceivedEventArgs e )
+		{
+			_repository.AddOrUpdate( IPAddress.Parse( e.IpAddress ), e.Port );
 		}
 
 		public int Progress()
@@ -103,6 +91,7 @@ namespace GridMapper
 			_reverseDnsResolver = new ReverseDnsResolver();
 
 			_ownPacketReceiver.ArpingReceived += AddArpingInRepositoryAndContinueWithRequest;
+			_ownPacketReceiver.PortReceived += AddPortNumberInRepository;
 		}
 
 		public void optionsModified( OptionUpdatedEventArgs e )

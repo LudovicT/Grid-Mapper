@@ -248,7 +248,7 @@ namespace GridMapper.NetworkRawSender
 			foreach ( int destIPint in ipRange )
 			{
 				outputCommunicator.SendPacket( BuildArpPacket( IPAddress.Parse( ( (uint)destIPint ).ToString() ).GetAddressBytes() ) );
-				Thread.SpinWait( 10000 );//divise par 3 ou 4 le débit
+				//Thread.SpinWait( 10000 );//divise par 3 ou 4 le débit
 			}
 
 			//uint i = 0;

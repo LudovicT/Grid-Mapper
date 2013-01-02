@@ -25,15 +25,21 @@ namespace GridMapper.NetworkUtilities
 
 		PacketDevice selectedDevice;
 		string _filter = string.Empty;
+		ushort _tcpPort;
 		bool _isStart;
+		bool _isActive;
 		Thread _threadForReceive;
+		System.Timers.Timer timer = new System.Timers.Timer();
 
 		public event EventHandler<ArpingReceivedEventArgs> ArpingReceived;
+		public event EventHandler<PortReceivedEventArgs> PortReceived;
 
 		public OwnPacketReceiver( bool arp = true, bool tcp = true, ushort tcpPort = 62000, bool udp = false, ushort udpPort = 62001)
 		{
 			IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
 			_isStart = true;
+			_isActive = true;
+			_tcpPort = 62000;
 
 			if ( arp || tcp )
 			{
@@ -71,8 +77,10 @@ namespace GridMapper.NetworkUtilities
 		public void StartReceive()
 		{
 			_isStart = true;
+			_isActive = true;
 			_threadForReceive = new Thread( Receive );
 			_threadForReceive.Start();
+			TimerForCallEndReceive();
 		}
 
 		private void Receive()
@@ -97,6 +105,7 @@ namespace GridMapper.NetworkUtilities
 								continue;
 							case PacketCommunicatorReceiveResult.Ok:
 								ArpingReceived( this, new ArpingReceivedEventArgs( packet.Ethernet.Arp.SenderProtocolIpV4Address.ToString(), ByteArrayToHexViaByteManipulation( packet.Ethernet.Arp.SenderHardwareAddress.ToArray() ) ) );
+								_isActive = true;
 								Console.Write( "ip = " + packet.Ethernet.Arp.SenderProtocolIpV4Address.ToString() + " mac = " + ByteArrayToHexViaByteManipulation( packet.Ethernet.Arp.SenderHardwareAddress.ToArray() ) );
 								Console.WriteLine();
 								break;
@@ -110,7 +119,7 @@ namespace GridMapper.NetworkUtilities
 						packet.Ethernet.IpV4.Tcp.IsValid &&
 						packet.Ethernet.IpV4.Tcp.IsSynchronize &&
 						packet.Ethernet.IpV4.Tcp.IsAcknowledgment &&
-						packet.Ethernet.IpV4.Tcp.DestinationPort == 62000 )
+						packet.Ethernet.IpV4.Tcp.DestinationPort == _tcpPort )
 					{
 						switch( result )
 						{
@@ -118,6 +127,8 @@ namespace GridMapper.NetworkUtilities
 								// Timeout elapsed
 								continue;
 							case PacketCommunicatorReceiveResult.Ok:
+								PortReceived( this, new PortReceivedEventArgs( packet.Ethernet.IpV4.Source.ToString(), packet.Ethernet.IpV4.Tcp.SourcePort ) );
+								_isActive = true;
 								Console.Write( "ip = " + packet.Ethernet.IpV4.Source.ToString() + " Port = " + packet.Ethernet.IpV4.Tcp.SourcePort.ToString() + " portDest : " + packet.Ethernet.IpV4.Tcp.DestinationPort.ToString() );
 								Console.WriteLine();
 								break;
@@ -133,6 +144,24 @@ namespace GridMapper.NetworkUtilities
 		{
 			_isStart = false;
 			_threadForReceive.Abort();
+		}
+
+		private void TimerForCallEndReceive()
+		{
+			timer.Interval = 10000;
+			timer.Enabled = true;
+			timer.Elapsed += EndReceiveCallByTimer;
+			timer.Start();
+		}
+
+		private void EndReceiveCallByTimer( object sender, EventArgs e )
+		{
+			if( !_isActive )
+			{
+				EndReceive();
+				timer.Close();
+			}
+			_isActive = false;
 		}
 
 		private string ByteArrayToHexViaByteManipulation( byte[] bytes )
@@ -160,5 +189,16 @@ namespace GridMapper.NetworkUtilities
 
 		public string IpAddress { get; private set; }
 		public string MacAddress { get; private set; }
+	}
+	public class PortReceivedEventArgs : EventArgs
+	{
+		public PortReceivedEventArgs( string ipAddress, ushort port )
+		{
+			IpAddress = ipAddress;
+			Port = port;
+		}
+
+		public string IpAddress { get; private set; }
+		public ushort Port { get; private set; }
 	}
 }
