@@ -75,7 +75,7 @@ namespace GridMapper
 			_repository.AddOrUpdate( datIP, PhysicalAddress.Parse( e.MacAddress ) );
 			_repository.AddOrUpdate( datIP, _reverseDnsResolver.GetHostName( datIP ) );
 			if( _option.Port )
-				foreach( ushort portNumber in _option.PortToTest )
+				foreach( ushort portNumber in _option.PortToTest.Result )
 					_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
 									
 		}

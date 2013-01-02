@@ -57,10 +57,6 @@
     <Compile Include="TestUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\RawSenderWithDotNetSocket.csproj">
-      <Project>{78DA9A3E-62FE-4DC6-804B-B7346352EEC5}</Project>
-      <Name>RawSenderWithDotNetSocket</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GridMapper\GridMapper.csproj">
       <Project>{C65C2581-A13E-4B34-8DA6-A5FA85B6F359}</Project>
       <Name>GridMapper</Name>

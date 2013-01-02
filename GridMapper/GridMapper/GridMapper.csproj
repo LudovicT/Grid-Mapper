@@ -212,7 +212,6 @@
     <Compile Include="Repository\Repository.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="NetworkUtilities\Arping.cs" />
     <Compile Include="StringUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

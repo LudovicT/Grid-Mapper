@@ -12,7 +12,6 @@ using PcapDotNet.Packets.Arp;
 using System.Diagnostics;
 using System.Threading;
 using System.Collections;
-using System.Diagnostics;
 
 namespace GridMapper
 {
