@@ -116,7 +116,7 @@ namespace GridMapper.Test
 			OwnPacketBuilder TCPPacket = new OwnPacketBuilder(PacketType.TCP);
 			for( int i = 1 ; i <= 65535 ; i++ )
 			{
-				Sender.trySend( TCPPacket.BuildTcpPacket(ip,mac,i) );
+				Sender.trySend( TCPPacket.BuildTcpPacket(ip,mac,(ushort)i) );
 			}
 		}
 		[Test]
