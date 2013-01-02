@@ -24,8 +24,20 @@ namespace GridMapper
 		OwnPacketBuilder _ownPacketBuilderForScanPort;
 		OwnPacketSender _ownPacketSender;
 		ReverseDnsResolver _reverseDnsResolver;
+		Task _taskForExecution;
 
 		public event EventHandler<TaskCompletedEventArgs> TaskCompleted;
+
+		public NewExecution( Option startupOptions )
+		{
+			_option = startupOptions;
+			_ownPacketReceiver = new OwnPacketReceiver();
+			_ownPacketSender = new OwnPacketSender();
+			_reverseDnsResolver = new ReverseDnsResolver();
+
+			_ownPacketReceiver.ArpingReceived += AddArpingInRepositoryAndContinueWithRequest;
+			_ownPacketReceiver.PortReceived += AddPortNumberInRepository;
+		}
 
 		#region IExecution Membres
 
@@ -38,7 +50,7 @@ namespace GridMapper
 			_repository = new Repository();
 			_ownPacketReceiver.StartReceive();
 
-			Task task1 = Task.Factory.StartNew( () =>
+			_taskForExecution = Task.Factory.StartNew( () =>
 			{
 				_ownPacketBuilderForArping = new OwnPacketBuilder( PacketType.ARP );
 				_ownPacketBuilderForScanPort = new OwnPacketBuilder( PacketType.TCP );
@@ -77,22 +89,18 @@ namespace GridMapper
 			int restToDo = (IpTotal * taskToDoPerIp) / (IpTotal * taskToDoPerIp);
 			return restToDo;
 		}
+
 		#endregion
+
+		public void CloseAllThreads()
+		{
+			_repository.EndThreads();
+			_ownPacketReceiver.EndReceive();
+		}
 
 		public void SaveRepoXml( Stream stream )
 		{
 			_repository.XmlWriter( stream );
-		}
-
-		public NewExecution( Option startupOptions )
-		{
-			_option = startupOptions;
-			_ownPacketReceiver = new OwnPacketReceiver();
-			_ownPacketSender = new OwnPacketSender();
-			_reverseDnsResolver = new ReverseDnsResolver();
-
-			_ownPacketReceiver.ArpingReceived += AddArpingInRepositoryAndContinueWithRequest;
-			_ownPacketReceiver.PortReceived += AddPortNumberInRepository;
 		}
 
 		public void optionsModified( OptionUpdatedEventArgs e )

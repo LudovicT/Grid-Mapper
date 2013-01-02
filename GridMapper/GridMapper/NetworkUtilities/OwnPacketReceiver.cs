@@ -142,6 +142,7 @@ namespace GridMapper.NetworkUtilities
 		public void EndReceive()
 		{
 			_isStart = false;
+			timer.Close();
 		}
 
 		public void TimerToCallEndReceive()
@@ -157,7 +158,6 @@ namespace GridMapper.NetworkUtilities
 			if( !_isActive )
 			{
 				EndReceive();
-				timer.Close();
 			}
 			_isActive = false;
 		}
