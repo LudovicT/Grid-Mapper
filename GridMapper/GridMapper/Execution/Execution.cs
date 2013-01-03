@@ -99,7 +99,7 @@ namespace GridMapper
 						if( _option.Port )
 						{
 							int i = 0;
-							foreach( ushort portNumber in _option.PortToTest.Result )
+							foreach( ushort portNumber in PortsParser.Tryparse(_option.PortToTest).Result )
 							{
 								_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
 								if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )

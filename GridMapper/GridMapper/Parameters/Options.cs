@@ -43,13 +43,13 @@ namespace GridMapper
 		public ushort TCPPort = 62000;
 		public ushort UDPPort = 62001;
 		public IPParserResult IpToTest;
-		public PortsParserResult PortToTest;
+		public string PortToTest = string.Empty;
 
 		// This constructor will set the required options to their default values in order for the program to work properly
 		public Option()
 		{
 			IpToTest = null;
-			PortToTest = PortsParser.Tryparse( "22,80,443" );
+			PortToTest = "22,80,443";
 		}
 
 
