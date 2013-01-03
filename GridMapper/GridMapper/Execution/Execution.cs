@@ -72,21 +72,29 @@ namespace GridMapper
 		private void AddArpingInRepositoryAndContinueWithRequest( object sender, ArpingReceivedEventArgs e )
 		{
 			IPAddress datIP = IPAddress.Parse( e.IpAddress );
-			if ( _option.Arp )
-			{
-				_repository.AddOrUpdate( datIP, PhysicalAddress.Parse( e.MacAddress ) );
-			}
-			if ( _option.Dns )
-			{
-				_repository.AddOrUpdate( datIP, _reverseDnsResolver.GetHostName( datIP ) );
-			}
-			if( _option.Port )
-			{
-				foreach( ushort portNumber in _option.PortToTest.Result )
-				{
-					_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
-				}
-			}
+			Task.Factory.StartNew( () =>
+					{
+						if( _option.Arp )
+						{
+							_repository.AddOrUpdate( datIP, PhysicalAddress.Parse( e.MacAddress ) );
+						}
+					} ).ContinueWith( a =>
+					{
+						Task.Factory.StartNew( () =>
+						{
+							if( _option.Dns )
+							{
+								_repository.AddOrUpdate( datIP, _reverseDnsResolver.GetHostName( datIP ) );
+							}
+						});
+						if( _option.Port )
+						{
+							foreach( ushort portNumber in _option.PortToTest.Result )
+							{
+								_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
+							}
+						}
+					} );
 		}
 
 		private void AddPortNumberInRepository( object sender, PortReceivedEventArgs e )
