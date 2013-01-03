@@ -147,13 +147,20 @@ namespace GridMapper
 
 		public void optionsModified( OptionUpdatedEventArgs e )
 		{
+			_option.Ping = e.Option.Ping;
+			_option.PingTimeout = e.Option.PingTimeout;
 			_option.Arping = e.Option.Arping;
 			_option.Arp = e.Option.Arp;
 			_option.Dns = e.Option.Dns;
 			_option.Port = e.Option.Port;
-			_option.PingTimeout = e.Option.PingTimeout;
-			_option.MaximumTasks = e.Option.MaximumTasks;
 			_option.PortToTest = e.Option.PortToTest;
+			_option.MaximumTasks = e.Option.MaximumTasks;
+			_option.NbPacketToSend = e.Option.NbPacketToSend;
+			_option.WaitTime = e.Option.WaitTime;
+			_option.TCPPort = e.Option.TCPPort;
+			_option.UDPPort = e.Option.UDPPort;
+			_option.RandomTCPPort = e.Option.RandomTCPPort;
+			_option.RandomUDPPort = e.Option.RandomUDPPort;
 		}
 	}
 
