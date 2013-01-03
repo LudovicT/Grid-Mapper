@@ -107,7 +107,10 @@ namespace GridMapper
 
 		public void CloseAllThreads()
 		{
-			_repository.EndThreads();
+			if ( _repository != null )
+			{
+				_repository.EndThreads();
+			}
 			_ownPacketReceiver.EndReceive();
 		}
 
