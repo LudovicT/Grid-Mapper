@@ -16,7 +16,7 @@ namespace GridMapper
             InitializeComponent();
         }
 
-		private void numericUpDown1_KeyPress( object sender, KeyPressEventArgs e )
+		private void numericUpDown_KeyPress( object sender, KeyPressEventArgs e )
 		{
 			if ( !char.IsControl( e.KeyChar )
 				&& !char.IsDigit( e.KeyChar )

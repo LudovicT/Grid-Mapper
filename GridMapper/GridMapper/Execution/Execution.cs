@@ -64,6 +64,7 @@ namespace GridMapper
 					foreach ( int ipInt in _option.IpToTest.Result )
 					{
 						_ownPacketSender.trySend( _ownPacketBuilderForArping.BuildArpPacket( IPAddress.Parse( ( (uint)ipInt ).ToString() ).GetAddressBytes() ) );
+						TaskCompleted( this, new TaskCompletedEventArgs( _option.OperationCount * _option.PortToTestCount ) );
 						if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
 						{
 							i++;
@@ -100,7 +101,7 @@ namespace GridMapper
 						if( _option.Port )
 						{
 							int i = 0;
-							foreach( ushort portNumber in PortsParser.Tryparse(_option.PortToTest).Result )
+							foreach( ushort portNumber in _option.PortToTest.Result )
 							{
 								_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
 								if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
@@ -155,7 +156,7 @@ namespace GridMapper
 			_option.Arp = e.Option.Arp;
 			_option.Dns = e.Option.Dns;
 			_option.Port = e.Option.Port;
-			_option.PortToTest = e.Option.PortToTest;
+			_option.PortToTestString = e.Option.PortToTestString;
 			_option.MaximumTasks = e.Option.MaximumTasks;
 			_option.NbPacketToSend = e.Option.NbPacketToSend;
 			_option.WaitTime = e.Option.WaitTime;

@@ -28,28 +28,43 @@ namespace GridMapper
 		/// <param name="_portToTest">This is a IEnumerable where all the ports to be scanned are stored.</param>
 		/// </summary>
 		/// 
-		public bool Ping = true;
-		public bool Arping = true;
-		public bool Arp = true;
-		public bool Dns = true;
-		public bool Port = true;
-		public bool RandomTCPPort = false;
-		public bool RandomUDPPort = false;
-		public bool CmdConsole = false;
-		public int MaximumTasks = 50;
-		public int PingTimeout = 1000;
-		public int NbPacketToSend = 10;
-		public int WaitTime = 1;
-		public ushort TCPPort = 62000;
-		public ushort UDPPort = 62001;
-		public IPParserResult IpToTest;
-		public string PortToTest = string.Empty;
+		public bool Ping { get; set; }
+		public bool Arping { get; set; }
+		public bool Arp { get; set; }
+		public bool Dns { get; set; }
+		public bool Port { get; set; }
+		public bool RandomTCPPort { get; set; }
+		public bool RandomUDPPort { get; set; }
+		public bool CmdConsole { get; set; }
+		public int MaximumTasks { get; set; }
+		public int PingTimeout { get; set; }
+		public int NbPacketToSend { get; set; }
+		public int WaitTime { get; set; }
+		public ushort TCPPort { get; set; }
+		public ushort UDPPort { get; set; }
+		public IPParserResult IpToTest { get; set; }
+		string _portToTestString;
+		PortsParserResult _portToTest;
 
 		// This constructor will set the required options to their default values in order for the program to work properly
 		public Option()
 		{
+			PortToTestString = "22,80,443";
+			Ping = true;
+			Arping=true;
+			Arp=true;
+			Dns = true;
+			Port = true;
+			RandomTCPPort = false;
+			RandomUDPPort = false;
+			CmdConsole = false;
+			MaximumTasks = 50;
+			PingTimeout = 1000;
+			NbPacketToSend = 10;
+			WaitTime = 1;
+			TCPPort = 62000;
+			UDPPort = 62001;
 			IpToTest = null;
-			PortToTest = "22,80,443";
 		}
 
 
@@ -62,6 +77,22 @@ namespace GridMapper
 				if ( IpToTest.Result != null )
 				{
 					foreach ( int ip in IpToTest.Result )
+					{
+						i++;
+					}
+					return i;
+				}
+				return 0;
+			}
+		}
+		public int PortToTestCount
+		{
+			get
+			{
+				int i = 0;
+				if ( PortToTest.Result != null )
+				{
+					foreach ( int ip in PortToTest.Result )
 					{
 						i++;
 					}
@@ -84,7 +115,37 @@ namespace GridMapper
 				if ( Port ) i++;
                 return i;
             }
-        }
+		}
+		public string PortToTestString
+		{
+			get
+			{
+				return _portToTestString;
+			}
+			set
+			{
+				_portToTestString = value;
+				_portToTest = PortsParser.Tryparse( value );
+			}
+		}
+		public PortsParserResult PortToTest
+		{
+			get
+			{
+				return _portToTest;
+			}
+			set
+			{
+				_portToTest = value;
+			}
+		}
+		public int TotalOperation
+		{
+			get
+			{
+				return IPToTestCount * OperationCount * PortToTestCount;
+			}
+		}
 
 	}
 	#endregion // Option
