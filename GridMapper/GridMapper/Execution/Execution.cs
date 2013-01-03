@@ -64,7 +64,7 @@ namespace GridMapper
 					foreach ( int ipInt in _option.IpToTest.Result )
 					{
 						_ownPacketSender.trySend( _ownPacketBuilderForArping.BuildArpPacket( IPAddress.Parse( ( (uint)ipInt ).ToString() ).GetAddressBytes() ) );
-						TaskCompleted( this, new TaskCompletedEventArgs( _option.OperationCount * _option.PortToTestCount ) );
+						TaskCompleted( this, new TaskCompletedEventArgs( _option.OperationCount) );
 						if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
 						{
 							i++;

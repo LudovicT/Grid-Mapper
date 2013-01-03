@@ -51,8 +51,8 @@ namespace GridMapper
 		{
 			PortToTestString = "22,80,443";
 			Ping = true;
-			Arping=true;
-			Arp=true;
+			Arping = true;
+			Arp = true;
 			Dns = true;
 			Port = true;
 			RandomTCPPort = false;
@@ -112,7 +112,11 @@ namespace GridMapper
 				if ( Arping ) i++;
 				if ( Arp ) i++;
 				if ( Dns ) i++;
-				if ( Port ) i++;
+				if ( Port )
+				{
+					i++;
+					i = i + PortToTestCount;
+				}
                 return i;
             }
 		}
@@ -143,7 +147,7 @@ namespace GridMapper
 		{
 			get
 			{
-				return IPToTestCount * OperationCount * PortToTestCount;
+				return IPToTestCount * OperationCount;
 			}
 		}
 
