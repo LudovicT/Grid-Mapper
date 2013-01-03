@@ -69,6 +69,7 @@ namespace GridMapper
 							i++;
 							if ( i == _option.NbPacketToSend )
 							{
+								i = 0;
 								Thread.Sleep( _option.WaitTime );
 							}
 						}
@@ -107,6 +108,7 @@ namespace GridMapper
 									i++;
 									if ( i == _option.NbPacketToSend )
 									{
+										i = 0;
 										Thread.Sleep( _option.WaitTime );
 									}
 								}
