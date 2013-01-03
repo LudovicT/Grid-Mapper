@@ -30,6 +30,7 @@ namespace GridMapper.NetworkUtilities
 		bool _isActive;
 		Thread _threadForReceive;
 		System.Timers.Timer timer = new System.Timers.Timer();
+		readonly bool _isIPV6 = false;
 
 		public event EventHandler<ArpingReceivedEventArgs> ArpingReceived;
 		public event EventHandler<PortReceivedEventArgs> PortReceived;
@@ -40,6 +41,12 @@ namespace GridMapper.NetworkUtilities
 			_isStart = true;
 			_isActive = true;
 			_tcpPort = tcpPort;
+
+			if ( allDevices.Count == 0 )
+			{
+				Console.WriteLine( "No interfaces found! Make sure WinPcap is installed." );
+				return;
+			}
 
 			if ( arp || tcp )
 			{
@@ -66,12 +73,24 @@ namespace GridMapper.NetworkUtilities
 				}
 			}
 
-			if ( allDevices.Count == 0 )
+			for ( int i = 0; i < allDevices.Count; i++ )
 			{
-				Console.WriteLine( "No interfaces found! Make sure WinPcap is installed." );
-				return;
+				for ( int j = 0; j < allDevices[i].Addresses.Count; j++ )
+				{
+					string[] deviceAddress = allDevices[i].Addresses[j].Address.ToString().Split( ' ' );
+					if ( allDevices[i].Addresses[j].Address.Family != SocketAddressFamily.Internet6 && deviceAddress[1] != "0.0.0.0" )
+					{
+						selectedDevice = allDevices[i];
+						if ( j > 0 && allDevices[i].Addresses[j - 1].Address.Family == SocketAddressFamily.Internet6 )
+						{
+							_isIPV6 = true;
+						}
+						break;
+					}
+				}
+				if ( selectedDevice != null )
+					break;
 			}
-			selectedDevice = allDevices[0];
 		}
 
 		public void StartReceive()
