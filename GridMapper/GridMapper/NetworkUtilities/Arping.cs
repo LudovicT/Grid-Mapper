@@ -194,8 +194,6 @@ namespace GridMapper.NetworkRawSender
 				Console.WriteLine( "Listening on " + selectedDevice.Description + "..." );
 
 				// Retrieve the packets
-				int nbPackets;
-				//communicator.ReceivePackets(0, PacketHandler );
 
 				Packet packet;
 				do

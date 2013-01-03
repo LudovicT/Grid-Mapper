@@ -10,8 +10,6 @@ namespace GridMapper
 {
 	public class ReverseDnsResolver
 	{
-		public event EventHandler<HostNameCompletedEventArgs> HostNameCompleted;
-
 		public IPHostEntry GetHostName(IPAddress ipAddress)
 		{
 			try
@@ -23,7 +21,6 @@ namespace GridMapper
 			{
 				return null;
 			}
-			//HostNameCompleted( this, new HostNameCompletedEventArgs( ipAddress, hostEntry ) );
 		}
 
 		public class HostNameCompletedEventArgs : EventArgs

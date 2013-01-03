@@ -188,28 +188,28 @@ namespace GridMapper
 			// 
 			this.startToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
 			this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-			this.startToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+			this.startToolStripMenuItem.Size = new System.Drawing.Size( 100, 22 );
 			this.startToolStripMenuItem.Text = "Start";
 			this.startToolStripMenuItem.Click += new System.EventHandler( this.startToolStripMenuItem_Click );
 			// 
 			// saveToolStripMenuItem
 			// 
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size( 100, 22 );
 			this.saveToolStripMenuItem.Text = "Save";
 			this.saveToolStripMenuItem.Click += new System.EventHandler( this.saveToolStripMenuItem_Click );
 			// 
 			// loadToolStripMenuItem
 			// 
 			this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-			this.loadToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+			this.loadToolStripMenuItem.Size = new System.Drawing.Size( 100, 22 );
 			this.loadToolStripMenuItem.Text = "Load";
 			this.loadToolStripMenuItem.Click += new System.EventHandler( this.loadToolStripMenuItem_Click );
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size( 100, 22 );
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler( this.exitToolStripMenuItem_Click );
 			// 
@@ -373,6 +373,7 @@ namespace GridMapper
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "GridWindow";
 			this.Text = "Grid Mapper";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler( this.GridWindow_FormClosing );
 			this.Load += new System.EventHandler( this.Form1_Load );
 			this.toolStrip1.ResumeLayout( false );
 			this.toolStrip1.PerformLayout();

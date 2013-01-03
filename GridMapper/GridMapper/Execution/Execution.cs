@@ -40,21 +40,33 @@ namespace GridMapper
 
 			Task task1 = Task.Factory.StartNew( () =>
 			{
-				_ownPacketBuilderForArping = new OwnPacketBuilder( PacketType.ARP );
-				_ownPacketBuilderForScanPort = new OwnPacketBuilder( PacketType.TCP );
-				foreach( int ipInt in _option.IpToTest.Result )
+				if ( _option.Arping || _option.Ping)
 				{
-					_ownPacketSender.trySend( _ownPacketBuilderForArping.BuildArpPacket( IPAddress.Parse( ((uint)ipInt).ToString() ).GetAddressBytes() ) );
+					_ownPacketBuilderForArping = new OwnPacketBuilder( PacketType.ARP );
+					if ( _option.Port )
+					{
+						_ownPacketBuilderForScanPort = new OwnPacketBuilder( PacketType.TCP );
+					}
+					foreach ( int ipInt in _option.IpToTest.Result )
+					{
+						_ownPacketSender.trySend( _ownPacketBuilderForArping.BuildArpPacket( IPAddress.Parse( ( (uint)ipInt ).ToString() ).GetAddressBytes() ) );
+					}
+					_ownPacketReceiver.TimerToCallEndReceive();
 				}
-				_ownPacketReceiver.TimerToCallEndReceive();
 			} );
 		}
 
 		private void AddArpingInRepositoryAndContinueWithRequest( object sender, ArpingReceivedEventArgs e )
 		{
 			IPAddress datIP = IPAddress.Parse( e.IpAddress );
-			_repository.AddOrUpdate( datIP, PhysicalAddress.Parse( e.MacAddress ) );
-			_repository.AddOrUpdate( datIP, _reverseDnsResolver.GetHostName( datIP ) );
+			if ( _option.Arp )
+			{
+				_repository.AddOrUpdate( datIP, PhysicalAddress.Parse( e.MacAddress ) );
+			}
+			if ( _option.Dns )
+			{
+				_repository.AddOrUpdate( datIP, _reverseDnsResolver.GetHostName( datIP ) );
+			}
 			if( _option.Port )
 			{
 				foreach( ushort portNumber in _option.PortToTest.Result )
@@ -87,8 +99,8 @@ namespace GridMapper
 		public NewExecution( Option startupOptions )
 		{
 			_option = startupOptions;
-			_ownPacketReceiver = new OwnPacketReceiver();
-			_ownPacketSender = new OwnPacketSender();
+			_ownPacketReceiver = new OwnPacketReceiver(_option.Arping,_option.Port,_option.TCPPort,_option.RandomUDPPort,_option.UDPPort);
+			_ownPacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
 			_reverseDnsResolver = new ReverseDnsResolver();
 
 			_ownPacketReceiver.ArpingReceived += AddArpingInRepositoryAndContinueWithRequest;
@@ -97,13 +109,13 @@ namespace GridMapper
 
 		public void optionsModified( OptionUpdatedEventArgs e )
 		{
-			_option.Arping = e.Arping;
-			_option.Arp = e.Arp;
-			_option.Dns = e.Dns;
-			_option.Port = e.Port;
-			_option.PingTimeout = e.Timeout;
-			_option.MaximumTasks = e.Tasks;
-			_option.PortToTest = e.Ports;
+			_option.Arping = e.Option.Arping;
+			_option.Arp = e.Option.Arp;
+			_option.Dns = e.Option.Dns;
+			_option.Port = e.Option.Port;
+			_option.PingTimeout = e.Option.PingTimeout;
+			_option.MaximumTasks = e.Option.MaximumTasks;
+			_option.PortToTest = e.Option.PortToTest;
 		}
 	}
 

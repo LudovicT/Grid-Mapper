@@ -12,8 +12,6 @@ namespace GridMapper
 {
 	public class ARPSender
 	{
-		public static event EventHandler<MacCompletedEventArgs> MacCompleted;
-
 		[DllImport( "iphlpapi.dll", ExactSpelling = true )]
 		static extern int SendARP( int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen );
 
@@ -37,23 +35,7 @@ namespace GridMapper
 				str[i] = macAddr[i].ToString( "x2" );
 			string fullMac = string.Join( "", str ).ToUpper();
 			PhysicalAddress macAddress = PhysicalAddress.Parse( fullMac );
-			//if( macAddress != null )
-				//MacCompleted( this, new MacCompletedEventArgs( dst, macAddress ) );
 			return macAddress;
 		}
-	}
-
-	public class MacCompletedEventArgs : EventArgs
-	{
-		internal MacCompletedEventArgs( IPAddress ipAddress, PhysicalAddress macAddress )
-		{
-			if( macAddress == null ) throw new NullReferenceException( "macAddress" );
-			if( ipAddress == null ) throw new NullReferenceException( "ipAddress" );
-			MacAddress = macAddress;
-			IpAddress = ipAddress;
-		}
-
-		public PhysicalAddress MacAddress { get; private set; }
-		public IPAddress IpAddress { get; private set; }
 	}
 }

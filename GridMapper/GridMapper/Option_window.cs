@@ -14,8 +14,8 @@ namespace GridMapper
 		public delegate void OptionUpdatedHandler( object sender, OptionUpdatedEventArgs e );
 		public event OptionUpdatedHandler OptionUpdated;
 
-        public Option_window(Option opt)
-        {
+		public Option_window( Option opt )
+		{
 			InitializeComponent();
 			option_ARPing.Checked = opt.Arping;
 			option_ARP.Checked = opt.Arp;
@@ -24,6 +24,12 @@ namespace GridMapper
 			option_port.Checked = opt.Port;
 			textBox1.Text = opt.PingTimeout.ToString();
 			textBox2.Text = opt.MaximumTasks.ToString();
+			option_nbPacketToSend.Value = opt.NbPacketToSend;
+			option_waitTime.Value = opt.WaitTime;
+			option_TCPPort.Value = opt.TCPPort;
+			option_UDPPort.Value = opt.UDPPort;
+			option_RandomTCPPort.Checked = opt.RandomTCPPort;
+			option_RandomUDPPort.Checked = opt.RandomUDPPort;
 
 			string ports = string.Empty;
 			foreach ( ushort port in opt.PortToTest.Result )
@@ -34,9 +40,9 @@ namespace GridMapper
 				}
 				ports += port.ToString();
 			}
-			textBox3.Text = ports ;
+			textBox3.Text = ports;
 
-        }
+		}
 
         private void option_cancel_Click(object sender, EventArgs e)
         {
@@ -55,26 +61,35 @@ namespace GridMapper
 					{
 						if ( tasks >= 5 && tasks <= 2000 )
 						{
-							if ( option_port.Checked == true )
+							PortsParserResult ppr = PortsParser.Tryparse( textBox3.Text );
+							if ( ppr.Result != null )
 							{
-							    PortsParserResult ppr = PortsParser.Tryparse( textBox3.Text );
-							    if ( ppr.Result != null )
-							    {
-									OptionUpdatedEventArgs args = new OptionUpdatedEventArgs( option_ARPing.Checked, option_ARP.Checked, option_DNS.Checked, option_port.Checked, timeout, tasks, ppr );
-									OptionUpdated( this, args );
-							        this.Close();
-							    }
-							    else
-							    {
-							        MessageBox.Show( "Incorect input for the ports to search", "Error in port format" );
-							    }
+								OptionUpdatedEventArgs args = new OptionUpdatedEventArgs(
+									new Option()
+									{
+										Ping = option_ping.Checked,
+										PingTimeout = timeout,
+										Arping = option_ARPing.Checked,
+										Arp = option_ARP.Checked,
+										Dns = option_DNS.Checked,
+										Port = option_port.Checked,
+										PortToTest = ppr,
+										MaximumTasks = tasks,
+										NbPacketToSend = (int)option_nbPacketToSend.Value,
+										WaitTime = (int)option_waitTime.Value,
+										TCPPort = (ushort)option_TCPPort.Value,
+										UDPPort = (ushort)option_UDPPort.Value,
+										RandomTCPPort = option_RandomTCPPort.Checked,
+										RandomUDPPort = option_RandomUDPPort.Checked,
+									} );
+								OptionUpdated( this, args );
+								this.Close();
 							}
 							else
 							{
-								OptionUpdatedEventArgs args = new OptionUpdatedEventArgs( option_ARPing.Checked, option_ARP.Checked, option_DNS.Checked, false, timeout, tasks, null );
-								OptionUpdated( this, args );
-								this.Dispose();
+								MessageBox.Show( "Incorect input for the ports to search", "Error in port format" );
 							}
+
 						}
 						else
 						{
@@ -101,31 +116,34 @@ namespace GridMapper
 		private void option_port_CheckedChanged( object sender, EventArgs e )
 		{
 			if ( option_port.Checked == false )
-				textBox3.Hide();
+				textBox3.Enabled = false;
 			else if ( option_port.Checked == true )
-				textBox3.Show();
+				textBox3.Enabled = true;
 		}
+
+		private void option_RandomTCPPort_CheckedChanged( object sender, EventArgs e )
+		{
+			if ( option_RandomTCPPort.Checked == false )
+			{
+				label3.Enabled = true;
+				option_TCPPort.Enabled = true;
+			}
+			else if ( option_RandomTCPPort.Checked == true )
+			{
+				label3.Enabled = false;
+				option_TCPPort.Enabled = false;
+			}
+		}
+
 
     }
 		public class OptionUpdatedEventArgs : EventArgs
 		{
-			public OptionUpdatedEventArgs( bool arping, bool arp, bool dns, bool port, int timeout, int tasks, PortsParserResult ports )
+			public OptionUpdatedEventArgs( Option option )
 			{
-				Arping = arping; ;
-				Arp = arp;
-				Dns = dns;
-				Port = port;
-				Timeout = timeout;
-				Tasks = tasks;
-				Ports = ports;
+				Option = option;
 			}
 
-			public bool Arping { get; private set; }
-			public bool Arp { get; private set; }
-			public bool Dns { get; private set; }
-			public bool Port { get; private set; }
-			public int Timeout { get; private set; }
-			public int Tasks { get; private set; }
-			public PortsParserResult Ports { get; private set; }
+			public Option Option { get; private set; }
 		}
 }
