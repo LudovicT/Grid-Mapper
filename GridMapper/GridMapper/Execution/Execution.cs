@@ -74,6 +74,7 @@ namespace GridMapper
 							}
 						}
 					}
+					AddOurNetworkInformation();
 					_ownPacketReceiver.TimerToCallEndReceive();
 				}
 			} );
@@ -120,6 +121,14 @@ namespace GridMapper
 		private void AddPortNumberInRepository( object sender, PortReceivedEventArgs e )
 		{
 			_repository.AddOrUpdate( IPAddress.Parse( e.IpAddress ), e.Port );
+		}
+
+		private void AddOurNetworkInformation()
+		{
+			IPAddress ownIpAddress;
+			PhysicalAddress ownMacAddress;
+			GetLocalInformation.LocalMacAndIPAddress( out ownIpAddress, out ownMacAddress );
+			AddArpingInRepositoryAndContinueWithRequest( this, new ArpingReceivedEventArgs( ownIpAddress.ToString(), ownMacAddress.ToString() ) );
 		}
 
 		public int Progress()

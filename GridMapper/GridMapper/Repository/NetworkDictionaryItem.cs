@@ -5,6 +5,8 @@ using System.Text;
 using GridMapper.NetworkModelObject;
 using System.Net.NetworkInformation;
 using System.Net;
+using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 
 namespace GridMapper.NetworkRepository
 {
@@ -20,7 +22,7 @@ namespace GridMapper.NetworkRepository
 		IPAddress _ipAddress;
 		PhysicalAddress _macAddress;
 		IPHostEntry _hostEntry;
-		IList<ushort> _ports;
+		ConcurrentDictionary<ushort, ushort> _ports;
 		IOS _os;
 
 		public IHost Host { get { return _host; } }
@@ -29,7 +31,7 @@ namespace GridMapper.NetworkRepository
 		public IPAddress IPAddress { get { return _ipAddress; } }
 		public PhysicalAddress MacAddress { get { return _macAddress; } }
 		public IPHostEntry HostEntry { get { return _hostEntry; } }
-		public IList<ushort> Ports { get { return _ports; } }
+		public ReadOnlyCollection<ushort> Ports { get { return new ReadOnlyCollection<ushort>( _ports.Values.ToList<ushort>() ); } }
 		public IOS OS { get { return _os; } }
 
 		public bool Update( INetworkDictionaryItem networkDictionaryItem )
@@ -50,7 +52,7 @@ namespace GridMapper.NetworkRepository
 		{
 			try
 			{
-				_ports.Add( port );
+				_ports.GetOrAdd( port, port );
 				return true;
 			}
 			catch
@@ -96,7 +98,7 @@ namespace GridMapper.NetworkRepository
 			_macAddress = macAddress;
 			_hostEntry = hostEntry;
 			_os = os;
-			_ports = new List<ushort>();
+			_ports = new ConcurrentDictionary<ushort,ushort>();
 		}
 	}
 }
