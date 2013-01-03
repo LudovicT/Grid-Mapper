@@ -19,6 +19,7 @@ namespace GridMapper
 		Option _startUpOption;
 		NewExecution _exe;
         int OperationLeft = 0;
+		int _inputType = 0;
 
 		// définition du delegate qui sera utilisé pour traiter les events
 		private delegate void UpdateDataGrid<T>( object sender, T e );
@@ -247,14 +248,12 @@ namespace GridMapper
 			SaveScan_Click( sender, e );
         }
 
-        private void startScanToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
 
 		private void fastScanToolStripMenuItem_Click( object sender, EventArgs e )
 		{
-			OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
+			dataGridView1.DataSource = null;
+			dataGridView1.DataMember = null;
+			OperationLeft = _exe.Option.TotalOperation;
 			_exe.StartScan();
 			timer1.Start();
 		}
@@ -263,7 +262,7 @@ namespace GridMapper
 		{
 			dataGridView1.DataSource = null;
 			dataGridView1.DataMember = null;
-			OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
+			OperationLeft = _exe.Option.TotalOperation;
 			_exe.StartScan();
 			timer1.Start();
 		}
@@ -272,14 +271,10 @@ namespace GridMapper
 		private void timer1_Tick( object sender, EventArgs e )
 		{
 			int i = 0;
-			i = Convert.ToInt32( Math.Round( 100 - (double)OperationLeft / ( _startUpOption.IPToTestCount * _startUpOption.OperationCount ) * 100 ) );
+			i = Convert.ToInt32( Math.Round( 100 - (double)OperationLeft / ( _exe.Option.TotalOperation ) * 100 ) );
 			ProgressScan.Value = i;
 		}
 
-		private void GridWindow_FormClosed( object sender, FormClosedEventArgs e )
-		{
-			
-		}
 
         private void advancedOptionToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -289,10 +284,11 @@ namespace GridMapper
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+		{
+			_exe.CloseAllThreads();
             dataGridView1.DataSource = null;
             dataGridView1.DataMember = null;
-			OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
+			OperationLeft = _exe.Option.TotalOperation;
             _exe.StartScan();
 			timer1.Start();
         }
@@ -308,9 +304,67 @@ namespace GridMapper
 
         private void ScanButton_Click(object sender, EventArgs e)
         {
+			_exe.CloseAllThreads();
             dataGridView1.DataSource = null;
             dataGridView1.DataMember = null;
-            OperationLeft = _startUpOption.IPToTestCount * _startUpOption.OperationCount;
+
+			string ipToTest = string.Empty;
+			if ( panel1.Controls[0].GetType() == typeof( IPRangeUserControl ) )
+			{
+				IPRangeUserControl tmpControl = (IPRangeUserControl)panel1.Controls[0];
+				ipToTest = tmpControl.FromIPInput.Text +'-'+ tmpControl.ToIPInput;
+				tmpControl.Dispose();
+				IPParserResult parserResult= IPParser.TryParse(ipToTest);
+				if( parserResult.Result == null)
+				{
+					return;
+				}
+				else
+				{
+					Option newOptions = _exe.Option;
+					newOptions.IpToTest = parserResult;
+					_exe.optionsModified(new OptionUpdatedEventArgs(newOptions));
+				}
+			}
+			else if ( panel1.Controls[0].GetType() == typeof( CIDRUserControl ) )
+			{
+				CIDRUserControl tmpControl = (CIDRUserControl)panel1.Controls[0];
+				ipToTest = tmpControl.ipAddressInput.Text + '/' + tmpControl.CIDRInput.Value;
+				tmpControl.Dispose();
+				IPParserResult parserResult = IPParser.TryParse( ipToTest );
+				if ( parserResult.Result == null )
+				{
+					return;
+				}
+				else
+				{
+					Option newOptions = _exe.Option;
+					newOptions.IpToTest = parserResult;
+					_exe.optionsModified( new OptionUpdatedEventArgs( newOptions ) );
+				}
+			}
+			else if ( panel1.Controls[0].GetType() == typeof( StringUserControl ) )
+			{
+				StringUserControl tmpControl = (StringUserControl)panel1.Controls[0];
+				ipToTest = tmpControl.StringInput.Text;
+				tmpControl.Dispose();
+				IPParserResult parserResult = IPParser.TryParse( ipToTest );
+				if ( parserResult.Result == null )
+				{
+					return;
+				}
+				else
+				{
+					Option newOptions = _exe.Option;
+					newOptions.IpToTest = parserResult;
+					_exe.optionsModified( new OptionUpdatedEventArgs( newOptions ) );
+				}
+			}
+			else
+			{
+				throw new InvalidOperationException("invalide state of the control in the panel");
+			}
+            OperationLeft = _exe.Option.TotalOperation;
             _exe.StartScan();
             timer1.Start();
         }
@@ -350,6 +404,7 @@ namespace GridMapper
 						panel1.Controls.RemoveAt( 0 );
 					}
 					panel1.Controls.Add(new IPRangeUserControl());
+					_inputType = 0;
 					break;
 
 					//CIDR
@@ -359,6 +414,7 @@ namespace GridMapper
 						panel1.Controls.RemoveAt( 0 );
 					}
 					panel1.Controls.Add(new CIDRUserControl());
+					_inputType = 1;
 					break;
 
 					//Manual
@@ -368,6 +424,7 @@ namespace GridMapper
 						panel1.Controls.RemoveAt( 0 );
 					}
 					panel1.Controls.Add(new StringUserControl());
+					_inputType = 2;
 					break;
 				default :
 					throw new InvalidOperationException( "Invalid mode for the input" );

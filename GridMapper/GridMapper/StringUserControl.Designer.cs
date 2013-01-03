@@ -34,19 +34,19 @@
 			// StringInput
 			// 
 			this.StringInput.Location = new System.Drawing.Point( 2, 2 );
-			this.StringInput.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
+			this.StringInput.Margin = new System.Windows.Forms.Padding( 2 );
 			this.StringInput.Name = "StringInput";
 			this.StringInput.Size = new System.Drawing.Size( 265, 20 );
 			this.StringInput.TabIndex = 0;
 			// 
-			// StringUserControl1
+			// StringUserControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Window;
 			this.Controls.Add( this.StringInput );
-			this.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
-			this.Name = "StringUserControl1";
+			this.Margin = new System.Windows.Forms.Padding( 2 );
+			this.Name = "StringUserControl";
 			this.Size = new System.Drawing.Size( 270, 25 );
 			this.ResumeLayout( false );
 			this.PerformLayout();
@@ -55,6 +55,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox StringInput;
-    }
+		public System.Windows.Forms.TextBox StringInput;
+
+	}
 }

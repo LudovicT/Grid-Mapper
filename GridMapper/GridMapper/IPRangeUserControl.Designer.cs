@@ -30,8 +30,8 @@
 		{
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
-			this.ToIP = new IPAddressControlLib.IPAddressControl();
-			this.FromIP = new IPAddressControlLib.IPAddressControl();
+			this.ToIPInput = new IPAddressControlLib.IPAddressControl();
+			this.FromIPInput = new IPAddressControlLib.IPAddressControl();
 			this.SuspendLayout();
 			// 
 			// label2
@@ -57,37 +57,37 @@
 			this.label1.TabIndex = 10;
 			this.label1.Text = "Range from";
 			// 
-			// ToIP
+			// ToIPInput
 			// 
-			this.ToIP.AllowInternalTab = false;
-			this.ToIP.AutoHeight = true;
-			this.ToIP.BackColor = System.Drawing.SystemColors.Window;
-			this.ToIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.ToIP.Cursor = System.Windows.Forms.Cursors.IBeam;
-			this.ToIP.Location = new System.Drawing.Point( 179, 3 );
-			this.ToIP.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
-			this.ToIP.MinimumSize = new System.Drawing.Size( 87, 20 );
-			this.ToIP.Name = "ToIP";
-			this.ToIP.ReadOnly = false;
-			this.ToIP.Size = new System.Drawing.Size( 87, 20 );
-			this.ToIP.TabIndex = 9;
-			this.ToIP.Text = "0.0.0.0";
+			this.ToIPInput.AllowInternalTab = false;
+			this.ToIPInput.AutoHeight = true;
+			this.ToIPInput.BackColor = System.Drawing.SystemColors.Window;
+			this.ToIPInput.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.ToIPInput.Cursor = System.Windows.Forms.Cursors.IBeam;
+			this.ToIPInput.Location = new System.Drawing.Point( 179, 3 );
+			this.ToIPInput.Margin = new System.Windows.Forms.Padding( 2 );
+			this.ToIPInput.MinimumSize = new System.Drawing.Size( 87, 20 );
+			this.ToIPInput.Name = "ToIPInput";
+			this.ToIPInput.ReadOnly = false;
+			this.ToIPInput.Size = new System.Drawing.Size( 87, 20 );
+			this.ToIPInput.TabIndex = 9;
+			this.ToIPInput.Text = "0.0.0.0";
 			// 
-			// FromIP
+			// FromIPInput
 			// 
-			this.FromIP.AllowInternalTab = false;
-			this.FromIP.AutoHeight = true;
-			this.FromIP.BackColor = System.Drawing.SystemColors.Window;
-			this.FromIP.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.FromIP.Cursor = System.Windows.Forms.Cursors.IBeam;
-			this.FromIP.Location = new System.Drawing.Point( 68, 3 );
-			this.FromIP.Margin = new System.Windows.Forms.Padding( 2, 2, 2, 2 );
-			this.FromIP.MinimumSize = new System.Drawing.Size( 87, 20 );
-			this.FromIP.Name = "FromIP";
-			this.FromIP.ReadOnly = false;
-			this.FromIP.Size = new System.Drawing.Size( 87, 20 );
-			this.FromIP.TabIndex = 8;
-			this.FromIP.Text = "0.0.0.0";
+			this.FromIPInput.AllowInternalTab = false;
+			this.FromIPInput.AutoHeight = true;
+			this.FromIPInput.BackColor = System.Drawing.SystemColors.Window;
+			this.FromIPInput.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.FromIPInput.Cursor = System.Windows.Forms.Cursors.IBeam;
+			this.FromIPInput.Location = new System.Drawing.Point( 68, 3 );
+			this.FromIPInput.Margin = new System.Windows.Forms.Padding( 2 );
+			this.FromIPInput.MinimumSize = new System.Drawing.Size( 87, 20 );
+			this.FromIPInput.Name = "FromIPInput";
+			this.FromIPInput.ReadOnly = false;
+			this.FromIPInput.Size = new System.Drawing.Size( 87, 20 );
+			this.FromIPInput.TabIndex = 8;
+			this.FromIPInput.Text = "0.0.0.0";
 			// 
 			// IPRangeUserControl
 			// 
@@ -96,8 +96,8 @@
 			this.BackColor = System.Drawing.SystemColors.ControlLightLight;
 			this.Controls.Add( this.label2 );
 			this.Controls.Add( this.label1 );
-			this.Controls.Add( this.ToIP );
-			this.Controls.Add( this.FromIP );
+			this.Controls.Add( this.ToIPInput );
+			this.Controls.Add( this.FromIPInput );
 			this.Name = "IPRangeUserControl";
 			this.Size = new System.Drawing.Size( 270, 25 );
 			this.ResumeLayout( false );
@@ -109,7 +109,7 @@
 
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label1;
-		private IPAddressControlLib.IPAddressControl ToIP;
-		private IPAddressControlLib.IPAddressControl FromIP;
+		public IPAddressControlLib.IPAddressControl ToIPInput;
+		public IPAddressControlLib.IPAddressControl FromIPInput;
 	}
 }

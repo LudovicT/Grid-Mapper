@@ -30,7 +30,7 @@ namespace GridMapper
 			option_UDPPort.Value = opt.UDPPort;
 			option_RandomTCPPort.Checked = opt.RandomTCPPort;
 			option_RandomUDPPort.Checked = opt.RandomUDPPort;
-			textBox3.Text = opt.PortToTest;
+			textBox3.Text = opt.PortToTestString;
 
 		}
 
@@ -63,7 +63,7 @@ namespace GridMapper
 										Arp = option_ARP.Checked,
 										Dns = option_DNS.Checked,
 										Port = option_port.Checked,
-										PortToTest = textBox3.Text,
+										PortToTestString = textBox3.Text,
 										MaximumTasks = tasks,
 										NbPacketToSend = (int)option_nbPacketToSend.Value,
 										WaitTime = (int)option_waitTime.Value,
