@@ -60,9 +60,18 @@ namespace GridMapper
 					{
 						_ownPacketBuilderForScanPort = new OwnPacketBuilder( PacketType.TCP );
 					}
+					int i = 0;
 					foreach ( int ipInt in _option.IpToTest.Result )
 					{
 						_ownPacketSender.trySend( _ownPacketBuilderForArping.BuildArpPacket( IPAddress.Parse( ( (uint)ipInt ).ToString() ).GetAddressBytes() ) );
+						if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
+						{
+							i++;
+							if ( i == _option.NbPacketToSend )
+							{
+								Thread.Sleep( _option.WaitTime );
+							}
+						}
 					}
 					_ownPacketReceiver.TimerToCallEndReceive();
 				}
@@ -89,9 +98,18 @@ namespace GridMapper
 						});
 						if( _option.Port )
 						{
+							int i = 0;
 							foreach( ushort portNumber in _option.PortToTest.Result )
 							{
 								_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
+								if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
+								{
+									i++;
+									if ( i == _option.NbPacketToSend )
+									{
+										Thread.Sleep( _option.WaitTime );
+									}
+								}
 							}
 						}
 					} );
