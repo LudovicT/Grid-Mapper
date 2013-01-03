@@ -376,7 +376,7 @@ namespace GridMapper
 
 		private void GridWindow_FormClosing( object sender, FormClosingEventArgs e )
 		{
-			//_exe.CloseAllThreads();
+			_exe.CloseAllThreads();
 		}
 
 	}
