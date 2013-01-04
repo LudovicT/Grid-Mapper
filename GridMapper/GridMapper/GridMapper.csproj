@@ -156,6 +156,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Console\Messages.cs" />
+    <Compile Include="DiagramDisplayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DiagramDisplayControl.Designer.cs">
+      <DependentUpon>DiagramDisplayControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Execution\Execution.cs" />
     <Compile Include="Execution\IExecution.cs" />
     <Compile Include="GridWindow.cs">
@@ -234,6 +240,9 @@
     </Compile>
     <EmbeddedResource Include="CIDRUserControl.resx">
       <DependentUpon>CIDRUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DiagramDisplayControl.resx">
+      <DependentUpon>DiagramDisplayControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GridWindow.resx">
       <DependentUpon>GridWindow.cs</DependentUpon>

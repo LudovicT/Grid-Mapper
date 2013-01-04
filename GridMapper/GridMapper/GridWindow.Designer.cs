@@ -31,6 +31,8 @@ namespace GridMapper
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GridWindow));
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.LoadScan = new System.Windows.Forms.ToolStripButton();
+			this.SaveScan = new System.Windows.Forms.ToolStripButton();
 			this.ProgressScan = new System.Windows.Forms.ProgressBar();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,9 +57,7 @@ namespace GridMapper
 			this.Ports = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.ScanButton = new System.Windows.Forms.Button();
-			this.LoadScan = new System.Windows.Forms.ToolStripButton();
-			this.SaveScan = new System.Windows.Forms.ToolStripButton();
-			this._NShapeDisplay = new Dataweb.NShape.WinFormsUI.Display();
+			this.diagramDisplayControl1 = new GridMapper.DiagramDisplayControl();
 			this.toolStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -82,13 +82,33 @@ namespace GridMapper
 			this.toolStrip1.TabIndex = 2;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
+			// LoadScan
+			// 
+			this.LoadScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.LoadScan.Image = ((System.Drawing.Image)(resources.GetObject("LoadScan.Image")));
+			this.LoadScan.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.LoadScan.Name = "LoadScan";
+			this.LoadScan.Size = new System.Drawing.Size(23, 22);
+			this.LoadScan.Text = "LoadScan";
+			this.LoadScan.Click += new System.EventHandler(this.toolStripButton1_Click);
+			// 
+			// SaveScan
+			// 
+			this.SaveScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.SaveScan.Image = ((System.Drawing.Image)(resources.GetObject("SaveScan.Image")));
+			this.SaveScan.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.SaveScan.Name = "SaveScan";
+			this.SaveScan.Size = new System.Drawing.Size(23, 22);
+			this.SaveScan.Text = "SaveScan";
+			this.SaveScan.Click += new System.EventHandler(this.SaveScan_Click);
+			// 
 			// ProgressScan
 			// 
 			this.ProgressScan.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.ProgressScan.Location = new System.Drawing.Point(0, 473);
+			this.ProgressScan.Location = new System.Drawing.Point(0, 557);
 			this.ProgressScan.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ProgressScan.Name = "ProgressScan";
-			this.ProgressScan.Size = new System.Drawing.Size(649, 25);
+			this.ProgressScan.Size = new System.Drawing.Size(601, 25);
 			this.ProgressScan.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.ProgressScan.TabIndex = 8;
 			// 
@@ -174,7 +194,7 @@ namespace GridMapper
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-			this.menuStrip1.Size = new System.Drawing.Size(649, 28);
+			this.menuStrip1.Size = new System.Drawing.Size(601, 28);
 			this.menuStrip1.TabIndex = 1;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -211,7 +231,7 @@ namespace GridMapper
 			this.tabControl1.Location = new System.Drawing.Point(0, 59);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(649, 418);
+			this.tabControl1.Size = new System.Drawing.Size(601, 502);
 			this.tabControl1.TabIndex = 12;
 			// 
 			// tabPage1
@@ -220,7 +240,7 @@ namespace GridMapper
 			this.tabPage1.Location = new System.Drawing.Point(4, 25);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(641, 389);
+			this.tabPage1.Size = new System.Drawing.Size(593, 473);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Grid View";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -245,7 +265,7 @@ namespace GridMapper
 			this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
 			this.dataGridView1.Name = "dataGridView1";
 			this.dataGridView1.ReadOnly = true;
-			this.dataGridView1.Size = new System.Drawing.Size(635, 383);
+			this.dataGridView1.Size = new System.Drawing.Size(587, 467);
 			this.dataGridView1.TabIndex = 4;
 			// 
 			// Id
@@ -282,11 +302,11 @@ namespace GridMapper
 			// 
 			// tabPage2
 			// 
-			this.tabPage2.Controls.Add(this._NShapeDisplay);
+			this.tabPage2.Controls.Add(this.diagramDisplayControl1);
 			this.tabPage2.Location = new System.Drawing.Point(4, 25);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(641, 389);
+			this.tabPage2.Size = new System.Drawing.Size(593, 473);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Graphic View";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -306,58 +326,21 @@ namespace GridMapper
 			this.ScanButton.UseVisualStyleBackColor = true;
 			this.ScanButton.Click += new System.EventHandler(this.ScanButton_Click);
 			// 
-			// LoadScan
+			// diagramDisplayControl1
 			// 
-			this.LoadScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.LoadScan.Image = ((System.Drawing.Image)(resources.GetObject("LoadScan.Image")));
-			this.LoadScan.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.LoadScan.Name = "LoadScan";
-			this.LoadScan.Size = new System.Drawing.Size(23, 22);
-			this.LoadScan.Text = "LoadScan";
-			this.LoadScan.Click += new System.EventHandler(this.toolStripButton1_Click);
-			// 
-			// SaveScan
-			// 
-			this.SaveScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.SaveScan.Image = ((System.Drawing.Image)(resources.GetObject("SaveScan.Image")));
-			this.SaveScan.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.SaveScan.Name = "SaveScan";
-			this.SaveScan.Size = new System.Drawing.Size(23, 22);
-			this.SaveScan.Text = "SaveScan";
-			this.SaveScan.Click += new System.EventHandler(this.SaveScan_Click);
-			// 
-			// _NShapeDisplay
-			// 
-			this._NShapeDisplay.AllowDrop = true;
-			this._NShapeDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this._NShapeDisplay.BackColorGradient = System.Drawing.SystemColors.Control;
-			this._NShapeDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this._NShapeDisplay.DiagramSetController = null;
-			this._NShapeDisplay.GridColor = System.Drawing.Color.Gainsboro;
-			this._NShapeDisplay.GridSize = 19;
-			this._NShapeDisplay.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this._NShapeDisplay.Location = new System.Drawing.Point(0, 0);
-			this._NShapeDisplay.Margin = new System.Windows.Forms.Padding(4);
-			this._NShapeDisplay.Name = "_NShapeDisplay";
-			this._NShapeDisplay.PropertyController = null;
-			this._NShapeDisplay.SelectionHilightColor = System.Drawing.Color.Firebrick;
-			this._NShapeDisplay.SelectionInactiveColor = System.Drawing.Color.Gray;
-			this._NShapeDisplay.SelectionInteriorColor = System.Drawing.Color.WhiteSmoke;
-			this._NShapeDisplay.SelectionNormalColor = System.Drawing.Color.DarkGreen;
-			this._NShapeDisplay.Size = new System.Drawing.Size(667, 615);
-			this._NShapeDisplay.SnapToGrid = false;
-			this._NShapeDisplay.TabIndex = 1;
-			this._NShapeDisplay.ToolPreviewBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(119)))), ((int)(((byte)(136)))), ((int)(((byte)(153)))));
-			this._NShapeDisplay.ToolPreviewColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(70)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+			this.diagramDisplayControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.diagramDisplayControl1.Location = new System.Drawing.Point(0, 0);
+			this.diagramDisplayControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.diagramDisplayControl1.Name = "diagramDisplayControl1";
+			this.diagramDisplayControl1.Size = new System.Drawing.Size(593, 473);
+			this.diagramDisplayControl1.TabIndex = 0;
 			// 
 			// GridWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Window;
-			this.ClientSize = new System.Drawing.Size(649, 498);
+			this.ClientSize = new System.Drawing.Size(601, 582);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.comboBox1);
 			this.Controls.Add(this.panel1);
@@ -415,7 +398,7 @@ namespace GridMapper
 		private System.Windows.Forms.DataGridViewTextBoxColumn HostName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Ports;
 		private System.Windows.Forms.TabPage tabPage2;
-		private Dataweb.NShape.WinFormsUI.Display _NShapeDisplay;
+		private DiagramDisplayControl diagramDisplayControl1;
 	}
 }
 

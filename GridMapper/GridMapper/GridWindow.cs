@@ -440,5 +440,10 @@ namespace GridMapper
 			ScanButton_Click( sender, e );
 		}
 
+		private void _NShapeDisplay_Load(object sender, EventArgs e)
+		{
+			
+		}
+
 	}
 }
