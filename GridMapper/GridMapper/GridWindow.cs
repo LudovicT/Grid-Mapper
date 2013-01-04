@@ -60,6 +60,12 @@ namespace GridMapper
 				}
 				else throw new ConstraintException( " wrong number of operation " );
 			}
+			if ( OperationLeft == 0 )
+			{
+				ScanButton.BeginInvoke( (Action)delegate() { ScanButton.Enabled = true; } );
+				menuStrip1.BeginInvoke( (Action)delegate() { startToolStripMenuItem1.Enabled = true; } );
+				menuStrip1.BeginInvoke( (Action)delegate() { optionToolStripMenuItem.Enabled = true; } );
+			}
 		}
 
 		void InitializeComboBox()
@@ -249,19 +255,16 @@ namespace GridMapper
         }
 
 
-		private void fastScanToolStripMenuItem_Click( object sender, EventArgs e )
-		{
-			dataGridView1.DataSource = null;
-			dataGridView1.DataMember = null;
-			OperationLeft = _exe.Option.TotalOperation;
-			_exe.StartScan();
-			timer1.Start();
-		}
-
 		private void fastScanToolStripMenuItem_Click_1( object sender, EventArgs e )
 		{
+			_exe.CloseAllThreads();
 			dataGridView1.DataSource = null;
 			dataGridView1.DataMember = null;
+
+			ScanButton.Enabled = false;
+			startToolStripMenuItem1.Enabled = false;
+			optionToolStripMenuItem.Enabled = false;
+
 			OperationLeft = _exe.Option.TotalOperation;
 			_exe.StartScan();
 			timer1.Start();
@@ -276,21 +279,11 @@ namespace GridMapper
 		}
 
 
-        private void advancedOptionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OptionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Option_window Option = new Option_window(_exe.Option);
 			Option.OptionUpdated += new Option_window.OptionUpdatedHandler(OptionChanged);
             Option.ShowDialog();
-        }
-
-        private void startToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			_exe.CloseAllThreads();
-            dataGridView1.DataSource = null;
-            dataGridView1.DataMember = null;
-			OperationLeft = _exe.Option.TotalOperation;
-            _exe.StartScan();
-			timer1.Start();
         }
 
         static string ToMac(string ToTransform)
@@ -313,7 +306,6 @@ namespace GridMapper
 			{
 				IPRangeUserControl tmpControl = (IPRangeUserControl)panel1.Controls[0];
 				ipToTest = tmpControl.FromIPInput.Text +'-'+ tmpControl.ToIPInput;
-				tmpControl.Dispose();
 				IPParserResult parserResult= IPParser.TryParse(ipToTest);
 				if( parserResult.Result == null)
 				{
@@ -330,7 +322,6 @@ namespace GridMapper
 			{
 				CIDRUserControl tmpControl = (CIDRUserControl)panel1.Controls[0];
 				ipToTest = tmpControl.ipAddressInput.Text + '/' + tmpControl.CIDRInput.Value;
-				tmpControl.Dispose();
 				IPParserResult parserResult = IPParser.TryParse( ipToTest );
 				if ( parserResult.Result == null )
 				{
@@ -347,7 +338,6 @@ namespace GridMapper
 			{
 				StringUserControl tmpControl = (StringUserControl)panel1.Controls[0];
 				ipToTest = tmpControl.StringInput.Text;
-				tmpControl.Dispose();
 				IPParserResult parserResult = IPParser.TryParse( ipToTest );
 				if ( parserResult.Result == null )
 				{
@@ -364,6 +354,12 @@ namespace GridMapper
 			{
 				throw new InvalidOperationException("invalide state of the control in the panel");
 			}
+
+			//deactivate the buttons
+			ScanButton.Enabled = false;
+			startToolStripMenuItem1.Enabled = false;
+			optionToolStripMenuItem.Enabled = false;
+
             OperationLeft = _exe.Option.TotalOperation;
             _exe.StartScan();
             timer1.Start();
@@ -434,6 +430,11 @@ namespace GridMapper
 		private void GridWindow_FormClosing( object sender, FormClosingEventArgs e )
 		{
 			_exe.CloseAllThreads();
+		}
+
+		private void normalScanToolStripMenuItem_Click( object sender, EventArgs e )
+		{
+			ScanButton_Click( sender, e );
 		}
 
 	}

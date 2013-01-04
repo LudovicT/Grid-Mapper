@@ -165,6 +165,7 @@
 			// 
 			// textBox1
 			// 
+			this.textBox1.Enabled = false;
 			this.textBox1.Location = new System.Drawing.Point( 76, 3 );
 			this.textBox1.Name = "textBox1";
 			this.textBox1.Size = new System.Drawing.Size( 92, 20 );
@@ -174,7 +175,7 @@
 			// 
 			this.textBox2.Location = new System.Drawing.Point( 87, 3 );
 			this.textBox2.Name = "textBox2";
-			this.textBox2.Size = new System.Drawing.Size( 52, 20 );
+			this.textBox2.Size = new System.Drawing.Size( 58, 20 );
 			this.textBox2.TabIndex = 7;
 			// 
 			// label1
@@ -201,7 +202,7 @@
 			// 
 			this.textBox3.Location = new System.Drawing.Point( 59, 3 );
 			this.textBox3.Name = "textBox3";
-			this.textBox3.Size = new System.Drawing.Size( 112, 20 );
+			this.textBox3.Size = new System.Drawing.Size( 115, 20 );
 			this.textBox3.TabIndex = 10;
 			// 
 			// option_ARP
@@ -283,7 +284,7 @@
 			this.PortGroupBox.Controls.Add( this.flowLayoutPanel1 );
 			this.PortGroupBox.Location = new System.Drawing.Point( 12, 115 );
 			this.PortGroupBox.Name = "PortGroupBox";
-			this.PortGroupBox.Size = new System.Drawing.Size( 180, 45 );
+			this.PortGroupBox.Size = new System.Drawing.Size( 183, 45 );
 			this.PortGroupBox.TabIndex = 14;
 			this.PortGroupBox.TabStop = false;
 			this.PortGroupBox.Text = "Port to test";
@@ -297,7 +298,7 @@
 			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel1.Location = new System.Drawing.Point( 3, 16 );
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-			this.flowLayoutPanel1.Size = new System.Drawing.Size( 174, 26 );
+			this.flowLayoutPanel1.Size = new System.Drawing.Size( 177, 26 );
 			this.flowLayoutPanel1.TabIndex = 0;
 			// 
 			// groupBox1
@@ -305,9 +306,9 @@
 			this.groupBox1.AutoSize = true;
 			this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.groupBox1.Controls.Add( this.flowLayoutPanel4 );
-			this.groupBox1.Location = new System.Drawing.Point( 198, 115 );
+			this.groupBox1.Location = new System.Drawing.Point( 201, 115 );
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size( 148, 45 );
+			this.groupBox1.Size = new System.Drawing.Size( 154, 45 );
 			this.groupBox1.TabIndex = 15;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Tasks";
@@ -321,7 +322,7 @@
 			this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel4.Location = new System.Drawing.Point( 3, 16 );
 			this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-			this.flowLayoutPanel4.Size = new System.Drawing.Size( 142, 26 );
+			this.flowLayoutPanel4.Size = new System.Drawing.Size( 148, 26 );
 			this.flowLayoutPanel4.TabIndex = 0;
 			// 
 			// groupBox2
@@ -378,6 +379,7 @@
 			// option_RandomTCPPort
 			// 
 			this.option_RandomTCPPort.AutoSize = true;
+			this.option_RandomTCPPort.Enabled = false;
 			this.option_RandomTCPPort.Location = new System.Drawing.Point( 3, 3 );
 			this.option_RandomTCPPort.Name = "option_RandomTCPPort";
 			this.option_RandomTCPPort.Size = new System.Drawing.Size( 134, 17 );

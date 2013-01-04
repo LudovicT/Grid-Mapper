@@ -42,21 +42,14 @@ namespace GridMapper
 			this.ProgressScan = new System.Windows.Forms.ProgressBar();
 			this.timer1 = new System.Windows.Forms.Timer( this.components );
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.aRPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.dNSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.portToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.advancedOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.startToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.normalScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.fastScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.portScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.iPScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.ScanButton = new System.Windows.Forms.Button();
 			this.panel1 = new System.Windows.Forms.Panel();
@@ -176,21 +169,12 @@ namespace GridMapper
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.startToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.loadToolStripMenuItem,
             this.exitToolStripMenuItem} );
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size( 37, 20 );
 			this.fileToolStripMenuItem.Text = "File";
-			// 
-			// startToolStripMenuItem
-			// 
-			this.startToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
-			this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-			this.startToolStripMenuItem.Size = new System.Drawing.Size( 100, 22 );
-			this.startToolStripMenuItem.Text = "Start";
-			this.startToolStripMenuItem.Click += new System.EventHandler( this.startToolStripMenuItem_Click );
 			// 
 			// saveToolStripMenuItem
 			// 
@@ -215,96 +199,40 @@ namespace GridMapper
 			// 
 			// optionToolStripMenuItem
 			// 
-			this.optionToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.pingToolStripMenuItem,
-            this.aRPToolStripMenuItem,
-            this.dNSToolStripMenuItem,
-            this.portToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.advancedOptionToolStripMenuItem} );
 			this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
 			this.optionToolStripMenuItem.Size = new System.Drawing.Size( 56, 20 );
 			this.optionToolStripMenuItem.Text = "Option";
-			// 
-			// pingToolStripMenuItem
-			// 
-			this.pingToolStripMenuItem.Checked = true;
-			this.pingToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.pingToolStripMenuItem.Name = "pingToolStripMenuItem";
-			this.pingToolStripMenuItem.Size = new System.Drawing.Size( 211, 22 );
-			this.pingToolStripMenuItem.Text = "Ping (cannot be changed)";
-			this.pingToolStripMenuItem.Visible = false;
-			// 
-			// aRPToolStripMenuItem
-			// 
-			this.aRPToolStripMenuItem.Checked = true;
-			this.aRPToolStripMenuItem.CheckOnClick = true;
-			this.aRPToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.aRPToolStripMenuItem.Name = "aRPToolStripMenuItem";
-			this.aRPToolStripMenuItem.Size = new System.Drawing.Size( 211, 22 );
-			this.aRPToolStripMenuItem.Text = "ARP";
-			this.aRPToolStripMenuItem.Visible = false;
-			// 
-			// dNSToolStripMenuItem
-			// 
-			this.dNSToolStripMenuItem.Checked = true;
-			this.dNSToolStripMenuItem.CheckOnClick = true;
-			this.dNSToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.dNSToolStripMenuItem.Name = "dNSToolStripMenuItem";
-			this.dNSToolStripMenuItem.Size = new System.Drawing.Size( 211, 22 );
-			this.dNSToolStripMenuItem.Text = "DNS";
-			this.dNSToolStripMenuItem.Visible = false;
-			// 
-			// portToolStripMenuItem
-			// 
-			this.portToolStripMenuItem.Checked = true;
-			this.portToolStripMenuItem.CheckOnClick = true;
-			this.portToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.portToolStripMenuItem.Name = "portToolStripMenuItem";
-			this.portToolStripMenuItem.Size = new System.Drawing.Size( 211, 22 );
-			this.portToolStripMenuItem.Text = "Port";
-			this.portToolStripMenuItem.Visible = false;
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size( 208, 6 );
-			// 
-			// advancedOptionToolStripMenuItem
-			// 
-			this.advancedOptionToolStripMenuItem.Name = "advancedOptionToolStripMenuItem";
-			this.advancedOptionToolStripMenuItem.Size = new System.Drawing.Size( 211, 22 );
-			this.advancedOptionToolStripMenuItem.Text = "Advanced options";
-			this.advancedOptionToolStripMenuItem.Click += new System.EventHandler( this.advancedOptionToolStripMenuItem_Click );
+			this.optionToolStripMenuItem.Click += new System.EventHandler( this.OptionToolStripMenuItem_Click );
 			// 
 			// startToolStripMenuItem1
 			// 
 			this.startToolStripMenuItem1.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.normalScanToolStripMenuItem,
             this.fastScanToolStripMenuItem,
-            this.portScanToolStripMenuItem,
-            this.iPScanToolStripMenuItem} );
+            this.portScanToolStripMenuItem} );
 			this.startToolStripMenuItem1.Name = "startToolStripMenuItem1";
 			this.startToolStripMenuItem1.Size = new System.Drawing.Size( 43, 20 );
 			this.startToolStripMenuItem1.Text = "Start";
 			// 
+			// normalScanToolStripMenuItem
+			// 
+			this.normalScanToolStripMenuItem.Name = "normalScanToolStripMenuItem";
+			this.normalScanToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+			this.normalScanToolStripMenuItem.Text = "Normal scan";
+			this.normalScanToolStripMenuItem.Click += new System.EventHandler( this.normalScanToolStripMenuItem_Click );
+			// 
 			// fastScanToolStripMenuItem
 			// 
 			this.fastScanToolStripMenuItem.Name = "fastScanToolStripMenuItem";
-			this.fastScanToolStripMenuItem.Size = new System.Drawing.Size( 123, 22 );
+			this.fastScanToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
 			this.fastScanToolStripMenuItem.Text = "Fast scan";
 			this.fastScanToolStripMenuItem.Click += new System.EventHandler( this.fastScanToolStripMenuItem_Click_1 );
 			// 
 			// portScanToolStripMenuItem
 			// 
 			this.portScanToolStripMenuItem.Name = "portScanToolStripMenuItem";
-			this.portScanToolStripMenuItem.Size = new System.Drawing.Size( 123, 22 );
+			this.portScanToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
 			this.portScanToolStripMenuItem.Text = "Port scan";
-			// 
-			// iPScanToolStripMenuItem
-			// 
-			this.iPScanToolStripMenuItem.Name = "iPScanToolStripMenuItem";
-			this.iPScanToolStripMenuItem.Size = new System.Drawing.Size( 123, 22 );
-			this.iPScanToolStripMenuItem.Text = "IP scan";
 			// 
 			// menuStrip1
 			// 
@@ -394,22 +322,14 @@ namespace GridMapper
         private System.Windows.Forms.ToolStripButton SaveScan;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button ScanButton;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem optionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aRPToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dNSToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem portToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem advancedOptionToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem optionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem fastScanToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem portScanToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem iPScanToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem portScanToolStripMenuItem;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Id;
 		private System.Windows.Forms.DataGridViewTextBoxColumn IPAddress;
@@ -418,6 +338,7 @@ namespace GridMapper
 		private System.Windows.Forms.DataGridViewTextBoxColumn Ports;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.ComboBox comboBox1;
+		private System.Windows.Forms.ToolStripMenuItem normalScanToolStripMenuItem;
 	}
 }
 
