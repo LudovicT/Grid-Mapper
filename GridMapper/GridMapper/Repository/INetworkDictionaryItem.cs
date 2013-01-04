@@ -5,6 +5,8 @@ using System.Text;
 using GridMapper.NetworkModelObject;
 using System.Net.NetworkInformation;
 using System.Net;
+using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 
 namespace GridMapper.NetworkRepository
 {
@@ -16,7 +18,7 @@ namespace GridMapper.NetworkRepository
 		IPAddress IPAddress { get; }
 		PhysicalAddress MacAddress { get; }
 		IPHostEntry HostEntry { get; }
-		IList<ushort> Ports { get; }
+		ReadOnlyCollection<ushort> Ports { get; }
 		IOS OS { get; }
 
 		bool Update( INetworkDictionaryItem networkDictionaryItem );
