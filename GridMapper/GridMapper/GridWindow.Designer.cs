@@ -240,7 +240,7 @@ namespace GridMapper
 			this.tabPage1.Location = new System.Drawing.Point(4, 25);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(593, 473);
+			this.tabPage1.Size = new System.Drawing.Size(652, 482);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Grid View";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -265,7 +265,7 @@ namespace GridMapper
 			this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
 			this.dataGridView1.Name = "dataGridView1";
 			this.dataGridView1.ReadOnly = true;
-			this.dataGridView1.Size = new System.Drawing.Size(587, 467);
+			this.dataGridView1.Size = new System.Drawing.Size(646, 476);
 			this.dataGridView1.TabIndex = 4;
 			// 
 			// Id
@@ -337,6 +337,7 @@ namespace GridMapper
 			this.diagramDisplayControl1.Name = "diagramDisplayControl1";
 			this.diagramDisplayControl1.Size = new System.Drawing.Size(652, 482);
 			this.diagramDisplayControl1.TabIndex = 0;
+			this.diagramDisplayControl1.Load += new System.EventHandler(this.diagramDisplayControl1_Load);
 			// 
 			// GridWindow
 			// 

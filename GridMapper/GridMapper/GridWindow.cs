@@ -191,18 +191,7 @@ namespace GridMapper
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "XML File|*.xml|Gridmap File|*.gmp|Text File|*.txt|Other XML File|*.*";
-            openFileDialog1.Title = "Select a Map File";
-
-            // Show the Dialog.
-            // If the user clicked OK in the dialog and
-            // a .CUR file was selected, open it.
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                // Assign the cursor in the Stream to the Form's Cursor property.
-                this.Cursor = new Cursor(openFileDialog1.OpenFile());
-            }
+			loadToolStripMenuItem_Click(sender, e);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -442,6 +431,12 @@ namespace GridMapper
 
 		private void _NShapeDisplay_Load(object sender, EventArgs e)
 		{
+			
+		}
+
+		private void diagramDisplayControl1_Load(object sender, EventArgs e)
+		{
+			Repository repo = new Repository();
 			
 		}
 
