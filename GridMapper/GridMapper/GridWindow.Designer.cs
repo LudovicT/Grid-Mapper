@@ -105,10 +105,10 @@ namespace GridMapper
 			// ProgressScan
 			// 
 			this.ProgressScan.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.ProgressScan.Location = new System.Drawing.Point(0, 557);
+			this.ProgressScan.Location = new System.Drawing.Point(0, 566);
 			this.ProgressScan.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ProgressScan.Name = "ProgressScan";
-			this.ProgressScan.Size = new System.Drawing.Size(601, 25);
+			this.ProgressScan.Size = new System.Drawing.Size(660, 25);
 			this.ProgressScan.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.ProgressScan.TabIndex = 8;
 			// 
@@ -194,7 +194,7 @@ namespace GridMapper
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-			this.menuStrip1.Size = new System.Drawing.Size(601, 28);
+			this.menuStrip1.Size = new System.Drawing.Size(660, 28);
 			this.menuStrip1.TabIndex = 1;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -231,7 +231,7 @@ namespace GridMapper
 			this.tabControl1.Location = new System.Drawing.Point(0, 59);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(601, 502);
+			this.tabControl1.Size = new System.Drawing.Size(660, 511);
 			this.tabControl1.TabIndex = 12;
 			// 
 			// tabPage1
@@ -306,7 +306,7 @@ namespace GridMapper
 			this.tabPage2.Location = new System.Drawing.Point(4, 25);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(593, 473);
+			this.tabPage2.Size = new System.Drawing.Size(652, 482);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Graphic View";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -328,11 +328,14 @@ namespace GridMapper
 			// 
 			// diagramDisplayControl1
 			// 
+			this.diagramDisplayControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.diagramDisplayControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.diagramDisplayControl1.Location = new System.Drawing.Point(0, 0);
 			this.diagramDisplayControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.diagramDisplayControl1.Name = "diagramDisplayControl1";
-			this.diagramDisplayControl1.Size = new System.Drawing.Size(593, 473);
+			this.diagramDisplayControl1.Size = new System.Drawing.Size(652, 482);
 			this.diagramDisplayControl1.TabIndex = 0;
 			// 
 			// GridWindow
@@ -340,7 +343,7 @@ namespace GridMapper
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Window;
-			this.ClientSize = new System.Drawing.Size(601, 582);
+			this.ClientSize = new System.Drawing.Size(660, 591);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.comboBox1);
 			this.Controls.Add(this.panel1);
