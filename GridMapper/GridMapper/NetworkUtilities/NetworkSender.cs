@@ -6,6 +6,14 @@ using System.Net;
 
 namespace GridMapper.NetworkUtilities
 {
+	/// <summary>
+	/// This is the main class for all network-related features.
+	/// These features are as follow :
+	/// ARP (Address Resolution Protocol) sender to retrieve the MAC address of a machine
+	/// Ping sender to send a request to a machine
+	/// Reverse DNS (Domain Name System) to match an IP Address to a machine
+	/// WMI Collector retrieves information from a machine such as the operating system the machine runs
+	/// </summary>
 	public class NetworkSender
 	{
 		ARPSender _arpSender;
