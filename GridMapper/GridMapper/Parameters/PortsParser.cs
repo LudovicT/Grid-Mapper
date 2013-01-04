@@ -19,7 +19,6 @@ namespace GridMapper
 		/// or an error with a message if it did not work.
 		/// <param name="PortsToParse">The list of ports to be parsed.</param>
 		/// <param name="errorMessage"> This message is set and returned when something went wrong while parsing the ports</param>
-		/// <param name="result"> This is where the ports to be scanned are stored.</param>
 		/// <returns>
 		/// <c>IEnumerable<int>Result</c>
 		/// </returns>
@@ -44,7 +43,9 @@ namespace GridMapper
 	/// </summary>
 	public static class PortsParser
 	{
-		// These tokens are to identify specific type of ports.
+		/// <summary>
+		/// These tokens are to identify specific type of ports.
+		/// </summary>
 		public enum Token
 		{
 			Unknown,		//when an invalid port is being parsed
