@@ -25,7 +25,11 @@ namespace GridMapper
 	public class ListOfRangeOfIntWithAutoCompression : IEnumerable<int>
 	{
 		readonly List<Item> storage = new List<Item>();
-
+		/// <summary>
+		/// This method takes an integer value in parameter and adds it in the storage list.
+		/// It performs some verifications to check if the value is inside a range that was already generated.
+		/// </summary>
+		/// <param name="valueToAdd">An integer to be added in the storage list</param>
 		public void Add( int valueToAdd )
 		{
 			bool added = false;
@@ -60,7 +64,12 @@ namespace GridMapper
 			}
 			storage.Sort( ( Item a, Item b ) => a.From.CompareTo( b.From ) );
 		}
-
+		/// <summary>
+		/// This method adds a range of integer values in the storage list.
+		/// It performs some to verifications to check if the range was already generated and added in the storage list.
+		/// </summary>
+		/// <param name="from">This integer value is the beginning of the range</param>
+		/// <param name="to">this integere value is the end of the range</param>
 		public void Add( int from, int to )
 		{
 			bool added = false;
@@ -119,7 +128,11 @@ namespace GridMapper
 			}
 			storage.Sort( ( Item a, Item b ) => a.From.CompareTo( b.From ) );
 		}
-
+		/// <summary>
+		/// This method removes an integer value from the storage list.
+		/// It performs some to verifications to check if the value was already from a range that was removed from the storage list.
+		/// </summary>
+		/// /// <param name="valueToAdd">An integer to be removed in the storage list</param>
 		public void Remove( int valueToAdd )
 		{
 			int tmpFrom;
@@ -162,7 +175,12 @@ namespace GridMapper
 				} while ( storage.Count != count );
 			}
 		}
-
+		/// <summary>
+		/// This method removes a range of integer values from the storage list.
+		/// It performs some to verifications to check if the range was already generated and removed from the storage list.
+		/// </summary>
+		/// <param name="from">This integer value is the beginning of the range</param>
+		/// <param name="to">this integere value is the end of the range</param>
 		public void Remove( int from, int to )
 		{
 			int tmpFrom;
@@ -237,7 +255,6 @@ namespace GridMapper
 				} while ( storage.Count != count );
 			}
 		}
-
 
 		public IEnumerator<int> GetEnumerator()
 		{
