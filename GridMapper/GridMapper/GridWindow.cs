@@ -11,6 +11,9 @@ using System.Threading;
 using System.Net;
 using GridMapper.NetworkRepository;
 using GridMapper;
+using Dataweb.NShape;
+using Dataweb.NShape.Advanced;
+using Dataweb.NShape.GeneralShapes;
 
 namespace GridMapper
 {
