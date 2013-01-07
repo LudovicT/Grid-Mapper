@@ -41,7 +41,6 @@ namespace GridMapper
 		private void OptionChanged( object sender, OptionUpdatedEventArgs e )
 		{
 			_exe.optionsModified(e);
-
 		}
 
 		private void FinishedExecution( object sender, EventArgs e )
