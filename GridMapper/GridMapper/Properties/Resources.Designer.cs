@@ -83,7 +83,7 @@ namespace GridMapper.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Sans_titre {
+        internal static System.Drawing.Bitmap roud_play {
             get {
                 object obj = ResourceManager.GetObject("Sans titre", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
