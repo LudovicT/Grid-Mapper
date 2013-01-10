@@ -125,7 +125,7 @@ namespace GridMapper
 
 				foreach (INetworkDictionaryItem item2 in e.ReadOnlyRepository) 
 				{
-					DrawEngine("ça me gave, ça marche pas !" , x, y, shapeDict);
+					DrawEngine("A remplacer par le nom du composant" , x, y, shapeDict);
 					x += 200;
 					y -= 200;
 				}
