@@ -85,7 +85,7 @@ namespace GridMapper.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap roud_play {
             get {
-                object obj = ResourceManager.GetObject("Sans titre", resourceCulture);
+                object obj = ResourceManager.GetObject("roud_play", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
