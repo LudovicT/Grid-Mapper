@@ -14,6 +14,7 @@ using GridMapper;
 using Dataweb.NShape;
 using Dataweb.NShape.Advanced;
 using Dataweb.NShape.GeneralShapes;
+using System.Diagnostics;
 
 namespace GridMapper
 {
@@ -28,11 +29,13 @@ namespace GridMapper
 		private delegate void UpdateDataGrid<T>( object sender, T e );
 		// **************** 
 
+
 		public GridWindow(Option StartUpOptions)
 		{
 			_startUpOption = StartUpOptions;
 			_exe = new NewExecution( StartUpOptions );
 			_exe.TaskCompleted += ProgressChanged;
+			_exe.EndOfScan += ScanEnded;
 			InitializeComponent();
 			InitializeComboBox();
 			InitializeDataGridView();
@@ -50,24 +53,29 @@ namespace GridMapper
 
 		private void ProgressChanged( object sender, TaskCompletedEventArgs e )
 		{
-			if ( e != null && OperationLeft == 0 )
-			{
-				FinishedExecution(this, null);
-			}
-			else if ( e!= null)
+			if ( e!= null)
 			{
 				if ( OperationLeft >= e.TaskCompleted )
 				{
 					Interlocked.Add(ref OperationLeft, - e.TaskCompleted);
 				}
 				else throw new ConstraintException( " wrong number of operation " );
+
+				if ( e != null && OperationLeft == 0 )
+				{
+					FinishedExecution(this, null);
+				}
 			}
-			if ( OperationLeft == 0 )
-			{
-				ScanButton.BeginInvoke( (Action)delegate() { ScanButton.Enabled = true; } );
-				menuStrip1.BeginInvoke( (Action)delegate() { startToolStripMenuItem1.Enabled = true; } );
-				menuStrip1.BeginInvoke( (Action)delegate() { optionToolStripMenuItem.Enabled = true; } );
-			}
+		}
+
+		private void ScanEnded( object o, EventArgs e )
+		{
+			Debug.Assert( OperationLeft == 0 );
+			MessageBox.Show( "Scan has ended" );
+			ScanButton.BeginInvoke( (Action)delegate() { ScanButton.Enabled = true; } );
+			menuStrip1.BeginInvoke( (Action)delegate() { startToolStripMenuItem1.Enabled = true; } );
+			menuStrip1.BeginInvoke( (Action)delegate() { optionToolStripMenuItem.Enabled = true; } );
+
 		}
 
 		void InitializeComboBox()
@@ -245,52 +253,17 @@ namespace GridMapper
 			SaveScan_Click( sender, e );
         }
 
-
 		private void fastScanToolStripMenuItem_Click_1( object sender, EventArgs e )
 		{
-			_exe.CloseAllThreads();
-			dataGridView1.DataSource = null;
-			dataGridView1.DataMember = null;
-
-			ScanButton.Enabled = false;
-			startToolStripMenuItem1.Enabled = false;
-			optionToolStripMenuItem.Enabled = false;
-
-			OperationLeft = _exe.Option.TotalOperation;
-			_exe.StartScan();
-			timer1.Start();
+			ClearAndStop();
+			GetCurrentIPRange();
+			LockButtons();
+			LaunchScan();
 		}
-
-
-		private void timer1_Tick( object sender, EventArgs e )
-		{
-			int i = 0;
-			i = Convert.ToInt32( Math.Round( 100 - (double)OperationLeft / ( _exe.Option.TotalOperation ) * 100 ) );
-			ProgressScan.Value = i;
-		}
-
-
-        private void OptionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Option_window Option = new Option_window(_exe.Option);
-			Option.OptionUpdated += new Option_window.OptionUpdatedHandler(OptionChanged);
-            Option.ShowDialog();
-        }
-
-        static string ToMac(string ToTransform)
-		{
-			ToTransform = ToTransform.ToUpperInvariant();
-			var list = Enumerable
-				.Range( 0, ToTransform.Length / 2 )
-				.Select( i => ToTransform.Substring( i * 2, 2 ) );
-			return string.Join( ":", list );
-        }
 
         private void ScanButton_Click(object sender, EventArgs e)
-        {
-			_exe.CloseAllThreads();
-            dataGridView1.DataSource = null;
-            dataGridView1.DataMember = null;
+		{
+			ClearAndStop();
 
 			string ipToTest = string.Empty;
 			if ( panel1.Controls[0].GetType() == typeof( IPRangeUserControl ) )
@@ -347,14 +320,57 @@ namespace GridMapper
 			}
 
 			//deactivate the buttons
+			LockButtons();
+			LaunchScan();
+		}
+
+		private void ClearAndStop()
+		{
+			_exe.CloseAllThreads();
+			dataGridView1.DataSource = null;
+			dataGridView1.DataMember = null;
+		}
+		private void LockButtons()
+		{
 			ScanButton.Enabled = false;
 			startToolStripMenuItem1.Enabled = false;
 			optionToolStripMenuItem.Enabled = false;
+		}
+		private void LaunchScan()
+		{
+			OperationLeft = _exe.Option.TotalOperation;
+			_exe.StartScan();
+			timer1.Start();
+		}
+		private void GetCurrentIPRange()
+		{
+			Option newOptions = _exe.Option;
+			newOptions.IpToTest = IPRange.AutoIpRange();
+			_exe.optionsModified( new OptionUpdatedEventArgs( newOptions ) );
+		}
 
-            OperationLeft = _exe.Option.TotalOperation;
-            _exe.StartScan();
-            timer1.Start();
-        }
+		private void timer1_Tick( object sender, EventArgs e )
+		{
+			int i = 0;
+			i = Convert.ToInt32( Math.Round( 100 - (double)OperationLeft / ( _exe.Option.TotalOperation ) * 100 ) );
+			ProgressScan.Value = i;
+		}
+
+		private void OptionToolStripMenuItem_Click( object sender, EventArgs e )
+		{
+			Option_window Option = new Option_window( _exe.Option );
+			Option.OptionUpdated += new Option_window.OptionUpdatedHandler( OptionChanged );
+			Option.ShowDialog();
+		}
+
+		static string ToMac( string ToTransform )
+		{
+			ToTransform = ToTransform.ToUpperInvariant();
+			var list = Enumerable
+				.Range( 0, ToTransform.Length / 2 )
+				.Select( i => ToTransform.Substring( i * 2, 2 ) );
+			return string.Join( ":", list );
+		}
 
 		private void dataGridView1_SortCompare( object sender, DataGridViewSortCompareEventArgs e )
 		{
