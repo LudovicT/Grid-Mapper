@@ -125,21 +125,21 @@ namespace GridMapper.NetworkUtilities
 		/// <summary>
 		/// This function build an ICMP over IPv4 over Ethernet packet.
 		/// </summary>
-		public static Packet BuildIcmpPacket()
+		public Packet BuildIcmpPacket( string TargetIpAddress, string RouterMacAddress )
 		{
 			EthernetLayer ethernetLayer =
 				new EthernetLayer
 				{
-					Source = new MacAddress( "01:01:01:01:01:01" ),
-					Destination = new MacAddress( "02:02:02:02:02:02" ),
+					Source = new MacAddress( ToMac( _ownMacAddress.ToString() ) ),
+					Destination = new MacAddress( ToMac( RouterMacAddress.ToString() ) ),
 					EtherType = EthernetType.None, // Will be filled automatically.
 				};
 
 			IpV4Layer ipV4Layer =
 				new IpV4Layer
 				{
-					Source = new IpV4Address( "1.2.3.4" ),
-					CurrentDestination = new IpV4Address( "11.22.33.44" ),
+					Source = new IpV4Address( new IPAddress( _ownIpAddress ).ToString() ),
+					CurrentDestination = new IpV4Address( TargetIpAddress ),
 					Fragmentation = IpV4Fragmentation.None,
 					HeaderChecksum = null, // Will be filled automatically.
 					Identification = 123,
