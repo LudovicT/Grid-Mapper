@@ -132,6 +132,20 @@ namespace GridMapper.Test
 			ownPacketReceiver.StartReceive();
 		}
 
+		[Test]
+		public void TestScanRouter()
+		{
+			string ipTarget = "192.168.1.27";
+			string macRouter = "c8cd723a8708";
+			//PortScannerBis portScanner = new PortScannerBis();
+			OwnPacketSender Sender = new OwnPacketSender();
+			OwnPacketBuilder ICMPPacket = new OwnPacketBuilder( PacketType.TCP );
+			for( int i = 1 ; i <= 10 ; i++ )
+			{
+				Sender.trySend( ICMPPacket.BuildIcmpPacket(ipTarget, macRouter) );
+			}
+		}
+
 		//[Test]
 		//public void TestScanPortWithTcpClient()
 		//{
