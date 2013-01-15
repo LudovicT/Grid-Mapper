@@ -27,6 +27,7 @@ namespace GridMapper
 		Task _taskForExecution;
 
 		public event EventHandler<TaskCompletedEventArgs> TaskCompleted;
+		public event EventHandler EndOfScan;
 
 		public NewExecution( Option startupOptions )
 		{
@@ -38,6 +39,7 @@ namespace GridMapper
 
 			_ownPacketReceiver.ArpingReceived += AddArpingInRepositoryAndContinueWithRequest;
 			_ownPacketReceiver.PortReceived += AddPortNumberInRepository;
+			_ownPacketReceiver.EndOfScan += EndScan;
 		}
 
 		#region IExecution Membres
@@ -173,6 +175,11 @@ namespace GridMapper
 			_option.UDPPort = e.Option.UDPPort;
 			_option.RandomTCPPort = e.Option.RandomTCPPort;
 			_option.RandomUDPPort = e.Option.RandomUDPPort;
+		}
+
+		public void EndScan( object o, EventArgs e )
+		{
+			EndOfScan( o, e );
 		}
 	}
 

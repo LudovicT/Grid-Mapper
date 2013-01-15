@@ -34,6 +34,7 @@ namespace GridMapper.NetworkUtilities
 
 		public event EventHandler<ArpingReceivedEventArgs> ArpingReceived;
 		public event EventHandler<PortReceivedEventArgs> PortReceived;
+		public event EventHandler EndOfScan;
 
 		public OwnPacketReceiver( bool arp = true, bool tcp = true, ushort tcpPort = 62000, bool udp = false, ushort udpPort = 62001)
 		{
@@ -176,6 +177,7 @@ namespace GridMapper.NetworkUtilities
 		{
 			if( !_isActive )
 			{
+				EndOfScan(this,null);
 				EndReceive();
 			}
 			_isActive = false;
