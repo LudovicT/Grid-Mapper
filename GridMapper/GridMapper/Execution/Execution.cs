@@ -66,7 +66,7 @@ namespace GridMapper
 					foreach ( int ipInt in _option.IpToTest.Result )
 					{
 						_ownPacketSender.trySend( _ownPacketBuilderForArping.BuildArpPacket( IPAddress.Parse( ( (uint)ipInt ).ToString() ).GetAddressBytes() ) );
-						TaskCompleted( this, new TaskCompletedEventArgs( _option.OperationCount) );
+						TaskCompleted( this, new TaskCompletedEventArgs( _option.OperationCount ) );
 						if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
 						{
 							i++;
@@ -86,6 +86,7 @@ namespace GridMapper
 		private void AddArpingInRepositoryAndContinueWithRequest( object sender, ArpingReceivedEventArgs e )
 		{
 			IPAddress datIP = IPAddress.Parse( e.IpAddress );
+			OwnPacketSender PacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
 			Task.Factory.StartNew( () =>
 					{
 						if( _option.Arp )
@@ -106,8 +107,8 @@ namespace GridMapper
 							int i = 0;
 							foreach( ushort portNumber in _option.PortToTest.Result )
 							{
-								_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
-								if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
+								PacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
+								if ( /*_ownPacketSender._isIPV6 &&*/ _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
 								{
 									i++;
 									if ( i == _option.NbPacketToSend )
@@ -136,7 +137,7 @@ namespace GridMapper
 
 		public int Progress()
 		{
-			int taskToDoPerIp = 3;
+			int taskToDoPerIp = 8;
 			//total of IP tested
 			int IpTotal = 0;
 			int restToDo = (IpTotal * taskToDoPerIp) / (IpTotal * taskToDoPerIp);
