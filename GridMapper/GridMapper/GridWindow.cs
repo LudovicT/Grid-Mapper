@@ -15,6 +15,7 @@ using Dataweb.NShape;
 using Dataweb.NShape.Advanced;
 using Dataweb.NShape.GeneralShapes;
 using System.Diagnostics;
+using GridMapper.NetworkUtilities;
 
 namespace GridMapper
 {
@@ -35,7 +36,7 @@ namespace GridMapper
 			_startUpOption = StartUpOptions;
 			_exe = new NewExecution( StartUpOptions );
 			_exe.TaskCompleted += ProgressChanged;
-			_exe.EndOfScan += ScanEnded;
+			OwnPacketReceiver.EndOfScan += ScanEnded;
 			InitializeComponent();
 			InitializeComboBox();
 			InitializeDataGridView();
