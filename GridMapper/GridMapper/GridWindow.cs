@@ -48,23 +48,18 @@ namespace GridMapper
 
 		private void FinishedExecution( object sender, EventArgs e )
 		{
-			timer1.Stop();
+			//timer1.Stop();
 		}
 
 		private void ProgressChanged( object sender, TaskCompletedEventArgs e )
 		{
-			if ( e!= null)
+			if ( e != null)
 			{
 				if ( OperationLeft >= e.TaskCompleted )
 				{
 					Interlocked.Add(ref OperationLeft, - e.TaskCompleted);
 				}
 				else throw new ConstraintException( " wrong number of operation " );
-
-				if ( e != null && OperationLeft == 0 )
-				{
-					FinishedExecution(this, null);
-				}
 			}
 		}
 
@@ -354,6 +349,11 @@ namespace GridMapper
 			int i = 0;
 			i = Convert.ToInt32( Math.Round( 100 - (double)OperationLeft / ( _exe.Option.TotalOperation ) * 100 ) );
 			ProgressScan.Value = i;
+
+			if( OperationLeft == 0 )
+			{
+				FinishedExecution( this, null );
+			}
 		}
 
 		private void OptionToolStripMenuItem_Click( object sender, EventArgs e )
