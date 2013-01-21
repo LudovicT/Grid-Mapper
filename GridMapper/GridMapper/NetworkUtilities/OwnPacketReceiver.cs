@@ -47,6 +47,7 @@ namespace GridMapper.NetworkUtilities
 			timer.Interval = 5000;
 			timer.Enabled = true;
 			timer.Elapsed += EndReceiveCallByTimer;
+			timer.Stop();
 
 			if ( allDevices.Count == 0 )
 			{
