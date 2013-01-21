@@ -115,7 +115,7 @@ namespace GridMapper
 				if ( Port )
 				{
 					i++;
-					i = i + PortToTestCount;
+					i += PortToTestCount;
 				}
                 return i;
             }

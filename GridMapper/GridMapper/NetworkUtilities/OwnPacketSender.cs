@@ -59,21 +59,20 @@ namespace GridMapper.NetworkUtilities
 
 		public void trySend( Packet packetToSend )
 		{
-			if ( _waitTime <= 0 || _nbPacketToSend <= 0 || _isIPV6)
-			{
+			//if ( _waitTime <= 0 || _nbPacketToSend <= 0 || _isIPV6)
+			//{
 				outputCommunicator.SendPacket( packetToSend );
-			}
-			else if ( _nbPacketToSend > 0 && _waitTime > 0 )
-			{
-				_sendBuffer.Enqueue( packetToSend );
-				if ( _sendBuffer.Length >= _nbPacketToSend )
-				{
-					SendBuffer();
-					Thread.Sleep( _waitTime );
-					_sendBuffer = new PacketSendBuffer( (uint)( _nbPacketToSend * 200 ) );
-				}
-			}
-
+			//}
+			//else if ( _nbPacketToSend > 0 && _waitTime > 0 )
+			//{
+			//    _sendBuffer.Enqueue( packetToSend );
+			//    if ( _sendBuffer.Length >= _nbPacketToSend )
+			//    {
+			//        SendBuffer();
+			//        Thread.Sleep( _waitTime );
+			//        _sendBuffer = new PacketSendBuffer( (uint)( _nbPacketToSend * 200 ) );
+			//    }
+			//}
 		}
 		private void SendBuffer()
 		{

@@ -29,12 +29,12 @@ namespace GridMapper.NetworkUtilities
 		bool _isStart;
 		bool _isActive;
 		Thread _threadForReceive;
-		System.Timers.Timer timer = new System.Timers.Timer();
+		System.Timers.Timer timer;
 		readonly bool _isIPV6 = false;
 
 		public event EventHandler<ArpingReceivedEventArgs> ArpingReceived;
 		public event EventHandler<PortReceivedEventArgs> PortReceived;
-		public event EventHandler EndOfScan;
+		public static event EventHandler EndOfScan;
 
 		public OwnPacketReceiver( bool arp = true, bool tcp = true, ushort tcpPort = 62000, bool udp = false, ushort udpPort = 62001)
 		{
@@ -42,6 +42,11 @@ namespace GridMapper.NetworkUtilities
 			_isStart = true;
 			_isActive = true;
 			_tcpPort = tcpPort;
+
+			timer = new System.Timers.Timer();
+			timer.Interval = 5000;
+			timer.Enabled = true;
+			timer.Elapsed += EndReceiveCallByTimer;
 
 			if ( allDevices.Count == 0 )
 			{
@@ -167,9 +172,6 @@ namespace GridMapper.NetworkUtilities
 
 		public void TimerToCallEndReceive()
 		{
-			timer.Interval = 10000;
-			timer.Enabled = true;
-			timer.Elapsed += EndReceiveCallByTimer;
 			timer.Start();
 		}
 
@@ -177,8 +179,8 @@ namespace GridMapper.NetworkUtilities
 		{
 			if( !_isActive )
 			{
-				EndOfScan(this,null);
 				EndReceive();
+				EndOfScan( this, null );
 			}
 			_isActive = false;
 		}
