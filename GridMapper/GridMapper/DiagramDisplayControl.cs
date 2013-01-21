@@ -74,6 +74,7 @@ namespace GridMapper
 
 		public void UpdateNshapeDisplay2(object sender, RepositoryUpdatedEventArg e)
 		{
+
 			foreach (INetworkDictionaryItem item in e.ReadOnlyRepository)
 			{
 				byte[] b = item.IPAddress.GetAddressBytes();
@@ -119,15 +120,19 @@ namespace GridMapper
 						portToString += ", " + item.Ports[i].ToString();
 				}
 
-				bool found = false;
+				//bool found = false;
 				int x = 100;
 				int y = 100;
+				//List<IPAddressV4> HostDone = new List<IPAddressV4>();
 
+				
 				foreach (INetworkDictionaryItem item2 in e.ReadOnlyRepository) 
 				{
+					x += 100;
+					y += 100;
+
 					DrawEngine(hostNameString, x, y, shapeDict);
-					x += 200;
-					y -= 200;
+					//HostDone.Add(ip);
 				}
 			}
 		}
@@ -145,7 +150,7 @@ namespace GridMapper
 		public void DrawEngine(string s, int x, int y, Dictionary<String, CaptionedShapeBase> dShape)
 		{
 			CircleBase shape = (CircleBase)_NShapeProject.ShapeTypes["Circle"].CreateInstance();
-			shape.Diameter = 100;
+			shape.Diameter = 150;
 			shape.X = x;
 			shape.Y = y;
 			shape.SetCaptionText(0, s);
