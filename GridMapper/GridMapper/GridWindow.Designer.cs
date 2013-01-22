@@ -319,7 +319,7 @@ namespace GridMapper
 			this.diagramDisplayControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.diagramDisplayControl1.Location = new System.Drawing.Point(0, 0);
 			this.diagramDisplayControl1.Name = "diagramDisplayControl1";
-			this.diagramDisplayControl1.Size = new System.Drawing.Size(489, 392);
+			this.diagramDisplayControl1.Size = new System.Drawing.Size(595, 442);
 			this.diagramDisplayControl1.TabIndex = 0;
 			this.diagramDisplayControl1.Load += new System.EventHandler(this.diagramDisplayControl1_Load);
 			// 
