@@ -121,20 +121,19 @@ namespace GridMapper
 				}
 
 				//bool found = false;
-				int x = 100;
-				int y = 100;
+				int x = 0;
+				int y = 0;
 				//List<IPAddressV4> HostDone = new List<IPAddressV4>();
 
-				
-				//foreach (INetworkDictionaryItem item2 in e.ReadOnlyRepository) 
-				//{
-
-					DrawEngine(hostNameString, x, y, shapeDict);
+				foreach (INetworkDictionaryItem item2 in e.ReadOnlyRepository)
+				{
 					x += 100;
 					y += 100;
 
+					DrawEngine(hostNameString, x, y, shapeDict);
+
 					//HostDone.Add(ip);
-				//}
+				}
 			}
 		}
 		#endregion
