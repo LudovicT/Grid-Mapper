@@ -332,6 +332,12 @@ namespace GridMapper
 			startToolStripMenuItem1.Enabled = false;
 			optionToolStripMenuItem.Enabled = false;
 		}
+		private void UnLockButtons()
+		{
+			ScanButton.Enabled = true;
+			startToolStripMenuItem1.Enabled = true;
+			optionToolStripMenuItem.Enabled = true;
+		}
 		private void LaunchScan()
 		{
 			OperationLeft = _exe.Option.TotalOperation;
@@ -454,6 +460,12 @@ namespace GridMapper
 		{
 			Repository repo = new Repository();
 			
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			ClearAndStop();
+			UnLockButtons();
 		}
 
 	}

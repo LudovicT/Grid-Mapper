@@ -34,7 +34,11 @@ namespace GridMapper
 				}
 			}
 			//get the interface mac
-			mac = PhysicalAddress.Parse( TrueNic.GetPhysicalAddress().ToString() );
+			try
+			{
+				mac = PhysicalAddress.Parse(TrueNic.GetPhysicalAddress().ToString());
+			}
+			catch { }
 		}
 		public static void LocalMacAndIPAddress( out IPAddress ip, out PhysicalAddress mac )
 		{
