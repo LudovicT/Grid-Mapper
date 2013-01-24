@@ -36,7 +36,7 @@ namespace GridMapper.NetworkUtilities
 		public event EventHandler<PortReceivedEventArgs> PortReceived;
 		public static event EventHandler EndOfScan;
 
-		public OwnPacketReceiver( bool arp = true, bool tcp = true, ushort tcpPort = 62000, bool udp = false, ushort udpPort = 62001)
+		public OwnPacketReceiver( bool arp = true, bool tcp = true, ushort tcpPort = 62000, bool udp = false, ushort udpPort = 62001, int timeout = 5000)
 		{
 			IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
 			_isStart = true;
@@ -44,10 +44,12 @@ namespace GridMapper.NetworkUtilities
 			_tcpPort = tcpPort;
 
 			timer = new System.Timers.Timer();
-			timer.Interval = 5000;
+			timer.Interval = timeout;
 			timer.Enabled = true;
 			timer.Elapsed += EndReceiveCallByTimer;
 			timer.Stop();
+
+			_isActive = true;
 
 			if ( allDevices.Count == 0 )
 			{

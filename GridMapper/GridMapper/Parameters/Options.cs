@@ -37,7 +37,7 @@ namespace GridMapper
 		public bool RandomUDPPort { get; set; }
 		public bool CmdConsole { get; set; }
 		public int MaximumTasks { get; set; }
-		public int PingTimeout { get; set; }
+		public int Timeout { get; set; }
 		public int NbPacketToSend { get; set; }
 		public int WaitTime { get; set; }
 		public ushort TCPPort { get; set; }
@@ -58,8 +58,8 @@ namespace GridMapper
 			RandomTCPPort = false;
 			RandomUDPPort = false;
 			CmdConsole = false;
-			MaximumTasks = 50;
-			PingTimeout = 1000;
+			MaximumTasks = 4;
+			Timeout = 1000;
 			NbPacketToSend = 10;
 			WaitTime = 1;
 			TCPPort = 62000;

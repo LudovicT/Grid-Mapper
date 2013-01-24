@@ -20,7 +20,7 @@ namespace GridMapper
 
 		public PingSender( Option op )
 		{
-			_timeout = op.PingTimeout;
+			_timeout = op.Timeout;
 		}
 
 		public PingReply Ping( IPAddress ipAddress )

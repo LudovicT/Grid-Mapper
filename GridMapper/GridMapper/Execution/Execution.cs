@@ -31,13 +31,13 @@ namespace GridMapper
 		public NewExecution( Option startupOptions )
 		{
 			_option = startupOptions;
-			_ownPacketReceiver = new OwnPacketReceiver(_option.Arping,_option.Port,_option.TCPPort,_option.RandomUDPPort,_option.UDPPort);
+			_ownPacketReceiver = new OwnPacketReceiver( _option.Arping, _option.Port, _option.TCPPort, _option.RandomUDPPort, _option.UDPPort, _option.Timeout );
 			_ownPacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
-
-			_reverseDnsResolver = new ReverseDnsResolver();
 
 			_ownPacketReceiver.ArpingReceived += AddArpingInRepositoryAndContinueWithRequest;
 			_ownPacketReceiver.PortReceived += AddPortNumberInRepository;
+
+			_reverseDnsResolver = new ReverseDnsResolver();
 		}
 
 		#region IExecution Membres
@@ -48,6 +48,12 @@ namespace GridMapper
 
 		public void StartScan()
 		{
+			_ownPacketReceiver = new OwnPacketReceiver( _option.Arping, _option.Port, _option.TCPPort, _option.RandomUDPPort, _option.UDPPort, _option.Timeout );
+			_ownPacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
+
+			_ownPacketReceiver.ArpingReceived += AddArpingInRepositoryAndContinueWithRequest;
+			_ownPacketReceiver.PortReceived += AddPortNumberInRepository;
+
 			_repository = new Repository();
 			_ownPacketReceiver.StartReceive();
 
@@ -161,7 +167,7 @@ namespace GridMapper
 		public void optionsModified( OptionUpdatedEventArgs e )
 		{
 			_option.Ping = e.Option.Ping;
-			_option.PingTimeout = e.Option.PingTimeout;
+			_option.Timeout = e.Option.Timeout;
 			_option.Arping = e.Option.Arping;
 			_option.Arp = e.Option.Arp;
 			_option.Dns = e.Option.Dns;

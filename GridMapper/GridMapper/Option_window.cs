@@ -22,7 +22,7 @@ namespace GridMapper
 			option_DNS.Checked = opt.Dns;
 			option_ping.Checked = opt.Ping;
 			option_port.Checked = opt.Port;
-			textBox1.Text = opt.PingTimeout.ToString();
+			textBox1.Text = opt.Timeout.ToString();
 			textBox2.Text = opt.MaximumTasks.ToString();
 			option_nbPacketToSend.Value = opt.NbPacketToSend;
 			option_waitTime.Value = opt.WaitTime;
@@ -49,7 +49,7 @@ namespace GridMapper
 				{
 					if ( int.TryParse( textBox2.Text, out tasks ) )
 					{
-						if ( tasks >= 5 && tasks <= 2000 )
+						if ( tasks >= 1 && tasks <= 2000 )
 						{
 							PortsParserResult ppr = PortsParser.Tryparse( textBox3.Text );
 							if ( ppr.Result != null )
@@ -58,7 +58,7 @@ namespace GridMapper
 									new Option()
 									{
 										Ping = option_ping.Checked,
-										PingTimeout = timeout,
+										Timeout = timeout,
 										Arping = option_ARPing.Checked,
 										Arp = option_ARP.Checked,
 										Dns = option_DNS.Checked,
@@ -84,7 +84,7 @@ namespace GridMapper
 						else
 						{
 
-							MessageBox.Show( "The number of running tasks must be between 5 and 2000, 200 is recommended", "Error in tasks format" );
+							MessageBox.Show( "The number of running tasks must be between 1 and 2000, 4 is recommended", "Error in tasks format" );
 						}
 					}
 					else
