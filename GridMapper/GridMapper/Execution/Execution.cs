@@ -90,6 +90,10 @@ namespace GridMapper
 		private void AddArpingInRepositoryAndContinueWithRequest( object sender, ArpingReceivedEventArgs e )
 		{
 			IPAddress datIP = IPAddress.Parse( e.IpAddress );
+			if ( _option.CmdConsole )
+			{
+				Console.WriteLine( datIP );
+			}
 			//OwnPacketSender PacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
 			Task.Factory.StartNew( () =>
 					{

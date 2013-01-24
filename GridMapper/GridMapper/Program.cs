@@ -65,7 +65,7 @@ namespace GridMapper
 					AllocConsole();
 				}
 
-				ConsoleMain( startupArgs, StartupOptions );
+				ConsoleProgram.ConsoleMain( startupArgs, StartupOptions );
 				FreeConsole();
 			}
 			else
@@ -73,74 +73,7 @@ namespace GridMapper
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault( false );
 				Application.Run( new GridWindow( StartupOptions ) );
-			}
-			
+			}	
 		}
-
-		static void ConsoleMain( string[] startupArgs, Option StartupOptions )
-		{
-			Arguments args = new Arguments( startupArgs );
-			Console.Title = "GridMapper";
-
-			if ( StartupOptions.CmdConsole )
-			{
-				ConsoleHelper.DeletePath();
-			}
-
-			int maxTasks;
-			//help message get priority over everything
-			if ( args.IsTrue( "h" ) || args.IsTrue( "?" ) || args.IsTrue( "help" ) || 
-				 args.Exists( "h" ) || args.Exists( "?" ) || args.Exists( "help" ) )
-			{
-				ConsoleHelper.PrintHelp();
-			}
-			else
-			{
-				//if ( args.Exists("IP"))
-				//{
-				//    //IPsParser parser = new IPsParser();
-				//    //List<IPAddress> IPsToHandle = parser.IPArgumentsParser(args.Single("IP"));
-				//    //foreach (IPAddress IP in IPsToHandle)
-				//    //{
-				//    //    Console.WriteLine(IP);
-				//    //}
-				//}
-				//if (args.Exists("p"))
-				//{
-				//    //PortsParserResult PortsToHandle = PortsParser.MainPortsParser(args.Single("p"));
-				//    //IEnumerator enumerator = PortsToHandle.Result.GetEnumerator();
-
-				//}
-				if( args.Exists( "t" ) || args.Exists( "tasks" ) )
-				{
-					if ( int.TryParse( args.Single( "t" ), out maxTasks )|| int.TryParse( args.Single( "tasks" ), out maxTasks ) )
-					{
-						if ( maxTasks >= 5 && maxTasks <= 400 )
-						{
-							StartupOptions.MaximumTasks = maxTasks;
-						}
-						else
-						{
-							Console.WriteLine( "The number of tasks must be between 5 and 2000, reasonnable limit is around 500" );
-						}
-					}
-					else
-					{
-						Console.WriteLine( "Invalid argument for -t" );
-					}
-				}
-			}
-
-
-			if ( StartupOptions.CmdConsole )
-			{
-				ConsoleHelper.ShowPath();
-			}
-			else
-			{
-				ConsoleHelper.EndOfProgram();
-			}
-		}
-
 	}
 }

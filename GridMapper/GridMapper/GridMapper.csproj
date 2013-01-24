@@ -155,6 +155,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Console\ConsoleProgram.cs" />
     <Compile Include="Console\Messages.cs" />
     <Compile Include="DiagramDisplayControl.cs">
       <SubType>UserControl</SubType>
