@@ -59,7 +59,7 @@ namespace GridMapper
 			RandomUDPPort = false;
 			CmdConsole = false;
 			MaximumTasks = 4;
-			Timeout = 1000;
+			Timeout = 5000;
 			NbPacketToSend = 10;
 			WaitTime = 1;
 			TCPPort = 62000;
