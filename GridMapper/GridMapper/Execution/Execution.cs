@@ -90,11 +90,11 @@ namespace GridMapper
 		private void AddArpingInRepositoryAndContinueWithRequest( object sender, ArpingReceivedEventArgs e )
 		{
 			IPAddress datIP = IPAddress.Parse( e.IpAddress );
+			//OwnPacketSender PacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
 			if ( _option.CmdConsole )
 			{
-				Console.WriteLine( datIP );
+				Console.WriteLine( datIP + "	" + GridWindow.ToMac( e.MacAddress ) + "	" + _reverseDnsResolver.GetHostName( datIP ).HostName );
 			}
-			//OwnPacketSender PacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
 			Task.Factory.StartNew( () =>
 					{
 						if( _option.Arp )

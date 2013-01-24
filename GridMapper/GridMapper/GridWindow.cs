@@ -370,7 +370,7 @@ namespace GridMapper
 			Option.ShowDialog();
 		}
 
-		static string ToMac( string ToTransform )
+		public static string ToMac( string ToTransform )
 		{
 			ToTransform = ToTransform.ToUpperInvariant();
 			var list = Enumerable
