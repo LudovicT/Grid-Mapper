@@ -71,15 +71,15 @@ namespace GridMapper
 					{
 						_ownPacketSender.trySend( _ownPacketBuilderForArping.BuildArpPacket( IPAddress.Parse( ( (uint)ipInt ).ToString() ).GetAddressBytes() ) );
 						TaskCompleted( this, new TaskCompletedEventArgs( _option.OperationCount ) );
-						if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
-						{
-							i++;
-							if ( i == _option.NbPacketToSend )
-							{
-								i = 0;
-								Thread.Sleep( _option.WaitTime );
-							}
-						}
+						//if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
+						//{
+						//    i++;
+						//    if ( i == _option.NbPacketToSend )
+						//    {
+						//        i = 0;
+						//        Thread.Sleep( _option.WaitTime );
+						//    }
+						//}
 					}
 					AddOurNetworkInformation();
 					_ownPacketReceiver.TimerToCallEndReceive();
@@ -90,7 +90,7 @@ namespace GridMapper
 		private void AddArpingInRepositoryAndContinueWithRequest( object sender, ArpingReceivedEventArgs e )
 		{
 			IPAddress datIP = IPAddress.Parse( e.IpAddress );
-			OwnPacketSender PacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
+			//OwnPacketSender PacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
 			Task.Factory.StartNew( () =>
 					{
 						if( _option.Arp )
@@ -111,8 +111,8 @@ namespace GridMapper
 							int i = 0;
 							foreach( ushort portNumber in _option.PortToTest.Result )
 							{
-								PacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
-								if ( /*_ownPacketSender._isIPV6 &&*/ _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
+								_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
+								if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
 								{
 									i++;
 									if ( i == _option.NbPacketToSend )
