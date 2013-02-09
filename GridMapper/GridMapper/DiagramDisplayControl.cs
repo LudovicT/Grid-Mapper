@@ -75,6 +75,9 @@ namespace GridMapper
 		public void UpdateNshapeDisplay2(object sender, RepositoryUpdatedEventArg e)
 		{
 
+			int x = 0;
+			int y = 0;
+
 			foreach (INetworkDictionaryItem item in e.ReadOnlyRepository)
 			{
 				byte[] b = item.IPAddress.GetAddressBytes();
@@ -121,8 +124,6 @@ namespace GridMapper
 				}
 
 				//bool found = false;
-				int x = 0;
-				int y = 0;
 				//List<IPAddressV4> HostDone = new List<IPAddressV4>();
 
 				//foreach (INetworkDictionaryItem item2 in e.ReadOnlyRepository)
