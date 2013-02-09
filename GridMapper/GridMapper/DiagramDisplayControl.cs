@@ -125,15 +125,15 @@ namespace GridMapper
 				int y = 0;
 				//List<IPAddressV4> HostDone = new List<IPAddressV4>();
 
-				foreach (INetworkDictionaryItem item2 in e.ReadOnlyRepository)
-				{
+				//foreach (INetworkDictionaryItem item2 in e.ReadOnlyRepository)
+				//{
 					x += 100;
 					y += 100;
 
 					DrawEngine(hostNameString, x, y, shapeDict);
 
 					//HostDone.Add(ip);
-				}
+				//}
 			}
 		}
 		#endregion
