@@ -20,7 +20,7 @@ using GridMapper.NetworkUtilities;
 namespace GridMapper
 {
 	public partial class GridWindow : Form
-	{
+	{ 
 		Option _startUpOption;
 		NewExecution _exe;
         int OperationLeft = 0;
