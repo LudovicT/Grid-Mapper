@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.IO;
 
 namespace GridMapper.NetworkModelObject
 {
@@ -42,6 +43,12 @@ namespace GridMapper.NetworkModelObject
 			_macAddress = macAddress;
 			_ipAddress = ipAddress;
 			_latency = latency;
+		}
+
+		public void Describe( TextWriter output )
+		{
+			output.WriteLine( "Physical Address : {0}", _macAddress );
+			output.WriteLine( "IP Address : {0}", _ipAddress );
 		}
 	}
 }
