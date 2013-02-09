@@ -11,7 +11,7 @@ namespace GridMapper
 	/// <summary>
 	/// PortsParserResult class
 	/// </summary>
-	/// 
+
 	public class PortsParserResult
 	{
 		/// <summary>

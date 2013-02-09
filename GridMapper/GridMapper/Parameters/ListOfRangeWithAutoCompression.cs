@@ -17,6 +17,11 @@ namespace GridMapper
 			To = to;
 		}
 	}
+	/// <summary>
+	/// ListOfRangeOfIntWithAutoCompression is a list specialized in a IEnumerable of INT.
+	/// It creates a List of INT from ranges that are auto-compressed.
+	/// This class has methods to add and remove values in/from the list.
+	/// </summary>
 	public class ListOfRangeOfIntWithAutoCompression : IEnumerable<int>
 	{
 		readonly List<Item> storage = new List<Item>();
