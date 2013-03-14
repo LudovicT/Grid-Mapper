@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridMapper", "GridMapper\GridMapper.csproj", "{C65C2581-A13E-4B34-8DA6-A5FA85B6F359}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGridMapper", "TestGridMapper\TestGridMapper.csproj", "{6294BC8E-A7A8-40B1-BBE6-F560209B309E}"

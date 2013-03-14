@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -102,7 +102,7 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Logo_GridMapper.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Logo_GridMapper.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>42A9AA3D82E0DB7603EFF1682FDD4276EB46A6BC</ManifestCertificateThumbprint>
@@ -157,24 +157,24 @@
   <ItemGroup>
     <Compile Include="Console\ConsoleProgram.cs" />
     <Compile Include="Console\Messages.cs" />
-    <Compile Include="DiagramDisplayControl.cs">
+    <Compile Include="WinForm\DiagramDisplayControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DiagramDisplayControl.Designer.cs">
+    <Compile Include="WinForm\DiagramDisplayControl.Designer.cs">
       <DependentUpon>DiagramDisplayControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Execution\Execution.cs" />
     <Compile Include="Execution\IExecution.cs" />
-    <Compile Include="GridWindow.cs">
+    <Compile Include="WinForm\GridWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GridWindow.Designer.cs">
+    <Compile Include="WinForm\GridWindow.Designer.cs">
       <DependentUpon>GridWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="IPRangeUserControl.cs">
+    <Compile Include="WinForm\IPRangeUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="IPRangeUserControl.Designer.cs">
+    <Compile Include="WinForm\IPRangeUserControl.Designer.cs">
       <DependentUpon>IPRangeUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="NetworkModelObject\ClassNetwork\Host.cs" />
@@ -205,10 +205,10 @@
     <Compile Include="NetworkUtilities\PortScanner.cs" />
     <Compile Include="NetworkUtilities\ReverseDnsResolver.cs" />
     <Compile Include="NetworkUtilities\WMI.cs" />
-    <Compile Include="Option_window.cs">
+    <Compile Include="WinForm\Option_window.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Option_window.Designer.cs">
+    <Compile Include="WinForm\Option_window.Designer.cs">
       <DependentUpon>Option_window.cs</DependentUpon>
     </Compile>
     <Compile Include="Parameters\IPsParser.cs" />
@@ -226,34 +226,34 @@
     <Compile Include="Repository\Repository.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StringUserControl.cs">
+    <Compile Include="WinForm\StringUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="StringUserControl.Designer.cs">
+    <Compile Include="WinForm\StringUserControl.Designer.cs">
       <DependentUpon>StringUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Struct\IPAddressV4.cs" />
-    <Compile Include="CIDRUserControl.cs">
+    <Compile Include="WinForm\CIDRUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CIDRUserControl.Designer.cs">
+    <Compile Include="WinForm\CIDRUserControl.Designer.cs">
       <DependentUpon>CIDRUserControl.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="CIDRUserControl.resx">
+    <EmbeddedResource Include="WinForm\CIDRUserControl.resx">
       <DependentUpon>CIDRUserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DiagramDisplayControl.resx">
+    <EmbeddedResource Include="WinForm\DiagramDisplayControl.resx">
       <DependentUpon>DiagramDisplayControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GridWindow.resx">
+    <EmbeddedResource Include="WinForm\GridWindow.resx">
       <DependentUpon>GridWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="IPRangeUserControl.resx">
+    <EmbeddedResource Include="WinForm\IPRangeUserControl.resx">
       <DependentUpon>IPRangeUserControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Option_window.resx">
+    <EmbeddedResource Include="WinForm\Option_window.resx">
       <DependentUpon>Option_window.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -267,7 +267,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="StringUserControl.resx">
+    <EmbeddedResource Include="WinForm\StringUserControl.resx">
       <DependentUpon>StringUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
@@ -285,7 +285,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Logo_GridMapper.ico" />
+    <Content Include="Resources\Logo_GridMapper.ico" />
     <None Include="Resources\stop.png" />
     <None Include="Resources\play.png" />
     <None Include="Resources\Sans titre.png" />
