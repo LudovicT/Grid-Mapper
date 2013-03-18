@@ -9,9 +9,6 @@ namespace GridMapper.NetworkModelObject
 {
 	public interface IHost : INetworkInterface
 	{
-		IPAddress IpAddress { get; }
-		int Latency { get; }
-
-		void Describe( TextWriter output );
+		IPAddressV4 IpAddressV4 { get; }
 	}
 }

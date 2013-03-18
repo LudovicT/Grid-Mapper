@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace GridMapper.NetworkModelObject
 {
+    //need info
 	public interface ISwitch : INetworkItem
 	{
 		HashSet<ICAMdata> CAMTable { get; }
