@@ -158,6 +158,7 @@
     <Compile Include="Console\ConsoleProgram.cs" />
     <Compile Include="Console\Messages.cs" />
     <Compile Include="NetworkModelObject\INetwork\IHostEntity.cs" />
+    <Compile Include="Struct\MacAddress.cs" />
     <Compile Include="WinForm\DiagramDisplayControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -178,9 +179,6 @@
     <Compile Include="WinForm\IPRangeUserControl.Designer.cs">
       <DependentUpon>IPRangeUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="NetworkModelObject\ClassNetwork\Host.cs" />
-    <Compile Include="NetworkModelObject\ClassNetwork\HostEntity.cs" />
-    <Compile Include="NetworkModelObject\ClassNetwork\OS.cs" />
     <Compile Include="NetworkModelObject\INetwork\IAdministrableSwitch.cs" />
     <Compile Include="NetworkModelObject\INetwork\ICAMdata.cs" />
     <Compile Include="NetworkModelObject\INetwork\IFirewall.cs" />
@@ -292,6 +290,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="3rdPartyLibs\" />
+    <Folder Include="NetworkModelObject\ClassNetwork\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

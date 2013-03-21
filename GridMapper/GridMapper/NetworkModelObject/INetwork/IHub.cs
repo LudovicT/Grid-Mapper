@@ -8,6 +8,6 @@ namespace GridMapper.NetworkModelObject
 {
 	public interface IHub : INetworkItem
 	{
-		public ReadOnlyCollection<INetworkItem> NetworkItems { get; }
+		ReadOnlyCollection<INetworkItem> NetworkItems { get; }
 	}
 }
