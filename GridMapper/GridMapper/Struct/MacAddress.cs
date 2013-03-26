@@ -31,9 +31,9 @@ namespace GridMapper.Struct
 
 		public override bool Equals( object obj )
 		{
-			if (obj is IPAddressV4)
+			if (obj is MacAddress)
 			{
-				return MACAddress == ( (IPAddressV4)obj ).MACAddress;
+				return MACAddress == ( (MacAddress)obj ).MACAddress;
 			}
 			if (obj is int)
 			{

@@ -157,6 +157,7 @@
   <ItemGroup>
     <Compile Include="Console\ConsoleProgram.cs" />
     <Compile Include="Console\Messages.cs" />
+    <Compile Include="NetworkModelObject\ClassNetwork\Computer.cs" />
     <Compile Include="NetworkModelObject\INetwork\IHostEntity.cs" />
     <Compile Include="Struct\MacAddress.cs" />
     <Compile Include="WinForm\DiagramDisplayControl.cs">
@@ -290,7 +291,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="3rdPartyLibs\" />
-    <Folder Include="NetworkModelObject\ClassNetwork\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
