@@ -10,7 +10,6 @@ using GridMapper.NetworkRepository;
 using System.Net.NetworkInformation;
 using System.ComponentModel;
 using System.IO;
-using GridMapper.NetworkRawSender;
 using GridMapper.NetworkUtilities;
 
 namespace GridMapper

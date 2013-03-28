@@ -200,15 +200,11 @@
     <Compile Include="NetworkModelObject\INetwork\IPorts.cs" />
     <Compile Include="NetworkModelObject\INetwork\IServer.cs" />
     <Compile Include="NetworkModelObject\INetwork\ISwitch.cs" />
-    <Compile Include="NetworkUtilities\Arping.cs" />
-    <Compile Include="NetworkUtilities\ARPSender.cs" />
     <Compile Include="NetworkUtilities\GetLocalMacAndIPAddress.cs" />
     <Compile Include="NetworkUtilities\IpRange.cs" />
     <Compile Include="NetworkUtilities\OwnPacketBuilder.cs" />
     <Compile Include="NetworkUtilities\OwnPacketReceiver.cs" />
     <Compile Include="NetworkUtilities\OwnPacketSender.cs" />
-    <Compile Include="NetworkUtilities\PingSender.cs" />
-    <Compile Include="NetworkUtilities\PortScanner.cs" />
     <Compile Include="NetworkUtilities\ReverseDnsResolver.cs" />
     <Compile Include="NetworkUtilities\WMI.cs" />
     <Compile Include="WinForm\Option_window.cs">
