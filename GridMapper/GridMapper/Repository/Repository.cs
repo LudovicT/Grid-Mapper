@@ -11,19 +11,22 @@ using System.Xml;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Threading;
+using GridMapper.NetworkUtilities;
+using PcapDotNet.Packets.Ethernet;
+using PcapDotNet.Packets.Arp;
 
 namespace GridMapper.NetworkRepository
 {
-	public class Repository : IRepository
+	public class Repository : IRepository, IPacketReceiverClient
 	{
 		ConcurrentDictionary<IPAddress, INetworkDictionaryItem> _networkDictionaryItems;
 		bool _isModified;
 		bool _isOpen;
 		System.Timers.Timer timer = new System.Timers.Timer();
 
-		public IDictionary<IPAddress, INetworkDictionaryItem> NetworkDictionaryItems 
+		public IDictionary<IPAddress, INetworkDictionaryItem> NetworkDictionaryItems
 		{
-			get { return _networkDictionaryItems; } 
+			get { return _networkDictionaryItems; }
 		}
 
 		public static event EventHandler<RepositoryUpdatedEventArg> OnRepositoryUpdated;
@@ -41,7 +44,7 @@ namespace GridMapper.NetworkRepository
 		{
 			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
 			if( pingReply == null ) throw new ArgumentNullException( "pingReply" );
-			
+
 			if( _networkDictionaryItems.ContainsKey( ipAddress ) )
 			{
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
@@ -54,7 +57,7 @@ namespace GridMapper.NetworkRepository
 			}
 		}
 
-		public void AddOrUpdate( IPAddress ipAddress)
+		public void AddOrUpdate( IPAddress ipAddress )
 		{
 			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
 
@@ -90,7 +93,7 @@ namespace GridMapper.NetworkRepository
 		public void AddOrUpdate( IPAddress ipAddress, IPHostEntry hostEntry )
 		{
 			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
-			if ( hostEntry == null )
+			if( hostEntry == null )
 			{
 				hostEntry = new IPHostEntry();
 				hostEntry.HostName = ipAddress.ToString();
@@ -112,7 +115,7 @@ namespace GridMapper.NetworkRepository
 		public void AddOrUpdate( IPAddress ipAddress, ushort portComputer )
 		{
 			if( ipAddress == null ) throw new ArgumentNullException( "ipAddress" );
-			
+
 			if( _networkDictionaryItems.ContainsKey( ipAddress ) )
 			{
 				INetworkDictionaryItem networkDictionaryItem = _networkDictionaryItems[ipAddress];
@@ -161,9 +164,9 @@ namespace GridMapper.NetworkRepository
 
 		private void RepositoryUpdate( object sender, EventArgs e )
 		{
-			if ( _isOpen )
+			if( _isOpen )
 			{
-				if ( _isModified )
+				if( _isModified )
 				{
 					_isModified = false;
 					OnRepositoryUpdated( this, new RepositoryUpdatedEventArg( _networkDictionaryItems ) );
@@ -176,7 +179,7 @@ namespace GridMapper.NetworkRepository
 		}
 
 		//shitty version...
-		public void XmlWriter(Stream stream)
+		public void XmlWriter( Stream stream )
 		{
 			XmlTextWriter myXmlTextWriter = new XmlTextWriter( stream, null );
 			myXmlTextWriter.Formatting = Formatting.Indented;
@@ -188,24 +191,24 @@ namespace GridMapper.NetworkRepository
 			{
 				myXmlTextWriter.WriteStartElement( "Networkitem", null );
 				myXmlTextWriter.WriteElementString( "IPaddress", item.IPAddress.ToString() );
-				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
+				if( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
 				{
 					myXmlTextWriter.WriteElementString( "Macaddress", item.MacAddress.ToString() );
 				}
-				if ( item.HostEntry != null && item.HostEntry.HostName != null && item.HostEntry.HostName != string.Empty )
+				if( item.HostEntry != null && item.HostEntry.HostName != null && item.HostEntry.HostName != string.Empty )
 				{
 					myXmlTextWriter.WriteElementString( "HostName", item.HostEntry.HostName.ToString() );
 				}
 				string ports = string.Empty;
-				foreach ( ushort port in item.Ports )
+				foreach( ushort port in item.Ports )
 				{
-					if ( ports != string.Empty )
+					if( ports != string.Empty )
 					{
 						ports += ",";
 					}
 					ports += port.ToString();
 				}
-				if ( ports != string.Empty )
+				if( ports != string.Empty )
 				{
 					myXmlTextWriter.WriteElementString( "Ports", ports );
 				}
@@ -221,6 +224,32 @@ namespace GridMapper.NetworkRepository
 		{
 			_isOpen = false;
 		}
+
+		#region IPacketReceiverClient Members
+
+		public void Update( PcapDotNet.Packets.Packet packet )
+		{
+			if( packet != null &&
+				packet.Ethernet.EtherType == EthernetType.Arp &&
+				packet.Ethernet.Arp.Operation == ArpOperation.Reply )
+			{
+					//beaucoup trop de transformation
+					AddOrUpdate( IPAddress.Parse( packet.Ethernet.Arp.SenderProtocolIpV4Address.ToString() ), PhysicalAddress.Parse( NetworkUtility.ByteArrayToHexViaByteManipulation( packet.Ethernet.Arp.SenderHardwareAddress.ToArray() ) ) );
+						
+			}
+			if( packet != null &&
+				packet.Ethernet.IpV4 != null &&
+				packet.Ethernet.IpV4.Tcp != null &&
+				packet.Ethernet.IpV4.Tcp.IsValid &&
+				packet.Ethernet.IpV4.Tcp.IsSynchronize &&
+				packet.Ethernet.IpV4.Tcp.IsAcknowledgment &&
+				packet.Ethernet.IpV4.Tcp.DestinationPort == 62000 ) // need change
+			{
+				AddOrUpdate( IPAddress.Parse( packet.Ethernet.IpV4.Source.ToString() ), packet.Ethernet.IpV4.Tcp.SourcePort );
+			}
+		}
+
+		#endregion
 	}
 
 	public class RepositoryUpdatedEventArg : EventArgs
@@ -228,7 +257,7 @@ namespace GridMapper.NetworkRepository
 		public RepositoryUpdatedEventArg( ConcurrentDictionary<IPAddress, INetworkDictionaryItem> concurrentDictionary )
 		{
 			if( concurrentDictionary == null ) throw new NullReferenceException();
-			ReadOnlyRepository = new ReadOnlyCollection<INetworkDictionaryItem>(concurrentDictionary.Values.ToList<INetworkDictionaryItem>());
+			ReadOnlyRepository = new ReadOnlyCollection<INetworkDictionaryItem>( concurrentDictionary.Values.ToList<INetworkDictionaryItem>() );
 		}
 
 		public ReadOnlyCollection<INetworkDictionaryItem> ReadOnlyRepository { get; private set; }

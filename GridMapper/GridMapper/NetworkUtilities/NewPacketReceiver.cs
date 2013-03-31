@@ -49,7 +49,7 @@ namespace GridMapper.NetworkUtilities
 				return;
 			}
 
-			if ( arp || tcp )
+			if( arp || tcp )
 			{
 				PhysicalAddress mac;
 				Byte[] ip;
@@ -57,12 +57,17 @@ namespace GridMapper.NetworkUtilities
 				string macPart1 = mac.ToString().Substring( 0, 4 ).ToUpper();
 				string macPart2 = mac.ToString().Substring( 4, 4 ).ToUpper();
 				string macPart3 = mac.ToString().Substring( 8, 4 ).ToUpper();
-				if ( arp )
+				if( arp )
 				{
 					// arp is not comming from us
 					_filter += "(arp && arp[8:2] != 0x" + macPart1 + " && arp[10:2] != 0x" + macPart2 + " && arp[12:2] != 0x" + macPart3 + ")";
+					if( tcp )
+					{
+						_filter += " || (tcp[tcpflags] & (tcp-ack) != 0 and tcp dst port " + tcpPort.ToString()
+							+ " and not src " + new IPAddress( ip ).ToString() + ")";
+					}
 				}
-				if ( tcp )
+				else if( tcp )
 				{
 					_filter += "(tcp[tcpflags] & (tcp-ack) != 0 and tcp dst port " + tcpPort.ToString()
 						+ " and not src " + new IPAddress( ip ).ToString() + ")";
@@ -104,9 +109,10 @@ namespace GridMapper.NetworkUtilities
 			using (PacketCommunicator communicator = selectedDevice.Open( 65536, PacketDeviceOpenAttributes.MaximumResponsiveness, 500 ))
 			{
 				communicator.SetFilter( _filter );
-				Packet packet;
+				int a = 0;
 				do
 				{
+					Packet packet;
 					PacketCommunicatorReceiveResult result = communicator.ReceivePacket( out packet );
 					switch (result)
 					{

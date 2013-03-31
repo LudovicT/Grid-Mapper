@@ -162,6 +162,7 @@
     <Compile Include="Console\ConsoleProgram.cs" />
     <Compile Include="Console\Messages.cs" />
     <Compile Include="NetworkUtilities\Interfaces\IPacketReceiverClient.cs" />
+    <Compile Include="NetworkUtilities\NetworkUtility.cs" />
     <Compile Include="NetworkUtilities\NewPacketReceiver.cs" />
     <Compile Include="WinForm\DiagramDisplayControl.cs">
       <SubType>UserControl</SubType>
