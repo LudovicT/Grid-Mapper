@@ -205,13 +205,6 @@ namespace GridMapper
 				//	Console.WriteLine( datIP + "	" + GridWindow.ToMac( e.MacAddress ) + "	" + _reverseDnsResolver.GetHostName( datIP ).HostName );
 				//}
 				Task.Factory.StartNew( () =>
-				{
-				//	if( _option.Arp )
-				//	{
-				//		_repository.AddOrUpdate( datIP, PhysicalAddress.Parse( e.MacAddress ) );
-				//	}
-				//} ).ContinueWith( a =>
-				//{
 					Task.Factory.StartNew( () =>
 					{
 						if( _option.Dns )
