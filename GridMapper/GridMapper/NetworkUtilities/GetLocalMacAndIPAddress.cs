@@ -7,7 +7,7 @@ using System.Net;
 
 namespace GridMapper
 {
-	class GetLocalInformation
+	static class GetLocalInformation
 	{
 		public static void LocalMacAndIPAddress( out byte[] ip, out PhysicalAddress mac )
 		{
