@@ -54,20 +54,15 @@ namespace GridMapper.NetworkUtilities
 				PhysicalAddress mac;
 				Byte[] ip;
 				GetLocalInformation.LocalMacAndIPAddress( out ip, out mac );
-				string macPart1 = mac.ToString().Substring( 0, 4 ).ToUpper();
-				string macPart2 = mac.ToString().Substring( 4, 4 ).ToUpper();
-				string macPart3 = mac.ToString().Substring( 8, 4 ).ToUpper();
 				if( arp )
 				{
 					// arp is not comming from us
-					_filter += "(arp && arp[8:2] != 0x" + macPart1 + " && arp[10:2] != 0x" + macPart2 + " && arp[12:2] != 0x" + macPart3 + ")";
-					if( tcp )
-					{
-						_filter += " || (tcp[tcpflags] & (tcp-ack) != 0 and tcp dst port " + tcpPort.ToString()
-							+ " and not src " + new IPAddress( ip ).ToString() + ")";
-					}
+					string macPart1 = mac.ToString().Substring( 0, 4 ).ToUpper();
+					string macPart2 = mac.ToString().Substring( 4, 4 ).ToUpper();
+					string macPart3 = mac.ToString().Substring( 8, 4 ).ToUpper();
+					_filter += "(arp && arp[8:2] != 0x" + macPart1 + " && arp[10:2] != 0x" + macPart2 + " && arp[12:2] != 0x" + macPart3 + ") ||";
 				}
-				else if( tcp )
+				if( tcp )
 				{
 					_filter += "(tcp[tcpflags] & (tcp-ack) != 0 and tcp dst port " + tcpPort.ToString()
 						+ " and not src " + new IPAddress( ip ).ToString() + ")";
@@ -109,27 +104,28 @@ namespace GridMapper.NetworkUtilities
 			using (PacketCommunicator communicator = selectedDevice.Open( 65536, PacketDeviceOpenAttributes.MaximumResponsiveness, 500 ))
 			{
 				communicator.SetFilter( _filter );
-				int a = 0;
-				do
-				{
-					Packet packet;
-					PacketCommunicatorReceiveResult result = communicator.ReceivePacket( out packet );
-					switch (result)
-					{
-						case PacketCommunicatorReceiveResult.Timeout:
-							// Timeout elapsed
-							continue;
-						case PacketCommunicatorReceiveResult.Ok:
-							Task.Factory.StartNew( () =>
-							{
-								NotifyObservers( packet );
-							} );
-							_isActive = true;
-							break;
-						default:
-							throw new InvalidOperationException( "The result " + result + " should never be reached here" );
-					}
-				} while (_isStart);
+				//do
+				//{
+				//	Packet packet;
+				//	PacketCommunicatorReceiveResult result = communicator.ReceivePacket( out packet );
+				//	switch (result)
+				//	{
+				//		case PacketCommunicatorReceiveResult.Timeout:
+				//			// Timeout elapsed
+				//			continue;
+				//		case PacketCommunicatorReceiveResult.Ok:
+				//			Task.Factory.StartNew( () =>
+				//			{
+				//				NotifyObservers( packet );
+				//			} );
+				//			_isActive = true;
+				//			break;
+				//		default:
+				//			throw new InvalidOperationException( "The result " + result + " should never be reached here" );
+				//	}
+				//} while (_isStart);
+				communicator.ReceivePackets( 0, NotifyObservers );
+				communicator.Break();
 			}
 		}
 
