@@ -127,7 +127,7 @@ namespace GridMapper
 				string macToString = string.Empty;
 				if ( item.MacAddress != null && item.MacAddress != PhysicalAddress.None )
 				{
-					macToString = ToMac( item.MacAddress.ToString() );
+					macToString = item.MacAddress.ToMacString();
 				}
 
 				string hostNameString = string.Empty;
@@ -176,21 +176,6 @@ namespace GridMapper
 				}
 			}
 		}
-                
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void fontDialog1_Apply(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ipAddressControl1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
@@ -370,15 +355,6 @@ namespace GridMapper
 			Option.ShowDialog();
 		}
 
-		public static string ToMac( string ToTransform )
-		{
-			ToTransform = ToTransform.ToUpperInvariant();
-			var list = Enumerable
-				.Range( 0, ToTransform.Length / 2 )
-				.Select( i => ToTransform.Substring( i * 2, 2 ) );
-			return string.Join( ":", list );
-		}
-
 		private void dataGridView1_SortCompare( object sender, DataGridViewSortCompareEventArgs e )
 		{
 			if ( e.Column.Name == "IPAddress" )
@@ -451,21 +427,36 @@ namespace GridMapper
 			ScanButton_Click( sender, e );
 		}
 
-		private void _NShapeDisplay_Load(object sender, EventArgs e)
-		{
-			
-		}
-
 		private void diagramDisplayControl1_Load(object sender, EventArgs e)
 		{
 			Repository repo = new Repository();
-			
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			ClearAndStop();
+			_exe.CloseAllThreads();
+			//ClearAndStop();
 			UnLockButtons();
+		}
+
+		private void textBox1_TextChanged( object sender, EventArgs e )
+		{
+
+		}
+
+		private void fontDialog1_Apply( object sender, EventArgs e )
+		{
+
+		}
+
+		private void ipAddressControl1_Click( object sender, EventArgs e )
+		{
+
+		}
+
+		private void _NShapeDisplay_Load( object sender, EventArgs e )
+		{
+
 		}
 
 	}

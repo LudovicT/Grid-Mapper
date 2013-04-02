@@ -31,14 +31,6 @@ namespace GridMapper
 
 		public NewExecution( Option startupOptions )
 		{
-            //_option = startupOptions;
-            //_ownPacketReceiver = new OwnPacketReceiver( _option.Arping, _option.Port, _option.TCPPort, _option.RandomUDPPort, _option.UDPPort, _option.Timeout );
-            //_ownPacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
-
-            //_ownPacketReceiver.ArpingReceived += AddArpingInRepositoryAndContinueWithRequest;
-            //_ownPacketReceiver.PortReceived += AddPortNumberInRepository;
-
-            //_reverseDnsResolver = new ReverseDnsResolver();
             _option = startupOptions;
             _ownPacketReceiver = new NewPacketReceiver( _option.Arping, _option.Port, _option.TCPPort, _option.RandomUDPPort, _option.UDPPort, _option.Timeout );
             _ownPacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
@@ -98,7 +90,7 @@ namespace GridMapper
 			//OwnPacketSender PacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
 			if ( _option.CmdConsole )
 			{
-				Console.WriteLine( datIP + "	" + GridWindow.ToMac( e.MacAddress ) + "	" + _reverseDnsResolver.GetHostName( datIP ).HostName );
+				Console.WriteLine( datIP + "	" + e.MacAddress + "	" + _reverseDnsResolver.GetHostName( datIP ).HostName );
 			}
 			Task.Factory.StartNew( () =>
 					{
@@ -205,6 +197,7 @@ namespace GridMapper
 				//	Console.WriteLine( datIP + "	" + GridWindow.ToMac( e.MacAddress ) + "	" + _reverseDnsResolver.GetHostName( datIP ).HostName );
 				//}
 				Task.Factory.StartNew( () =>
+				{
 					Task.Factory.StartNew( () =>
 					{
 						if( _option.Dns )
