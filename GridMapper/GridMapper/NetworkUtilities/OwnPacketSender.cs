@@ -56,7 +56,6 @@ namespace GridMapper.NetworkUtilities
 			}
 		}
 
-
 		public void trySend( Packet packetToSend )
 		{
 			if( _waitTime <= 0 || _nbPacketToSend <= 0 || _isIPV6 )
@@ -74,6 +73,7 @@ namespace GridMapper.NetworkUtilities
 			    }
 			}
 		}
+
 		private void SendBuffer()
 		{
 			outputCommunicator.Transmit( _sendBuffer, false );

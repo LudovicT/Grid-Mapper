@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GridMapper.NetworkModelObject
 {
-	public interface IAdministrableSwitch : ISwitch, IHost
+	public interface IAdministrableSwitch : IHostEntity, ISwitch
 	{
 
 	}

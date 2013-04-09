@@ -119,7 +119,6 @@ namespace GridMapper.NetworkUtilities
 					SenderProtocolAddress = Array.AsReadOnly( _ownIpAddress ), // 1.2.3.4.
 					TargetHardwareAddress = Array.AsReadOnly( new byte[] { 0, 0, 0, 0, 0, 0 } ), // 00:00:00:00:00:00.
 				};
-
 		}
 
 		/// <summary>
