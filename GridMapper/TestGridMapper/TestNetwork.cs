@@ -9,7 +9,6 @@ using System.Threading;
 using System.Reflection;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using GridMapper.NetworkRawSender;
 using GridMapper.NetworkUtilities;
 
 namespace GridMapper.Test
