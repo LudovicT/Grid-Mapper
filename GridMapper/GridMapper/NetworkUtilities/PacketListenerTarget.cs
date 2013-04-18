@@ -21,12 +21,13 @@ namespace GridMapper.NetworkUtilities
 		bool _isStart;
 		bool _isActive;
    		PacketDevice selectedDevice;
+        string _filter = string.Empty;
         //Thread _threadForReceive;
 
 
-        public PacketListenerTarget()
+        public PacketListenerTarget(IPAddress target)
         {
-            IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine; // Retrieve the device list from the local machine
+            IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine; // Retrieves the device list from the local machine
             _isStart = true;
 			_isActive = true;
             //_tcpPort = tcpPort;
@@ -36,7 +37,12 @@ namespace GridMapper.NetworkUtilities
                 //No interface found!
                 return;
             }
-
+            // Selects all IPv4 HTTP packets 
+            // packets to and from port 80 
+            // packets to and from targetted IP 
+            // NOT packets SYN and FIN and ACK-only packets (so, only data)
+            _filter += "tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0) and net " + target + ""; 
+            
             for (int i = 0; i < allDevices.Count; i++)
 		    {
 		        for (int j = 0; j < allDevices[i].Addresses.Count; j++)
@@ -67,7 +73,7 @@ namespace GridMapper.NetworkUtilities
             //_threadForReceive.Start();
 		}
 
-		private void Receive()
+		private void Watch()
 		{
             using (PacketCommunicator communicator =                        // Opening the device
                                     selectedDevice.Open(65536,              // portion of the packet to capture (65536 = full packet capture)
@@ -79,15 +85,13 @@ namespace GridMapper.NetworkUtilities
                     //Error management (!)
                     return;
                 }
-                communicator.SetFilter("ip and tcp");// Compiling and setting the first filter
+                communicator.SetFilter(_filter);// Compiling and setting the filter
                 communicator.ReceivePackets(0, PacketHandler);// starting capture
             }
         }
         // Callback function invoked by libpcap for every incoming packet
         private static void PacketHandler(Packet packet)
         {
-            //Second filter (by IP target and port destination) 
-            //Making sure the packet's transfert is completed as well
             IpV4Datagram ip = packet.Ethernet.IpV4;
             UdpDatagram udp = ip.Udp;
         }
