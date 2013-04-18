@@ -140,15 +140,15 @@ namespace GridMapper.NetworkUtilities
 			timer.Start();
 		}
 		//n'est plus utilisé pour le moment
-        private void EndReceiveCallByTimer(object sender, EventArgs e)
-        {
-            if (!_isActive)
-            {
-                EndReceive();
-                //EndOfScan(this, null);
-            }
-            _isActive = false;
-        }
+		private void EndReceiveCallByTimer(object sender, EventArgs e)
+		{
+			if (!_isActive)
+			{
+				EndReceive();
+				//EndOfScan(this, null);
+			}
+			_isActive = false;
+		}
 
 		public void Attach( IPacketReceiverClient packetReceiverClient )
 		{
