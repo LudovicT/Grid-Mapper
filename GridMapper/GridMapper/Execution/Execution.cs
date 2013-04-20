@@ -50,8 +50,8 @@ namespace GridMapper
 			_ownPacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
 
 			_repository = new Repository();
-            _ownPacketReceiver.Attach( _repository );
-			_ownPacketReceiver.Attach( this );
+            _ownPacketReceiver.AttachClient( _repository );
+			_ownPacketReceiver.AttachClient( this );
 			_ownPacketReceiver.StartReceive();
 
 			_taskForExecution = Task.Factory.StartNew( () =>
