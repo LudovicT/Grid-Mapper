@@ -101,7 +101,7 @@ namespace GridMapper.NetworkUtilities
 
 		private void Receive()
 		{
-			using (PacketCommunicator communicator = selectedDevice.Open( 65536, PacketDeviceOpenAttributes.MaximumResponsiveness, 500 ))
+            using (PacketCommunicator communicator = selectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 500))
 			{
 				communicator.SetFilter( _filter );
 				//do
@@ -164,6 +164,7 @@ namespace GridMapper.NetworkUtilities
 		{
 			foreach (IPacketReceiverClient obs in _observers) obs.Update( packet );
 		}
+        
+       
 	}
 }
-

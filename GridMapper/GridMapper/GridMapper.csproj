@@ -165,6 +165,7 @@
     <Compile Include="NetworkUtilities\Interfaces\IPacketReceiverClient.cs" />
     <Compile Include="NetworkUtilities\NetworkUtility.cs" />
     <Compile Include="NetworkUtilities\NewPacketReceiver.cs" />
+    <Compile Include="NetworkUtilities\PacketListenerTarget.cs" />
     <Compile Include="NetworkUtilities\PhysicalAddressExtension.cs" />
     <Compile Include="WinForm\DiagramDisplayControl.cs">
       <SubType>UserControl</SubType>

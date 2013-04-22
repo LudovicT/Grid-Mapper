@@ -24,6 +24,7 @@ namespace GridMapper.NetworkUtilities
         string _filter = string.Empty;
         //Thread _threadForReceive;
 
+        public static event EventHandler EndOfScan;
 
         public PacketListenerTarget(IPAddress target)
         {
@@ -92,8 +93,11 @@ namespace GridMapper.NetworkUtilities
         // Callback function invoked by libpcap for every incoming packet
         private static void PacketHandler(Packet packet)
         {
-            IpV4Datagram ip = packet.Ethernet.IpV4;
-            UdpDatagram udp = ip.Udp;
+            //packet.Ethernet.IpV4.Transport.DestinationPort;
+            //packet.Ethernet.IpV4.Transport.SourcePort;
+            //packet.Ethernet.IpV4.Source;
+            //packet.Ethernet.IpV4.Destination;
+            //packet.Ethernet.IpV4.Protocol;
         }
     }
     
