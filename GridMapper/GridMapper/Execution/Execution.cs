@@ -32,8 +32,6 @@ namespace GridMapper
 		public NewExecution( Option startupOptions )
 		{
             _option = startupOptions;
-            _ownPacketReceiver = new NewPacketReceiver( _option.Arping, _option.Port, _option.TCPPort, _option.RandomUDPPort, _option.UDPPort, _option.Timeout );
-            _ownPacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
 
             _reverseDnsResolver = new ReverseDnsResolver();
 		}
@@ -157,7 +155,8 @@ namespace GridMapper
 			{
 				_repository.EndThreads();
 			}
-			_ownPacketReceiver.EndReceive();
+			if( _ownPacketReceiver != null )
+				_ownPacketReceiver.EndReceive();
 		}
 
 		public void SaveRepoXml( Stream stream )
