@@ -44,11 +44,24 @@ namespace GridMapper.NetworkUtilities
 			}
 		}
 
-		public Packet BuildTcpPacket( string ipAddress, string macAddress, ushort portToScan )
+		public Packet BuildTcpPacket( string ipAddress, string macAddress, ushort portToScan, TcpControlBits tcpControlBits )
 		{
 			ethernetLayer.Destination = new MacAddress( ToMac( macAddress.ToString() ) );
 			ipV4Layer.CurrentDestination = new IpV4Address( ipAddress );
 			tcpLayer.DestinationPort = portToScan;
+			tcpLayer.ControlBits = tcpControlBits;
+
+			PacketBuilder builder = new PacketBuilder( ethernetLayer, ipV4Layer, tcpLayer );
+
+			return builder.Build( DateTime.Now );
+		}
+
+		public Packet BuildTcpPacket( string ipAddress, MacAddress macAddress, ushort portToScan, TcpControlBits tcpControlBits )
+		{
+			ethernetLayer.Destination = macAddress;
+			ipV4Layer.CurrentDestination = new IpV4Address( ipAddress );
+			tcpLayer.DestinationPort = portToScan;
+			tcpLayer.ControlBits = tcpControlBits;
 
 			PacketBuilder builder = new PacketBuilder( ethernetLayer, ipV4Layer, tcpLayer );
 
@@ -79,7 +92,6 @@ namespace GridMapper.NetworkUtilities
 				Checksum = null, // Will be filled automatically.
 				SequenceNumber = 100,
 				AcknowledgmentNumber = 0,
-				ControlBits = TcpControlBits.Synchronize,
 				Window = 8192,
 				UrgentPointer = 0,
 				Options = new TcpOptions( new TcpOptionMaximumSegmentSize( 1460 ), TcpOption.Nop, new TcpOptionWindowScale( 2 ), new TcpOptionSelectiveAcknowledgmentPermitted(), new TcpOptionTimestamp( (uint)DateTime.Now.Ticks, 0 ) ),
