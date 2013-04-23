@@ -161,6 +161,10 @@
   <ItemGroup>
     <Compile Include="Console\ConsoleProgram.cs" />
     <Compile Include="Console\Messages.cs" />
+    <Compile Include="NetworkUtilities\NewPacketReceiver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NetworkUtilities\TargetListener.cs" />
     <Compile Include="WinForm\GridMapperv2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,8 +174,6 @@
     <Compile Include="NetworkModelObject\INetwork\IHostEntity.cs" />
     <Compile Include="NetworkUtilities\Interfaces\IPacketReceiverClient.cs" />
     <Compile Include="NetworkUtilities\NetworkUtility.cs" />
-    <Compile Include="NetworkUtilities\NewPacketReceiver.cs" />
-    <Compile Include="NetworkUtilities\PacketListenerTarget.cs" />
     <Compile Include="NetworkUtilities\PhysicalAddressExtension.cs" />
     <Compile Include="WinForm\DiagramDisplayControl.cs">
       <SubType>UserControl</SubType>

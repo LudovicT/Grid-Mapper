@@ -26,19 +26,20 @@ namespace GridMapper.NetworkUtilities
             }
         }
 
-        public void Update( PcapDotNet.Packets.Packet packet )
+        public void Update( Packet packet )
         {
-
-            if ( (packet.Ethernet.IpV4.Source == _ipV4AddressTarget
-                || packet.Ethernet.IpV4.Destination == _ipV4AddressTarget)
-                &&
-                (packet.Ethernet.IpV4.Tcp.DestinationPort == 80
-                || packet.Ethernet.IpV4.Tcp.DestinationPort == 8080
-                || packet.Ethernet.IpV4.Tcp.SourcePort == 80
-                || packet.Ethernet.IpV4.Tcp.SourcePort == 8080)
-              )
-              save!!
-                  packet.Ethernet.IpV4.Tcp.HttpCollection
+            IpV4Datagram datagram = packet.Ethernet.IpV4;
+            if ((datagram.Source == _ipV4AddressTarget || datagram.Destination == _ipV4AddressTarget)
+                && (datagram.Tcp.DestinationPort == 80
+                    || datagram.Tcp.DestinationPort == 8080
+                    || datagram.Tcp.SourcePort == 80
+                    || datagram.Tcp.SourcePort == 8080))
+            {
+                //List<Packet> httpList = new List<Packet>();
+                //httpList.Add(packet);
+                var http = datagram.Tcp.HttpCollection;
+                Console.WriteLine( http.Count );
+            }
         }
     }
 }

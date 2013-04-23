@@ -56,19 +56,15 @@ namespace GridMapper
             this.HostName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Ports = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.diagramDisplayControl1 = new GridMapper.DiagramDisplayControl();
             this.button1 = new System.Windows.Forms.Button();
             this.ScanButton = new System.Windows.Forms.Button();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.diagramDisplayControl1 = new GridMapper.DiagramDisplayControl();
-            this.ohYeahToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.muchasGraciasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage2.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -272,6 +268,7 @@ namespace GridMapper
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(591, 438);
             this.dataGridView1.TabIndex = 4;
+            this.dataGridView1.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentDoubleClick);
             this.dataGridView1.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dataGridView1_SortCompare);
             // 
             // Id
@@ -318,6 +315,18 @@ namespace GridMapper
             this.tabPage2.Text = "Graphic View";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // diagramDisplayControl1
+            // 
+            this.diagramDisplayControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.diagramDisplayControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.diagramDisplayControl1.Location = new System.Drawing.Point(0, 0);
+            this.diagramDisplayControl1.Name = "diagramDisplayControl1";
+            this.diagramDisplayControl1.Size = new System.Drawing.Size(595, 442);
+            this.diagramDisplayControl1.TabIndex = 0;
+            this.diagramDisplayControl1.Load += new System.EventHandler(this.diagramDisplayControl1_Load);
+            // 
             // button1
             // 
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
@@ -348,40 +357,6 @@ namespace GridMapper
             this.ScanButton.UseVisualStyleBackColor = true;
             this.ScanButton.Click += new System.EventHandler(this.ScanButton_Click);
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ohYeahToolStripMenuItem,
-            this.muchasGraciasToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(157, 70);
-            this.contextMenuStrip1.Text = "contextMenuStrip";
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
-            // 
-            // diagramDisplayControl1
-            // 
-            this.diagramDisplayControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.diagramDisplayControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.diagramDisplayControl1.Location = new System.Drawing.Point(0, 0);
-            this.diagramDisplayControl1.Name = "diagramDisplayControl1";
-            this.diagramDisplayControl1.Size = new System.Drawing.Size(595, 442);
-            this.diagramDisplayControl1.TabIndex = 0;
-            this.diagramDisplayControl1.Load += new System.EventHandler(this.diagramDisplayControl1_Load);
-            // 
-            // ohYeahToolStripMenuItem
-            // 
-            this.ohYeahToolStripMenuItem.Name = "ohYeahToolStripMenuItem";
-            this.ohYeahToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
-            this.ohYeahToolStripMenuItem.Text = "oh yeah";
-            // 
-            // muchasGraciasToolStripMenuItem
-            // 
-            this.muchasGraciasToolStripMenuItem.Name = "muchasGraciasToolStripMenuItem";
-            this.muchasGraciasToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
-            this.muchasGraciasToolStripMenuItem.Text = "muchas gracias";
-            // 
             // GridWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -411,7 +386,6 @@ namespace GridMapper
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage2.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -448,9 +422,6 @@ namespace GridMapper
 		private System.Windows.Forms.TabPage tabPage2;
 		private DiagramDisplayControl diagramDisplayControl1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem ohYeahToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem muchasGraciasToolStripMenuItem;
 	}
 }
 
