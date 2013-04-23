@@ -20,7 +20,7 @@ namespace GridMapper.NetworkUtilities
 
 		PacketDevice selectedDevice;
 		string _filter = string.Empty;
-		ushort _tcpPort;
+		ushort _tcpPort; 
 		readonly bool _isIPV6 = false;
 
 		public static event EventHandler EndOfScan;
