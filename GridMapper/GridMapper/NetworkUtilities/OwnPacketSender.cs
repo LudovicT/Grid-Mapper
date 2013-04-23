@@ -20,30 +20,19 @@ namespace GridMapper.NetworkUtilities
 
 		public OwnPacketSender(int nbPacketToSend = 10, int waitTime = 1)
 		{
-			IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
+			selectedDevice = NetworkUtility.SelectedDevice;
 
-			if ( allDevices.Count == 0 )
+			for( int j = 0; j < selectedDevice.Addresses.Count; j++ )
 			{
-				Console.WriteLine( "No interfaces found! Make sure WinPcap is installed." );
-				return;
-			}
-			for(int i = 0; i < allDevices.Count; i++ )
-			{
-				for ( int j = 0; j < allDevices[i].Addresses.Count; j++ )
+				string[] deviceAddress = selectedDevice.Addresses[j].Address.ToString().Split( ' ' );
+				if( selectedDevice.Addresses[j].Address.Family != SocketAddressFamily.Internet6 && deviceAddress[1] != "0.0.0.0" )
 				{
-					string[] deviceAddress = allDevices[i].Addresses[j].Address.ToString().Split( ' ' );
-					if ( allDevices[i].Addresses[j].Address.Family != SocketAddressFamily.Internet6 && deviceAddress[1] != "0.0.0.0" )
+					if( j > 0 && selectedDevice.Addresses[j - 1].Address.Family == SocketAddressFamily.Internet6 )
 					{
-						selectedDevice = allDevices[i];
-						if ( j > 0 && allDevices[i].Addresses[j - 1].Address.Family == SocketAddressFamily.Internet6 )
-						{
-							_isIPV6 = true;
-						}
-						break;
+						_isIPV6 = true;
 					}
-				}
-				if ( selectedDevice != null )
 					break;
+				}
 			}
 
 			outputCommunicator = selectedDevice.Open( 100, PacketDeviceOpenAttributes.MaximumResponsiveness, 1000 );

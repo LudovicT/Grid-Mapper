@@ -16,6 +16,7 @@ using Dataweb.NShape.Advanced;
 using Dataweb.NShape.GeneralShapes;
 using System.Diagnostics;
 using GridMapper.NetworkUtilities;
+using PcapDotNet.Core;
 
 namespace GridMapper
 {
@@ -25,6 +26,7 @@ namespace GridMapper
 		NewExecution _exe;
         int OperationLeft = 0;
 		int _inputType = 0;
+		System.Windows.Forms.ToolStripItem[] toolStripItems;
 
 		// définition du delegate qui sera utilisé pour traiter les events
 		private delegate void UpdateDataGrid<T>( object sender, T e );
@@ -40,6 +42,7 @@ namespace GridMapper
 			InitializeComponent();
 			InitializeComboBox();
 			InitializeDataGridView();
+			InitializeSelectedInterfaces();
 		}
 
 		private void OptionChanged( object sender, OptionUpdatedEventArgs e )
@@ -74,6 +77,40 @@ namespace GridMapper
 
 		}
 
+		void InitializeSelectedInterfaces()
+		{
+			IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
+			toolStripItems =  new System.Windows.Forms.ToolStripItem[allDevices.Count];
+			NetworkUtility.SelectedDevice = allDevices[0];
+
+			if( allDevices.Count == 0 )
+			{
+				Console.WriteLine( "No interfaces found! Make sure WinPcap is installed." );
+				return;
+			}
+
+			for(int i = 0 ; i < allDevices.Count ; i++ )
+			{
+				ToolStripMenuItem toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+				if( i == 0 ) { toolStripMenuItem.Checked = true; }
+				else { toolStripMenuItem.Checked = false; }
+				toolStripMenuItem.Name = allDevices[i].Name;
+				toolStripMenuItem.Size = new System.Drawing.Size( 180, 22 );
+				toolStripMenuItem.Text = allDevices[i].Description;
+				toolStripMenuItem.Click += ChangeDevice;
+				toolStripItems[i] = toolStripMenuItem;
+				
+			}
+			// 
+			// interfacesToolStripMenuItem
+			// 
+			this.interfacesToolStripMenuItem.DropDownItems.AddRange( toolStripItems );
+			this.interfacesToolStripMenuItem.Name = "interfacesToolStripMenuItem";
+			this.interfacesToolStripMenuItem.Size = new System.Drawing.Size( 70, 20 );
+			this.interfacesToolStripMenuItem.Text = "Interfaces";
+			
+		}
+
 		void InitializeComboBox()
 		{
 			comboBox1.SelectedIndex = 0;
@@ -91,6 +128,16 @@ namespace GridMapper
 			//ARPSender.MacCompleted += UpdateDataGridView;
 			Repository.OnRepositoryUpdated += UpdateDataGridView;
 			
+		}
+
+		private void ChangeDevice( object sender, EventArgs e)
+		{
+			foreach( ToolStripMenuItem toolStripItem in toolStripItems )
+				if( toolStripItem.Checked == true )
+					toolStripItem.Checked = false;
+			ToolStripMenuItem temp = (ToolStripMenuItem) sender;
+			temp.Checked = true;
+			NetworkUtility.ChangeSelectedDevice( temp.Name ); 
 		}
 
 		public void UpdateDataGridView( object sender, RepositoryUpdatedEventArg e )

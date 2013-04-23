@@ -21,78 +21,32 @@ namespace GridMapper.NetworkUtilities
 		PacketDevice selectedDevice;
 		string _filter = string.Empty;
 		ushort _tcpPort;
-		bool _isStart;
-		bool _isActive;
-		System.Timers.Timer timer;
 		readonly bool _isIPV6 = false;
 
 		public static event EventHandler EndOfScan;
 
+		PacketCommunicator _communicator; 
+
 		public NewPacketReceiver( bool arp = true, bool tcp = true, ushort tcpPort = 62000, bool udp = false, ushort udpPort = 62001, int timeout = 5000)
 		{
-			IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
-			_isStart = true;
-			_isActive = true;
+			selectedDevice = NetworkUtility.SelectedDevice;
+
 			_tcpPort = tcpPort;
 
-			timer = new System.Timers.Timer();
-			timer.Interval = timeout;
-			timer.Enabled = true;
-			timer.Elapsed += EndReceiveCallByTimer;
-			timer.Stop();
+			_communicator = selectedDevice.Open( 65536, PacketDeviceOpenAttributes.MaximumResponsiveness | PacketDeviceOpenAttributes.Promiscuous, 500 );
+		}
 
-			_isActive = true;
+		public NewPacketReceiver( string filter )
+		{
+			selectedDevice = NetworkUtility.SelectedDevice;
 
-			if ( allDevices.Count == 0 )
-			{
-				Console.WriteLine( "No interfaces found! Make sure WinPcap is installed." );
-				return;
-			}
+			_filter = filter;
 
-			if( arp || tcp )
-			{
-				PhysicalAddress mac;
-				Byte[] ip;
-				GetLocalInformation.LocalMacAndIPAddress( out ip, out mac );
-				if( arp )
-				{
-					// arp is not comming from us
-					string macPart1 = mac.ToString().Substring( 0, 4 ).ToUpper();
-					string macPart2 = mac.ToString().Substring( 4, 4 ).ToUpper();
-					string macPart3 = mac.ToString().Substring( 8, 4 ).ToUpper();
-					_filter += "(arp && arp[8:2] != 0x" + macPart1 + " && arp[10:2] != 0x" + macPart2 + " && arp[12:2] != 0x" + macPart3 + ") ||";
-				}
-				if( tcp )
-				{
-					_filter += "(tcp[tcpflags] & (tcp-ack) != 0 and tcp dst port " + tcpPort.ToString()
-						+ " and not src " + new IPAddress( ip ).ToString() + ")";
-				}
-			}
-
-			for ( int i = 0; i < allDevices.Count; i++ )
-			{
-				for ( int j = 0; j < allDevices[i].Addresses.Count; j++ )
-				{
-					string[] deviceAddress = allDevices[i].Addresses[j].Address.ToString().Split( ' ' );
-					if ( allDevices[i].Addresses[j].Address.Family != SocketAddressFamily.Internet6 && deviceAddress[1] != "0.0.0.0" )
-					{
-						selectedDevice = allDevices[i];
-						if ( j > 0 && allDevices[i].Addresses[j - 1].Address.Family == SocketAddressFamily.Internet6 )
-						{
-							_isIPV6 = true;
-						}
-						break;
-					}
-				}
-				if ( selectedDevice != null )
-					break;
-			}
+			_communicator = selectedDevice.Open( 65536, PacketDeviceOpenAttributes.MaximumResponsiveness | PacketDeviceOpenAttributes.Promiscuous, 500 );
 		}
 
 		public void StartReceive()
 		{
-			_isStart = true;
-			_isActive = true;
 			Task.Factory.StartNew( () =>
 			{
 				Receive();
@@ -101,70 +55,39 @@ namespace GridMapper.NetworkUtilities
 
 		private void Receive()
 		{
-            using (PacketCommunicator communicator = selectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 500))
-			{
-				communicator.SetFilter( _filter );
-				//do
-				//{
-				//	Packet packet;
-				//	PacketCommunicatorReceiveResult result = communicator.ReceivePacket( out packet );
-				//	switch (result)
-				//	{
-				//		case PacketCommunicatorReceiveResult.Timeout:
-				//			// Timeout elapsed
-				//			continue;
-				//		case PacketCommunicatorReceiveResult.Ok:
-				//			Task.Factory.StartNew( () =>
-				//			{
-				//				NotifyObservers( packet );
-				//			} );
-				//			_isActive = true;
-				//			break;
-				//		default:
-				//			throw new InvalidOperationException( "The result " + result + " should never be reached here" );
-				//	}
-				//} while (_isStart);
-				communicator.ReceivePackets( 0, NotifyObservers );
-				//communicator.Break();
-			}
+			_communicator.SetFilter( _filter );
+			_communicator.ReceivePackets( 0, SendPacketsToClients );
 		}
 
 		public void EndReceive()
 		{
-			_isStart = false;
-			timer.Close();
+			_communicator.Break();
 		}
 
+		//plus de timer utilisé
 		public void TimerToCallEndReceive()
 		{
-			timer.Start();
 		}
-		//n'est plus utilisé pour le moment
-        private void EndReceiveCallByTimer(object sender, EventArgs e)
-        {
-            if (!_isActive)
-            {
-                EndReceive();
-                //EndOfScan(this, null);
-            }
-            _isActive = false;
-        }
 
-		public void Attach( IPacketReceiverClient packetReceiverClient )
+		//n'est plus utilisé pour le moment
+		private void EndReceiveCallByTimer(object sender, EventArgs e)
+		{
+		}
+
+		public void AttachClient( IPacketReceiverClient packetReceiverClient )
 		{
 			if (!_observers.Contains( packetReceiverClient )) _observers.Add( packetReceiverClient );
 		}
 
-		public void Detach( IPacketReceiverClient packetReceiverClient )
+		public void DetachClient( IPacketReceiverClient packetReceiverClient )
 		{
 			if (_observers.Contains( packetReceiverClient )) _observers.Remove( packetReceiverClient );
 		}
 
-		private void NotifyObservers( Packet packet )
+		private void SendPacketsToClients( Packet packet )
 		{
 			foreach (IPacketReceiverClient obs in _observers) obs.Update( packet );
 		}
-        
-       
 	}
 }
+

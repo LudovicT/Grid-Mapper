@@ -13,6 +13,7 @@ using System.IO;
 using GridMapper.NetworkUtilities;
 using PcapDotNet.Packets.Ethernet;
 using PcapDotNet.Packets.Arp;
+using PcapDotNet.Packets.Transport;
 
 namespace GridMapper
 {
@@ -32,8 +33,6 @@ namespace GridMapper
 		public NewExecution( Option startupOptions )
 		{
             _option = startupOptions;
-            _ownPacketReceiver = new NewPacketReceiver( _option.Arping, _option.Port, _option.TCPPort, _option.RandomUDPPort, _option.UDPPort, _option.Timeout );
-            _ownPacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
 
             _reverseDnsResolver = new ReverseDnsResolver();
 		}
@@ -50,8 +49,8 @@ namespace GridMapper
 			_ownPacketSender = new OwnPacketSender( _option.NbPacketToSend, _option.WaitTime );
 
 			_repository = new Repository();
-            _ownPacketReceiver.Attach( _repository );
-			_ownPacketReceiver.Attach( this );
+            _ownPacketReceiver.AttachClient( _repository );
+			_ownPacketReceiver.AttachClient( this );
 			_ownPacketReceiver.StartReceive();
 
 			_taskForExecution = Task.Factory.StartNew( () =>
@@ -112,7 +111,7 @@ namespace GridMapper
 							int i = 0;
 							foreach( ushort portNumber in _option.PortToTest.Result )
 							{
-								_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber ) );
+								_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( e.IpAddress, e.MacAddress, portNumber, TcpControlBits.Synchronize ) );
 								if ( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
 								{
 									i++;
@@ -157,7 +156,8 @@ namespace GridMapper
 			{
 				_repository.EndThreads();
 			}
-			_ownPacketReceiver.EndReceive();
+			if( _ownPacketReceiver != null )
+				_ownPacketReceiver.EndReceive();
 		}
 
 		public void SaveRepoXml( Stream stream )
@@ -192,10 +192,6 @@ namespace GridMapper
 				packet.Ethernet.Arp.Operation == ArpOperation.Reply )
 			{
 				IPAddress datIP = IPAddress.Parse( packet.Ethernet.Arp.SenderProtocolIpV4Address.ToString() );
-				//if( _option.CmdConsole )
-				//{
-				//	Console.WriteLine( datIP + "	" + GridWindow.ToMac( e.MacAddress ) + "	" + _reverseDnsResolver.GetHostName( datIP ).HostName );
-				//}
 				Task.Factory.StartNew( () =>
 				{
 					Task.Factory.StartNew( () =>
@@ -210,7 +206,7 @@ namespace GridMapper
 						int i = 0;
 						foreach( ushort portNumber in _option.PortToTest.Result )
 						{
-							_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( datIP.ToString(), NetworkUtility.ByteArrayToHexViaByteManipulation( packet.Ethernet.Arp.SenderHardwareAddress.ToArray() ), portNumber ) );
+							_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( datIP.ToString(), NetworkUtility.ByteArrayToHexViaByteManipulation( packet.Ethernet.Arp.SenderHardwareAddress.ToArray() ), portNumber, TcpControlBits.Synchronize ) );
 							if( _ownPacketSender._isIPV6 && _option.NbPacketToSend > 0 && _option.WaitTime > 0 )
 							{
 								i++;
@@ -223,6 +219,17 @@ namespace GridMapper
 						}
 					}
 				} );
+			}
+			else if( packet != null &&
+				packet.Ethernet.IpV4 != null &&
+				packet.Ethernet.IpV4.Tcp != null &&
+				packet.Ethernet.IpV4.Tcp.IsValid &&
+				packet.Ethernet.IpV4.Tcp.IsSynchronize &&
+				packet.Ethernet.IpV4.Tcp.IsAcknowledgment &&
+				packet.Ethernet.IpV4.Tcp.DestinationPort == 62000 ) // need change
+			{
+				IPAddress datIP = IPAddress.Parse( packet.Ethernet.IpV4.Source.ToString() );
+				_ownPacketSender.trySend( _ownPacketBuilderForScanPort.BuildTcpPacket( datIP.ToString(), packet.Ethernet.Source, packet.Ethernet.IpV4.Tcp.SourcePort, TcpControlBits.Fin ) );
 			}
 		}
 
