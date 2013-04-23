@@ -439,25 +439,32 @@ namespace GridMapper
 			UnLockButtons();
 		}
 
-		private void textBox1_TextChanged( object sender, EventArgs e )
-		{
+        private void dataGridView1_CellMouseDown( object sender, DataGridViewCellMouseEventArgs e )
+        {
+            // Ignore if a column or row header is clicked
+            if (e.RowIndex != -1 && e.ColumnIndex != -1)
+            {
+                if (e.Button == MouseButtons.Right)
+                {
+                    DataGridViewCell clickedCell = (sender as DataGridView).Rows[e.RowIndex].Cells[e.ColumnIndex];
 
-		}
+                    // Here you can do whatever you want with the cell
+                    this.dataGridView1.CurrentCell = clickedCell;  // Select the clicked cell, for instance
 
-		private void fontDialog1_Apply( object sender, EventArgs e )
-		{
+                    // Get mouse position relative to the vehicles grid
+                    var relativeMousePosition = dataGridView1.PointToClient( Cursor.Position );
 
-		}
+                    // Show the context menu
+                    this.contextMenuStrip1.Show( dataGridView1, relativeMousePosition );
+                    contextMenuStrip1_Opening( sender, e );                    
+                }
+            }
+        }
 
-		private void ipAddressControl1_Click( object sender, EventArgs e )
-		{
+        private void contextMenuStrip1_Opening( object sender, EventArgs e )
+        {
 
-		}
-
-		private void _NShapeDisplay_Load( object sender, EventArgs e )
-		{
-
-		}
+        }
 
 	}
 }

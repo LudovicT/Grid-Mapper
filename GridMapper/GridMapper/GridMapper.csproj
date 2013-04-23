@@ -161,6 +161,12 @@
   <ItemGroup>
     <Compile Include="Console\ConsoleProgram.cs" />
     <Compile Include="Console\Messages.cs" />
+    <Compile Include="WinForm\GridMapperv2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForm\GridMapperv2.Designer.cs">
+      <DependentUpon>GridMapperv2.cs</DependentUpon>
+    </Compile>
     <Compile Include="NetworkModelObject\INetwork\IHostEntity.cs" />
     <Compile Include="NetworkUtilities\Interfaces\IPacketReceiverClient.cs" />
     <Compile Include="NetworkUtilities\NetworkUtility.cs" />
@@ -246,6 +252,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinForm\DiagramDisplayControl.resx">
       <DependentUpon>DiagramDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForm\gridmapperv2.resx">
+      <DependentUpon>GridMapperv2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForm\GridWindow.resx">
       <DependentUpon>GridWindow.cs</DependentUpon>
