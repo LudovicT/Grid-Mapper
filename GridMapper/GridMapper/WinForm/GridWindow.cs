@@ -182,7 +182,7 @@ namespace GridMapper
 				{
 					hostNameString = item.HostEntry.HostName.ToString();
 				}
-
+                
 				string portToString = string.Empty;
 				//pour l'affichage des virgule
 				if( item.Ports.Count > 0 )

@@ -110,4 +110,20 @@ UpgradeLog*.XML
 # Sonar
 *.sonar/
 sonar-project.properties
+<<<<<<< Updated upstream
 GridMapper/GridMapper.sln.DotSettings
+=======
+GridMapper/GridMapper/GridMapper.csproj
+GridMapper/GridMapper/NetworkUtilities/PacketListenerTarget.cs
+GridMapper/GridMapper/NetworkUtilities/TargetListener.cs
+GridMapper/GridMapper/Repository/Repository.cs
+GridMapper/GridMapper/WinForm/GridWindow.cs
+GridMapper/GridMapper/WinForm/GridWindow.Designer.cs
+GridMapper/GridMapper/GridMapper.csproj
+GridMapper/GridMapper/NetworkUtilities/PacketListenerTarget.cs
+GridMapper/GridMapper/NetworkUtilities/TargetListener.cs
+GridMapper/GridMapper/Repository/Repository.cs
+GridMapper/GridMapper/WinForm/GridWindow.cs
+GridMapper/GridMapper/WinForm/GridWindow.Designer.cs
+>>>>>>> Stashed changes
+GridMapper/GridMapper/NetworkUtilities/TargetListener.cs

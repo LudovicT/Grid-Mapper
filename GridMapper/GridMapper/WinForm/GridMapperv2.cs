@@ -16,5 +16,10 @@ namespace GridMapper
         {
             InitializeComponent();
         }
+
+        private void packets_gridView_CellContentClick( object sender, DataGridViewCellEventArgs e )
+        {
+
+        }
     }
 }
